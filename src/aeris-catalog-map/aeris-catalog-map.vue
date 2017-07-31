@@ -122,10 +122,9 @@ export default {
             geometryFunction: this.drawGeometryFunction,
             maxPoints: 2
           });
+        
+       this.draw.addEventListener('drawend', this.handleSelectionDrawEnd.bind(this));
 
-        // this.draw.addEventListener('drawend', this._handleSelectionDrawEnd.bind(this));
-
-       
         
         this.updateMapSize();
 
@@ -166,6 +165,28 @@ export default {
 	        this.map.addInteraction(this.draw);
 	  },
 	  
+	  handleSelectionDrawEnd: function(e) {
+		   console.log("tutu")
+	       this.removeFeature('selectionBox');
+	        e.feature.setId('selectionBox');
+	        this._selectionBox = e.feature;
+
+	        var clone = e.feature.clone();
+	        var extent = clone.getGeometry().getExtent();
+	        var bottomRight = ol.proj.transform(ol.extent.getBottomRight(extent), 'EPSG:3857', 'EPSG:4326');
+	        var topLeft = ol.proj.transform(ol.extent.getTopLeft(extent), 'EPSG:3857', 'EPSG:4326');
+
+	        var selectionDrawEvent = {
+	          east: bottomRight[0],
+	          south: bottomRight[1],
+	          west: topLeft[0],
+	          north: topLeft[1]
+	        };
+	        
+	        var event = new CustomEvent('aerisCatalogueSelectionDrawEvent', { detail: selectionDrawEvent});
+	        document.dispatchEvent(event)
+	      },
+	  
 	  drawGeometryFunction : function(coordinates, geometry) {
           if (!geometry) {
             geometry = new ol.geom.Polygon(null);
@@ -184,6 +205,16 @@ export default {
           ]);
           return geometry;
         },
+        
+      /* Remove feature with the specified ID */
+     removeFeature: function(id) {
+          var feature = this.mainSource.getFeatureById(id);
+          if(feature) this.mainSource.removeFeature(feature);
+
+          feature = this.mainClusteredSource.getFeatureById(id);
+          if(feature) this.mainSource.removeFeature(feature);
+        },
+
 	  
 	  updateMapSize: function() {
 	        var interval = window.setInterval(function() {

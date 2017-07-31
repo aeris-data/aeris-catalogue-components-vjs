@@ -32,6 +32,10 @@ export default {
       type: String,
       default: 'fa fa-search'
     },
+    deployed:  {
+        type: Boolean,
+        default: false
+      },
     openIconClass:  {
         type: String,
         default: 'fa fa-chevron-down'
@@ -71,7 +75,6 @@ export default {
     	theme: null,
     	aerisThemeListener: null,
     	hasToolbar: false,
-    	deployed: true
     }
   },
   

@@ -289,15 +289,8 @@
           }
         }.bind(this));
 
-        /* --- End Tooltip functions --- */
 
-        this._map.addControl(new ol.control.MousePosition({
-            projection: 'EPSG:4326',
-            coordinateFormat: ol.coordinate.createStringXY(3),
-            className: 'custom-mouse-position map-component',
-            target: document.getElementById('mapCoordinates'),
-            undefinedHTML: '&nbsp;'
-          }));
+        
 
         /* --- User drawing on map --- */
         var drawGeometryFunction = function(coordinates, geometry) {
@@ -611,15 +604,7 @@
         }.bind(this));
       },
 
-      /* Remove feature with the specified ID */
-      _removeFeature: function(id) {
-        var feature = this._mainSource.getFeatureById(id);
-        if(feature) this._mainSource.removeFeature(feature);
-
-        feature = this._mainClusteredSource.getFeatureById(id);
-        if(feature) this._mainSource.removeFeature(feature);
-      },
-
+     
       /* Add a preview feature on map */
       _handlemapAddPreviewRequest: function(e) {
         var extents = e.detail;

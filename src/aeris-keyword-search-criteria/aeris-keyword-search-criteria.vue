@@ -11,7 +11,7 @@
 
 <template>
 <span class="aeris-keyword-search-criteria-host" >
-<aeris-catalog-search-box id="box"  :title="$t('keywords')" header-icon-class="fa fa-terminal">
+<aeris-catalog-search-box id="box"  :title="$t('keywords')" header-icon-class="fa fa-terminal" :deployed="deployed">
      <aeris-keyword-search-criteria-content></aeris-keyword-search-criteria-content>
 </aeris-catalog-search-box>
 </span>
@@ -23,7 +23,11 @@ export default {
   	lang:  {
       type: String,
       default: 'fr'
-    }
+    },
+    deployed:  {
+        type: Boolean,
+        default: false
+      }
   },
   
   watch: {

@@ -14,7 +14,9 @@ Vue.use(VueResource);
 
 import AerisCatalogSearchBox from './aeris-catalog-box/aeris-catalog-search-box.vue'
 import AerisKeywordSearchCriteria from './aeris-keyword-search-criteria/aeris-keyword-search-criteria.vue'
+import AerisSpatialSearchCriteria from './aeris-spatial-search-criteria/aeris-spatial-search-criteria.vue'
 import AerisKeywordSearchCriteriaContent from './aeris-keyword-search-criteria/aeris-keyword-search-criteria-content.vue'
+import AerisSpatialSearchCriteriaContent from './aeris-spatial-search-criteria/aeris-spatial-search-criteria-content.vue'
 import AerisCatalogBar from './aeris-catalog-bar/aeris-catalog-bar.vue'
 import AerisCatalogMap from './aeris-catalog-map/aeris-catalog-map.vue'
 import AerisCatalog from './aeris-catalog/aeris-catalog.vue'
@@ -36,7 +38,7 @@ ljs.load('dep', function() {
 	var timer;
 	
 	function stopTimer() {
-	    clearTimeout(timer);
+	    clearInterval(timer);
 	}
 
 	function register() {
@@ -44,18 +46,31 @@ ljs.load('dep', function() {
 		if (window.registredAerisElements.indexOf("aeris-commons-components-vjs") > -1) {
 			console.info("Début registration des custom elements catalog")
 			console.info("Registred elements at this time: "+window.registredAerisElements)
+			
 			Vue.customElement('aeris-catalogue-search-button', AerisCatalogSearchButton);
 			window.registredAerisElements.push('aeris-catalogue-search-button')
+			
 			Vue.customElement('aeris-catalogue-edit-button', AerisCatalogEditButton);
 			window.registredAerisElements.push('aeris-catalogue-edit-button')
+			
 			Vue.customElement('aeris-catalogue-reset-button', AerisCatalogResetButton);
 			window.registredAerisElements.push('aeris-catalogue-reset-button')
+			
 			Vue.customElement('aeris-keyword-search-criteria-content', AerisKeywordSearchCriteriaContent);
 			window.registredAerisElements.push('aeris-keyword-search-criteria-content')
+			
+			Vue.customElement('aeris-spatial-search-criteria-content', AerisSpatialSearchCriteriaContent);
+			window.registredAerisElements.push('aeris-spatial-search-criteria-content')
+			
 			Vue.customElement('aeris-catalog-search-box', AerisCatalogSearchBox);
 			window.registredAerisElements.push('aeris-catalog-search-box')
+			
 			Vue.customElement('aeris-keyword-search-criteria', AerisKeywordSearchCriteria);
 			window.registredAerisElements.push('aeris-keyword-search-criteria')
+			
+			Vue.customElement('aeris-spatial-search-criteria', AerisSpatialSearchCriteria);
+			window.registredAerisElements.push('aeris-spatial-search-criteria')
+			
 			Vue.customElement('aeris-catalog-bar', AerisCatalogBar);
 			window.registredAerisElements.push('aeris-catalog-bar')
 			Vue.customElement('aeris-catalog-map', AerisCatalogMap);
@@ -71,7 +86,7 @@ ljs.load('dep', function() {
 		}
 	}
 	
-	timer = setTimeout(function(){register()}, 1000);
+	timer = setInterval(function(){register()}, 1000);
 	
 	
 })
