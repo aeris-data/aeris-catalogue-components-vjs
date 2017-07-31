@@ -1,0 +1,22 @@
+.aeris-catalog-button 
+{
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 11;
+	width: 50px;
+	height: 50px;
+	border: 2px solid;
+	border-radius: 50%;
+	color: #fff;
+	font-size: 18px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+	background-color: #4765a0;
+	transition: background-color 0.3s;
+	margin-bottom: 10px;
+}
+
+.aeris-catalog-button:hover {
+	cursor:pointer;
+}

@@ -20,6 +20,7 @@
 
 <script>
 export default {
+	 
   props: {
   	lang:  {
       type: String,
@@ -34,10 +35,18 @@ export default {
   },
   
   destroyed: function() {
+	  document.removeEventListener('aerisCartoucheItemDeleted', this.keywordDeletionListener);
+	  this.keywordDeletionListener = null;
+	  document.removeEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
+	  this.catalogueResetListener = null;
   },
   
   created: function () {
    this.$i18n.locale = this.lang
+   this.keywordDeletionListener = this.handleKeywordDeletion.bind(this) 
+   document.addEventListener('aerisCartoucheItemDeleted', this.keywordDeletionListener);
+   this.catalogueResetListener = this.handleCatalogueReset.bind(this) 
+   document.addEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
   },
 
   mounted: function() {
@@ -50,7 +59,9 @@ export default {
    data () {
     return {
     	keywords: [],
-    	current:''
+    	current:'',
+    	keywordDeletionListener: null,
+    	catalogueResetListener: null
     }
   },
   
@@ -59,6 +70,21 @@ export default {
   
   methods: {
   
+   handleKeywordDeletion: function(e) {
+	   console.log(e.detail.itemref)
+	   var itemref = e.detail.itemref;
+	   var index = this.keywords.indexOf(itemref)
+	   if (index > -1) {
+		   this.keywords.splice(index, 1);
+	   }
+	   e.stopPropagation()
+   }, 
+   
+   handleCatalogueReset: function() {
+	   this.keywords.splice(0,this.keywords.length)
+	   this.current=""
+   },
+	  
    inputKeyword: function(e) {
         var withComma = this.current.trim();
         if(withComma.length < 2) return;
