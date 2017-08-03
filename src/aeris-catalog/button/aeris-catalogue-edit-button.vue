@@ -35,6 +35,10 @@ export default {
   destroyed: function() {
 	  document.removeEventListener('aerisTheme', this.aerisThemeListener);
 	  	this.aerisThemeListener = null;
+	    document.removeEventListener('aerisCatalogueStartEditEvent', this.aerisCatalogueStartEditListener);
+	  	this.aerisCatalogueStartEditListener = null;
+	  	document.removeEventListener('aerisCatalogueStopEditEvent', this.aerisCatalogueStopEditListener);
+	  	this.aerisCatalogueStopEditListener = null;
   },
   
   created: function () {
@@ -42,6 +46,10 @@ export default {
    this.$i18n.locale = this.lang
    this.aerisThemeListener = this.handleTheme.bind(this) 
    document.addEventListener('aerisTheme', this.aerisThemeListener);
+   this.aerisCatalogueStopEditListener = this.handleStopEdit.bind(this) 
+   document.addEventListener('aerisCatalogueStopEditEvent', this.aerisCatalogueStopEditListener);
+   this.aerisCatalogueStartEditListener = this.handleStartEdit.bind(this) 
+   document.addEventListener('aerisCatalogueStartEditEvent', this.aerisCatalogueStartEditListener);
   },
 
   mounted: function() {
@@ -57,7 +65,9 @@ export default {
     return {
     	aerisThemeListener: null,
     	progress: false,
-    	editing: false
+    	editing: false,
+    	aerisCatalogueStopEditListener: null,
+    	aerisCatalogueStartEditListener: null
     }
   },
   
@@ -65,13 +75,25 @@ export default {
   },
   
   methods: {
+	  
+	  handleStartEdit: function() {
+		  this.editing = true;
+	  },
+	  
+	  handleStopEdit: function() {
+		  this.editing = false;
+	  },
+  
+	  
 	  handleClick: function() {
 		  if (!this.editing) {
+			  this.handleStartEdit()
 			  document.dispatchEvent(new CustomEvent("aerisCatalogueStartEditEvent"));
-			  this.editing = true;
+			  
 		  }
 		  else {
-			  this.editing = false;
+			  this.handleStopEdit()
+			  document.dispatchEvent(new CustomEvent("aerisCatalogueStopEditEvent"));
 		  }
 	  },
 	  

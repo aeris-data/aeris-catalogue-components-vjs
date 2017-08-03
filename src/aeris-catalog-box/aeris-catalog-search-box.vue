@@ -3,7 +3,7 @@
 <div id="main" class="box noselect">
 <header class="box-heading" v-on:click="deployed = !deployed">
   <div class="box-title">
-      <i  :class="headerIconClass" id="icon" v-if="headerIconClass"></i>
+      <i  :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
     <h4 no-label-float>{{title}}</aeris-metadata-international-field></h4>
   </div>
   <div class="box-heading-buttons">
@@ -12,14 +12,10 @@
 </header>
  <div id="collapse" class="box-collapsable-part">
   <main class="box-body">
-      <div class="box-toolbar" v-if="hasToolbar">
-      </div>
     <div class="content">
       <slot></slot>
     </div>
   </main>
-  <footer class="box-footer">
-  </footer>
 </div>
 </div>
 </span>

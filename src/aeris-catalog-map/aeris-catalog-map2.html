@@ -338,13 +338,15 @@
             style: this.featuresStyle
           });
 
-          this._map.addLayer(tempVector);
+          this.map.addLayer(tempVector);
 
           tempSource.addFeature(areaFeature);
 
+          var _this = this;
+          
           window.setTimeout(function() {
-            _this._resizeMapToExtent(tempSource);
-            _this._map.removeLayer(tempVector);
+            _this.resizeMapToExtent(tempSource);
+            _this.map.removeLayer(tempVector);
           }, 500);
 
         }

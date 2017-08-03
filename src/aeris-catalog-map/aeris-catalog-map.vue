@@ -38,14 +38,25 @@ export default {
   destroyed: function() {
 	  document.removeEventListener('aerisCatalogueStartEditEvent', this.aerisCatalogueStartEditEventListener);
 	  this.aerisCatalogueStartEditEventListener = null;
+	  document.removeEventListener('aerisCatalogueStopEditEvent', this.aerisCatalogueStopEditEventListener);
+	  this.aerisCatalogueStopEditEventListener = null;
+	  document.removeEventListener('aerisCatalogueMapAddSelectionRequest', this.aerisCatalogueAddSelectionListener);
+	  this.aerisCatalogueAddSelectionListener = null;
+	  document.removeEventListener('aerisCatalogueMapRemoveSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
+	  this.aerisCatalogueRemoveSelectionListener = null;
   },
   
   created: function () {
 	  console.log("Aeris catalog map created")
 	  this.ol = window.ol;
 	  this.aerisCatalogueStartEditEventListener = this.handleStartEditEvent.bind(this) 
-	   document.addEventListener('aerisCatalogueStartEditEvent', this.aerisCatalogueStartEditEventListener);
-	  
+	  document.addEventListener('aerisCatalogueStartEditEvent', this.aerisCatalogueStartEditEventListener);
+	  this.aerisCatalogueStopEditEventListener = this.handleStopEditEvent.bind(this) 
+	  document.addEventListener('aerisCatalogueStopEditEvent', this.aerisCatalogueStopEditEventListener);
+	  this.aerisCatalogueAddSelectionListener = this.handleAddSelectionEvent.bind(this) 
+	  document.addEventListener('aerisCatalogueMapAddSelectionRequest', this.aerisCatalogueAddSelectionListener);
+	  this.aerisCatalogueRemoveSelectionListener = this.handleRemoveSelectionEvent.bind(this) 
+	  document.addEventListener('aerisCatalogueMapRemoveSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
   },
 
   mounted: function() {
@@ -124,8 +135,36 @@ export default {
           });
         
        this.draw.addEventListener('drawend', this.handleSelectionDrawEnd.bind(this));
+       
+       if(this.area && this.area !== '') {
+           var unquotedJSON = this.area;
+           var fixedJSON = unquotedJSON.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
+           var areaObject = JSON.parse(fixedJSON);
+           
+           var areaFeature = this._coordsToFeature(areaObject);
 
-        
+           var tempSource = new ol.source.Vector({
+             wrapX: false,
+             noWrap: true
+           });
+
+           var tempVector = new ol.layer.Vector({
+             source: tempSource,
+             style: this.featuresStyle
+           });
+
+           this._map.addLayer(tempVector);
+
+           tempSource.addFeature(areaFeature);
+
+           var _this = this;
+           
+           window.setTimeout(function() {
+             _this.resizeMapToExtent(tempSource);
+             _this.map.removeLayer(tempVector);
+           }, 500);
+
+         }
         this.updateMapSize();
 
   },
@@ -151,7 +190,12 @@ export default {
     	defaultCenter : null,
     	isDrawMode : false,
     	aerisCatalogueStartEditEventListener: null,
-    	draw: null
+    	aerisCatalogueStopEditEventListener: null,
+    	aerisCatalogueAddSelectionListener: null,
+    	aerisCatalogueRemoveSelectionListener: null,
+    	draw: null,
+    	selectionBox: null,
+    	area:null
     }
   },
   
@@ -160,16 +204,92 @@ export default {
   
   methods: {
 	  
+	  handleRemoveSelectionEvent: function(e) {
+		  var id = 'selectionBox';
+
+	        this.removeFeature('selectionBox');
+	        this.selectionBox = null
+	  },
+	  
+	  updateMapSize: function() {
+	        var interval = window.setInterval(function() {
+	          this.map.updateSize();
+	        }.bind(this), 10);
+
+	        window.setTimeout(function() {
+	          window.clearInterval(interval);
+	        }, 200);
+	      },
+	  
+	  handleAddSelectionEvent: function(e) {
+		        var box = e.detail.box;
+		        var id = e.detail.id || 'selectionBox';
+
+		        this.removeFeature('selectionBox');
+
+		        var feature = this.coordsToFeature(box);
+
+		        feature.setId(id);
+
+		        this.mainSource.addFeature(feature);
+		        this.selectionBox = feature;
+		        this.map.updateSize();
+		        this.updateMapSize();
+		        
+		        //this._resizeMapToExtent(this._mainSource);
+	  },
+	  
+	  coordsToFeature: function(coords) {
+	        var obj;
+	        var l = Object.keys(coords).length;
+
+	        if(l === 4) {
+	          if(coords.north > 85) coords.north = 85;
+	          if(coords.south < -85) coords.south = -85;
+
+	          obj = new ol.geom.Polygon([
+	            [
+	              [Number(coords.west), Number(coords.north)],
+	              [Number(coords.east), Number(coords.north)],
+	              [Number(coords.east), Number(coords.south)],
+	              [Number(coords.west), Number(coords.south)],
+	              [Number(coords.west), Number(coords.north)]
+	            ]
+	          ]).transform('EPSG:4326', 'EPSG:900913');
+
+	        } else if (l === 2) {
+	          obj = new ol.geom.Point(ol.proj.transform([Number(coords.lon), Number(coords.lat)], 'EPSG:4326', 'EPSG:900913'));
+	        }
+
+	        var feature = new ol.Feature({
+	          geometry: obj
+	        });
+
+	        return feature;
+	      },
+	  
+	  handleRemoveSelectionEvent: function() {
+		  console.log("totorfffo")
+	  },
+	  
 	  handleStartEditEvent: function() {
 	        this.isDrawMode = true;
 	        this.map.addInteraction(this.draw);
 	  },
 	  
+	  handleStopEditEvent: function() {
+	        this.isDrawMode = false;
+	        this.map.removeInteraction(this.draw);
+	  },
+	  
+	  handleSearchBarSearchEvent: function(e) {
+	        e.detail.box = this.asBox();
+	      },
+	  
 	  handleSelectionDrawEnd: function(e) {
-		   console.log("tutu")
 	       this.removeFeature('selectionBox');
 	        e.feature.setId('selectionBox');
-	        this._selectionBox = e.feature;
+	        this.selectionBox = e.feature;
 
 	        var clone = e.feature.clone();
 	        var extent = clone.getGeometry().getExtent();
@@ -206,6 +326,9 @@ export default {
           return geometry;
         },
         
+        
+        
+        
       /* Remove feature with the specified ID */
      removeFeature: function(id) {
           var feature = this.mainSource.getFeatureById(id);
@@ -216,16 +339,7 @@ export default {
         },
 
 	  
-	  updateMapSize: function() {
-	        var interval = window.setInterval(function() {
-	          this.map.updateSize();
-	        }.bind(this), 10);
-
-	        window.setTimeout(function() {
-	          window.clearInterval(interval);
-	        }, 200);
-	      },
-	  
+	 
 	  initialiseMainSource: function() {
 		    var ol = this.ol;
 	        this.mainSource = new ol.source.Vector({
@@ -244,7 +358,7 @@ export default {
 	        });
 
 	        this.vector = new ol.layer.Vector({
-	          source: this._mainSource,
+	          source: this.mainSource,
 	          style: this.featuresStyle
 	        });
 

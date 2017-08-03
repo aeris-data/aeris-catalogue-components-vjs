@@ -11,12 +11,13 @@ Vue.use(VueI18n);
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
-
 import AerisCatalogSearchBox from './aeris-catalog-box/aeris-catalog-search-box.vue'
 import AerisKeywordSearchCriteria from './aeris-keyword-search-criteria/aeris-keyword-search-criteria.vue'
 import AerisSpatialSearchCriteria from './aeris-spatial-search-criteria/aeris-spatial-search-criteria.vue'
+import AerisTemporalSearchCriteria from './aeris-temporal-search-criteria/aeris-temporal-search-criteria.vue'
 import AerisKeywordSearchCriteriaContent from './aeris-keyword-search-criteria/aeris-keyword-search-criteria-content.vue'
 import AerisSpatialSearchCriteriaContent from './aeris-spatial-search-criteria/aeris-spatial-search-criteria-content.vue'
+import AerisTemporalSearchCriteriaContent from './aeris-temporal-search-criteria/aeris-temporal-search-criteria-content.vue'
 import AerisCatalogBar from './aeris-catalog-bar/aeris-catalog-bar.vue'
 import AerisCatalogMap from './aeris-catalog-map/aeris-catalog-map.vue'
 import AerisCatalog from './aeris-catalog/aeris-catalog.vue'
@@ -26,7 +27,7 @@ import AerisCatalogEditButton from './aeris-catalog/button/aeris-catalogue-edit-
 
 
 ljs.addAliases({
-	dep: ['https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css', 'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js','https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js']
+	dep: ['https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css', 'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js','https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js','https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js']
 })
 ljs.load('dep', function() {
 	window.ol = ol
@@ -62,6 +63,9 @@ ljs.load('dep', function() {
 			Vue.customElement('aeris-spatial-search-criteria-content', AerisSpatialSearchCriteriaContent);
 			window.registredAerisElements.push('aeris-spatial-search-criteria-content')
 			
+			Vue.customElement('aeris-temporal-search-criteria-content', AerisTemporalSearchCriteriaContent);
+			window.registredAerisElements.push('aeris-temporal-search-criteria-content')
+			
 			Vue.customElement('aeris-catalog-search-box', AerisCatalogSearchBox);
 			window.registredAerisElements.push('aeris-catalog-search-box')
 			
@@ -70,6 +74,9 @@ ljs.load('dep', function() {
 			
 			Vue.customElement('aeris-spatial-search-criteria', AerisSpatialSearchCriteria);
 			window.registredAerisElements.push('aeris-spatial-search-criteria')
+			
+			Vue.customElement('aeris-temporal-search-criteria', AerisTemporalSearchCriteria);
+			window.registredAerisElements.push('aeris-temporal-search-criteria')
 			
 			Vue.customElement('aeris-catalog-bar', AerisCatalogBar);
 			window.registredAerisElements.push('aeris-catalog-bar')

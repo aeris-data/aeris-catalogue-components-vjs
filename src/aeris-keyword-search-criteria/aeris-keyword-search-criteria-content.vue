@@ -39,12 +39,17 @@ export default {
 	  this.keywordDeletionListener = null;
 	  document.removeEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
 	  this.catalogueResetListener = null;
+	  document.removeEventListener('aerisCatalogueSearchEvent', this.catalogueSearchListener);
+	  this.catalogueSearchListener = null;
+	  
   },
   
   created: function () {
    this.$i18n.locale = this.lang
    this.keywordDeletionListener = this.handleKeywordDeletion.bind(this) 
    document.addEventListener('aerisCartoucheItemDeleted', this.keywordDeletionListener);
+   this.catalogueSearchListener = this.handleCatalogueSearch.bind(this) 
+   document.addEventListener('aerisCatalogueSearchEvent', this.catalogueSearchListener);
    this.catalogueResetListener = this.handleCatalogueReset.bind(this) 
    document.addEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
   },
@@ -61,7 +66,8 @@ export default {
     	keywords: [],
     	current:'',
     	keywordDeletionListener: null,
-    	catalogueResetListener: null
+    	catalogueResetListener: null,
+    	catalogueSearchListener: null
     }
   },
   
@@ -83,6 +89,15 @@ export default {
    handleCatalogueReset: function() {
 	   this.keywords.splice(0,this.keywords.length)
 	   this.current=""
+   },
+   
+   handleCatalogueSearch: function(e) {
+	   if (this.current.length>0) {
+		   var aux = this.current;
+		   this.keywords.push(aux);
+		   this.current =""
+	   }
+	   e.detail.keywords = this.keywords;  
    },
 	  
    inputKeyword: function(e) {
