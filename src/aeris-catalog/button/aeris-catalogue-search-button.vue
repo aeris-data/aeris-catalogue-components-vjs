@@ -66,9 +66,8 @@ export default {
   
   methods: {
 	  handleSearch: function() {
-		  var e = new CustomEvent("aerisCatalogueSearchEvent", { detail: {}})
+		  var e = new CustomEvent("aerisCatalogueSearchStartEvent", { detail: {}})
 		  document.dispatchEvent(e);
-		  console.log(e)
 	  },
 	  
 	  handleTheme: function(theme) {

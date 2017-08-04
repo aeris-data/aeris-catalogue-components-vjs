@@ -1,5 +1,5 @@
 <template>
-<span class="aeris-catalog-map">
+<span class="aeris-catalog-map" :class="hidemap ? hidemap : showmap">
 <div class="map-container">
 <div id="mapMask" class="map-mask"></div>
 <div id="map" class="map" tabindex="0"></div>
@@ -30,7 +30,13 @@ export default {
 	    	type: Boolean,
 	     	 default: true
 	    },
+	    // If true the map isn't displayed - this property isn't dynamic
+	    hidemap: {
+	    	type: Boolean,
+	     	 default: false
+	    }
 	},
+	
   
   watch: {
   },
@@ -44,6 +50,7 @@ export default {
 	  this.aerisCatalogueAddSelectionListener = null;
 	  document.removeEventListener('aerisCatalogueMapRemoveSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
 	  this.aerisCatalogueRemoveSelectionListener = null;
+	  
   },
   
   created: function () {
@@ -57,6 +64,7 @@ export default {
 	  document.addEventListener('aerisCatalogueMapAddSelectionRequest', this.aerisCatalogueAddSelectionListener);
 	  this.aerisCatalogueRemoveSelectionListener = this.handleRemoveSelectionEvent.bind(this) 
 	  document.addEventListener('aerisCatalogueMapRemoveSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
+	 
   },
 
   mounted: function() {
@@ -74,6 +82,10 @@ export default {
           // url: 'http://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnJhbmNvaXNhbmRyZSIsImEiOiJjaXVlMGE5b3QwMDBoMm9tZGQ1M2xubzVhIn0.FK8gRVJb4ADNnrO6cNlWUw'
         })
       });
+      
+      if (this.hidemap) {
+    	  return;
+      }
       
       /* Create map sources */
       this.initialiseMainSource();
@@ -404,9 +416,18 @@ export default {
 .aeris-catalog-map {
     display: block;
     position: relative;
-    overflow: hidden;
-    background-color: #fff
+    background-color: #fff;
 }
+
+.aeris-catalog-map.hidemap {
+    overflow: ;
+}
+
+.aeris-catalog-map.showmap {
+	overflow: hidden;
+}
+
+
 .aeris-catalog-map .map-container {
     position: relative;
     height: 100%;

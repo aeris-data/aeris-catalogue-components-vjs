@@ -5,7 +5,7 @@
 <aeris-catalog-bar :lang="lang">
 <slot name="criteria"></slot>
 </aeris-catalog-bar>
-<aeris-catalog-map>
+<aeris-catalog-map :hidemap="hidemap">
 <slot name="buttons"></slot>
 </aeris-catalog-map>
 </div>
@@ -24,15 +24,34 @@ export default {
 	    	type: Boolean,
 	     	 default: true
 	    },
+	    hidemap: {
+	    	type: Boolean,
+	     	 default: false
+	    },
+	    
+	    metadataService: {
+	    	type: String,
+	    	default: null
+	    },
+	    
+	    program: {
+	    	type: String,
+	    	default:null
+	    }
+	    
 	},
   
   watch: {
   },
   
   destroyed: function() {
+	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+	  this.aerisCatalogueSearchStartEventListener = null;
   },
   
   created: function () {
+	  this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this) 
+	  document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
   },
 
   mounted: function() {
@@ -43,6 +62,7 @@ export default {
 
    data () {
     return {
+    	aerisCatalogueSearchStartEventListener: null
     }
   },
   
@@ -50,6 +70,32 @@ export default {
   },
   
   methods: {
+	  
+	  handleCatalogueSearchStart : function() {
+		  var e = new CustomEvent("aerisCatalogueSearchEvent", { detail: {}})
+		  document.dispatchEvent(e);
+		  console.log(e)
+		  console.log("Connecting with metadata server")
+		  
+//		  if (this.service) {
+//			  var url = this.service
+//			  if (!(url.endsWith("/"))
+//			  +"request"
+//			  
+//          this.$.map.classList.remove('reduced');
+//          this._updateMapSize();
+//          this._lock = true;
+//          this.$.ajax.url = this.service;
+//          this.$.ajax.method = 'POST';
+//          this.$.ajax.body = JSON.stringify(e.detail);
+//          this.fire('longActionStartEvent', {
+//            message: this._localize('loading', this.lang) + '...'
+//          });
+//          this.$.ajax.generateRequest();
+		  
+		  
+	  },
+	  
   }
 }
 </script>
@@ -57,7 +103,7 @@ export default {
 <style>
 
 .aeris-catalog-host {
-	box-sizing: border-box;
+	/*box-sizing: border-box;*/
 	position: relative;
 	display: block;
 	width: 100%;
@@ -69,7 +115,7 @@ export default {
 }
 
 .aeris-catalog-host * {
-	box-sizing: border-box;
+	/*box-sizing: border-box;*/
 }
 
 @keyframes pop {
