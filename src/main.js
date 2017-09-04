@@ -33,15 +33,25 @@ import AerisCatalog from './aeris-catalog/aeris-catalog.vue'
 import AerisCatalogSearchButton from './aeris-catalog/button/aeris-catalogue-search-button.vue'
 import AerisCatalogResetButton from './aeris-catalog/button/aeris-catalogue-reset-button.vue'
 import AerisCatalogEditButton from './aeris-catalog/button/aeris-catalogue-edit-button.vue'
-
-/*
- *  'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.jquery.min.js',,
- */
+import AerisCatalogCart from './aeris-catalog-cart/aeris-catalog-cart.vue'
 
 ljs.addAliases({
-	dep: ['https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css','https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.min.js','https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css', 'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js','https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js','https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js']
+	dep: ['https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css',
+		'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.min.js',
+		'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css',  
+		'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.css',
+		'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js',
+		'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 
+		'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js', 
+		'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js',
+		'https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js',
+		'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js',
+		'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-bash.min.js',
+		'https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.js']
 })
+
 ljs.load('dep', function() {
+
 	window.ol = ol
 	
 	if (!window.registredAerisElements) {
@@ -117,8 +127,12 @@ ljs.load('dep', function() {
 			Vue.customElement('aeris-catalog-map', AerisCatalogMap);
 			window.registredAerisElements.push('aeris-catalog-map')
 			
+			Vue.customElement('aeris-catalog-cart', AerisCatalogCart);
+			window.registredAerisElements.push('aeris-catalog-cart')
+			
 			Vue.customElement('aeris-catalog', AerisCatalog);
 			window.registredAerisElements.push('aeris-catalog')
+						
 			
 			window.registredAerisElements.push('aeris-catalogue-components-vjs')
 			stopTimer()
@@ -130,8 +144,6 @@ ljs.load('dep', function() {
 	}
 	
 	timer = setInterval(function(){register()}, 1000);
-	
-	
 })
 
 
