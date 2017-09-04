@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Aeris Catalogue Components</title>
+    <title>Test authentification cart</title>
 	<script type="text/javascript" component="aeris-data/aeris-commons-components-vjs@latest" src="https://rawgit.com/aeris-data/aeris-component-loader/master/aerisComponentLoader.js" ></script> 
 	
 	<style>
@@ -19,11 +19,13 @@
  <style type="text/css">
 </style>
 
-<div>
-<aeris-theme id="theme2" active="true" primary="#F1684E" emphasis="#1B1B1B"></aeris-theme>
-	<aeris-catalog-search-box title="coucou"></aeris-catalog-search-box>
-	<aeris-catalog-cart carttoken="eurochamp" service="http://localhost:9080/catalogue/rest/shoppingcart"></aeris-catalog-cart>
-</div>
+	<h3>Test du cart</h3>
+	<div>
+	
+		<aeris-theme id="theme2" active="true" primary="#F1684E" emphasis="#1B1B1B"></aeris-theme>
+		<aeris-catalog-cart carttoken="beatlessuck" service="http://localhost:9080/catalogue/rest/shoppingcart"></aeris-catalog-cart>
+	</div>
+
 <script src="dist/build.js"></script>
 
  <script>
@@ -31,7 +33,8 @@
     
     document.addEventListener("aerisCartoucheItemDeleted", function(e){
         console.log("capté haut "+e.detail.itemref);
-     });
+     });    
+    
     </script>
 
   </body>
