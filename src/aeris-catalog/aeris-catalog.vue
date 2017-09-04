@@ -1,3 +1,17 @@
+<i18n>
+{
+  "en": {
+    "searching": "Searching...",
+    "foundresults": "Found results: ",
+    "noresult": "No result corresponding to your request"
+  },
+  "fr": {
+    "searching": "Recherche...",
+    "foundresults": "Résultat trouvés: ",
+    "noresult": "Aucun résultat ne correspond à votre requête"
+  }
+}
+</i18n>
 <template>
 <span class="aeris-catalog-host">
 <div class="app-container">
@@ -8,6 +22,10 @@
 <aeris-catalog-map :hidemap="hidemap">
 <slot name="buttons"></slot>
 </aeris-catalog-map>
+<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
+<span style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
+<aeris-catalogue-metadata-panel :title="currentTitle" :icon-class="currentIconClass"></aeris-catalogue-metadata-panel>
+</span>
 </div>
 
 </span>
@@ -37,24 +55,65 @@ export default {
 	    program: {
 	    	type: String,
 	    	default:null
-	    }
+	    },
 	    
+	    summaryBarWidth: {
+	    	type: String,
+	    	default: "400px"
+	    },
+	    
+	    summaryMaxLength: {
+	    	type: Number,
+	    	default: "150"
+	    },
+	    
+	    metadataPanelTopMargin: {
+	    	type: String,
+	    	default: "10px"
+	    	
+	    },
+	    
+	    metadataPanelRightMargin: {
+	    	type: String,
+	    	default: "10px"
+	    	
+	    },
 	},
   
-  watch: {
-  },
+	 watch: {
+		    lang (value) {
+			      this.$i18n.locale = value
+		    }
+		  },
   
   destroyed: function() {
 	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
 	  this.aerisCatalogueSearchStartEventListener = null;
+	  
+	  document.removeEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
+	  this.aerisCatalogueDisplayMetadataEventListener = null;
+	  
+	  document.removeEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
+	  this.aerisCatalogueResetEventListener = null;
   },
   
   created: function () {
 	  this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this) 
 	  document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+	  
+	  this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this) 
+	  document.addEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
+	  
+	  this.aerisCatalogueResetEventListener = this.handleReset.bind(this) 
+	  document.addEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
+	  
+	  
   },
 
   mounted: function() {
+	  if (this.lang) {
+		  this.$i18n.locale = this.lang
+	  }
   },
   
   computed: {
@@ -62,7 +121,11 @@ export default {
 
    data () {
     return {
-    	aerisCatalogueSearchStartEventListener: null
+    	aerisCatalogueSearchStartEventListener: null,
+    	aerisCatalogueDisplayMetadataEventListener: null,
+    	aerisCatalogueResetEventListener: null,
+    	currentTitle: null,
+    	currentIconClass: null
     }
   },
   
@@ -71,30 +134,91 @@ export default {
   
   methods: {
 	  
+	  handleReset: function(e) {
+		this.hideMetadataPanel()
+	  },
+	  
+	  handleDisplayMetadata: function(e) {
+		  console.log(e.detail.uuid)
+		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
+		  if (e.detail.title) {
+			  this.currentTitle = e.detail.title
+		  }
+		  else {
+			  this.currentTitle = ""
+		  }
+		  if (e.detail.iconClass) {
+			  this.currentIconClass = e.detail.iconClass
+		  }
+		  else {
+			  this.currentIconClass =''
+		  }
+	  },
+	  
+	  hideMetadataPanel: function () {
+		  this.currentTitle="";
+		  this.currentIconClass =''
+		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("visible")
+	  },
+	  
 	  handleCatalogueSearchStart : function() {
+		  this.hideMetadataPanel()
 		  var e = new CustomEvent("aerisCatalogueSearchEvent", { detail: {}})
 		  document.dispatchEvent(e);
 		  console.log(e)
 		  console.log("Connecting with metadata server")
 		  
-//		  if (this.service) {
-//			  var url = this.service
-//			  if (!(url.endsWith("/"))
-//			  +"request"
-//			  
-//          this.$.map.classList.remove('reduced');
-//          this._updateMapSize();
-//          this._lock = true;
-//          this.$.ajax.url = this.service;
-//          this.$.ajax.method = 'POST';
-//          this.$.ajax.body = JSON.stringify(e.detail);
-//          this.fire('longActionStartEvent', {
-//            message: this._localize('loading', this.lang) + '...'
-//          });
-//          this.$.ajax.generateRequest();
+		  if (!(this.metadataService)) {
+			  console.error("AerisCatalogueSearcEvent detected but metadataService not provided in props...")
+			  return
+		  }
 		  
+		  var url = this.metadataService+'/request';
+		   if (this.metadataService.endsWith('/')) {
+		   	 url = this.metadataService+'request';
+		   }
+		   
+		   if (this.program) {
+			   url = url +"?program="+this.program;
+		   }
+		   
+		   document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', { 'detail': {message: this.$t('searching')}}))
+		   
+	   	   this.$http.post(url, e.detail).then(response=>{this.handleSuccess(response)},response=>{this.handleError(response)});
 		  
+
 	  },
+	 
+	  
+	  handleSuccess: function(response) {
+		  document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: this.$t('searching')}}))
+		  console.log("SUCCESS: Response")
+		  console.log(response)
+		  var summaries = response.body
+		  if (summaries) {
+			  document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: this.$t('foundresults')+summaries.length}}))
+		  } else {
+			  document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: this.$t('noresult')+summaries.length}}))
+		  }
+		  document.dispatchEvent(new CustomEvent('aerisSummaries', { 'detail': {summaries: summaries}}))
+	  },
+	  
+	  handleError: function(response) {
+		  document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: this.$t('searching')}}))
+		  console.log("ERROR: Response")
+		  console.log(response)
+		  document.dispatchEvent(new CustomEvent('aerisSummaries', { 'detail': {summaries: []}}))
+//		  var statusMessage = e.detail.error.message;
+//	        if(!navigator.onLine) statusMessage = 'You are not connected to internet';
+//	        var errorMessage = this._localize('error_occured', this.lang);
+//	        if(statusMessage) errorMessage = errorMessage + ':<p>' + statusMessage + '</p>';
+//	        this.fire('longActionStopEvent', {
+//	          message: this._localize('loading', this.lang) + '...'
+//	        });
+//	        this.fire('errorNotificationMessageEvent', {
+//	          message: errorMessage
+//	        });
+	  }
 	  
   }
 }
@@ -283,109 +407,6 @@ export default {
 	transition: 0.3s;
 }
 
-.aeris-catalog-host .metadata-panel {
-	box-sizing: border-box;
-	position: absolute;
-	z-index: 10;
-	top: 5vh;
-	right: 320px;
-	width: 800px;
-	min-width: 33vw;
-	max-width: 80vw;
-	height: calc(90vh - 130px);
-	background-color: #fafafa;
-	overflow: hidden;
-	cursor: default;
-	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-	transform: translate3d(calc(100% + 350px), 0, 0);
-	transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1), width 0.3s ease-in-out 0.3s, height 0.3s ease-in-out 0.3s;
-}
-
-.aeris-catalog-host .metadata-panel.expanded,
-.aeris-catalog-host .metadata-panel-content.expanded {
-	transform: translate3d(0, 0, 0);
-	opacity: 1;
-}
-
-.aeris-catalog-host .metadata-panel.fullscreen {
-	z-index: 12;
-	width: 100vw;
-	max-width: 100vw;
-	height: 100%;
-	transform: translate3d(320px, -5vh, 0);
-}
-
-.aeris-catalog-host .metadata-panel-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 20px 0 10px;
-	z-index: 2;
-	border-bottom: 1px solid #ddd;
-}
-
-.aeris-catalog-host .metadata-panel-header i {
-	cursor: pointer;
-	color: #888;
-	opacity: 0.5;
-}
-
-.aeris-catalog-host .metadata-panel-header i:hover {
-	opacity: 1;
-}
-
-.aeris-catalog-host .metadata-panel-header .metadata-panel-title {
-	display: flex;
-	align-items: center;
-}
-
-.aeris-catalog-host .metadata-panel-header .metadata-panel-title h2 {
-	display: inline;
-	margin: 0 10px;
-	padding: 5px 0;
-}
-
-.aeris-catalog-host .metadata-panel-content {
-	max-height: calc(100% - 90px);
-	padding: 10px 10px 60px 10px;
-	overflow-y: auto;
-	overflow-x: hidden;
-	opacity: 0;
-	transform: translate3d(100%, 0, 0);
-	transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0s;
-}
-
-.aeris-catalog-host .metadata-panel-footer {
-	position: absolute;
-	bottom: 0;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 50px;
-	border-top: 1px solid #ddd;
-	background-color: #fafafa;
-}
-
-.aeris-catalog-host .metadata-panel-footer .metadata-footer-icon {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 30px;
-	height: 30px;
-	margin: 0 5px;
-	border: 1px solid;
-	border-radius: 50%;
-	color: #bbb;
-	cursor: pointer;
-	transform: scale(1);
-}
-
-.aeris-catalog-host .metadata-panel-footer .metadata-footer-icon:hover {
-	animation-name: pop;
-	animation-duration: 0.3s;
-}
 
 @media screen and (max-height: 800px) {
 	.aeris-catalog-host aeris-catalog-bar,

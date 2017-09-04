@@ -4,7 +4,7 @@
 <header class="box-heading" v-on:click="deployed = !deployed">
   <div class="box-title">
       <i  :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
-    <h4 no-label-float>{{title}}</aeris-metadata-international-field></h4>
+    <h4 no-label-float>{{title}}</h4>
   </div>
   <div class="box-heading-buttons">
     <i class="chevron" :class="openIconClass"></i>
@@ -91,7 +91,9 @@ export default {
   	
   	ensureTheme: function() {
   	if (this.theme) {
-  		this.$el.querySelector("header").style.background=this.theme.primary
+  		if (this.$el) { 
+  			this.$el.querySelector("header").style.background=this.theme.primary
+  		}
   	}
   	}
   	
