@@ -14,6 +14,9 @@ Vue.use(VueResource);
 import VueColor from './vue-color.js'
 Vue.use(VueColor)
 
+import MdTemplateProxy from './aeris-catalog/md-template/md-template-proxy.vue'
+import MdTemplateCollection from './aeris-catalog/md-template/md-template-collection.vue'
+import MdTemplateCollection2 from './aeris-catalog/md-template/md-template-collection2.vue'
 import AerisInternationalField from './misc/aeris-international-field.vue'
 import AerisCatalogSearchBox from './aeris-catalog-box/aeris-catalog-search-box.vue'
 import AerisCatalogMetadataPanel from './aeris-catalog/aeris-catalog-metadata-panel.vue'
@@ -56,10 +59,18 @@ ljs.load('dep', function() {
 
 	function register() {
 		console.info("trying to register catalog components")
-		//if (window.registredAerisElements.indexOf("aeris-commons-components-vjs") > -1) {
-		if (1==1){
+		if ((window.registredAerisElements.indexOf("aeris-commons-components-vjs") > -1) && (window.registredAerisElements.indexOf("aeris-metadata-components-vjs") > -1)) {
 			console.info("Début registration des custom elements catalog")
 			console.info("Registred elements at this time: "+window.registredAerisElements)
+			
+			Vue.customElement('md-template-proxy', MdTemplateProxy);
+			window.registredAerisElements.push('md-template-proxy')
+			
+			Vue.customElement('md-template-collection2', MdTemplateCollection2);
+			window.registredAerisElements.push('md-template-collection2')
+			
+			Vue.customElement('md-template-collection', MdTemplateCollection);
+			window.registredAerisElements.push('md-template-collection')
 			
 			Vue.customElement('aeris-international-field', AerisInternationalField);
 			window.registredAerisElements.push('aeris-international-field')
@@ -97,12 +108,7 @@ ljs.load('dep', function() {
 			Vue.customElement('aeris-temporal-search-criteria', AerisTemporalSearchCriteria);
 			window.registredAerisElements.push('aeris-temporal-search-criteria')
 			
-			//Vue.customElement('collection-summary', CollectionSummary);
-			//window.registredAerisElements.push('collection-summary')
-			
-			
-			
-			Vue.customElement('aeris-catalog-default-summary', AerisCatalogDefaultSummary);
+		    Vue.customElement('aeris-catalog-default-summary', AerisCatalogDefaultSummary);
 			window.registredAerisElements.push('aeris-catalog-default-summary')
 			
 			Vue.customElement('aeris-catalog-proxy-summary', AerisCatalogProxySummary);
