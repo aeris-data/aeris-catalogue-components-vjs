@@ -1,3 +1,15 @@
+<i18n>
+{
+  "en": {
+    "close": "Close",
+    "json": "Show JSON"
+  },
+  "fr": {
+    "close": "Fermer",
+    "json": "Montrer le JSON"
+  }
+}
+</i18n>
 <template>
 <span class="aeris-catalog-metadata-panel-host">
 <aside id="metadataPanel" class="metadata-panel"  :class="{expanded: visible}">
@@ -5,16 +17,19 @@
   <span class="metadata-panel-title">
   <span  :class="iconClass"   v-show="iconClass"></span>
     <h2 class="metadata-panel-title">
-    <aeris-international-field :lang="lang" :value="title"></aeris-international-field>
+    <aeris-international-field :lang="lang" :value="resourcetitle"></aeris-international-field>
     </h2>
   </span>
-  <i class="fa fa-times" @click="visible = false"></i>
+  <i class="fa fa-times" @click="visible = false" :title="$t('close')"></i>
 </nav>
 <div id="metadataPanelContent" class="metadata-panel-content" :class="{expanded: visible}">
- XXX
+<aeris-metadata :identifier="uuid" lang="fr" :service="idservice">
+</aeris-metadata>
+<md-template-proxy :type="type"></md-template-proxy>
 </div>
 <footer class="metadata-panel-footer">
-FFF
+<i class="fa fa-times metadata-footer-icon" @click="visible = false" :title="$t('close')"></i>
+<i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')"></i>
 </footer>
 </aside>
 </span>
@@ -31,13 +46,27 @@ export default {
 	    	type: Boolean,
 	     	 default: false
 	    },
-	    title: {
+	    resourcetitle: {
 	    	type: String,
 	     	 default: ""
 	    },
 	    iconClass: {
 	    	type: String,
 	     	 default: ""
+	    },
+	    uuid: {
+	    	type: String,
+	    	default: ""
+	    },
+	    
+	    metadataService: {
+	    	type: String,
+	    	default:""
+	    },
+	    
+	    type: {
+	    	type: String,
+	    	default:""
 	    }
 	    
 	},
@@ -45,7 +74,11 @@ export default {
 	 watch: {
 		 visible: function(value) {
 			 this.ensureVisibility();
-		 }
+		 },
+		 
+		 lang (value) {
+		      this.$i18n.locale = value
+	    }
 		  },
   
   created: function () {
@@ -53,9 +86,21 @@ export default {
 
   mounted: function() {
 	  	this.ensureVisibility()
+	  	if (this.lang) {
+	  		this.$i18n.locale = this.lang
+	  	}
   },
-  
+ 
   computed: {
+	  idservice: function() {
+		  var result = this.metadataService;
+		  if (this.metadataService.endsWith("/")) {
+			  result = result+"id"
+		  } else {
+			  result = result+"/id"
+		  }
+		  return result;
+	  }
   },
 
    data () {
@@ -67,6 +112,15 @@ export default {
   },
   
   methods: {
+	  
+	  showJson: function() {
+		  var baseUrl = 'http://www.jsoneditoronline.org/?url=';
+	        var url = baseUrl + this.metadataService+"id/"+this.uuid;
+	        window.open(url,'_blank','toolbar=no, status=no, scrollbars=no, menubar=no, width=1000, height=800');  
+	  },
+	  
+	 
+	  
 	  ensureVisibility: function() {
 //		  if (this.$el) {
 //			  if (this.visible) {

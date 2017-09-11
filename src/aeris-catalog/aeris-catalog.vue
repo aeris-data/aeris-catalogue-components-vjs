@@ -22,11 +22,10 @@
 			</aeris-catalog-bar>
 			<aeris-catalog-map :hidemap="hidemap">
 				<slot name="buttons"></slot>
-				<slot name="help"></slot>
 			</aeris-catalog-map>
 			<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
 			<span style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-				<aeris-catalogue-metadata-panel :title="currentTitle" :icon-class="currentIconClass"></aeris-catalogue-metadata-panel>
+			<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType"></aeris-catalogue-metadata-panel>
 			</span>
 		</div>
 
@@ -127,7 +126,9 @@ export default {
     	aerisCatalogueDisplayMetadataEventListener: null,
     	aerisCatalogueResetEventListener: null,
     	currentTitle: null,
-    	currentIconClass: null
+    	currentIconClass: null,
+    	currentUuid: null,
+    	currentType: null
     }
   },
   
@@ -141,8 +142,13 @@ export default {
 	  },
 	  
 	  handleDisplayMetadata: function(e) {
-		  console.log(e.detail.uuid)
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
+		  if (e.detail.uuid) {
+			  this.currentUuid = e.detail.uuid
+		  }
+		  else {
+			  this.currentUuid = ""
+		  }
 		  if (e.detail.title) {
 			  this.currentTitle = e.detail.title
 		  }
@@ -155,10 +161,18 @@ export default {
 		  else {
 			  this.currentIconClass =''
 		  }
+		  if (e.detail.type) {
+			  this.currentType = e.detail.type
+		  }
+		  else {
+			  this.currentType =''
+		  }
 	  },
 	  
 	  hideMetadataPanel: function () {
 		  this.currentTitle="";
+		  this.currentUuid=""
+		  this.currentType=""
 		  this.currentIconClass =''
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("visible")
 	  },
@@ -167,7 +181,7 @@ export default {
 		  this.hideMetadataPanel()
 		  var e = new CustomEvent("aerisCatalogueSearchEvent", { detail: {}})
 		  document.dispatchEvent(e);
-		  console.log(e)
+		  //console.log(e)
 		  console.log("Connecting with metadata server")
 		  
 		  if (!(this.metadataService)) {

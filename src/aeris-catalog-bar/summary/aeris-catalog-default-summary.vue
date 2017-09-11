@@ -149,7 +149,19 @@ export default {
     	else {
     		return "aeris-icon aeris-icon-unknown"
     	}
-    }
+    },
+    
+    type: function() {
+    	var aux = JSON.parse(this.value)
+		  if (aux.type) {
+			  return aux.type;
+		  }
+		  else {
+			  return "";
+		  }
+    },
+    
+    
 
   },
 
@@ -194,7 +206,7 @@ export default {
   	},
   	
   	displayDetails: function() {
-  		 var event = new CustomEvent('aerisCatalogueDisplayMetadata', { detail: {uuid: this.uuid, title: this.title, iconClass: this.headerIconClass}});
+  		 var event = new CustomEvent('aerisCatalogueDisplayMetadata', { detail: {type: this.type, uuid: this.uuid, title: this.title, iconClass: this.headerIconClass}});
    		document.dispatchEvent(event);
   	}
   	
