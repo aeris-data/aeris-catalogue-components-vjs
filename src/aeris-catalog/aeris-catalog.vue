@@ -13,22 +13,24 @@
 }
 </i18n>
 <template>
-<span class="aeris-catalog-host">
-<div class="app-container">
-<aeris-notifier></aeris-notifier>
-<aeris-catalog-bar :lang="lang">
-<slot name="criteria"></slot>
-</aeris-catalog-bar>
-<aeris-catalog-map :hidemap="hidemap">
-<slot name="buttons"></slot>
-</aeris-catalog-map>
-<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
-<span style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-<aeris-catalogue-metadata-panel :title="currentTitle" :icon-class="currentIconClass"></aeris-catalogue-metadata-panel>
-</span>
-</div>
+	<span class="aeris-catalog-host">
+	
+		<div class="app-container">
+			<aeris-notifier></aeris-notifier>
+			<aeris-catalog-bar :lang="lang">
+				<slot name="criteria"></slot>
+			</aeris-catalog-bar>
+			<aeris-catalog-map :hidemap="hidemap">
+				<slot name="buttons"></slot>
+				<slot name="help"></slot>
+			</aeris-catalog-map>
+			<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
+			<span style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
+				<aeris-catalogue-metadata-panel :title="currentTitle" :icon-class="currentIconClass"></aeris-catalogue-metadata-panel>
+			</span>
+		</div>
 
-</span>
+	</span>
 </template>
 
 <script>
@@ -406,7 +408,6 @@ export default {
 	width: 300px;
 	transition: 0.3s;
 }
-
 
 @media screen and (max-height: 800px) {
 	.aeris-catalog-host aeris-catalog-bar,
