@@ -33,7 +33,11 @@ import AerisCatalog from './aeris-catalog/aeris-catalog.vue'
 import AerisCatalogSearchButton from './aeris-catalog/button/aeris-catalogue-search-button.vue'
 import AerisCatalogResetButton from './aeris-catalog/button/aeris-catalogue-reset-button.vue'
 import AerisCatalogEditButton from './aeris-catalog/button/aeris-catalogue-edit-button.vue'
+import AerisCatalogHelpButton from './aeris-catalog/button/aeris-catalogue-help-button.vue'
 import AerisCatalogCart from './aeris-catalog-cart/aeris-catalog-cart.vue'
+import AerisCatalogHelp from './aeris-catalog-help/aeris-catalog-help-content.vue'
+import AerisPlatformSearchCriteriaContent from './aeris-platform-search-criteria/aeris-platform-search-criteria-content.vue'
+import AerisPlatformSearchCriteria from './aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
 
 ljs.addAliases({
 	dep: ['https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css',
@@ -86,6 +90,9 @@ ljs.load('dep', function() {
 			Vue.customElement('aeris-catalogue-reset-button', AerisCatalogResetButton);
 			window.registredAerisElements.push('aeris-catalogue-reset-button')
 			
+			Vue.customElement('aeris-catalogue-help-button', AerisCatalogHelpButton);
+			window.registredAerisElements.push('aeris-catalogue-help-button')
+			
 			Vue.customElement('aeris-keyword-search-criteria-content', AerisKeywordSearchCriteriaContent);
 			window.registredAerisElements.push('aeris-keyword-search-criteria-content')
 			
@@ -105,8 +112,14 @@ ljs.load('dep', function() {
 			window.registredAerisElements.push('aeris-spatial-search-criteria')
 			
 			Vue.customElement('aeris-temporal-search-criteria', AerisTemporalSearchCriteria);
-			window.registredAerisElements.push('aeris-temporal-search-criteria')
-			
+			window.registredAerisElements.push('aeris-temporal-search-criteria')	
+						
+			Vue.customElement('aeris-platform-search-criteria-content', AerisPlatformSearchCriteriaContent);
+			window.registredAerisElements.push('aeris-platform-search-criteria-content')	
+						
+			Vue.customElement('aeris-platform-search-criteria', AerisPlatformSearchCriteria);
+			window.registredAerisElements.push('aeris-platform-search-criteria')	
+
 			//Vue.customElement('collection-summary', CollectionSummary);
 			//window.registredAerisElements.push('collection-summary')
 			
@@ -129,6 +142,9 @@ ljs.load('dep', function() {
 			
 			Vue.customElement('aeris-catalog-cart', AerisCatalogCart);
 			window.registredAerisElements.push('aeris-catalog-cart')
+			
+			Vue.customElement('aeris-catalog-help-content', AerisCatalogHelp);
+			window.registredAerisElements.push('aeris-catalog-help-content')
 			
 			Vue.customElement('aeris-catalog', AerisCatalog);
 			window.registredAerisElements.push('aeris-catalog')
