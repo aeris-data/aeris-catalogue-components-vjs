@@ -58,8 +58,13 @@ export default {
     width: 300px;
     height: 100%;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.3)
+    background-color: rgba(255, 255, 255, 0.3);
+    
 }
+
+.aeris-catalog-bar-host .criteria-bar {
+}
+
 .criteria-content {
     width: 100%;
     height: 100%;

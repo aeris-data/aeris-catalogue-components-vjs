@@ -17,13 +17,13 @@
   <span class="metadata-panel-title">
   <span  :class="iconClass"   v-show="iconClass"></span>
     <h2 class="metadata-panel-title">
-    <aeris-international-field :lang="lang" :value="title"></aeris-international-field>
+    <aeris-international-field :lang="lang" :value="resourcetitle"></aeris-international-field>
     </h2>
   </span>
   <i class="fa fa-times" @click="visible = false" :title="$t('close')"></i>
 </nav>
 <div id="metadataPanelContent" class="metadata-panel-content" :class="{expanded: visible}">
-<aeris-metadata :identifier="uuid" lang="fr" service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/">
+<aeris-metadata :identifier="uuid" lang="fr" :service="idservice">
 </aeris-metadata>
 <md-template-proxy :type="type"></md-template-proxy>
 </div>
@@ -46,7 +46,7 @@ export default {
 	    	type: Boolean,
 	     	 default: false
 	    },
-	    title: {
+	    resourcetitle: {
 	    	type: String,
 	     	 default: ""
 	    },
@@ -92,6 +92,15 @@ export default {
   },
  
   computed: {
+	  idservice: function() {
+		  var result = this.metadataService;
+		  if (this.metadataService.endsWith("/")) {
+			  result = result+"id"
+		  } else {
+			  result = result+"/id"
+		  }
+		  return result;
+	  }
   },
 
    data () {
