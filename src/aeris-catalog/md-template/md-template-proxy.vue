@@ -36,7 +36,7 @@ export default {
   computed: {
 	  
 	  contenu: function() {
-		  if (!edit) {
+		  if (!this.edit) {
 			  var elementName = "md-template-"+this.type.toLowerCase()
 			  if (window.registredAerisElements.indexOf(elementName)>=0) {
 				  return "<"+elementName+"></"+elementName+">";
