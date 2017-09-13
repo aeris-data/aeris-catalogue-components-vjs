@@ -19,8 +19,6 @@
 
 <script>
 
-import ColorMixin from '../../mixin/color-mixin.js';
-
 export default {
 	
   props: {
