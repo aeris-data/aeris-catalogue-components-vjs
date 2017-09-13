@@ -94,6 +94,9 @@ export default {
 	  document.removeEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
 	  this.aerisCatalogueDisplayMetadataEventListener = null;
 	  
+	  document.removeEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
+	  this.aerisCatalogueEditMetadataEventListener = null;
+	  
 	  document.removeEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
 	  this.aerisCatalogueResetEventListener = null;
   },
@@ -104,6 +107,9 @@ export default {
 	  
 	  this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this) 
 	  document.addEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
+	  
+	  this.aerisCatalogueEditMetadataEventListener = this.handleEditMetadata.bind(this) 
+	  document.addEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
 	  
 	  this.aerisCatalogueResetEventListener = this.handleReset.bind(this) 
 	  document.addEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
@@ -124,6 +130,7 @@ export default {
     return {
     	aerisCatalogueSearchStartEventListener: null,
     	aerisCatalogueDisplayMetadataEventListener: null,
+    	aerisCatalogueEditMetadataEventListener: null,
     	aerisCatalogueResetEventListener: null,
     	currentTitle: null,
     	currentIconClass: null,
@@ -142,6 +149,36 @@ export default {
 	  },
 	  
 	  handleDisplayMetadata: function(e) {
+		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("edit")
+		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
+		  if (e.detail.uuid) {
+			  this.currentUuid = e.detail.uuid
+		  }
+		  else {
+			  this.currentUuid = ""
+		  }
+		  if (e.detail.title) {
+			  this.currentTitle = e.detail.title
+		  }
+		  else {
+			  this.currentTitle = ""
+		  }
+		  if (e.detail.iconClass) {
+			  this.currentIconClass = e.detail.iconClass
+		  }
+		  else {
+			  this.currentIconClass =''
+		  }
+		  if (e.detail.type) {
+			  this.currentType = e.detail.type
+		  }
+		  else {
+			  this.currentType =''
+		  }
+	  },
+	  
+	  handleEditMetadata: function(e) {
+		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true")
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
 		  if (e.detail.uuid) {
 			  this.currentUuid = e.detail.uuid
