@@ -1,7 +1,7 @@
 <template>
-<span class="aeris-catalog-box-host" v-bind:class="{ showBody: deployed }">
+<span class="aeris-catalog-box-host" v-bind:class="{ showBody: isdeployed }">
 <div id="main" class="box noselect">
-<header class="box-heading" v-on:click="deployed = !deployed">
+<header class="box-heading" v-on:click="isdeployed = !isdeployed">
   <div class="box-title">
       <i  :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
     <h4 no-label-float>{{title}}</h4>
@@ -56,6 +56,7 @@ export default {
   console.log("aeris-keyword-search-criteria - Creating");
    this.aerisThemeListener = this.handleTheme.bind(this) 
    document.addEventListener('aerisTheme', this.aerisThemeListener);
+   this.isdeployed = this.deployed
   },
 
   mounted: function() {
@@ -64,6 +65,7 @@ export default {
   },
   
   computed: {
+	  
   },
 
    data () {
@@ -71,6 +73,7 @@ export default {
     	theme: null,
     	aerisThemeListener: null,
     	hasToolbar: false,
+    	isdeployed: null
     }
   },
   
