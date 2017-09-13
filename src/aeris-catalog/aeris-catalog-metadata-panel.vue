@@ -2,11 +2,13 @@
 {
   "en": {
     "close": "Close",
-    "json": "Show JSON"
+    "json": "Show JSON",
+    "save": "Save"
   },
   "fr": {
     "close": "Fermer",
-    "json": "Montrer le JSON"
+    "json": "Montrer le JSON",
+    "save": "Sauver"
   }
 }
 </i18n>
@@ -25,11 +27,12 @@
 <div id="metadataPanelContent" class="metadata-panel-content" :class="{expanded: visible}">
 <aeris-metadata :identifier="uuid" lang="fr" :service="idservice">
 </aeris-metadata>
-<md-template-proxy :type="type"></md-template-proxy>
+<md-template-proxy :type="type" :edit="edit"></md-template-proxy>
 </div>
 <footer class="metadata-panel-footer">
 <i class="fa fa-times metadata-footer-icon" @click="visible = false" :title="$t('close')"></i>
 <i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')"></i>
+<i class="fa fa-floppy-o metadata-footer-icon" :title="$t('save')" v-show="edit"></i>
 </footer>
 </aside>
 </span>
@@ -43,6 +46,10 @@ export default {
 	      default: 'fr'
 	    },
 	    visible: {
+	    	type: Boolean,
+	     	 default: false
+	    },
+	    edit: {
 	    	type: Boolean,
 	     	 default: false
 	    },

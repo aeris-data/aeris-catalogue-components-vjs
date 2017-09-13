@@ -11,7 +11,11 @@ export default {
         type:  {
             type: String,
             default: ''
-          }
+          },
+       edit:  {
+           type: Boolean,
+              default: false
+        }
 	    
   },
   
@@ -32,12 +36,23 @@ export default {
   computed: {
 	  
 	  contenu: function() {
-		  var elementName = "md-template-"+this.type.toLowerCase()
-		  if (window.registredAerisElements.indexOf(elementName)>=0) {
-			  return "<"+elementName+"></"+elementName+">";
-		  }
-		  else {
-			  return "<md-template-collection></md-template-collection>"
+		  if (!edit) {
+			  var elementName = "md-template-"+this.type.toLowerCase()
+			  if (window.registredAerisElements.indexOf(elementName)>=0) {
+				  return "<"+elementName+"></"+elementName+">";
+			  }
+			  else {
+				  return "<md-template-collection></md-template-collection>"
+			  }
+		  } else {
+			  var elementName = "md-edit-template-"+this.type.toLowerCase()
+			  if (window.registredAerisElements.indexOf(elementName)>=0) {
+				  return "<"+elementName+"></"+elementName+">";
+			  }
+			  else {
+				  //We don't take in consideration the edit property in this case
+				  return "<md-template-collection></md-template-collection>"
+			  }
 		  }
 	  }
 	  
