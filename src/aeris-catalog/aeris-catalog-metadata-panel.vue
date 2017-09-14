@@ -31,8 +31,9 @@
 </div>
 <footer class="metadata-panel-footer">
 <i class="fa fa-times metadata-footer-icon" @click="visible = false" :title="$t('close')"></i>
-<i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')"></i>
+<i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')" v-show="!edit"></i>
 <i class="fa fa-floppy-o metadata-footer-icon" :title="$t('save')" v-show="edit"></i>
+<slot></slot>
 </footer>
 </aside>
 </span>
