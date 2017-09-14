@@ -86,7 +86,7 @@ export default {
 	 watch: {
 		    lang (value) {
 			      this.$i18n.locale = value
-		    }
+		    },
 		  },
   
   destroyed: function() {
@@ -101,6 +101,10 @@ export default {
 	  
 	  document.removeEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
 	  this.aerisCatalogueResetEventListener = null;
+	  
+	  
+	  document.removeEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
+	  this.aerisCurrentEditedMetadataRequestListener = null;
   },
   
   created: function () {
@@ -116,6 +120,8 @@ export default {
 	  this.aerisCatalogueResetEventListener = this.handleReset.bind(this) 
 	  document.addEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
 	  
+	  this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this) 
+	  document.addEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
 	  
   },
 
@@ -134,6 +140,7 @@ export default {
     	aerisCatalogueDisplayMetadataEventListener: null,
     	aerisCatalogueEditMetadataEventListener: null,
     	aerisCatalogueResetEventListener: null,
+    	currentEditedMetadata: null,
     	currentTitle: null,
     	currentIconClass: null,
     	currentUuid: null,
@@ -182,30 +189,7 @@ export default {
 	  handleEditMetadata: function(e) {
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true")
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
-		  if (e.detail.uuid) {
-			  this.currentUuid = e.detail.uuid
-		  }
-		  else {
-			  this.currentUuid = ""
-		  }
-		  if (e.detail.title) {
-			  this.currentTitle = e.detail.title
-		  }
-		  else {
-			  this.currentTitle = ""
-		  }
-		  if (e.detail.iconClass) {
-			  this.currentIconClass = e.detail.iconClass
-		  }
-		  else {
-			  this.currentIconClass =''
-		  }
-		  if (e.detail.type) {
-			  this.currentType = e.detail.type
-		  }
-		  else {
-			  this.currentType =''
-		  }
+		  this.currentEditedMetadata=e.detail
 	  },
 	  
 	  hideMetadataPanel: function () {
@@ -213,6 +197,7 @@ export default {
 		  this.currentUuid=""
 		  this.currentType=""
 		  this.currentIconClass =''
+		  this.currentEditedMetadata = null,
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("visible")
 	  },
 	  
@@ -242,6 +227,10 @@ export default {
 	   	   this.$http.post(url, e.detail).then(response=>{this.handleSuccess(response)},response=>{this.handleError(response)});
 		  
 
+	  },
+	  
+	  handleCurrentEditedMetadataRequest: function() {
+		  document.dispatchEvent(new CustomEvent('currentEditedMetadataResponse', { 'detail': this.currentEditedMetadata}))
 	  },
 	 
 	  
