@@ -46,8 +46,9 @@ export default {
 			  }
 		  } else {
 			  var elementName = "md-edit-template-"+this.type.toLowerCase()
-			  if (window.registredAerisElements.indexOf(elementName)>=0) {
-				  return "<"+elementName+"></"+elementName+">";
+			  var aux = elementName.replace(/_/g, '-');
+			  if (window.registredAerisElements.indexOf(aux)>=0) {
+				  return "<"+aux+"></"+aux+">";
 			  }
 			  else {
 				  //We don't take in consideration the edit property in this case
