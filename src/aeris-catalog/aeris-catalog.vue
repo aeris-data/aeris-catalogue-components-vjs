@@ -22,13 +22,15 @@
 			</aeris-catalog-bar>
 			<aeris-catalog-map :hidemap="hidemap">
 				<slot name="buttons"></slot>
-			</aeris-catalog-map>
+			</aeris-catalog-map>			
+			<span class="cart-bar"><aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart></span>			
 			<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
 			<span style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-			<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType">
-			<slot name="metadatafooter"></slot>
-			</aeris-catalogue-metadata-panel>
+				<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType">
+					<slot name="metadatafooter"></slot>
+				</aeris-catalogue-metadata-panel>
 			</span>
+			
 		</div>
 
 	</span>
@@ -81,6 +83,16 @@ export default {
 	    	default: "10px"
 	    	
 	    },
+	    
+	    cartService: {
+	    	type: String,
+	    	default: null
+	    },
+	    
+	    cartToken: {
+	    	type: String,
+	    	default: null
+	    }
 	},
   
 	 watch: {
@@ -108,6 +120,7 @@ export default {
   },
   
   created: function () {
+	  console.log("aeris-catalog creation")
 	  this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this) 
 	  document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
 	  
@@ -190,6 +203,12 @@ export default {
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true")
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
 		  this.currentEditedMetadata=e.detail
+		  if (e.detail.type) {
+			  this.currentType = e.detail.type
+		  }
+		  else {
+			  this.currentType =''
+		  }
 	  },
 	  
 	  hideMetadataPanel: function () {
@@ -332,6 +351,10 @@ export default {
 }
 
 
+.aeris-catalog-host .flex-summaries {
+	display: flex;
+}
+
 
 .aeris-catalog-host .catalog-search-button:hover,
 .aeris-catalog-host .catalog-reset-button:hover,
@@ -438,9 +461,10 @@ export default {
 }
 
 .aeris-catalog-host .cart-bar {
-	position: absolute;
-	top: 0;
-	right: 0;
+	position: relative;
+	/*top: 0;
+	right: 0;*/
+	float: right;
 	z-index: 12;
 	display: flex;
 	justify-content: flex-end;

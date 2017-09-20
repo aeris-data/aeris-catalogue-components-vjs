@@ -7,7 +7,8 @@
 	  "emptyCart": "Empty cart",
 	  "validate": "Validate",
 	  "downloadScript": "Download script",
-	  "loading": "Loading"
+	  "loading": "Loading",
+	  "downloadingFiles": "Downloading files..."
   },
   "fr": {
 	  "items": "Items",
@@ -16,7 +17,8 @@
 	  "emptyCart": "Vider le panier",
 	  "validate": "Valider",
 	  "downloadScript": "Script de téléchargement",
-	  "loading": "Chargement"
+	  "loading": "Chargement",
+	  "downloadingFiles": "Téléchargement en cours..."
   }
 }
 </i18n>
@@ -101,8 +103,8 @@ export default {
       type: String,
       default: 'fr'
     },
-    service: String,
-    carttoken: String
+    cartService: String,
+    cartToken: String
   },
   
   watch: {
@@ -130,7 +132,7 @@ export default {
       document.addEventListener('refreshFromCart', this.refreshListener);
       
       // separated carts
-      this.carttoken ? this.cartName = 'AerisCatalogCart-' + this.carttoken : this.cartName = 'AerisCatalogCart';
+      this.cartToken ? this.cartName = 'AerisCatalogCart-' + this.cartToken : this.cartName = 'AerisCatalogCart';
       this.loadCart();
 
   },
@@ -319,17 +321,15 @@ export default {
 	
 	checkout: function() {
 		this.togglePopup;
-		var url = this.service + '/toscript';
+		var url = this.cartService + '/toscript';
 		this.$http.post(url, JSON.stringify(this.cartContent))
 					.then((response)=>{this.handleSuccessScript(response)},(response)=>{this.handleError(response)});
 	},
 	
 	downloadFile: function() {
        /* Show notification */    
-//        this.fire('longActionStartEvent', {
-//          message: this.$i18n.t('loading', this.lang) + '...'
-//        });
-		var url = this.service + '/download';
+		document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', { 'detail': {message: this.$t('downloadingFiles')}}))
+		var url = this.cartService + '/download';
 		this.$http.post(url,  JSON.stringify(this.cartContent), {headers: {'Content-Type': 'application/zip', 'Accept': 'application/zip'}, responseType: 'blob'})
 					.then((response)=>{this.handleSuccessDownload(response)},(response)=>{this.handleError(response)});
 	},
@@ -347,9 +347,7 @@ export default {
         
         saveAs(blob, fileName);
          /* Hide notification */
-//        this.fire('longActionStopEvent', {
-//          message: this._localize('loading', this.lang) + '...'
-//        });
+        document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: this.$t('downloadingFiles')}}))
         this.removeAll();
         this.togglePopup();
 	},
