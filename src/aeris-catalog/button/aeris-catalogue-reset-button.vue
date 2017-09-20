@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="map-rounded-button aeris-catalog-button tooltip" data-popup="right" :data-title="$t('reset')" @click="handleReset">
+<div class="map-rounded-button aeris-catalog-button tooltip" data-popup="right" :title="$t('reset')" :data-title="$t('reset')" @click="handleReset">
 <i class="fa fa-times"></i>
 </div>
 </template>

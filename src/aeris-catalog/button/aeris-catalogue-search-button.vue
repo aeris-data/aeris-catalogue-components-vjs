@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="map-rounded-button aeris-catalog-button tooltip" data-popup="right" :data-title="$t('search')" @click="handleSearch">
+<div class="map-rounded-button aeris-catalog-button tooltip" data-popup="right" :title="$t('search')" :data-title="$t('search')" @click="handleSearch">
 <div class="mask" v-if="progress">
   <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
 </div >

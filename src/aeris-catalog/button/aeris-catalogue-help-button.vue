@@ -11,7 +11,7 @@
 
 <template>
 	<span class="aeris-catalogue-help-button-host">
-		<div class="map-rounded-button aeris-catalog-button tooltip " data-popup="right" :data-title="$t('help')" @click="handleHelp">
+		<div class="map-rounded-button aeris-catalog-button tooltip " data-popup="right" :title="$t('help')" :data-title="$t('help')" @click="handleHelp">
 			<i class="fa fa-question"></i>
 		</div>
 	</span>

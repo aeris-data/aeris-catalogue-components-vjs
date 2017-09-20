@@ -11,7 +11,7 @@
 
 <template>
 <span class="aeris-catalogue-edit-button-host">
-<div class="map-rounded-button aeris-catalog-button tooltip " data-popup="right" :data-title="$t('draw')" @click="handleClick">
+<div class="map-rounded-button aeris-catalog-button tooltip " data-popup="right" :title="$t('draw')"  :data-title="$t('draw')" @click="handleClick">
 <i class="fa fa-pencil-square-o" v-bind:class="{isediting : editing}" ></i>
 </div>
 </span>
