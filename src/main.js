@@ -87,8 +87,6 @@ ljs.load('dep', function() {
 			console.info("Registred elements at this time: "+window.registredAerisElements)
 			
 			registerElement('md-template-proxy', MdTemplateProxy);
-			registerElement('md-template-collection2', MdTemplateCollection2);
-			registerElement('md-template-collection', MdTemplateCollection);
 			registerElement('aeris-international-field', AerisInternationalField);
 			registerElement('aeris-catalogue-metadata-panel', AerisCatalogMetadataPanel);
 			registerElement('aeris-catalogue-search-button', AerisCatalogSearchButton);
