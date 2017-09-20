@@ -14,9 +14,6 @@ Vue.use(VueResource);
 import VueColor from './vue-color.js'
 Vue.use(VueColor)
 
-import AerisNotification2 from './aeris-notification/aeris-notification.vue'
-import AerisNotifier2 from './aeris-notification/aeris-notifier.vue'
-
 import MdTemplateProxy from './aeris-catalog/md-template/md-template-proxy.vue'
 import MdTemplateCollection from './aeris-catalog/md-template/md-template-collection.vue'
 import MdTemplateCollection2 from './aeris-catalog/md-template/md-template-collection2.vue'
