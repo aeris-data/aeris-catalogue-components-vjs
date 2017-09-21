@@ -50,7 +50,7 @@ export default {
 	  
 	  lang:  {
 	      type: String,
-	      default: 'fr'
+	      default: 'en'
 	    },	  
 	    
 		  maxLength:  {

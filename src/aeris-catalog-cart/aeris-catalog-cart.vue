@@ -101,7 +101,7 @@ export default {
   props: {
   	lang:  {
       type: String,
-      default: 'fr'
+      default: 'en'
     },
     cartService: String,
     cartToken: String
