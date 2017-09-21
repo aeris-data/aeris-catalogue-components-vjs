@@ -22,7 +22,7 @@
     <aeris-international-field :lang="lang" :value="resourcetitle"></aeris-international-field>
     </h2>
   </span>
-  <i class="fa fa-times" @click="visible = false" :title="$t('close')"></i>
+  <i class="fa fa-times" @click="broadcastCloseEvent" :title="$t('close')"></i>
 </nav>
 <div id="metadataPanelContent" class="metadata-panel-content" :class="{expanded: visible}">
 <aeris-metadata :identifier="uuid" lang="fr" :service="idservice">
@@ -30,7 +30,7 @@
 <md-template-proxy :type="type" :edit="edit"></md-template-proxy>
 </div>
 <footer class="metadata-panel-footer">
-<i class="fa fa-times metadata-footer-icon" @click="visible = false" :title="$t('close')"></i>
+<i class="fa fa-times metadata-footer-icon" @click="broadcastCloseEvent" :title="$t('close')"></i>
 <i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')" v-show="!edit"></i>
 <i class="fa fa-floppy-o metadata-footer-icon" :title="$t('save')" v-show="edit"></i>
 <slot></slot>
@@ -80,10 +80,6 @@ export default {
 	},
   
 	 watch: {
-		 visible: function(value) {
-			 this.ensureVisibility();
-		 },
-		 
 		 lang (value) {
 		      this.$i18n.locale = value
 	    }
@@ -93,7 +89,6 @@ export default {
   },
 
   mounted: function() {
-	  	this.ensureVisibility()
 	  	if (this.lang) {
 	  		this.$i18n.locale = this.lang
 	  	}
@@ -127,19 +122,13 @@ export default {
 	        window.open(url,'_blank','toolbar=no, status=no, scrollbars=no, menubar=no, width=1000, height=800');  
 	  },
 	  
-	 
-	  
-	  ensureVisibility: function() {
-//		  if (this.$el) {
-//			  if (this.visible) {
-//				  this.$el.querySelector("#metadataPanel").classList.add('expanded');
-//				  this.$el.querySelector("#metadataPanelContent").classList.add('expanded');
-//			  } else {
-//				  this.$el.querySelector("#metadataPanel").classList.remove('expanded');
-//				  this.$el.querySelector("#metadataPanelContent").classList.remove('expanded');
-//			  }
-//		  }
+	  broadcastCloseEvent: function() {
+		  console.log("aerisCatalogueHideMetadata event")
+		  var event = new CustomEvent('aerisCatalogueHideMetadata', { detail: {}});
+	  		document.dispatchEvent(event);		  
 	  }
+	  
+	
   }
 }
 
