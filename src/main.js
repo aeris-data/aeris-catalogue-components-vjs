@@ -83,6 +83,7 @@ ljs.load('dep', function() {
 			console.info("Début registration des custom elements catalog")
 			console.info("Registred elements at this time: "+window.registredAerisElements)
 			
+			registerElement('md-template-collection', MdTemplateCollection);
 			registerElement('md-template-proxy', MdTemplateProxy);
 			registerElement('aeris-international-field', AerisInternationalField);
 			registerElement('aeris-catalogue-metadata-panel', AerisCatalogMetadataPanel);
