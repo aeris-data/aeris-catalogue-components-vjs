@@ -2,11 +2,13 @@
 {
   "en": {
     "help": "Help",
-    "helpMessage": "To search for data, select criterias in the column at the left of your screen, then click on the search button:"
+    "helpMessage": "To search for data, select criterias in the column at the left of your screen, then click on the search button:",
+    "doNotDisplay": "Do not display this message again"
   },
   "fr": {
     "help": "Aide",
-    "helpMessage": "Pour effectuer une recherche, sÃ©lectionnez vos critÃ¨res dans la colonne Ã  gauche de votre Ã©cran, puis cliquez sur le bouton rechercher :"
+    "helpMessage": "Pour effectuer une recherche, sélectionnez vos critères dans la colonne à  gauche de votre écran, puis cliquez sur le bouton rechercher :",
+    "doNotDisplay": "Ne plus afficher ce message"
   }
 }
 </i18n>
@@ -29,8 +31,7 @@
 			<div class='popup-buttons'>	
 					<div class="ok-button" @click="closePopup">OK</div>
 					<div>
-						<button class="show-at-startup-button" type="button" v-on:click.stop="doNotShow" v-if="showAtStartVisible">Ne plus afficher
-						</button>
+						<button class="show-at-startup-button" type="button" v-on:click.stop="doNotShow" v-if="showAtStartVisible">{{$t('doNotDisplay')}}</button>
 					</div>
 			</div>
 		
