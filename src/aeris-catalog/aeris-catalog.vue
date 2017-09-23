@@ -13,7 +13,7 @@
 }
 </i18n>
 <template>
-	<span class="aeris-catalog-host">
+	<span class="aeris-catalog-host" style="background:white">
 	
 		<div class="app-container">
 			<aeris-notifier></aeris-notifier>
@@ -102,6 +102,15 @@ export default {
 		  },
   
   destroyed: function() {
+	  document.removeEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
+	  this.aerisCatalogueMaximizetEventListener = null;
+	 
+	  document.removeEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
+	  this.aerisCatalogueMinimizetEventListener = null;
+	  
+	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+	  this.aerisCatalogueSearchStartEventListener = null;
+	  
 	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
 	  this.aerisCatalogueSearchStartEventListener = null;
 	  
@@ -126,6 +135,12 @@ export default {
 	  console.log("aeris-catalog creation")
 	  this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this) 
 	  document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+	  
+	  this.aerisCatalogueMinimizeEventListener = this.handleMinimize.bind(this) 
+	  document.addEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
+	  
+	  this.aerisCatalogueMaximizeEventListener = this.handleMaximize.bind(this) 
+	  document.addEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
 	  
 	  this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this) 
 	  document.addEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
@@ -160,6 +175,8 @@ export default {
     	aerisCatalogueEditMetadataEventListener: null,
     	aerisCatalogueHideMetadataEventListener: null,
     	aerisCatalogueResetEventListener: null,
+    	aerisCatalogueMaximizeEventListener: null,
+    	aerisCatalogueMinimizeEventListener: null,
     	currentEditedMetadata: null,
     	currentTitle: null,
     	currentIconClass: null,
@@ -260,6 +277,32 @@ export default {
 	   	   this.$http.post(url, e.detail).then(response=>{this.handleSuccess(response)},response=>{this.handleError(response)});
 		  
 
+	  },
+	  
+	  handleMaximize: function() {
+		  var elem = this.$el;
+		  if (elem.requestFullscreen) {
+			  elem.requestFullscreen();
+			} else if (elem.mozRequestFullScreen) {
+			  elem.mozRequestFullScreen();
+			} else if (elem.webkitRequestFullscreen) {
+			  elem.webkitRequestFullscreen();
+			}
+	  },
+	  
+	  handleMinimize: function() {
+		  if (document.exitFullscreen) {
+			    document.exitFullscreen();
+			}
+			else if (document.mozCancelFullScreen) {
+			    document.mozCancelFullScreen();
+			}
+			else if (document.webkitCancelFullScreen) {
+			    document.webkitCancelFullScreen();
+			}
+			else if (document.msExitFullscreen) {
+			    document.msExitFullscreen();
+			}
 	  },
 	  
 	  handleCurrentEditedMetadataRequest: function() {

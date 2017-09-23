@@ -33,6 +33,7 @@ import AerisCatalogBar from './aeris-catalog-bar/aeris-catalog-bar.vue'
 import AerisCatalogSummariesBar from './aeris-catalog-bar/aeris-catalog-summaries-bar.vue'
 import AerisCatalogMap from './aeris-catalog-map/aeris-catalog-map.vue'
 import AerisCatalog from './aeris-catalog/aeris-catalog.vue'
+import AerisCatalogMaximizeButton from './aeris-catalog/button/aeris-catalogue-maximize-button.vue'
 import AerisCatalogSearchButton from './aeris-catalog/button/aeris-catalogue-search-button.vue'
 import AerisCatalogResetButton from './aeris-catalog/button/aeris-catalogue-reset-button.vue'
 import AerisCatalogEditButton from './aeris-catalog/button/aeris-catalogue-edit-button.vue'
@@ -88,6 +89,7 @@ ljs.load('dep', function() {
 			registerElement('aeris-international-field', AerisInternationalField);
 			registerElement('aeris-catalogue-metadata-panel', AerisCatalogMetadataPanel);
 			registerElement('aeris-catalogue-search-button', AerisCatalogSearchButton);
+			registerElement('aeris-catalogue-maximize-button', AerisCatalogMaximizeButton);
 			registerElement('aeris-catalogue-edit-button', AerisCatalogEditButton);
 			registerElement('aeris-catalogue-reset-button', AerisCatalogResetButton);
 			registerElement('aeris-catalogue-help-button', AerisCatalogHelpButton);
