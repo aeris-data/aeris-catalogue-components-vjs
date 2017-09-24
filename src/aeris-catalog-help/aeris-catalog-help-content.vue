@@ -220,9 +220,6 @@ export default {
 	}
 	
 	.ok-button {
-		float:none;
-		clear:both;
-		width:5%;
 	    background-color: #8CD4F5;
 	    color: white;
 	    border: none;
@@ -231,10 +228,8 @@ export default {
 	    font-weight: 500;
 	    -webkit-border-radius: 4px;
 	    border-radius: 5px;
-		padding: 10px 32px;
+		padding: 10px;
 		cursor: pointer;
-		margin-left: 40%;
-		margin-top: 20px;
 	}
 	
 	.show-at-startup-button {
@@ -250,6 +245,11 @@ export default {
 	.show-at-startup-button:hover {
 		opacity: 0.6;
 		cursor: pointer
+	}
+	
+	.popup-buttons {
+		text-align: center;
+    	margin-top: 10px;
 	}
 	
  </style>
