@@ -27,7 +27,7 @@
 	<span class="aeris-catalog-cart-host" >
 
 	<div class="cart-container">
-		<div class="cart-panel-trigger" :color="cartColor">
+		<div class="cart-panel-trigger" :color="cartColor" style="margin-right: 15px;">
 			<span id="cartState" :v-if="calcCollNb"> {{ nbItems }} {{ cartLabel }} </span>
 			<i class="fa fa-shopping-cart"></i>
 		</div>

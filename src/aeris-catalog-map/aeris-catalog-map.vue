@@ -4,7 +4,7 @@
 <div id="mapMask" class="map-mask"></div>
 <div id="map" class="map" tabindex="0"></div>
 <div id="mapCoordinates" class="map-coordinates"></div>
-<div style="position: absolute;left: 10px;top:10px;display: -webkit-flex;  -webkit-flex-direction: column;   display: flex;  flex-direction: column;" >
+<div style="position: absolute;left: 15px;top:10px;display: -webkit-flex;  -webkit-flex-direction: column;   display: flex;  flex-direction: column;" >
 <slot></slot>
 </div>
 </div>

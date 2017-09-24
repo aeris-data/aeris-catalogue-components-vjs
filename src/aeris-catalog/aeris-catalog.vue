@@ -23,7 +23,10 @@
 			<aeris-catalog-map :hidemap="hidemap">
 				<slot name="buttons"></slot>
 			</aeris-catalog-map>			
-			<span class="cart-bar"><aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart></span>			
+			<span class="cart-bar" :style="{width:summaryBarWidth}">
+			Your shopphing cart:
+			<aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken" ></aeris-catalog-cart>
+			</span>			
 			<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
 			<span class="subpanel" style="position:absolute;z-index:10;display:none" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
 				<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType">
@@ -398,7 +401,7 @@ export default {
 .aeris-catalog-host .search-criteria-content {
 	position: relative;
 	height: 100vh;
-	padding-right: 10px;
+	padding-right: 20px;
 	overflow: auto;
 }
 
@@ -526,10 +529,11 @@ export default {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	padding: 0 10px;
+	padding: 0px;
 	height: 40px;
 	width: 300px;
 	transition: 0.3s;
+background-color: rgba(42,54,59, 0.05);
 }
 
 @media screen and (max-height: 800px) {

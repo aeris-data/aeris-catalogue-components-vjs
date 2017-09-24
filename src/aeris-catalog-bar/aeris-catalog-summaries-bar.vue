@@ -274,7 +274,7 @@ export default {
 <style>
 
 .aeris-catalog-summaries-bar-host {
-	top: 0px;
+	top: 40px;
     height:100%;
 	right: 0px;
 	position: absolute;
