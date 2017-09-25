@@ -2,11 +2,13 @@
 {
   "en": {
     "help": "Help",
-    "helpMessage": "To search for data, select criterias in the column at the left of your screen, then click on the search button:"
+    "helpMessage": "To search for data, select criterias in the column at the left of your screen, then click on the search button:",
+    "doNotDisplay": "Do not display this message again"
   },
   "fr": {
     "help": "Aide",
-    "helpMessage": "Pour effectuer une recherche, sÃ©lectionnez vos critÃ¨res dans la colonne Ã  gauche de votre Ã©cran, puis cliquez sur le bouton rechercher :"
+    "helpMessage": "Pour effectuer une recherche, sélectionnez vos critères dans la colonne à  gauche de votre écran, puis cliquez sur le bouton rechercher :",
+    "doNotDisplay": "Ne plus afficher ce message"
   }
 }
 </i18n>
@@ -29,8 +31,7 @@
 			<div class='popup-buttons'>	
 					<div class="ok-button" @click="closePopup">OK</div>
 					<div>
-						<button class="show-at-startup-button" type="button" v-on:click.stop="doNotShow" v-if="showAtStartVisible">Ne plus afficher
-						</button>
+						<button class="show-at-startup-button" type="button" v-on:click.stop="doNotShow" v-if="showAtStartVisible">{{$t('doNotDisplay')}}</button>
 					</div>
 			</div>
 		
@@ -219,9 +220,6 @@ export default {
 	}
 	
 	.ok-button {
-		float:none;
-		clear:both;
-		width:5%;
 	    background-color: #8CD4F5;
 	    color: white;
 	    border: none;
@@ -230,10 +228,8 @@ export default {
 	    font-weight: 500;
 	    -webkit-border-radius: 4px;
 	    border-radius: 5px;
-		padding: 10px 32px;
+		padding: 10px;
 		cursor: pointer;
-		margin-left: 40%;
-		margin-top: 20px;
 	}
 	
 	.show-at-startup-button {
@@ -249,6 +245,11 @@ export default {
 	.show-at-startup-button:hover {
 		opacity: 0.6;
 		cursor: pointer
+	}
+	
+	.popup-buttons {
+		text-align: center;
+    	margin-top: 10px;
 	}
 	
  </style>

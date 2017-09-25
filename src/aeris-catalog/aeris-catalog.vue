@@ -13,7 +13,7 @@
 }
 </i18n>
 <template>
-	<span class="aeris-catalog-host">
+	<span class="aeris-catalog-host" style="background:white">
 	
 		<div class="app-container">
 			<aeris-notifier></aeris-notifier>
@@ -23,9 +23,12 @@
 			<aeris-catalog-map :hidemap="hidemap">
 				<slot name="buttons"></slot>
 			</aeris-catalog-map>			
-			<span class="cart-bar"><aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart></span>			
+			<span class="cart-bar" :style="{width:summaryBarWidth}">
+			Your shopphing cart:
+			<aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken" ></aeris-catalog-cart>
+			</span>			
 			<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
-			<span style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
+			<span class="subpanel" style="position:absolute;z-index:10;display:none" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
 				<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType">
 					<slot name="metadatafooter"></slot>
 				</aeris-catalogue-metadata-panel>
@@ -102,11 +105,23 @@ export default {
 		  },
   
   destroyed: function() {
+	  document.removeEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
+	  this.aerisCatalogueMaximizetEventListener = null;
+	 
+	  document.removeEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
+	  this.aerisCatalogueMinimizetEventListener = null;
+	  
+	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+	  this.aerisCatalogueSearchStartEventListener = null;
+	  
 	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
 	  this.aerisCatalogueSearchStartEventListener = null;
 	  
 	  document.removeEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
 	  this.aerisCatalogueDisplayMetadataEventListener = null;
+	  
+	  document.removeEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
+	  this.aerisCatalogueHideMetadataEventListener = null;
 	  
 	  document.removeEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
 	  this.aerisCatalogueEditMetadataEventListener = null;
@@ -124,8 +139,17 @@ export default {
 	  this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this) 
 	  document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
 	  
+	  this.aerisCatalogueMinimizeEventListener = this.handleMinimize.bind(this) 
+	  document.addEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
+	  
+	  this.aerisCatalogueMaximizeEventListener = this.handleMaximize.bind(this) 
+	  document.addEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
+	  
 	  this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this) 
 	  document.addEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
+	  
+	  this.aerisCatalogueHideMetadataEventListener = this.handleHideMetadata.bind(this) 
+	  document.addEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
 	  
 	  this.aerisCatalogueEditMetadataEventListener = this.handleEditMetadata.bind(this) 
 	  document.addEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
@@ -152,7 +176,10 @@ export default {
     	aerisCatalogueSearchStartEventListener: null,
     	aerisCatalogueDisplayMetadataEventListener: null,
     	aerisCatalogueEditMetadataEventListener: null,
+    	aerisCatalogueHideMetadataEventListener: null,
     	aerisCatalogueResetEventListener: null,
+    	aerisCatalogueMaximizeEventListener: null,
+    	aerisCatalogueMinimizeEventListener: null,
     	currentEditedMetadata: null,
     	currentTitle: null,
     	currentIconClass: null,
@@ -173,6 +200,7 @@ export default {
 	  handleDisplayMetadata: function(e) {
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("edit")
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
+		  this.$el.querySelector(".subpanel").style.display='';
 		  if (e.detail.uuid) {
 			  this.currentUuid = e.detail.uuid
 		  }
@@ -199,9 +227,14 @@ export default {
 		  }
 	  },
 	  
+	  handleHideMetadata: function() {
+		  this.hideMetadataPanel()
+	  },
+	  
 	  handleEditMetadata: function(e) {
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true")
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
+		  this.$el.querySelector(".subpanel").style.display='';
 		  this.currentEditedMetadata=e.detail
 		  if (e.detail.type) {
 			  this.currentType = e.detail.type
@@ -218,6 +251,7 @@ export default {
 		  this.currentIconClass =''
 		  this.currentEditedMetadata = null,
 		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("visible")
+		  this.$el.querySelector(".subpanel").style.display='none';
 	  },
 	  
 	  handleCatalogueSearchStart : function() {
@@ -246,6 +280,32 @@ export default {
 	   	   this.$http.post(url, e.detail).then(response=>{this.handleSuccess(response)},response=>{this.handleError(response)});
 		  
 
+	  },
+	  
+	  handleMaximize: function() {
+		  var elem = this.$el;
+		  if (elem.requestFullscreen) {
+			  elem.requestFullscreen();
+			} else if (elem.mozRequestFullScreen) {
+			  elem.mozRequestFullScreen();
+			} else if (elem.webkitRequestFullscreen) {
+			  elem.webkitRequestFullscreen();
+			}
+	  },
+	  
+	  handleMinimize: function() {
+		  if (document.exitFullscreen) {
+			    document.exitFullscreen();
+			}
+			else if (document.mozCancelFullScreen) {
+			    document.mozCancelFullScreen();
+			}
+			else if (document.webkitCancelFullScreen) {
+			    document.webkitCancelFullScreen();
+			}
+			else if (document.msExitFullscreen) {
+			    document.msExitFullscreen();
+			}
 	  },
 	  
 	  handleCurrentEditedMetadataRequest: function() {
@@ -341,7 +401,7 @@ export default {
 .aeris-catalog-host .search-criteria-content {
 	position: relative;
 	height: 100vh;
-	padding-right: 10px;
+	padding-right: 20px;
 	overflow: auto;
 }
 
@@ -469,10 +529,11 @@ export default {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	padding: 0 10px;
+	padding: 0px;
 	height: 40px;
 	width: 300px;
 	transition: 0.3s;
+background-color: rgba(42,54,59, 0.05);
 }
 
 @media screen and (max-height: 800px) {

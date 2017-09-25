@@ -1,20 +1,22 @@
+
+ </style>
 <i18n>
 {
   "en": {
-    "search": "Search"
+    "maximize": "Full screen mode",
+    "minimize": "Normal screen mode"
   },
   "fr": {
-    "search": "Chercher"
+    "maximize": "Mode plein ecran",
+    "minimize": "Mode écran normal"
   }
 }
 </i18n>
 
 <template>
-<div class="map-rounded-button aeris-catalog-button tooltip" data-popup="right" :title="$t('search')" :data-title="$t('search')" @click="handleSearch">
-<div class="mask" v-if="progress">
-  <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
-</div >
-<i  v-if="!progress" class="fa fa-search"></i>
+<div class="map-rounded-button aeris-catalog-button tooltip" data-popup="right" :title="computeTitle"  @click="handleMaximize">
+<i  class="fa fa-expand" v-if="maximize"></i>
+<i  class="fa fa-compress" v-else></i>
 </div>
 </template>
 
@@ -52,13 +54,22 @@ export default {
   },
   
   computed: {
+	  
+	  computeTitle: function() {
+		  if (this.maximize) {
+			  return this.$i18n.t('maximize');
+		  }
+		  else {
+			  return this.$i18n.t('minimize');
+		  }
+	  }
   	
   },
 
    data () {
     return {
     	aerisThemeListener: null,
-    	progress: false
+    	maximize: true
     }
   },
   
@@ -66,9 +77,16 @@ export default {
   },
   
   methods: {
-	  handleSearch: function() {
-		  var e = new CustomEvent("aerisCatalogueSearchStartEvent", { detail: {}})
-		  document.dispatchEvent(e);
+	  handleMaximize: function() {
+		  if (this.maximize) {
+			  this.maximize=false
+			  var e = new CustomEvent("aerisCatalogueMaximizeEvent", { detail: {}})
+			  document.dispatchEvent(e);
+		  } else {
+			  this.maximize=true
+			  var e = new CustomEvent("aerisCatalogueMinimizeEvent", { detail: {}})
+			  document.dispatchEvent(e);
+		  }
 	  },
 	  
 	  handleTheme: function(theme) {
@@ -98,3 +116,5 @@ export default {
 
 <style src="./common-style.css"></style>
 <style>
+
+ </style>
