@@ -60,6 +60,12 @@ export default {
 .md-template-collection-host {
 	display: block;
 	font-size: 14px;
+	height: 70vh;
+	overflow: scroll;
+}
+
+.md-template-collection-host * {
+	box-sizing: border-box;
 }
 
 .md-template-collection-host .column .component-container {
