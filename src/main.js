@@ -42,6 +42,8 @@ import AerisCatalogCart from './aeris-catalog-cart/aeris-catalog-cart.vue'
 import AerisCatalogHelp from './aeris-catalog-help/aeris-catalog-help-content.vue'
 import AerisPlatformSearchCriteriaContent from './aeris-platform-search-criteria/aeris-platform-search-criteria-content.vue'
 import AerisPlatformSearchCriteria from './aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
+import AerisLevelSearchCriteriaContent from './aeris-level-search-criteria/aeris-level-search-criteria-content.vue'
+import AerisLevelSearchCriteria from './aeris-level-search-criteria/aeris-level-search-criteria.vue'
 
 ljs.addAliases({
 	dep: ['https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css',
@@ -109,6 +111,8 @@ ljs.load('dep', function() {
 			registerElement('aeris-catalog-help-content', AerisCatalogHelp);
 			registerElement('aeris-platform-search-criteria-content', AerisPlatformSearchCriteriaContent);
 			registerElement('aeris-platform-search-criteria', AerisPlatformSearchCriteria);
+			registerElement('aeris-level-search-criteria-content', AerisLevelSearchCriteriaContent);
+			registerElement('aeris-level-search-criteria', AerisLevelSearchCriteria);
 			registerElement('aeris-catalog', AerisCatalog);
 			
 			window.registredAerisElements.push('aeris-catalogue-components-vjs')
