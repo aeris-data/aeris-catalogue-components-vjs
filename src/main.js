@@ -44,7 +44,11 @@ import AerisPlatformSearchCriteriaContent from './aeris-platform-search-criteria
 import AerisPlatformSearchCriteria from './aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
 
 ljs.addAliases({
-	dep: ['https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css',
+	dep: [
+		
+		'https://unpkg.com/vuelayers/lib/style.css',
+		'https://unpkg.com/vuelayers',
+		'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css',
 		'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.min.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css',  
 		'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.css',

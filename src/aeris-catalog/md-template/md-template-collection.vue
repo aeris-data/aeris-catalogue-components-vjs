@@ -4,6 +4,7 @@
 <div class="column">
   <aeris-metadata-description></aeris-metadata-description>
   <aeris-metadata-contacts></aeris-metadata-contacts>
+  <aeris-metadata-spatial-extents></aeris-metadata-spatial-extents>
   <aeris-metadata-temporal-extents></aeris-metadata-temporal-extents>
   <aeris-metadata-information-links></aeris-metadata-information-links>
   <aeris-metadata-data-access></aeris-metadata-data-access>

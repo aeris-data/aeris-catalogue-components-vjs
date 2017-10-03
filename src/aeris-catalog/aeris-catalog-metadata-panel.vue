@@ -3,18 +3,22 @@
   "en": {
     "close": "Close",
     "json": "Show JSON",
-    "save": "Save"
+    "save": "Save",
+    "maximize": "Full screen mode",
+    "minimize": "Normal screen mode"
   },
   "fr": {
     "close": "Fermer",
     "json": "Montrer le JSON",
-    "save": "Sauver"
+    "save": "Sauver",
+    "maximize": "Mode plein écran",
+    "minimize": "Mode écran normal"
   }
 }
 </i18n>
 <template>
 <span class="aeris-catalog-metadata-panel-host">
-<aside id="metadataPanel" class="metadata-panel"  :class="{expanded: visible}">
+<aside id="metadataPanel" class="metadata-panel"  :class="{expanded: visible, maximize: maximize, minimize: minimize}">
 <nav class="metadata-panel-header">
   <span class="metadata-panel-title">
   <span  :class="iconClass"   v-show="iconClass"></span>
@@ -31,6 +35,8 @@
 </div>
 <footer class="metadata-panel-footer">
 <i class="fa fa-times metadata-footer-icon" @click="broadcastCloseEvent" :title="$t('close')"></i>
+<i class="fa fa-expand metadata-footer-icon" @click="switchmode" :title="$t('maximize')" v-if="minimize" ></i>
+<i class="fa fa-compress metadata-footer-icon" @click="switchmode" :title="$t('minimize')" v-if="maximize" ></i>
 <i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')" v-show="!edit"></i>
 <i class="fa fa-floppy-o metadata-footer-icon" :title="$t('save')" v-show="edit"></i>
 <slot></slot>
@@ -103,11 +109,16 @@ export default {
 			  result = result+"/id"
 		  }
 		  return result;
+	  },
+	  
+	  minimize: function() {
+		  return !this.maximize
 	  }
   },
 
    data () {
     return {
+    	maximize: false
     }
   },
   
@@ -123,9 +134,44 @@ export default {
 	  },
 	  
 	  broadcastCloseEvent: function() {
+		  this.forceNormalMode()
 		  console.log("aerisCatalogueHideMetadata event")
 		  var event = new CustomEvent('aerisCatalogueHideMetadata', { detail: {}});
 	  		document.dispatchEvent(event);		  
+	  },
+	  
+	  forceNormalMode: function() {
+		  this.maximize = false;
+		  if (document.exitFullscreen) {
+			    document.exitFullscreen();
+			}
+			else if (document.mozCancelFullScreen) {
+			    document.mozCancelFullScreen();
+			}
+			else if (document.webkitCancelFullScreen) {
+			    document.webkitCancelFullScreen();
+			}
+			else if (document.msExitFullscreen) {
+			    document.msExitFullscreen();
+			}
+	  },
+	  
+	  switchmode: function() {
+		  if (this.minimize) {
+		  this.maximize = true;
+		  var elem = this.$el;
+		  if (elem.requestFullscreen) {
+			  elem.requestFullscreen();
+			} else if (elem.mozRequestFullScreen) {
+			  elem.mozRequestFullScreen();
+			} else if (elem.webkitRequestFullscreen) {
+			  elem.webkitRequestFullscreen();
+			}  
+		  }
+		  
+		  else {
+			 this.forceNormalMode();
+		  }
 	  }
 	  
 	
@@ -135,6 +181,14 @@ export default {
 
 </script>
 <style>
+.aeris-catalog-metadata-panel-host .metadata-panel.minimize {
+	width: 800px;
+}
+
+.aeris-catalog-metadata-panel-host .metadata-panel.maximize {
+	width: 100%;
+}
+
 .aeris-catalog-metadata-panel-host .metadata-panel {
 	/*box-sizing: border-box;*/
 	/*position: relative;*/
@@ -142,7 +196,7 @@ export default {
 	top: 5vh;
     right: 0px;
 	/*right: 320px;*/
-	width: 800px;
+	
 /*min-width: 33vw;
 	max-width: 80vw;
 	height: calc(90vh - 130px);*/
