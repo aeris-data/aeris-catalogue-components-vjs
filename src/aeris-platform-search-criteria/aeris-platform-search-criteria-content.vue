@@ -123,9 +123,11 @@
 			  parentService = parentService.endsWith('/') ? parentService + 'plateforms/' : parentService + '/plateforms/';
 			  var url = this.service || parentService;
 			  // a enlever apres test
+			  if (document.querySelector('aeris-catalog').attributes.getNamedItem('program')) {
 			  var program = document.querySelector('aeris-catalog').attributes.getNamedItem('program').value;
 			  if (program) {
 				  url +=  "?program=" + program;  
+			  }
 			  }
 			  //
 			  this.$http.get(url, {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}})

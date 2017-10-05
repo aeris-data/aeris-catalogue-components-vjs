@@ -100,11 +100,12 @@
 			  var parentService = document.querySelector('aeris-catalog').attributes.getNamedItem('metadata-service').value;
 			  parentService = parentService.endsWith('/') ? parentService + 'levels/' : parentService + '/levels/';
 			  var url = this.service || parentService;
+			  if (document.querySelector('aeris-catalog').attributes.getNamedItem('program')) {
 			  var program = document.querySelector('aeris-catalog').attributes.getNamedItem('program').value;
 			  if (program) {
 				  url +=  "?program=" + program;  
 			  }
-			  
+			  }
 			  this.$http.get(url, {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}})
 			  .then((response)=>{this.handleResponse(response)},(response)=>{this.handleError(response)});
 		  },
