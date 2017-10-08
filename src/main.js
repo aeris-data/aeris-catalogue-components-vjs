@@ -75,6 +75,7 @@ ljs.load('dep', function() {
 			window.registredAerisElements = [];
 		}
 		if (window.registredAerisElements.indexOf(name) < 0) {
+			console.log("Aeris - Registration of "+name)
 			Vue.customElement(name, component);
 			window.registredAerisElements.push(name)
 		}

@@ -2,16 +2,9 @@
 {
 	  "en": {
 		  "filter": "Filter",
-		  "AEROSOLPROPERTIES": "Aerosol properties",
 		  "AIRCRAFT": "Aircraft",
-		  "ALKANES": "Alkanes",
-		  "ALTITUDE": "Altitude",
-		  "ATMOSPHERICCHEMISTRY": "Atmospheric chemistry",
-		  "ATMOSPHERICHUMIDITY": "Atmospheric Humidity",
 		  "ATMOSPHERICSIMULATIONCHAMBER": "Atmospheric simulation chamber",
 		  "BALLOON": "Balloon",
-		  "CH4": "CH4",
-		  "CO": "CO",
 		  "EOS": "Earth Observation Satellite",
 		  "GEO": "Geostationnary earth orbit",
 		  "INSITULANDPLATFORM": "In Situ Land-based Platform",
@@ -19,32 +12,26 @@
 		  "METEOROLOGICALPROPERTIES": "Meteorological properties",
 		  "OTHER_AIRCRAFT": "Other aircraft",
 		  "PLATFORM": "Platform",
-		  "PRECIPITATION": "Precipitation",
 		  "SPACESTATION": "Space Station",
-		  "UNKNOWN": "Unknown"
+		  "UNKNOWN": "Unknown",
+		  "loading": "Loading...",
+		  "updating": "Checking for updates..."
 	  },
 	  "fr": {
 		  "filter": "Filtre",
-		  "AEROSOLPROPERTIES": "Propriétés aérosol",
 		  "AIRCRAFT": "Aeronef",
-		  "ALKANES": "Alcanes",
-		  "ALTITUDE": "Altitude",
-		  "ATMOSPHERICCHEMISTRY": "Chimie de l atmosphère",
-		  "ATMOSPHERICHUMIDITY": "Humidité atmosphérique",
 		  "ATMOSPHERICSIMULATIONCHAMBER": "Chambre de simulation atmosphérique",
 		  "BALLOON": "Ballons",
-		  "CH4": "CH4",
-		  "CO": "CO",
 		  "EOS": "Satellite d Observation de la Terre",
 		  "GEO": "Orbite terrestre geostationnaire",
 		  "INSITULANDPLATFORM": "Laboratoire in situ terrestre",
 		  "LEO": "Orbite terrestre basse",
-		  "METEOROLOGICALPROPERTIES": "Propriétés météorologiques",
 		  "OTHER_AIRCRAFT": "Autre aeronef",
 		  "PLATFORM": "Platforme",
-		  "PRECIPITATION": "Précipitation",
 		  "SPACESTATION": "Station spatiale",
-		  "UNKNOWN": "Inconnu"
+		  "UNKNOWN": "Inconnu",
+		  "loading": "Chargement...",
+		  "updating": "Recherche de mises à jour..."
 	  }
 }
 </i18n>
@@ -52,18 +39,27 @@
 <template>
 	<span class="aeris-platform-search-criteria-content-host" >
 
-	    <div class="icon-input">
+	    <div class="icon-input" style="display:none">
 	    	<input class="filter-input" type="text" name="resultFilter" :placeholder="$t('filter')" v-model="filterValue">
 	    	<i class="fa fa-filter"></i>
 	    </div>
-	    
+	    <div v-if="isLoading" class="loadingbar">
+	    <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+	    <span>{{$t("loading")}}</span>
+	    </div>
+	    <div v-if="isUpdating" class="loadingbar">
+	    <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+	    <span>{{$t("updating")}}</span>
+	    </div>
 		<div v-for="(platformType, index) of platformTypes" class="program">
 			
 			<div class="program-header">
 	          <label :for="platformType.name">
 	            <input :id="platformType.name" type="checkbox" class="program-checkbox" @change="platformTypeClickHandler">
 		            <span class="program-name-row">
-		              <strong>{{$t(platformType.name)}}</strong>
+		              <strong>
+		              {{translate(platformType.name)}}
+		              </strong>
 		              <span class="badge">{{computeChildrenNb(platformType)}}</span>
 		            </span>
 	            </input>
@@ -76,7 +72,8 @@
 	            <div class="collection">
 	              <label>
 	                <input :id="platform.name" type="checkbox" :name="platform.name" class="platform-checkbox" @change="platformClickHandler">
-	                <span>{{$t(platform.name)}}</span>
+	                
+	                <span >{{(platform.name)}}</span>
 	              </label>
 	            </div>
 	          </div>
@@ -108,9 +105,15 @@
 			  this.handleSearchBarListener = null;
 			  document.removeEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
 			  this.handleSearchBarResetListener = null;
+			  document.removeEventListener('aerisPlatformDownloadResponse', this.handlePlatformResponseListener);
+			  this.handlePlatformDowloadListener = null;
 		  },
 		  
 		  created: function () {
+			  
+		  },
+
+		  mounted: function() {
 			  console.log('Aeris platform search criteria content - created');
 			  this.$i18n.locale = this.lang;
 
@@ -118,26 +121,24 @@
 			  document.addEventListener('aerisCatalogueSearchEvent', this.handleSearchBarListener);
 			  this.handleSearchBarResetListener = this.handleSearchBarResetEvent.bind(this);
 			  document.addEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
+			  this.handlePlatformResponseListener = this.handlePlatformResponse.bind(this);
+			  document.addEventListener('aerisPlatformDownloadResponse', this.handlePlatformResponseListener);
 			  
-			  var parentService = document.querySelector('aeris-catalog').attributes.getNamedItem('metadata-service').value;
-			  parentService = parentService.endsWith('/') ? parentService + 'plateforms/' : parentService + '/plateforms/';
-			  var url = this.service || parentService;
-			  // a enlever apres test
-			  if (document.querySelector('aeris-catalog').attributes.getNamedItem('program')) {
-			  var program = document.querySelector('aeris-catalog').attributes.getNamedItem('program').value;
-			  if (program) {
-				  url +=  "?program=" + program;  
-			  }
-			  }
-			  //
-			  this.$http.get(url, {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}})
-			  .then((response)=>{this.handleResponse(response)},(response)=>{this.handleError(response)});
-		  },
-
-		  mounted: function() {
+			 this.loadPlatforms();
+			  
 		  },
 		  
 		  computed: {
+			  
+			  
+			  isLoading: function() {
+				  return ((this.loading) && (!this.existing))
+			  },
+			  
+			  isUpdating: function() {
+				  return ((this.loading) && (this.existing))
+			  },
+			  
 			  /* Filter results with "filter input" value" */
 			  filteredPlatformTypes: function() {
 				  console.log("filter value : " + this.filterValue);
@@ -175,7 +176,11 @@
 		    	parentService: null,
 				platformTypes: [],
 				filterValue: '',
-				selectedItems: []
+				selectedItems: [],
+				loading:false,
+				existing:false,
+				handlePlatformResponseListener:null,
+				translatedValues: ["AIRCRAFT", "ATMOSPHERICSIMULATIONCHAMBER", "BALLOON", "EOS", "GEO", "INSITULANDPLATFORM", "LEO", "METEOROLOGICALPROPERTIES", "OTHER_AIRCRAFT", "PLATFORM",  "SPACESTATION", "UNKNOWN"] 
 		    }
 		  },
 		  
@@ -184,15 +189,75 @@
 		  
 		  methods: {
 			  
+			  
+			  handlePlatformResponse: function(e) {
+				  this.platformTypes = e.detail.platformTypes;
+				  this.loading = false;
+			  },
+			  
+			  translate: function(key) {
+				  if (this.translatedValues.indexOf(key)<0) {
+					  return key;
+				  } else {
+					  return this.$i18n.t(key)
+				  }
+			  },
+			  	
+			  loadPlatforms() {
+				  console.log("Aeris - loadPlatforms")
+				  if (window.loadingPlatforms) {
+					  this.loading = true;
+					  if (window.localStorage) {
+				          var aux  = window.localStorage.getItem('aerisPlatformTypes');
+				          if ((aux != null) && (aux != "undefined")) {
+				        	  this.platformTypes = JSON.parse(aux);
+				        	  this.existing = true;
+						  }
+				        }
+				  }
+				  else {
+					  if (window.localStorage) {
+				          var aux  = window.localStorage.getItem('aerisPlatformTypes');
+				          if ((aux != null) && (aux != "undefined")) {
+				        	  this.platformTypes = JSON.parse(aux);
+				        	  this.existing = true;
+						  }
+				        }
+					 window.loadingPlatforms = true
+					 var parentService = document.querySelector('aeris-catalog').attributes.getNamedItem('metadata-service').value;
+					  parentService = parentService.endsWith('/') ? parentService + 'plateforms/' : parentService + '/plateforms/';
+					  var url = this.service || parentService;
+					 
+					  
+					  
+					  if (document.querySelector('aeris-catalog').attributes.getNamedItem('program')) {
+					  var program = document.querySelector('aeris-catalog').attributes.getNamedItem('program').value;
+					  if (program) {
+						  url +=  "?program=" + program;  
+					  }
+					  }
+					  //
+					  this.loading = true;
+					  console.log("Aeris - loadPlatforms - Appel au serveur")
+					  this.$http.get(url, {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}})
+					  .then((response)=>{this.handleResponse(response)},(response)=>{this.handleError(response)});
+				  }
+				  
+			  },
+			  
 			  handleResponse: function(response) {
-				  console.log('response = ' + response);
-			      this.platformTypes = response.body;
-//			        if (window.localStorage) {
-//			          window.localStorage.setItem('platformTypes', JSON.stringify(this._platformTypes));
-//			        }
+				  window.loadingPlatforms = false
+				  this.loading = false;
+			      if (window.localStorage) {
+			         window.localStorage.setItem('aerisPlatformTypes', JSON.stringify(this.platformTypes));
+			       }
+			      var event = new CustomEvent('aerisPlatformDownloadResponse', { detail: {platformTypes: response.body}});
+			  	  document.dispatchEvent(event);
 			  },
 			  
 			  handleError: function(request) {
+				    window.loadingPlatforms = false
+				  	this.loading = false;
 				  	console.log("Aeris platform criteria - Error while accessing server:"); 
 					var error = response.status;
 					var message = response.statusText;
@@ -291,6 +356,11 @@
 	}
 </script>
 <style>
+
+	.loadingbar {
+		background: gainsboro;
+		padding: 3px;
+	}
 
 	.aeris-platform-search-criteria-content-host .visible {
 		display: block;

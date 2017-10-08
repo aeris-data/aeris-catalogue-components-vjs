@@ -44,7 +44,7 @@ export default {
   },
   
   created: function () {
-   console.log("aeris-catalogue-reset-button creation")
+   console.log("aeris-catalogue-edit-button creation")
    this.$i18n.locale = this.lang
    this.aerisCatalogueStopEditListener = this.handleStopEdit.bind(this) 
    document.addEventListener('aerisCatalogueStopEditEvent', this.aerisCatalogueStopEditListener);

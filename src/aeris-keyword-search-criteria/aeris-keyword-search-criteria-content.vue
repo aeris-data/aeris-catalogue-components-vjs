@@ -45,6 +45,7 @@ export default {
   },
   
   created: function () {
+	  
    this.$i18n.locale = this.lang
    this.keywordDeletionListener = this.handleKeywordDeletion.bind(this) 
    document.addEventListener('aerisCartoucheItemDeleted', this.keywordDeletionListener);
@@ -55,6 +56,7 @@ export default {
   },
 
   mounted: function() {
+	  console.log('Aeris keywords search criteria content - mounted');
   },
   
   computed: {

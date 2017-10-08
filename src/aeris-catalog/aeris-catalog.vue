@@ -135,7 +135,7 @@ export default {
   },
   
   created: function () {
-	  console.log("aeris-catalog creation")
+	  console.log("Aeris aeris-catalog creation")
 	  this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this) 
 	  document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
 	  
