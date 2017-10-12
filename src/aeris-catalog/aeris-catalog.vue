@@ -349,6 +349,16 @@ export default {
 
 <style>
 
+..aeris-vcal-day.month-calendar {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+}
+
 .aeris-catalog-host {
 	/*box-sizing: border-box;*/
 	position: relative;

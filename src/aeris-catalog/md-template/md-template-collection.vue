@@ -8,7 +8,7 @@
   <aeris-metadata-temporal-extents></aeris-metadata-temporal-extents>
   <aeris-metadata-information-links></aeris-metadata-information-links>
   <aeris-metadata-data-access></aeris-metadata-data-access>
-  <aeris-metadata-informations></aeris-metadata-informations>
+  <aeris-metadata-information></aeris-metadata-information>
 </div>
 <div class="column">
   <aeris-metadata-disponibility-calendar calendar-type="month"></aeris-metadata-disponibility-calendar>
