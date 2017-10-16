@@ -168,7 +168,9 @@ export default {
 	  	},
 	  	
 	  	getCustomNodeName: function(summary) {
-	  		return summary.type.toLowerCase()+"-summary";
+	  		var result = summary.type.toLowerCase();
+	  		result = result.replace(/_/g, '-');
+	  		return result+"-summary";
 	  	},
 	  	
 	  	removeDiacritics: function(str) {
