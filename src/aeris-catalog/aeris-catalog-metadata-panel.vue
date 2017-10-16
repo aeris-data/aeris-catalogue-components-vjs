@@ -84,6 +84,10 @@ export default {
     metadata: {
       required: true
     },
+    orcid: {
+      type: String,
+      default: ''
+    }
   },
 
   watch: {
@@ -97,12 +101,15 @@ export default {
     document.addEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
     this.eurochampDataBlockSetListener = this.setDataBlock.bind(this);
     document.addEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
+    this.aerisOrcidListener = this.handleOrcidResponse.bind(this);
+    document.addEventListener('aerisOrcidResponse', this.aerisOrcidListener);
   },
 
   mounted: function() {
     if (this.lang) {
       this.$i18n.locale = this.lang
     }
+    document.dispatchEvent(new CustomEvent('aerisOrcidRequest', {}));
   },
 
   destroyed() {
@@ -110,6 +117,8 @@ export default {
     this.eurochampDataBlockInitListener = null;
     document.removeEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
     this.eurochampDataBlockSetListener = null;
+    document.removeEventListener('aerisOrcidResponse', this.aerisOrcidListener);
+    this.aerisOrcidListener = null;
   },
 
   computed: {
@@ -140,6 +149,10 @@ export default {
   updated: function() {},
 
   methods: {
+
+    handleOrcidResponse(e) {
+      e.detail.user ? this.orcid = e.detail.user.orcid : null;
+    },
 
     showJson: function() {
       var baseUrl = 'http://www.jsoneditoronline.org/?url=';
@@ -215,7 +228,7 @@ export default {
       existingFiles.forEach(file => formData.append("existingfiles", file));
       newFiles.forEach((file, index) => formData.append("newfiles", file, file.name));
 
-      this.$http.post(`${this.metadataService}save`, formData)
+      this.$http.post(`${this.metadataService}save?orcid=${this.orcid}`, formData)
         .then(response => {
           this.broadcastCloseEvent();
         });
