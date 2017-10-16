@@ -5,14 +5,16 @@
     "json": "Show JSON",
     "save": "Save",
     "maximize": "Full screen mode",
-    "minimize": "Normal screen mode"
+    "minimize": "Normal screen mode",
+    "saving": "Save in progress..."
   },
   "fr": {
     "close": "Fermer",
     "json": "Montrer le JSON",
     "save": "Sauver",
     "maximize": "Mode plein écran",
-    "minimize": "Mode écran normal"
+    "minimize": "Mode écran normal",
+    "saving": "Sauvegarde en cours..."
   }
 }
 </i18n>
@@ -228,10 +230,25 @@ export default {
       existingFiles.forEach(file => formData.append("existingfiles", file));
       newFiles.forEach((file, index) => formData.append("newfiles", file, file.name));
 
+      document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', {
+        'detail': {
+          message: this.$t('saving')
+        }
+      }));
+
       this.$http.post(`${this.metadataService}save?orcid=${this.orcid}`, formData)
         .then(response => {
+          document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
+            'detail': {
+              message: this.$t('saving')
+            }
+          }));
           this.broadcastCloseEvent();
-        });
+        }, response => document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
+          'detail': {
+            message: this.$t('saving')
+          }
+        })));
     }
   }
 }
