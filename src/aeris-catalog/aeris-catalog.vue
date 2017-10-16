@@ -28,7 +28,7 @@
 		</span>
     <aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
     <span class="subpanel" style="position:absolute;z-index:10;display:none" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-			<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType">
+			<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata">
 				<slot name="metadatafooter"></slot>
 			</aeris-catalogue-metadata-panel>
 		</span>
@@ -180,7 +180,8 @@ export default {
       currentTitle: null,
       currentIconClass: null,
       currentUuid: null,
-      currentType: null
+      currentType: null,
+      currentMetadata: null
     }
   },
 
@@ -232,6 +233,8 @@ export default {
       } else {
         this.currentType = ''
       }
+      this.currentMetadata = e.detail.metadata ? e.detail.metadata : null;
+      this.currentUuid = e.detail.metadata ? e.detail.metadata.uuid : null;
     },
 
     hideMetadataPanel: function() {

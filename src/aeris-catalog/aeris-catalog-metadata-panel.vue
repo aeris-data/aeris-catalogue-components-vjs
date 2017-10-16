@@ -16,6 +16,7 @@
   }
 }
 </i18n>
+
 <template>
 <span class="aeris-catalog-metadata-panel-host">
   <aside id="metadataPanel" class="metadata-panel" :class="{expanded: visible, maximize: maximize, minimize: minimize}">
@@ -37,15 +38,17 @@
       <i class="fa fa-times metadata-footer-icon" @click="broadcastCloseEvent" :title="$t('close')"></i>
       <i class="fa fa-compress metadata-footer-icon" @click="switchmode" :title="$t('minimize')" v-if="maximize"></i>
       <i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')" v-show="!edit"></i>
-      <i class="fa fa-floppy-o metadata-footer-icon" :title="$t('save')" v-show="edit"></i>
+      <i class="fa fa-floppy-o metadata-footer-icon" :title="$t('save')" v-show="edit" @click="sendSaveEvent()"></i>
       <slot></slot>
     </footer>
   </aside>
 </span>
 </template>
+
 <script>
 export default {
-  props: {
+  props:
+  {
     lang: {
       type: String,
       default: 'en'
@@ -70,17 +73,17 @@ export default {
       type: String,
       default: ""
     },
-
     metadataService: {
       type: String,
       default: ""
     },
-
     type: {
       type: String,
       default: ""
-    }
-
+    },
+    metadata: {
+      required: true
+    },
   },
 
   watch: {
@@ -89,12 +92,24 @@ export default {
     }
   },
 
-  created: function() {},
+  created() {
+    this.eurochampDataBlockInitListener = this.initDataBlock.bind(this);
+    document.addEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
+    this.eurochampDataBlockSetListener = this.setDataBlock.bind(this);
+    document.addEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
+  },
 
   mounted: function() {
     if (this.lang) {
       this.$i18n.locale = this.lang
     }
+  },
+
+  destroyed() {
+    document.removeEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
+    this.eurochampDataBlockInitListener = null;
+    document.removeEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
+    this.eurochampDataBlockSetListener = null;
   },
 
   computed: {
@@ -115,7 +130,10 @@ export default {
 
   data() {
     return {
-      maximize: false
+      maximize: false,
+      eurochampDataBlockInitListener: null,
+      eurochampDataBlockSetListener: null,
+      dataBlocks: new Map()
     }
   },
 
@@ -165,12 +183,47 @@ export default {
       } else {
         this.forceNormalMode();
       }
+    },
+
+    sendSaveEvent() {
+      document.dispatchEvent(new CustomEvent('eurochampSaveEvent', {
+        detail: {
+          metadata: {}
+        }
+      }));
+    },
+
+    initDataBlock(e) {
+      this.dataBlocks = this.dataBlocks.set(e.detail.name, undefined);
+    },
+
+    setDataBlock(e) {
+
+      this.dataBlocks = this.dataBlocks.set(e.detail.name, e.detail);
+      delete e.detail.name;
+      Array.from(this.dataBlocks.values()).every(value => value != undefined) ? this.handleSave() : null;
+    },
+
+    handleSave() {
+
+      let newMetadata = Array.from(this.dataBlocks.values()).reduce((acc, current) => Object.assign({}, acc, current.metadata), JSON.parse(this.metadata));
+      let existingFiles = Array.from(this.dataBlocks.values()).reduce((acc, current) => current.existingFiles ? acc.concat(current.existingFiles) : acc, new Array());
+      let newFiles = Array.from(this.dataBlocks.values()).reduce((acc, current) => current.newFiles ? acc.concat(current.newFiles) : acc, new Array());
+
+      let formData = new FormData();
+      formData.append("metadata", JSON.stringify(newMetadata));
+      existingFiles.forEach(file => formData.append("existingfiles", file));
+      newFiles.forEach((file, index) => formData.append("newfiles", file, file.name));
+
+      this.$http.post(`${this.metadataService}save`, formData)
+        .then(response => {
+          this.broadcastCloseEvent();
+        });
     }
-
-
   }
 }
 </script>
+
 <style>
 .aeris-catalog-metadata-panel-host .metadata-panel.minimize {
   width: 800px;
