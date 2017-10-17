@@ -13,336 +13,362 @@
 }
 </i18n>
 <template>
-	<span class="aeris-catalog-host" style="background:white">
-	
-		<div class="app-container">
-			<aeris-notifier></aeris-notifier>
-			<aeris-catalog-bar :lang="lang">
-				<slot name="criteria"></slot>
-			</aeris-catalog-bar>
-			<aeris-catalog-map :hidemap="hidemap">
-				<slot name="buttons"></slot>
-			</aeris-catalog-map>			
-			<span class="cart-bar" :style="{width:summaryBarWidth}">
+<span class="aeris-catalog-host" style="background:white">
+  <div class="app-container">
+    <aeris-notifier></aeris-notifier>
+    <aeris-catalog-bar :lang="lang">
+      <slot name="criteria"></slot>
+    </aeris-catalog-bar>
+    <aeris-catalog-map :hidemap="hidemap">
+      <slot name="buttons"></slot>
+    </aeris-catalog-map>
+    <span class="cart-bar" :style="{width:summaryBarWidth}">
 			Your shopphing cart:
 			<aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken" ></aeris-catalog-cart>
-			</span>			
-			<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
-			<span class="subpanel" style="position:absolute;z-index:10;display:none" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-				<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType">
-					<slot name="metadatafooter"></slot>
-				</aeris-catalogue-metadata-panel>
-			</span>
-			
-		</div>
-
-	</span>
+		</span>
+    <aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
+    <span class="subpanel" style="position:absolute;z-index:10;display:none" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
+			<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata">
+				<slot name="metadatafooter"></slot>
+			</aeris-catalogue-metadata-panel>
+		</span>
+  </div>
+</span>
 </template>
 
 <script>
 export default {
-	props: {
-	  	lang:  {
-	      type: String,
-	      default: 'en'
-	    },
-	    visible: {
-	    	type: Boolean,
-	     	 default: true
-	    },
-	    hidemap: {
-	    	type: Boolean,
-	     	 default: false
-	    },
-	    
-	    metadataService: {
-	    	type: String,
-	    	default: null
-	    },
-	    
-	    program: {
-	    	type: String,
-	    	default:null
-	    },
-	    
-	    summaryBarWidth: {
-	    	type: String,
-	    	default: "400px"
-	    },
-	    
-	    summaryMaxLength: {
-	    	type: Number,
-	    	default: "150"
-	    },
-	    
-	    metadataPanelTopMargin: {
-	    	type: String,
-	    	default: "10px"
-	    	
-	    },
-	    
-	    metadataPanelRightMargin: {
-	    	type: String,
-	    	default: "10px"
-	    	
-	    },
-	    
-	    cartService: {
-	    	type: String,
-	    	default: null
-	    },
-	    
-	    cartToken: {
-	    	type: String,
-	    	default: null
-	    }
-	},
-  
-	 watch: {
-		    lang (value) {
-			      this.$i18n.locale = value
-		    },
-		  },
-  
-  destroyed: function() {
-	  document.removeEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
-	  this.aerisCatalogueMaximizetEventListener = null;
-	 
-	  document.removeEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
-	  this.aerisCatalogueMinimizetEventListener = null;
-	  
-	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
-	  this.aerisCatalogueSearchStartEventListener = null;
-	  
-	  document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
-	  this.aerisCatalogueSearchStartEventListener = null;
-	  
-	  document.removeEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
-	  this.aerisCatalogueDisplayMetadataEventListener = null;
-	  
-	  document.removeEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
-	  this.aerisCatalogueHideMetadataEventListener = null;
-	  
-	  document.removeEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
-	  this.aerisCatalogueEditMetadataEventListener = null;
-	  
-	  document.removeEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
-	  this.aerisCatalogueResetEventListener = null;
-	  
-	  
-	  document.removeEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
-	  this.aerisCurrentEditedMetadataRequestListener = null;
+  props: {
+    lang: {
+      type: String,
+      default: 'en'
+    },
+    visible: {
+      type: Boolean,
+      default: true
+    },
+    hidemap: {
+      type: Boolean,
+      default: false
+    },
+
+    metadataService: {
+      type: String,
+      default: null
+    },
+
+    program: {
+      type: String,
+      default: null
+    },
+
+    summaryBarWidth: {
+      type: String,
+      default: "400px"
+    },
+
+    summaryMaxLength: {
+      type: Number,
+      default: "150"
+    },
+
+    metadataPanelTopMargin: {
+      type: String,
+      default: "10px"
+
+    },
+
+    metadataPanelRightMargin: {
+      type: String,
+      default: "10px"
+
+    },
+
+    cartService: {
+      type: String,
+      default: null
+    },
+
+    cartToken: {
+      type: String,
+      default: null
+    }
   },
-  
-  created: function () {
-	  console.log("Aeris aeris-catalog creation")
-	  this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this) 
-	  document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
-	  
-	  this.aerisCatalogueMinimizeEventListener = this.handleMinimize.bind(this) 
-	  document.addEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
-	  
-	  this.aerisCatalogueMaximizeEventListener = this.handleMaximize.bind(this) 
-	  document.addEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
-	  
-	  this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this) 
-	  document.addEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
-	  
-	  this.aerisCatalogueHideMetadataEventListener = this.handleHideMetadata.bind(this) 
-	  document.addEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
-	  
-	  this.aerisCatalogueEditMetadataEventListener = this.handleEditMetadata.bind(this) 
-	  document.addEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
-	  
-	  this.aerisCatalogueResetEventListener = this.handleReset.bind(this) 
-	  document.addEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
-	  
-	  this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this) 
-	  document.addEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
-	  
+
+  watch: {
+    lang(value) {
+      this.$i18n.locale = value
+    },
+  },
+
+  destroyed: function() {
+    document.removeEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
+    this.aerisCatalogueMaximizetEventListener = null;
+
+    document.removeEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
+    this.aerisCatalogueMinimizetEventListener = null;
+
+    document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+    this.aerisCatalogueSearchStartEventListener = null;
+
+    document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+    this.aerisCatalogueSearchStartEventListener = null;
+
+    document.removeEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
+    this.aerisCatalogueDisplayMetadataEventListener = null;
+
+    document.removeEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
+    this.aerisCatalogueHideMetadataEventListener = null;
+
+    document.removeEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
+    this.aerisCatalogueEditMetadataEventListener = null;
+
+    document.removeEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
+    this.aerisCatalogueResetEventListener = null;
+
+
+    document.removeEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
+    this.aerisCurrentEditedMetadataRequestListener = null;
+  },
+
+  created: function() {
+    console.log("Aeris aeris-catalog creation")
+    this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this)
+    document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+
+    this.aerisCatalogueMinimizeEventListener = this.handleMinimize.bind(this)
+    document.addEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
+
+    this.aerisCatalogueMaximizeEventListener = this.handleMaximize.bind(this)
+    document.addEventListener('aerisCatalogueMaximizeEvent', this.aerisCatalogueMaximizeEventListener);
+
+    this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this)
+    document.addEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
+
+    this.aerisCatalogueHideMetadataEventListener = this.handleHideMetadata.bind(this)
+    document.addEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
+
+    this.aerisCatalogueEditMetadataEventListener = this.handleEditMetadata.bind(this)
+    document.addEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
+
+    this.aerisCatalogueResetEventListener = this.handleReset.bind(this)
+    document.addEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetEventListener);
+
+    this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this)
+    document.addEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
+
   },
 
   mounted: function() {
-	  if (this.lang) {
-		  this.$i18n.locale = this.lang
-	  }
-  },
-  
-  computed: {
-  },
-
-   data () {
-    return {
-    	aerisCatalogueSearchStartEventListener: null,
-    	aerisCatalogueDisplayMetadataEventListener: null,
-    	aerisCatalogueEditMetadataEventListener: null,
-    	aerisCatalogueHideMetadataEventListener: null,
-    	aerisCatalogueResetEventListener: null,
-    	aerisCatalogueMaximizeEventListener: null,
-    	aerisCatalogueMinimizeEventListener: null,
-    	currentEditedMetadata: null,
-    	currentTitle: null,
-    	currentIconClass: null,
-    	currentUuid: null,
-    	currentType: null
+    if (this.lang) {
+      this.$i18n.locale = this.lang
     }
   },
-  
-  updated: function() {
-  },
-  
-  methods: {
-	  
-	  handleReset: function(e) {
-		this.hideMetadataPanel()
-	  },
-	  
-	  handleDisplayMetadata: function(e) {
-		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("edit")
-		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
-		  this.$el.querySelector(".subpanel").style.display='';
-		  if (e.detail.uuid) {
-			  this.currentUuid = e.detail.uuid
-		  }
-		  else {
-			  this.currentUuid = ""
-		  }
-		  if (e.detail.title) {
-			  this.currentTitle = e.detail.title
-		  }
-		  else {
-			  this.currentTitle = ""
-		  }
-		  if (e.detail.iconClass) {
-			  this.currentIconClass = e.detail.iconClass
-		  }
-		  else {
-			  this.currentIconClass =''
-		  }
-		  if (e.detail.type) {
-			  this.currentType = e.detail.type
-		  }
-		  else {
-			  this.currentType =''
-		  }
-	  },
-	  
-	  handleHideMetadata: function() {
-		  this.hideMetadataPanel()
-	  },
-	  
-	  handleEditMetadata: function(e) {
-		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true")
-		  this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible","true")
-		  this.$el.querySelector(".subpanel").style.display='';
-		  this.currentEditedMetadata=e.detail
-		  if (e.detail.type) {
-			  this.currentType = e.detail.type
-		  }
-		  else {
-			  this.currentType =''
-		  }
-	  },
-	  
-	  hideMetadataPanel: function () {
-		  this.currentTitle="";
-		  this.currentUuid=""
-		  this.currentType=""
-		  this.currentIconClass =''
-		  this.currentEditedMetadata = null,
-		  this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("visible")
-		  this.$el.querySelector(".subpanel").style.display='none';
-	  },
-	  
-	  handleCatalogueSearchStart : function() {
-		  this.hideMetadataPanel()
-		  var e = new CustomEvent("aerisCatalogueSearchEvent", { detail: {}})
-		  document.dispatchEvent(e);
-		  //console.log(e)
-		  console.log("Connecting with metadata server")
-		  
-		  if (!(this.metadataService)) {
-			  console.error("AerisCatalogueSearcEvent detected but metadataService not provided in props...")
-			  return
-		  }
-		  
-		  var url = this.metadataService+'/request';
-		   if (this.metadataService.endsWith('/')) {
-		   	 url = this.metadataService+'request';
-		   }
-		   
-		   if (this.program) {
-			   url = url +"?program="+this.program;
-		   }
-		   
-		   document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', { 'detail': {message: this.$t('searching')}}))
-		   
-	   	   this.$http.post(url, e.detail).then(response=>{this.handleSuccess(response)},response=>{this.handleError(response)});
-		  
 
-	  },
-	  
-	  handleMaximize: function() {
-		  var elem = this.$el;
-		  if (elem.requestFullscreen) {
-			  elem.requestFullscreen();
-			} else if (elem.mozRequestFullScreen) {
-			  elem.mozRequestFullScreen();
-			} else if (elem.webkitRequestFullscreen) {
-			  elem.webkitRequestFullscreen();
-			}
-	  },
-	  
-	  handleMinimize: function() {
-		  if (document.exitFullscreen) {
-			    document.exitFullscreen();
-			}
-			else if (document.mozCancelFullScreen) {
-			    document.mozCancelFullScreen();
-			}
-			else if (document.webkitCancelFullScreen) {
-			    document.webkitCancelFullScreen();
-			}
-			else if (document.msExitFullscreen) {
-			    document.msExitFullscreen();
-			}
-	  },
-	  
-	  handleCurrentEditedMetadataRequest: function() {
-		  document.dispatchEvent(new CustomEvent('currentEditedMetadataResponse', { 'detail': this.currentEditedMetadata}))
-	  },
-	 
-	  
-	  handleSuccess: function(response) {
-		  document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: this.$t('searching')}}))
-		  console.log("SUCCESS: Response")
-		  console.log(response)
-		  var summaries = response.body
-		  if (summaries) {
-			  document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: this.$t('foundresults')+summaries.length}}))
-		  } else {
-			  document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', { 'detail': {message: this.$t('noresult')+summaries.length}}))
-		  }
-		  document.dispatchEvent(new CustomEvent('aerisSummaries', { 'detail': {summaries: summaries}}))
-	  },
-	  
-	  handleError: function(response) {
-		  document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: this.$t('searching')}}))
-		  console.log("ERROR: Response")
-		  console.log(response)
-		  document.dispatchEvent(new CustomEvent('aerisSummaries', { 'detail': {summaries: []}}))
-//		  var statusMessage = e.detail.error.message;
-//	        if(!navigator.onLine) statusMessage = 'You are not connected to internet';
-//	        var errorMessage = this._localize('error_occured', this.lang);
-//	        if(statusMessage) errorMessage = errorMessage + ':<p>' + statusMessage + '</p>';
-//	        this.fire('longActionStopEvent', {
-//	          message: this._localize('loading', this.lang) + '...'
-//	        });
-//	        this.fire('errorNotificationMessageEvent', {
-//	          message: errorMessage
-//	        });
-	  }
-	  
+  computed: {},
+
+  data() {
+    return {
+      aerisCatalogueSearchStartEventListener: null,
+      aerisCatalogueDisplayMetadataEventListener: null,
+      aerisCatalogueEditMetadataEventListener: null,
+      aerisCatalogueHideMetadataEventListener: null,
+      aerisCatalogueResetEventListener: null,
+      aerisCatalogueMaximizeEventListener: null,
+      aerisCatalogueMinimizeEventListener: null,
+      currentEditedMetadata: null,
+      currentTitle: null,
+      currentIconClass: null,
+      currentUuid: null,
+      currentType: null,
+      currentMetadata: null
+    }
+  },
+
+  updated: function() {},
+
+  methods: {
+
+    handleReset: function(e) {
+      this.hideMetadataPanel()
+    },
+
+    handleDisplayMetadata: function(e) {
+      this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("edit")
+      this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible", "true")
+      this.$el.querySelector(".subpanel").style.display = '';
+      if (e.detail.uuid) {
+        this.currentUuid = e.detail.uuid
+      } else {
+        this.currentUuid = ""
+      }
+      if (e.detail.title) {
+        this.currentTitle = e.detail.title
+      } else {
+        this.currentTitle = ""
+      }
+      if (e.detail.iconClass) {
+        this.currentIconClass = e.detail.iconClass
+      } else {
+        this.currentIconClass = ''
+      }
+      if (e.detail.type) {
+        this.currentType = e.detail.type
+      } else {
+        this.currentType = ''
+      }
+    },
+
+    handleHideMetadata: function() {
+      this.hideMetadataPanel()
+    },
+
+    handleEditMetadata: function(e) {
+      this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true")
+      this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible", "true")
+      this.$el.querySelector(".subpanel").style.display = '';
+      this.currentEditedMetadata = e.detail
+      if (e.detail.type) {
+        this.currentType = e.detail.type
+      } else {
+        this.currentType = ''
+      }
+      this.currentMetadata = e.detail.metadata ? e.detail.metadata : null;
+      this.currentUuid = e.detail.metadata ? e.detail.metadata.uuid : null;
+    },
+
+    hideMetadataPanel: function() {
+      this.currentTitle = "";
+      this.currentUuid = ""
+      this.currentType = ""
+      this.currentIconClass = ''
+      this.currentEditedMetadata = null,
+        this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("visible")
+      this.$el.querySelector(".subpanel").style.display = 'none';
+    },
+
+    handleCatalogueSearchStart: function() {
+      this.hideMetadataPanel()
+      var e = new CustomEvent("aerisCatalogueSearchEvent", {
+        detail: {}
+      })
+      document.dispatchEvent(e);
+      //console.log(e)
+      console.log("Connecting with metadata server")
+
+      if (!(this.metadataService)) {
+        console.error("AerisCatalogueSearcEvent detected but metadataService not provided in props...")
+        return
+      }
+
+      var url = this.metadataService + '/request';
+      if (this.metadataService.endsWith('/')) {
+        url = this.metadataService + 'request';
+      }
+
+      if (this.program) {
+        url = url + "?program=" + this.program;
+      }
+
+      document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', {
+        'detail': {
+          message: this.$t('searching')
+        }
+      }))
+
+      this.$http.post(url, e.detail).then(response => {
+        this.handleSuccess(response)
+      }, response => {
+        this.handleError(response)
+      });
+
+
+    },
+
+    handleMaximize: function() {
+      var elem = this.$el;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
+    },
+
+    handleMinimize: function() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    },
+
+    handleCurrentEditedMetadataRequest: function() {
+      document.dispatchEvent(new CustomEvent('currentEditedMetadataResponse', {
+        'detail': this.currentEditedMetadata
+      }))
+    },
+
+
+    handleSuccess: function(response) {
+      document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
+        'detail': {
+          message: this.$t('searching')
+        }
+      }))
+      console.log("SUCCESS: Response")
+      console.log(response)
+      var summaries = response.body
+      if (summaries) {
+        document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', {
+          'detail': {
+            message: this.$t('foundresults') + summaries.length
+          }
+        }))
+      } else {
+        document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', {
+          'detail': {
+            message: this.$t('noresult') + summaries.length
+          }
+        }))
+      }
+      document.dispatchEvent(new CustomEvent('aerisSummaries', {
+        'detail': {
+          summaries: summaries
+        }
+      }))
+    },
+
+    handleError: function(response) {
+      document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
+        'detail': {
+          message: this.$t('searching')
+        }
+      }))
+      console.log("ERROR: Response")
+      console.log(response)
+      document.dispatchEvent(new CustomEvent('aerisSummaries', {
+        'detail': {
+          summaries: []
+        }
+      }))
+      //		  var statusMessage = e.detail.error.message;
+      //	        if(!navigator.onLine) statusMessage = 'You are not connected to internet';
+      //	        var errorMessage = this._localize('error_occured', this.lang);
+      //	        if(statusMessage) errorMessage = errorMessage + ':<p>' + statusMessage + '</p>';
+      //	        this.fire('longActionStopEvent', {
+      //	          message: this._localize('loading', this.lang) + '...'
+      //	        });
+      //	        this.fire('errorNotificationMessageEvent', {
+      //	          message: errorMessage
+      //	        });
+    }
+
   }
 }
 </script>
