@@ -31,7 +31,7 @@
 
 	<div class="cart-container">
 		<div class="cart-panel-trigger"  style="margin-right: 15px;">
-			<span id="cartState" :v-if="calcCollNb" :style="{color:cartColor}"> {{ nbItems }} {{ cartLabel }} </span>
+			<span id="cartState" :style="{color:cartColor}" :v-if="calcCollNb" > {{ nbItems }} {{ cartLabel }} </span>
 			<i class="fa fa-shopping-cart" :style="{color:cartColor}"></i>
 		</div>
 	
