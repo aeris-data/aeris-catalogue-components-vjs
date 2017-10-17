@@ -21,6 +21,7 @@
 	  "loading": "Chargement",
 	  "downloadingFiles": "Téléchargement en cours...",
 	  "years": "Année(s):"
+		  
   }
 }
 </i18n>
@@ -30,7 +31,7 @@
 
 	<div class="cart-container">
 		<div class="cart-panel-trigger"  style="margin-right: 15px;">
-			<span id="cartState" :v-if="calcCollNb"> {{ nbItems }} {{ cartLabel }} </span>
+			<span id="cartState" :v-if="calcCollNb" :style="{color:cartColor}"> {{ nbItems }} {{ cartLabel }} </span>
 			<i class="fa fa-shopping-cart" :style="{color:cartColor}"></i>
 		</div>
 	
