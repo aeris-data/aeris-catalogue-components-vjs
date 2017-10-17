@@ -8,7 +8,8 @@
 	  "validate": "Validate",
 	  "downloadScript": "Download script",
 	  "loading": "Loading",
-	  "downloadingFiles": "Downloading files..."
+	  "downloadingFiles": "Downloading files...",
+	  "years": "Year(s):"
   },
   "fr": {
 	  "items": "Items",
@@ -18,7 +19,8 @@
 	  "validate": "Valider",
 	  "downloadScript": "Script de téléchargement",
 	  "loading": "Chargement",
-	  "downloadingFiles": "Téléchargement en cours..."
+	  "downloadingFiles": "Téléchargement en cours...",
+	  "years": "Année(s):"
   }
 }
 </i18n>
@@ -27,9 +29,9 @@
 	<span class="aeris-catalog-cart-host" >
 
 	<div class="cart-container">
-		<div class="cart-panel-trigger" :color="cartColor" style="margin-right: 15px;">
+		<div class="cart-panel-trigger"  style="margin-right: 15px;">
 			<span id="cartState" :v-if="calcCollNb"> {{ nbItems }} {{ cartLabel }} </span>
-			<i class="fa fa-shopping-cart"></i>
+			<i class="fa fa-shopping-cart" :style="{color:cartColor}"></i>
 		</div>
 	
 		<div class="cart-panel">
@@ -47,8 +49,13 @@
 							<span class="files-size">({{computeFileSize(item.fileSize)}})</span>
 						</span>
 					</div>
+					<div>
+					</div>
 					<i class="fa fa-trash" @click="removeCartItem(item.collectionId)"></i>
 				</li>
+				<div class="filter-description" v-if='item.filterDescription' >
+				{{item.filterDescription}}
+				</div>
 				</template>
 			</ul>
 	
@@ -114,10 +121,12 @@ export default {
   },
   
   destroyed: function() {
-	  document.removeEventListener('addItemToCart', this.addListener);
+	  document.removeEventListener('addItemToCartEvent', this.addListener);
 	  this.addListener = null;
-	  document.removeEventListener('removeFromCart', this.removeListener);
+	  document.removeEventListener('deleteItemFromCartEvent', this.removeListener);
 	  this.removeListener = null;
+	  document.removeEventListener('cartContentRequest', this.contentRequestListener);
+	  this.contentRequestListener = null;
   },
   
   created: function () {
@@ -125,11 +134,13 @@ export default {
 	  this.$i18n.locale = this.lang;
 
 	  this.addListener = this.addItemToCart.bind(this);
-      document.addEventListener('addItemToCart', this.addListener);
-      this.removeListener = this.removeFromCart.bind(this);
-      document.addEventListener('removeFromCart', this.removeListener);
-      this.refreshListener = this.refreshComponents.bind(this);
-      document.addEventListener('refreshFromCart', this.refreshListener);
+      document.addEventListener('addItemToCartEvent', this.addListener);
+      
+      this.removeListener = this.removeCartItemFromEvent.bind(this);
+      document.addEventListener('deleteItemFromCartEvent', this.removeListener);
+      
+      this.contentRequestListener = this.contentRequestHandler.bind(this);
+      document.addEventListener('cartContentRequest', this.contentRequestListener);
       
       // separated carts
       this.cartToken ? this.cartName = 'AerisCatalogCart-' + this.cartToken : this.cartName = 'AerisCatalogCart';
@@ -138,15 +149,22 @@ export default {
   },
 
   mounted: function() {
-		this.refreshCart();
   },
   
   computed: {
+	  
+	cartColor: function() {
+		if (this.cartContent.length > 0) {
+			return '#f39c12';
+		}
+		else {
+			return 'gainsboro';			
+		}
+	},
 
 	calcCollNb: function() {
 		if (this.cartContent.length > 0) {
 			this.nbItems = this.cartContent.length;
-			this.cartColor = '#f39c12';
 			if (this.cartContent.length > 1) {
 				this.cartLabel = this.$i18n.t('items', this.lang);
 			} else {
@@ -155,7 +173,6 @@ export default {
 		} else {
 			this.nbItems = null;
 			this.cartLabel = null;
-			this.cartColor = '#e74c3c';
 		}
 		return this.nbItems > 0 ? true : false;
 	},	
@@ -183,14 +200,13 @@ export default {
     	cartContent: [],
     	cartName: '',
     	cartLabel: null,
-    	cartColor: null,
     	totalFiles: null,
     	totalFilesSize: null,
     	downloadScript: null,
     	isPopupOpen: false,
     	addListener : null,
     	removeListener: null,
-    	refreshListener: null
+    	contentRequestListener: null
     }
   },
   
@@ -199,6 +215,35 @@ export default {
   
   methods: {
 	  
+	contentRequestHandler: function() {
+		this.dispatchContent();
+	},
+	
+	dispatchContent: function() {
+		 var event = new CustomEvent('cartContentResponse',  { detail: {cartContent: this.cartContent}});
+         document.dispatchEvent(event);
+	},
+	
+	
+	filterDescription: function(item) {
+		if (item.items) {
+			if (item.items.type.toLowerCase()=="yearfilter") {
+				var aux = item.items.elements;
+				aux.sort();
+				var result =this.$i18n.t("years")+" ";
+				for (var i = 0; i < aux.length; i++) {
+					result = result+aux[i];
+					if (i < (aux.length-1)) {
+						result = result+", "
+					}
+				}
+				return result;
+			}
+		}
+		return null;
+	},
+	
+	
 	// catch event when an item is added 
 	addItemToCart: function(ev) {
 		
@@ -206,22 +251,23 @@ export default {
         var alreadyAdded = false;
         
         /* If corresponding collection is already present in the cart, add the item to it */
-        this.cartContent.forEach(function(collection){
-	        	if (collection.collectionId === item.collectionId) {
-	        		
-	        		var elementToAdd = item.elements[0];
-	            	var elementCollection = collection.items.elements.toString();
-	            		        		
-            		if (elementCollection.indexOf(elementToAdd) < 0) {
-	        			collection.items.elements.push(item.elements);
-	        			collection.fileNumber += item.fileNumber;
-	        			collection.fileSize += item.fileSize;
-    	        	}
-	        		
-	        		alreadyAdded = true;
-	        	}
-	        }
-     	)
+        for (var j = 0; j < this.cartContent.length; j++) {
+        	var collection = this.cartContent[j]
+        	if (collection.collectionId === item.collectionId) {
+        		console.log('eeeeeee')
+        		for (var i = 0; i < item.elements.length; i++) {
+        			var index = collection.items.elements.indexOf(item.elements[i])
+        			if (index <0) {
+        				collection.items.elements.push(item.elements[i]);
+        			}
+        			collection.fileNumber += item.fileNumber;
+        			collection.fileSize += item.totalSize;
+        		}
+        		collection.filterDescription=this.filterDescription(collection);
+        		this.$set(this.cartContent, j, collection)
+        		alreadyAdded = true;
+        	}
+        }
 
         /* If collection is not already present in the cart, create it and add item */
         if (!alreadyAdded) {
@@ -231,63 +277,88 @@ export default {
             collectionName: item.collectionName,
             url: item.url,
             fileNumber: item.fileNumber,
-            fileSize: item.fileSize,
+            fileSize: item.totalSize,
             items: {
               type: item.type,
-              elements: [item.elements]
+              elements: item.elements
             }
           }
 
+          coll.filterDescription=this.filterDescription(coll);
           this.cartContent.push(coll);
         }
 
         this.saveCart();
-        this.refreshCart();
-    	console.log("cartContent : " + JSON.stringify(this.cartContent) );
+        this.dispatchContent();
+    	
 	},
 
     /* Save/load cart into/from localstorage */
     saveCart: function() {
-      if(localStorage) localStorage.setItem(this.cartName, JSON.stringify(this.cartContent));
+      //if(localStorage) localStorage.setItem(this.cartName, JSON.stringify(this.cartContent));
     },    
 	loadCart: function() {
-		if(localStorage) this.cartContent = JSON.parse(localStorage.getItem(this.cartName)) || [];
+		//if(localStorage) this.cartContent = JSON.parse(localStorage.getItem(this.cartName)) || [];
 	},
 	
 	// remove an item from cart from another component (calendar i.e.)
 	removeFromCart: function(data) {
 		console.log(data);
-		this.refreshCart();
+		//this.refreshCart();
+	},
+	
+	removeCartItemFromEvent : function (e) {
+		var result = []
+		 var item = e.detail;
+		 for (var j = 0; j < this.cartContent.length; j++) {
+	        	var collection = this.cartContent[j]
+		        if (collection.collectionId === item.collectionId) {
+	        		for (var i = 0; i < item.elements.length; i++) {
+	        			var index = collection.items.elements.indexOf(item.elements[i])
+	        			if (index>=0) {
+	        				collection.items.elements.splice(index,1);
+	        			}
+	        			collection.filterDescription=this.filterDescription(collection);
+	        			collection.fileNumber -= item.fileNumber;
+	        			collection.fileSize -= item.totalSize;
+	        		}
+	        	}
+	        	if (collection.items.elements.length>0) {
+	        	result.push(collection)
+	        	}
+		 }
+		 this.cartContent = result;
+		 this.dispatchContent();
 	},
 	
 	// remove an item from cart content using the cart remove button 
     removeCartItem: function(collectionId) {
+    
       var cartClone = this.cartContent;
       cartClone.forEach(function(collection, ind) {
         if(collection.collectionId === collectionId) {
           cartClone.splice(ind, 1);
         }
       });
-      this.refreshCart();
+
       this.saveCart();
-      // tell components that they have to be refreshed
-      var event = new CustomEvent('callCartRefreshNow', []);
-      document.dispatchEvent(event);
+      this.dispatchContent();
     },
     
     // empty the whole cart
 	removeAll: function() {
 		this.cartContent = [];
-		this.refreshCart();
 	    this.saveCart();
-	    this.generateCartResponse([]);
+	    this.dispatchContent();
 	},
+	
+	
     
 	handleSuccessScript : function(response) {
 		this.downloadScript = response.data;
 	},
 	
-	handleError: function(response) {
+	handleErrorScript: function(response) {
 		console.log("Cart - Error while accessing server:"); 
 		var error = response.status;
 		var message = response.statusText;
@@ -295,15 +366,13 @@ export default {
 		console.log('Error ' + error + ': ' + message);
 	},
 	
-	refreshCart: function() {
-		// class removed here cause after the v-if on cartState is set to false, it is no longer accessible by querySelector
-		if (this.cartContent.length == 0) {
-	    	var cartContainer = this.$el.querySelector('#cartState');
-	  		cartContainer.classList.remove('nb-items');
-	    } else {
-			var cartContainer = this.$el.querySelector('#cartState');
-			cartContainer.classList.add('nb-items');
-	    }
+	handleErrorDownload: function(response) {
+		console.log("Cart - Error while accessing server:");
+		document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', { 'detail': {message: this.$t('downloadingFiles')}}))
+		var error = response.status;
+		var message = response.statusText;
+		if(!error) message = 'Can\'t connect to the server';
+		console.log('Error ' + error + ': ' + message);
 	},
 	
 	computeFileSize: function(size) {
@@ -323,7 +392,7 @@ export default {
 		this.togglePopup;
 		var url = this.cartService + '/toscript';
 		this.$http.post(url, JSON.stringify(this.cartContent))
-					.then((response)=>{this.handleSuccessScript(response)},(response)=>{this.handleError(response)});
+					.then((response)=>{this.handleSuccessScript(response)},(response)=>{this.handleErrorScript(response)});
 	},
 	
 	downloadFile: function() {
@@ -331,7 +400,7 @@ export default {
 		document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', { 'detail': {message: this.$t('downloadingFiles')}}))
 		var url = this.cartService + '/download';
 		this.$http.post(url,  JSON.stringify(this.cartContent), {headers: {'Content-Type': 'application/zip', 'Accept': 'application/zip'}, responseType: 'blob'})
-					.then((response)=>{this.handleSuccessDownload(response)},(response)=>{this.handleError(response)});
+					.then((response)=>{this.handleSuccessDownload(response)},(response)=>{this.handleErrorDownload(response)});
 	},
     
 	handleSuccessScript: function(response) {
@@ -343,7 +412,7 @@ export default {
         var randomId = Math.floor((1 + Math.random()) * 0x10000)
                       .toString(16)
                       .substring(1);
-        var fileName = "eurochamp-"+ randomId + ".zip";
+        var fileName = "download-"+ randomId + ".zip";
         
         saveAs(blob, fileName);
          /* Hide notification */
@@ -378,7 +447,6 @@ export default {
 	},
 	
 	closePopup: function() {
-		this.removeAll();
 		this.isPopupOpen = !this.isPopupOpen;
 	},
 	
@@ -400,17 +468,9 @@ export default {
 		}.bind(this));
 
 		var event = null;
-		if(collectionExists) {
-			this.generateCartResponse({detail: currentColl, lang: this.lang});
-		} else {
-			this.generateCartResponse([]);
-		}
 	},	
 	
-	generateCartResponse: function(contentResponse) {
-		var event = new CustomEvent('cartResponse', contentResponse);
-		document.dispatchEvent(event);
-	}
+	
 	
   }
 }
@@ -677,6 +737,9 @@ export default {
 	.aeris-catalog-cart-host .cart-popup .catalog-round-button :active {
 	    vertical-align: top;
 	    padding: 8px 8px 6px;
+	}
+	.aeris-catalog-cart-host .filter-description {
+		font-size: smaller;
 	}
 	
  </style>
