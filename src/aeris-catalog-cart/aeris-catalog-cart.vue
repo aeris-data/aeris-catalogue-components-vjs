@@ -93,9 +93,6 @@
 					<div class="map-rounded-button catalog-round-button" @click="copyToClipBoard">
 						<i class="fa fa-clipboard"></i>
 					</div>		
-					<div class="map-rounded-button catalog-round-button" @click="cancel">
-						<i class="fa fa-undo"></i>
-					</div>
 				</div>
 			</div>
 		
