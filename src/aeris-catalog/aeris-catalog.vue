@@ -26,13 +26,13 @@
 			Your shopphing cart:
 			<aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken" ></aeris-catalog-cart>
 		</span>
-    <aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
-    <span class="subpanel" style="position:absolute;z-index:10;display:none" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-			<aeris-catalogue-metadata-panel :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata">
-				<slot name="metadatafooter"></slot>
-			</aeris-catalogue-metadata-panel>
-		</span>
-  </div>
+<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
+<div class="subpanel" style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
+  <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata">
+    <slot name="metadatafooter"></slot>
+  </aeris-catalogue-metadata-panel>
+</div>
+</div>
 </span>
 </template>
 
@@ -42,10 +42,6 @@ export default {
     lang: {
       type: String,
       default: 'en'
-    },
-    visible: {
-      type: Boolean,
-      default: true
     },
     hidemap: {
       type: Boolean,
@@ -92,6 +88,10 @@ export default {
     cartToken: {
       type: String,
       default: null
+    },
+    edit: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -156,7 +156,6 @@ export default {
 
     this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this)
     document.addEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
-
   },
 
   mounted: function() {
@@ -181,7 +180,8 @@ export default {
       currentIconClass: null,
       currentUuid: null,
       currentType: null,
-      currentMetadata: null
+      currentMetadata: null,
+      visibleMetadataPanel: false
     }
   },
 
@@ -194,9 +194,6 @@ export default {
     },
 
     handleDisplayMetadata: function(e) {
-      this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("edit")
-      this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible", "true")
-      this.$el.querySelector(".subpanel").style.display = '';
       if (e.detail.uuid) {
         this.currentUuid = e.detail.uuid
       } else {
@@ -217,16 +214,16 @@ export default {
       } else {
         this.currentType = ''
       }
+      this.visibleMetadataPanel = true;
     },
 
     handleHideMetadata: function() {
-      this.hideMetadataPanel()
+      this.visibleMetadataPanel = false;
+      this.hideMetadataPanel();
     },
 
     handleEditMetadata: function(e) {
-      this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true")
-      this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("visible", "true")
-      this.$el.querySelector(".subpanel").style.display = '';
+      this.$el.querySelector("aeris-catalogue-metadata-panel").setAttribute("edit", "true");
       this.currentEditedMetadata = e.detail
       if (e.detail.type) {
         this.currentType = e.detail.type
@@ -238,13 +235,12 @@ export default {
     },
 
     hideMetadataPanel: function() {
+      this.visibleMetadataPanel = false;
       this.currentTitle = "";
       this.currentUuid = ""
       this.currentType = ""
       this.currentIconClass = ''
-      this.currentEditedMetadata = null,
-        this.$el.querySelector("aeris-catalogue-metadata-panel").removeAttribute("visible")
-      this.$el.querySelector(".subpanel").style.display = 'none';
+      this.currentEditedMetadata = null
     },
 
     handleCatalogueSearchStart: function() {

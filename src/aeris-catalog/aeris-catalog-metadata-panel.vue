@@ -21,7 +21,7 @@
 
 <template>
 <span class="aeris-catalog-metadata-panel-host">
-  <aside id="metadataPanel" class="metadata-panel" :class="{expanded: visible, maximize: maximize, minimize: minimize}">
+  <aside id="metadataPanel" class="metadata-panel" :class="{maximize: maximize, minimize: minimize}">
     <nav class="metadata-panel-header">
       <span class="metadata-panel-title">
           <span  :class="iconClass"   v-show="iconClass"></span>
@@ -31,7 +31,7 @@
       </span>
       <i class="fa fa-times" @click="broadcastCloseEvent" :title="$t('close')"></i>
     </nav>
-    <div id="metadataPanelContent" class="metadata-panel-content" :class="{expanded: visible}">
+    <div id="metadataPanelContent" class="metadata-panel-content">
       <aeris-metadata :identifier="uuid" lang="fr" :service="idservice"></aeris-metadata>
       <md-template-proxy :type="type" :edit="edit"></md-template-proxy>
     </div>
@@ -54,10 +54,6 @@ export default {
     lang: {
       type: String,
       default: 'en'
-    },
-    visible: {
-      type: Boolean,
-      default: false
     },
     edit: {
       type: Boolean,
@@ -85,10 +81,6 @@ export default {
     },
     metadata: {
       required: true
-    },
-    orcid: {
-      type: String,
-      default: ''
     }
   },
 
@@ -105,6 +97,14 @@ export default {
     document.addEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
     this.aerisOrcidListener = this.handleOrcidResponse.bind(this);
     document.addEventListener('aerisOrcidResponse', this.aerisOrcidListener);
+
+    this.$nextTick(function() {
+      document.dispatchEvent(new CustomEvent('aerisCatalogueMetadataRendered', {
+        detail: {
+          uuid: this.uuid
+        }
+      }));
+    })
   },
 
   mounted: function() {
@@ -141,6 +141,7 @@ export default {
 
   data() {
     return {
+      orcid: '',
       maximize: false,
       eurochampDataBlockInitListener: null,
       eurochampDataBlockSetListener: null,
@@ -277,15 +278,8 @@ export default {
   overflow: hidden;
   cursor: default;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-  transform: translate3d(100%, 0, 0);
-  opacity: 0.0;
-  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1), width 0.3s ease-in-out 0.3s, height 0.3s ease-in-out 0.3s;
-}
-
-.aeris-catalog-metadata-panel-host .metadata-panel.expanded,
-.aeris-catalog-metadata-panel-host .metadata-panel-content.expanded {
   transform: translate3d(0, 0, 0);
-  opacity: 1;
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1), width 0.3s ease-in-out 0.3s, height 0.3s ease-in-out 0.3s;
 }
 
 .aeris-catalog-metadata-panel-host .metadata-panel.fullscreen {
@@ -332,8 +326,6 @@ export default {
   padding: 10px 10px 60px 10px;
   overflow-y: auto;
   overflow-x: hidden;
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
   transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0s;
 }
 
