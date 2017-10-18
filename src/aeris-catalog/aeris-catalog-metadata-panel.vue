@@ -101,7 +101,8 @@ export default {
     this.$nextTick(function() {
       document.dispatchEvent(new CustomEvent('aerisCatalogueMetadataRendered', {
         detail: {
-          uuid: this.uuid
+          uuid: this.uuid,
+          edit: this.edit
         }
       }));
     })
