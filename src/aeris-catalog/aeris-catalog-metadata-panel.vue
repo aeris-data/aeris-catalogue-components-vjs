@@ -32,7 +32,7 @@
       <i class="fa fa-times" @click="broadcastCloseEvent" :title="$t('close')"></i>
     </nav>
     <div id="metadataPanelContent" class="metadata-panel-content">
-      <aeris-metadata :identifier="uuid" lang="fr" :service="idservice"></aeris-metadata>
+      <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
       <md-template-proxy :type="type" :edit="edit"></md-template-proxy>
     </div>
     <footer class="metadata-panel-footer">
