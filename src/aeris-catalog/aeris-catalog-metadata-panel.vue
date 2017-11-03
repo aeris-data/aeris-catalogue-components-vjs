@@ -31,7 +31,7 @@
       <span class="metadata-panel-title">
           <span  :class="iconClass"   v-show="iconClass"></span>
       <h2 class="metadata-panel-title">
-            <aeris-international-field :lang="lang" :value="resourcetitle"></aeris-international-field>
+            <aeris-international-field html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
           </h2>
       </span>
       <i class="fa fa-times" @click="broadcastCloseEvent" :title="$t('close')"></i>
