@@ -45,6 +45,10 @@ import AerisPlatformSearchCriteria from './aeris-platform-search-criteria/aeris-
 import AerisLevelSearchCriteriaContent from './aeris-level-search-criteria/aeris-level-search-criteria-content.vue'
 import AerisLevelSearchCriteria from './aeris-level-search-criteria/aeris-level-search-criteria.vue'
 
+import AerisCollectionSearchCriteriaContent from './aeris-collection-search-criteria/aeris-collection-search-criteria-content.vue'
+import AerisCollectionSearchCriteria from './aeris-collection-search-criteria/aeris-collection-search-criteria.vue'
+import AerisCheckboxtreeItem from './aeris-collection-search-criteria/aeris-checkboxtree-item.vue'
+
 ljs.addAliases({
 	dep: [
 		
@@ -91,6 +95,7 @@ ljs.load('dep', function() {
 			console.info("Début registration des custom elements catalog")
 			console.info("Registred elements at this time: "+window.registredAerisElements)
 			
+			registerElement('aeris-checkboxtree-item', AerisCheckboxtreeItem)
 			registerElement('md-template-collection', MdTemplateCollection);
 			registerElement('md-template-proxy', MdTemplateProxy);
 			registerElement('aeris-international-field', AerisInternationalField);
@@ -103,8 +108,10 @@ ljs.load('dep', function() {
 			registerElement('aeris-keyword-search-criteria-content', AerisKeywordSearchCriteriaContent);
 			registerElement('aeris-spatial-search-criteria-content', AerisSpatialSearchCriteriaContent);
 			registerElement('aeris-temporal-search-criteria-content', AerisTemporalSearchCriteriaContent);
+			registerElement('aeris-collection-search-criteria-content', AerisCollectionSearchCriteriaContent);
 			registerElement('aeris-catalog-search-box', AerisCatalogSearchBox);
 			registerElement('aeris-keyword-search-criteria', AerisKeywordSearchCriteria);
+			registerElement('aeris-collection-search-criteria', AerisCollectionSearchCriteria);
 			registerElement('aeris-spatial-search-criteria', AerisSpatialSearchCriteria);
 			registerElement('aeris-temporal-search-criteria', AerisTemporalSearchCriteria);
 			registerElement('aeris-catalog-default-summary', AerisCatalogDefaultSummary);
