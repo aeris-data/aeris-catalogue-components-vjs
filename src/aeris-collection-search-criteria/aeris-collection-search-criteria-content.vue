@@ -115,7 +115,7 @@
 					var aux = this.$el.querySelector(".program-header>label[for='"+this.level3collections[i]+"']>span")
 					if (aux) {
 					var newElement = document.createElement('i')
-					newElement.classList="fa fa-download"
+					newElement.classList="fa fa-shopping-cart"
 					newElement.title=this.$i18n.t("directlydownloadable")
 				    newElement.style.color="#f39c12"
 					aux.appendChild(newElement)
