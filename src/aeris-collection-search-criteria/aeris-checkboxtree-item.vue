@@ -104,7 +104,6 @@
 						this.parsedItems = []
 					}
 					else {
-						console.log(this.items)
 						var aux = JSON.parse(this.items)
 						for (var i = 0; i < aux.length; i++) {
 							aux[i].checked=""

@@ -4,13 +4,15 @@
 		  "filter": "Filter",
 		  "UNKNOWN": "Unknown",
 		  "loading": "Loading...",
-		  "updating": "Checking for updates..."
+		  "updating": "Checking for updates...",
+		  "directlydownloadable": "This collection can be directly downloaded from this portal"
 	  },
 	  "fr": {
 		  "filter": "Filtre",
 		  "UNKNOWN": "Inconnu",
 		  "loading": "Chargement...",
-		  "updating": "Recherche de mises à jour..."
+		  "updating": "Recherche de mises à jour...",
+		  "directlydownloadable": "Cette collection peut etre téléchargée directement à partir de ce portail"
 	  }
 }
 </i18n>
@@ -44,6 +46,9 @@
 		  watch: {
 		    lang (value) {
 			      this.$i18n.locale = value
+		    },
+		    collections: function(value) {
+		    	this.indicateLevel3Collections();
 		    }
 		  },
 		  
@@ -92,6 +97,7 @@
 		    return {
 		    	parentService: null,
 				collections: [],
+				level3collections:["EUROCHAMP","GMOS"],
 				filterValue: '',
 				loading:false,
 				existing:false,
@@ -104,6 +110,18 @@
 		  
 		  methods: {
 			  
+			  indicateLevel3Collections: function(e) {
+				  for(var i = 0; i < this.level3collections.length;i++) {
+					var aux = this.$el.querySelector(".program-header>label[for='"+this.level3collections[i]+"']>span")
+					if (aux) {
+					var newElement = document.createElement('i')
+					newElement.classList="fa fa-download"
+					newElement.title=this.$i18n.t("directlydownloadable")
+				    newElement.style.color="#f39c12"
+					aux.appendChild(newElement)
+				  }
+				}
+			  },
 			  
 			  handleCollectionResponse: function(e) {
 				  this.collections = e.detail.collections;
@@ -235,6 +253,7 @@
 				  if (window.localStorage) {
 				         window.localStorage.setItem('aerisCollections', JSON.stringify(result));
 			       }
+				  
 				  
 			  },
 			  
