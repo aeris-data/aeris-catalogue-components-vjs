@@ -1,5 +1,5 @@
 <template>
-<span class="aeris-catalog-map" :class="hidemap ? hidemap : showmap">
+<span class="aeris-catalog-map-host" :class="hidemap ? hidemap : showmap">
 <div class="map-container">
 <div id="mapMask" class="map-mask"></div>
 <div id="map" class="map" tabindex="0"></div>
@@ -413,38 +413,39 @@ export default {
 </script>
 
 <style>
-.aeris-catalog-map {
+.aeris-catalog-map-host {
     display: block;
     position: relative;
     background-color: #fff;
+	margin-left: 10px;
 }
 
-.aeris-catalog-map.hidemap {
+.aeris-catalog-map-host.hidemap {
     overflow: ;
 }
 
-.aeris-catalog-map.showmap {
+.aeris-catalog-map-host.showmap {
 	overflow: hidden;
 }
 
 
-.aeris-catalog-map .map-container {
+.aeris-catalog-map-host .map-container {
     position: relative;
     height: 100%;
     opacity: 1;
     transition: 0.3s
 }
-.aeris-catalog-map .map-container .map {
+.aeris-catalog-map-host .map-container .map {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
     background-color: #2D4059;
     transition: 0.3s
 }
-.aeris-catalog-map .map-container:hover .map-coordinates {
+.aeris-catalog-map-host .map-container:hover .map-coordinates {
     opacity: 1
 }
-.aeris-catalog-map .map-container .map-mask {
+.aeris-catalog-map-host .map-container .map-mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -452,24 +453,24 @@ export default {
     height: 100%;
     background-color: #fff
 }
-.aeris-catalog-map .viewport {
+.aeris-catalog-map-host .viewport {
     opacity: 0;
     transition: 0.6s
 }
-.aeris-catalog-map .map.reduced {
+.aeris-catalog-map-host .map.reduced {
     padding-right: 300px
 }
-.aeris-catalog-map .map.reduced ~ .map-coordinates {
+.aeris-catalog-map-host .map.reduced ~ .map-coordinates {
     right: 305px
 }
-.aeris-catalog-map aeris-spinner {
+.aeris-catalog-map-host aeris-spinner {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     --spinner-main-color: #333
 }
-.aeris-catalog-map .feature-info-tooltip {
+.aeris-catalog-map-host .feature-info-tooltip {
     position: absolute;
     max-width: 300px;
     background-color: rgba(255, 255, 255, 0.8);
@@ -483,19 +484,19 @@ export default {
     transform-origin: 0 50%;
     transition: opacity 0.3s, transform 0.3s
 }
-.aeris-catalog-map .feature-info-tooltip h4 {
+.aeris-catalog-map-host .feature-info-tooltip h4 {
     margin: 0
 }
-.aeris-catalog-map .feature-info-tooltip ul {
+.aeris-catalog-map-host .feature-info-tooltip ul {
     margin: 3px 0 0;
     padding-left: 15px
 }
-.aeris-catalog-map .feature-info-tooltip.hidden {
+.aeris-catalog-map-host .feature-info-tooltip.hidden {
     transform: scaleX(0);
     opacity: 0;
     transition: 0s
 }
-.aeris-catalog-map .map-coordinates {
+.aeris-catalog-map-host .map-coordinates {
     display: block;
     opacity: 0;
     width: 120px;
