@@ -37,10 +37,20 @@ export default {
 	  
 	  contenu: function() {
 		  if (!this.edit) {
-			  var elementName = "md-template-"+this.type.toLowerCase()
-			  var aux = elementName.replace(/_/g, '-');
-			  if (window.registredAerisElements.indexOf(aux)>=0) {
-				  return "<"+aux+"></"+aux+">";
+			  var elementName ="";
+			  if (this.clientTemplateName) {
+				 elementName=this.clientTemplateName;
+			  }
+			  else if (this.type) {
+				  elementName = "md-template-"+this.type.toLowerCase()
+				  elementName = elementName.replace(/_/g, '-');
+			  }
+			  else {
+				  elementName = "md-template-collection"
+			  }
+			  
+			  if (window.registredAerisElements.indexOf(elementName)>=0) {
+				  return "<"+elementName+"></"+elementName+">";
 			  }
 			  else {
 				  return "<md-template-collection></md-template-collection>"
