@@ -7,7 +7,7 @@
   },
   "fr": {
     "help": "Aide",
-    "helpMessage": "Pour effectuer une recherche, sélectionnez vos critères dans la colonne à  gauche de votre écran, puis cliquez sur le bouton rechercher :",
+    "helpMessage": "Pour effectuer une recherche, sÃ©lectionnez vos critÃ¨res dans la colonne Ã  gauche de votre Ã©cran, puis cliquez sur le bouton rechercher :",
     "doNotDisplay": "Ne plus afficher ce message"
   }
 }
@@ -45,7 +45,10 @@ export default {
       type: String,
       default: 'en'
     },
-    helpcookie: ''
+    helpcookie:  {
+        type: String,
+        default: 'help-popup'
+      }
   },
   
   watch: {
@@ -160,7 +163,7 @@ export default {
 	  	},
 	      
 	    doNotShow: function() {
-	        this.setCookie('help-popup', 1, 365);
+	        this.setCookie(this.helpcookie, 1, 365);
 	        this.closePopup();
 	      },
 	      
