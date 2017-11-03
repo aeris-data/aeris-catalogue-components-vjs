@@ -21,7 +21,12 @@
 
 <template>
 <span class="aeris-catalog-metadata-panel-host">
+
+
   <aside id="metadataPanel" class="metadata-panel" :class="{maximize: maximize, minimize: minimize}">
+
+    <aeris-ui-confirmation></aeris-ui-confirmation>
+
     <nav class="metadata-panel-header">
       <span class="metadata-panel-title">
           <span  :class="iconClass"   v-show="iconClass"></span>
@@ -32,7 +37,8 @@
       <i class="fa fa-times" @click="broadcastCloseEvent" :title="$t('close')"></i>
     </nav>
     <div id="metadataPanelContent" class="metadata-panel-content">
-      <aeris-metadata :identifier="uuid" lang="fr" :service="idservice"></aeris-metadata>
+
+      <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
       <md-template-proxy :type="type" :edit="edit"></md-template-proxy>
     </div>
     <footer class="metadata-panel-footer">
@@ -266,15 +272,9 @@ export default {
 }
 
 .aeris-catalog-metadata-panel-host .metadata-panel {
-  /*box-sizing: border-box;*/
-  /*position: relative;*/
+  display: flex;
+  flex-direction: column;
   z-index: 100;
-  top: 5vh;
-  right: 0px;
-  /*right: 320px;*/
-  /*min-width: 33vw;
-	max-width: 80vw;
-	height: calc(90vh - 130px);*/
   background-color: #fafafa;
   overflow: hidden;
   cursor: default;
@@ -296,8 +296,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 0 20px 0 10px;
-  z-index: 2;
   border-bottom: 1px solid #ddd;
+  height: 4rem;
 }
 
 .aeris-catalog-metadata-panel-host .metadata-panel-header i {
@@ -323,28 +323,32 @@ export default {
 }
 
 .aeris-catalog-metadata-panel-host .metadata-panel-content {
-  max-height: calc(100% - 90px);
-  padding: 10px 10px 60px 10px;
+  max-height: calc(100vh - 13rem);
+  padding: 10px 10px 0px 10px;
   overflow-y: auto;
   overflow-x: hidden;
   transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0s;
 }
 
 .aeris-catalog-metadata-panel-host .metadata-panel-footer {
-  position: absolute;
-  bottom: 0;
   box-sizing: border-box;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50px;
+  height: 4rem;
   border-top: 1px solid #ddd;
   background-color: #fafafa;
 }
 
 .aeris-catalog-metadata-panel-host h2.metadata-panel-title {
   font-weight: normal
+}
+
+.aeris-catalog-metadata-panel-host .metadata-panel-footer div{
+  display: flex;
+  flex-direction: row;
 }
 
 .aeris-catalog-metadata-panel-host .metadata-panel-footer .metadata-footer-icon {
@@ -358,7 +362,6 @@ export default {
   border-radius: 50%;
   color: #bbb;
   cursor: pointer;
-  transform: scale(1);
 }
 
 .aeris-catalog-metadata-panel-host .metadata-panel-footer .metadata-footer-icon:hover {

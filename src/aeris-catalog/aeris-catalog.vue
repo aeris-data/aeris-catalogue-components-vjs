@@ -583,7 +583,7 @@ background-color: rgba(42,54,59, 0.05);
 	}
 
 	.aeris-catalog-host .metadata-panel {
-		height: calc(90vh - 60px);
+		height: 90vh;
 	}
 }
  </style>

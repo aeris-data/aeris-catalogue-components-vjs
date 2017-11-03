@@ -14,7 +14,9 @@ Vue.use(VueResource);
 import VueColor from './vue-color.js'
 Vue.use(VueColor)
 
+import AerisUiButton from './aeris-ui/aeris-ui-button.vue'
 import MdTemplateProxy from './aeris-catalog/md-template/md-template-proxy.vue'
+import AerisUiConfirmation from './aeris-ui/aeris-ui-confirmation.vue'
 import MdTemplateCollection from './aeris-catalog/md-template/md-template-collection.vue'
 import MdTemplateCollection2 from './aeris-catalog/md-template/md-template-collection2.vue'
 import AerisInternationalField from './misc/aeris-international-field.vue'
@@ -51,16 +53,16 @@ import AerisCheckboxtreeItem from './aeris-collection-search-criteria/aeris-chec
 
 ljs.addAliases({
 	dep: [
-		
+
 		'https://unpkg.com/vuelayers/lib/style.css',
 		'https://unpkg.com/vuelayers',
 		'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css',
 		'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.min.js',
-		'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css',  
+		'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css',
 		'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.css',
 		'https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js',
-		'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 
-		'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js', 
+		'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+		'https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js',
@@ -71,9 +73,9 @@ ljs.addAliases({
 ljs.load('dep', function() {
 
 	window.ol = ol
-	
+
 	var timer;
-	
+
 	function registerElement(name, component) {
 		if (!window.registredAerisElements) {
 			window.registredAerisElements = [];
@@ -84,7 +86,7 @@ ljs.load('dep', function() {
 			window.registredAerisElements.push(name)
 		}
 	}
-	
+
 	function stopTimer() {
 	    clearInterval(timer);
 	}
@@ -94,8 +96,9 @@ ljs.load('dep', function() {
 		if ((window.registredAerisElements.indexOf("aeris-commons-components-vjs") > -1) && (window.registredAerisElements.indexOf("aeris-metadata-components-vjs") > -1)) {
 			console.info("Début registration des custom elements catalog")
 			console.info("Registred elements at this time: "+window.registredAerisElements)
-			
 			registerElement('aeris-checkboxtree-item', AerisCheckboxtreeItem)
+			registerElement('aeris-ui-button', AerisUiButton);
+			registerElement('aeris-ui-confirmation', AerisUiConfirmation);
 			registerElement('md-template-collection', MdTemplateCollection);
 			registerElement('md-template-proxy', MdTemplateProxy);
 			registerElement('aeris-international-field', AerisInternationalField);
@@ -126,7 +129,7 @@ ljs.load('dep', function() {
 			registerElement('aeris-level-search-criteria-content', AerisLevelSearchCriteriaContent);
 			registerElement('aeris-level-search-criteria', AerisLevelSearchCriteria);
 			registerElement('aeris-catalog', AerisCatalog);
-			
+
 			window.registredAerisElements.push('aeris-catalogue-components-vjs')
 			stopTimer()
 			console.info("catalog components registration complete")
@@ -135,8 +138,6 @@ ljs.load('dep', function() {
 			console.info("aeris-commons-components-vjs not available yet...")
 		}
 	}
-	
+
 	timer = setInterval(function(){register()}, 1000);
 })
-
-
