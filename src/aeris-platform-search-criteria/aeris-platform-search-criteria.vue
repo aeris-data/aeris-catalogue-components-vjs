@@ -30,6 +30,7 @@ export default {
       }
   },
   
+  
   watch: {
     lang (value) {
 	      this.$i18n.locale = value
