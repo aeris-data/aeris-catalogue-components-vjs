@@ -15,7 +15,11 @@ export default {
        edit:  {
            type: Boolean,
               default: false
-        }
+        },
+        clientTemplateName: {
+            type: String,
+            default: ''
+       }
 	    
   },
   
