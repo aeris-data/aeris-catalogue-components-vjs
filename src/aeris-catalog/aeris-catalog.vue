@@ -566,8 +566,7 @@ export default {
 	padding: 0px;
 	height: 40px;
 	width: 300px;
-	transition: 0.3s;
-background-color: rgba(42,54,59, 0.05);
+background-color: #f5f5f5;
 }
 
 @media screen and (max-height: 800px) {
