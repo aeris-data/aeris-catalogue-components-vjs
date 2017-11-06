@@ -28,7 +28,7 @@
 		</span>
 <aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
 <div class="subpanel" style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-  <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata">
+  <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata" :clientTemplate="currentTemplate">
     <slot name="metadatafooter"></slot>
   </aeris-catalogue-metadata-panel>
 </div>
@@ -181,6 +181,7 @@ export default {
       currentUuid: null,
       currentType: null,
       currentMetadata: null,
+      currentTemplate: null,
       visibleMetadataPanel: false,
       editMetadataPanel: false
     }
@@ -214,6 +215,11 @@ export default {
         this.currentType = e.detail.type
       } else {
         this.currentType = ''
+      }
+      if (e.detail.clientTemplateName) {
+    	  this.currentTemplate = e.detail.clientTemplateName
+      } else {
+    	  this.currentTemplate = ''
       }
       this.visibleMetadataPanel = true;
     },
