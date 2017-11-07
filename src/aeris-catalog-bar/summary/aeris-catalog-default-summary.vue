@@ -69,7 +69,11 @@ export default {
       value:  {
           type: String,
           default: ''
-        }  
+        }  ,
+     clientTemplateName:  {
+        type: String,
+        default: ''
+      }  
   },
   
   watch: {
@@ -161,6 +165,15 @@ export default {
 		  }
     },
     
+    clientTemplateName: function() {
+    	var aux = JSON.parse(this.value)
+		  if (aux.clientTemplateName) {
+			  return aux.clientTemplateName;
+		  }
+		  else {
+			  return "";
+		  }
+    },
     
 
   },
@@ -206,7 +219,7 @@ export default {
   	},
   	
   	displayDetails: function() {
-  		 var event = new CustomEvent('aerisCatalogueDisplayMetadata', { detail: {type: this.type, uuid: this.uuid, title: this.title, iconClass: this.headerIconClass}});
+  		 var event = new CustomEvent('aerisCatalogueDisplayMetadata', { detail: {type: this.type, uuid: this.uuid, title: this.title, iconClass: this.headerIconClass, clientTemplateName: this.clientTemplateName}});
    		document.dispatchEvent(event);
   	}
   	

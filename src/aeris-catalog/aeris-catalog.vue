@@ -28,7 +28,7 @@
 		</span>
 <aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
 <div class="subpanel" style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-  <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata" :clientTemplate="currentTemplate">
+  <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata" :client-template="currentTemplate">
     <slot name="metadatafooter"></slot>
   </aeris-catalogue-metadata-panel>
 </div>
