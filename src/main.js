@@ -11,8 +11,10 @@ Vue.use(VueI18n);
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
-import VueColor from './vue-color.js'
-Vue.use(VueColor)
+import {VueColorPlugin, VueAerisLanguagePlugin} from 'aeris-mixins'
+Vue.use(VueColorPlugin)
+Vue.use(VueAerisLanguagePlugin)
+
 
 import AerisUiButton from './aeris-ui/aeris-ui-button.vue'
 import MdTemplateProxy from './aeris-catalog/md-template/md-template-proxy.vue'
