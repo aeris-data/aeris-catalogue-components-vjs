@@ -39,7 +39,7 @@
     <div id="metadataPanelContent" class="metadata-panel-content">
 
       <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
-      <md-template-proxy :type="type" :edit="edit" :clientTemplateName="clientTemplate"></md-template-proxy>
+      <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
     </div>
     <footer class="metadata-panel-footer">
       <i class="fa fa-expand metadata-footer-icon" @click="switchmode" :title="$t('maximize')" v-if="minimize"></i>
@@ -87,6 +87,10 @@ export default {
     },
     metadata: {
       required: true
+    },
+    clientTemplate: {
+        type: String,
+    	default: ""
     }
   },
 

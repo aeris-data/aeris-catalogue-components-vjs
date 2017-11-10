@@ -11,8 +11,8 @@
   <aeris-metadata-information></aeris-metadata-information>
 </div>
 <div class="column">
-<aeris-metadata-data-links></aeris-metadata-data-links> 
-  <aeris-metadata-plateforms></aeris-metadata-plateforms>
+  <aeris-metadata-data-links></aeris-metadata-data-links> 
+  <aeris-metadata-platforms></aeris-metadata-platforms>
   <aeris-metadata-formats></aeris-metadata-formats>
   <aeris-metadata-parameters></aeris-metadata-parameters>
   <aeris-metadata-publications></aeris-metadata-publications>
