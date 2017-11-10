@@ -48,7 +48,7 @@ import AerisPlatformSearchCriteriaContent from './aeris-platform-search-criteria
 import AerisPlatformSearchCriteria from './aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
 import AerisLevelSearchCriteriaContent from './aeris-level-search-criteria/aeris-level-search-criteria-content.vue'
 import AerisLevelSearchCriteria from './aeris-level-search-criteria/aeris-level-search-criteria.vue'
-
+import AerisCampaignSearchCriteriaContent from './aeris-collection-search-criteria/aeris-campaign-search-criteria-content.vue'
 import AerisCollectionSearchCriteriaContent from './aeris-collection-search-criteria/aeris-collection-search-criteria-content.vue'
 import AerisCollectionSearchCriteria from './aeris-collection-search-criteria/aeris-collection-search-criteria.vue'
 import AerisCheckboxtreeItem from './aeris-collection-search-criteria/aeris-checkboxtree-item.vue'
@@ -114,6 +114,7 @@ ljs.load('dep', function() {
 			registerElement('aeris-spatial-search-criteria-content', AerisSpatialSearchCriteriaContent);
 			registerElement('aeris-temporal-search-criteria-content', AerisTemporalSearchCriteriaContent);
 			registerElement('aeris-collection-search-criteria-content', AerisCollectionSearchCriteriaContent);
+			registerElement('aeris-campaign-search-criteria-content', AerisCampaignSearchCriteriaContent);
 			registerElement('aeris-catalog-search-box', AerisCatalogSearchBox);
 			registerElement('aeris-keyword-search-criteria', AerisKeywordSearchCriteria);
 			registerElement('aeris-collection-search-criteria', AerisCollectionSearchCriteria);

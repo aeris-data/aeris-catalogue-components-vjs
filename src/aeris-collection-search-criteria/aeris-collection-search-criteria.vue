@@ -1,18 +1,21 @@
 <i18n>
 {
   "en": {
-    "collections": "Collections"
+    "collections": "Collections",
+    "campaigns": "Campaigns"
   },
   "fr": {
-    "collections": "Collections"
+    "collections": "Collections",
+    "campaigns": "Campagnes"
   }
 }
 </i18n>
 
 <template>
 <span class="aeris-platform-search-criteria-host" >
-<aeris-catalog-search-box id="box"  :title="$t('collections')" header-icon-class="fa fa-cubes" :deployed="deployed">
-     <aeris-collection-search-criteria-content></aeris-collection-search-criteria-content>
+<aeris-catalog-search-box id="box"  :title="$t(headertitle)" :header-icon-class="headericonclass" :deployed="deployed" >
+     <aeris-collection-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" v-if="headertitle == 'collections'"></aeris-collection-search-criteria-content>
+     <aeris-campaign-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" v-else></aeris-campaign-search-criteria-content>
 </aeris-catalog-search-box>
 </span>
 </template>
@@ -24,6 +27,27 @@ export default {
       type: String,
       default: 'en'
     },
+    
+    headertitle:  {
+        type: String,
+        default: 'collections'
+      },
+      
+      headericonclass:  {
+          type: String,
+          default: 'fa fa-cubes'
+        },
+      
+      inclusion:  {
+          type: String,
+          default: ''
+        },
+        
+        exclusion:  {
+            type: String,
+            default: ''
+          },
+    
     deployed:  {
         type: Boolean,
         default: false

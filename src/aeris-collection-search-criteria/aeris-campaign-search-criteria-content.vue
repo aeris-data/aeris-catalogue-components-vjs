@@ -54,7 +54,7 @@
 		          
 		          localstoragekey: {
 			            type: String,
-		            default: 'aerisCollections'
+		            default: 'aerisCampaign'
 		          }    
 		  },
 		  		  
@@ -74,7 +74,7 @@
 			  this.handleSearchBarListener = null;
 			  document.removeEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
 			  this.handleSearchBarResetListener = null;
-			  document.removeEventListener('aerisCollectionDownloadResponse', this.handleCollectionResponseListener);
+			  document.removeEventListener('aerisCampaignDownloadResponse', this.handleCollectionResponseListener);
 			  this.handleCollectionDowloadListener = null;
 		  },
 		  
@@ -83,7 +83,7 @@
 		  },
 
 		  mounted: function() {
-			  console.log('Aeris collections search criteria content - created');
+			  console.log('Aeris collectcampaign search criteria content - created');
 			  this.$i18n.locale = this.lang;
 
 			  this.handleSearchBarListener = this.handleSearchBarEvent.bind(this);
@@ -91,7 +91,7 @@
 			  this.handleSearchBarResetListener = this.handleSearchBarResetEvent.bind(this);
 			  document.addEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
 			  this.handleCollectionResponseListener = this.handleCollectionResponse.bind(this);
-			  document.addEventListener('aerisCollectionDownloadResponse', this.handleCollectionResponseListener);
+			  document.addEventListener('aerisCampaignDownloadResponse', this.handleCollectionResponseListener);
 			  
 			 this.loadCollections();
 			  
@@ -131,7 +131,7 @@
 		    return {
 		    	parentService: null,
 				collections: [],
-				level3collections:["EUROCHAMP","GMOS"],
+				level3collections:[],
 				filterValue: '',
 				loading:false,
 				existing:false,
@@ -172,7 +172,7 @@
 			  	
 			  loadCollections() {
 				  console.log("Aeris - loadCollections")
-				  if (window.loadingCollections) {
+				  if (window.loadingCoampaigns) {
 					  this.loading = true;
 					  if (window.localStorage) {
 				          var aux  = window.localStorage.getItem(this.localstoragekey);
@@ -190,7 +190,7 @@
 				        	  this.existing = true;
 						  }
 				        }
-					 window.loadingCollections = true
+					 window.loadingCoampaigns = true
 					 var parentService = document.querySelector('aeris-catalog').attributes.getNamedItem('metadata-service').value;
 					  parentService = parentService.endsWith('/') ? parentService + 'collections/' : parentService + '/collections/';
 					  var url = this.service || parentService;
@@ -205,7 +205,7 @@
 					  }
 					  //
 					  this.loading = true;
-					  console.log("Aeris - loadCollections - Contacting server")
+					  console.log("Aeris - loadCampaigns - Contacting server")
 					  this.$http.get(url, {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}})
 					  .then((response)=>{this.handleResponse(response)},(response)=>{this.handleError(response)});
 				  }
@@ -304,14 +304,14 @@
 			  handleResponse: function(response) {
 				  
 				  this.getTreeFromResponseBody(response.body);
-				  window.loadingCollections = false
+				  window.loadingCoampaigns = false
 				  this.loading = false;
-			      var event = new CustomEvent('aerisCollectionDownloadResponse', { detail: {collections: this.collections}});
+			      var event = new CustomEvent('aerisCampaignDownloadResponse', { detail: {collections: this.collections}});
 			  	  document.dispatchEvent(event);
 			  },
 			  
 			  handleError: function(request) {
-				    window.loadingCollections = false
+				    window.loadingCoampaigns = false
 				  	this.loading = false;
 				  	console.log("Aeris collection criteria - Error while accessing server:"); 
 					var error = response.status;
