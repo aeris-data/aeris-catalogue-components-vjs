@@ -344,7 +344,14 @@
 					entry.program= program;
 					result.push(entry);
 				}
-				e.detail.collections = result;
+				if (e.detail.collection) {
+					for (var i = 0; i < result.length; i++) {
+						e.detail.collections.push(result[i])
+					}
+				}
+				else {
+					e.detail.collections = result;
+				}
 		  	},
 			
 		  	handleSearchBarResetEvent: function(e) {
