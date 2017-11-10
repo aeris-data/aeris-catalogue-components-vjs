@@ -344,13 +344,16 @@
 					entry.program= program;
 					result.push(entry);
 				}
-				if (e.detail.collection) {
+				console.log('ttt')
+				if (result.length > 0) {
+				if (e.detail.collections) {
 					for (var i = 0; i < result.length; i++) {
 						e.detail.collections.push(result[i])
 					}
 				}
 				else {
 					e.detail.collections = result;
+				}
 				}
 		  	},
 			
