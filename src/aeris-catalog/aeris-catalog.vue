@@ -13,7 +13,7 @@
 }
 </i18n>
 <template>
-<span class="aeris-catalog-host" style="background:white">
+<div class="aeris-catalog-host" style="background:white">
   <div class="app-container">
     <aeris-notifier></aeris-notifier>
     <aeris-catalog-criteria :lang="lang">
@@ -26,14 +26,15 @@
 			Your shopphing cart:
 			<aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken" ></aeris-catalog-cart>
 		</span>
-<aeris-catalog-summaries :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries>
-<div class="subpanel" style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-  <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata" :client-template="currentTemplate">
-    <slot name="metadatafooter"></slot>
-  </aeris-catalogue-metadata-panel>
+    <aeris-catalog-summaries :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries>
+    <div class="subpanel" style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
+      <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata"
+        :client-template="currentTemplate">
+        <slot name="metadatafooter"></slot>
+      </aeris-catalogue-metadata-panel>
+    </div>
+  </div>
 </div>
-</div>
-</span>
 </template>
 
 <script>
@@ -217,9 +218,9 @@ export default {
         this.currentType = ''
       }
       if (e.detail.clientTemplateName) {
-    	  this.currentTemplate = e.detail.clientTemplateName
+        this.currentTemplate = e.detail.clientTemplateName
       } else {
-    	  this.currentTemplate = ''
+        this.currentTemplate = ''
       }
       this.visibleMetadataPanel = true;
     },

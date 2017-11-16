@@ -20,24 +20,24 @@ export default {
             type: String,
             default: ''
        }
-	    
+
   },
-  
+
   watch: {
-	  
-	 
-	  
+
+
+
 	  },
-  
+
   destroyed: function() {
   },
-  
- 
+
+
   mounted: function() {
   },
-  
+
   computed: {
-	  
+
 	  contenu: function() {
 		  if (!this.edit) {
 			  var elementName ="";
@@ -51,7 +51,7 @@ export default {
 			  else {
 				  elementName = "md-template-collection"
 			  }
-			  
+
 			  if (window.registredAerisElements.indexOf(elementName)>=0) {
 				  return "<"+elementName+"></"+elementName+">";
 			  }
@@ -70,19 +70,19 @@ export default {
 			  }
 		  }
 	  }
-	  
+
   },
 
    data () {
     return {
     }
   },
-  
+
   updated: function() {
   },
-  
+
   methods: {
-  	
+
   }
 }
 </script>

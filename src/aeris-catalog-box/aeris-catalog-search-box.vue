@@ -1,106 +1,105 @@
 <template>
-<span class="aeris-catalog-box-host" v-bind:class="{ showBody: isdeployed }">
-<div id="main" class="box noselect">
-<header class="box-heading" v-on:click="isdeployed = !isdeployed">
-  <div class="box-title">
-      <i  :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
-    <h4 no-label-float>{{title}}</h4>
-  </div>
-  <div class="box-heading-buttons">
-    <i class="chevron" :class="openIconClass"></i>
-  </div>
-</header>
- <div id="collapse" class="box-collapsable-part">
-  <main class="box-body">
-    <div class="content">
-      <slot></slot>
+<div class="aeris-catalog-box-host" v-bind:class="{ showBody: isdeployed }">
+  <div id="main" class="box noselect">
+    <header class="box-heading" v-on:click="isdeployed = !isdeployed">
+      <div class="box-title">
+        <i :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
+        <h4 no-label-float>{{title}}</h4>
+      </div>
+      <div class="box-heading-buttons">
+        <i class="chevron" :class="openIconClass"></i>
+      </div>
+    </header>
+    <div id="collapse" class="box-collapsable-part">
+      <main class="box-body">
+        <div class="content">
+          <slot></slot>
+        </div>
+      </main>
     </div>
-  </main>
+  </div>
 </div>
-</div>
-</span>
 </template>
 
 <script>
 export default {
   props: {
-    headerIconClass:  {
+    headerIconClass: {
       type: String,
       default: 'fa fa-search'
     },
-    deployed:  {
-        type: Boolean,
-        default: false
-      },
-    openIconClass:  {
-        type: String,
-        default: 'fa fa-chevron-down'
-      },
-      title:  {
-          type: String,
-          default: ''
-        }  
-    
-    
+    deployed: {
+      type: Boolean,
+      default: false
+    },
+    openIconClass: {
+      type: String,
+      default: 'fa fa-chevron-down'
+    },
+    title: {
+      type: String,
+      default: ''
+    }
+
+
   },
-  
-  watch: {
-  },
-  
+
+  watch: {},
+
   destroyed: function() {
-  	document.removeEventListener('aerisTheme', this.aerisThemeListener);
-  	this.aerisThemeListener = null;
+    document.removeEventListener('aerisTheme', this.aerisThemeListener);
+    this.aerisThemeListener = null;
   },
-  
-  created: function () {
-  console.log("aeris-keyword-search-criteria - Creating");
-   this.aerisThemeListener = this.handleTheme.bind(this) 
-   document.addEventListener('aerisTheme', this.aerisThemeListener);
-   this.isdeployed = this.deployed
+
+  created: function() {
+    console.log("aeris-keyword-search-criteria - Creating");
+    this.aerisThemeListener = this.handleTheme.bind(this)
+    document.addEventListener('aerisTheme', this.aerisThemeListener);
+    this.isdeployed = this.deployed
   },
 
   mounted: function() {
-  	var event = new CustomEvent('aerisThemeRequest', {});
-  	document.dispatchEvent(event);
-  },
-  
-  computed: {
-	  
+    var event = new CustomEvent('aerisThemeRequest', {});
+    document.dispatchEvent(event);
   },
 
-   data () {
+  computed: {
+
+  },
+
+  data() {
     return {
-    	theme: null,
-    	aerisThemeListener: null,
-    	hasToolbar: false,
-    	isdeployed: null
+      theme: null,
+      aerisThemeListener: null,
+      hasToolbar: false,
+      isdeployed: null
     }
   },
-  
+
   updated: function() {
-  	this.ensureTheme()
+    this.ensureTheme()
   },
-  
+
   methods: {
-  
-	  handleChevronClick: function() {
-       
+
+    handleChevronClick: function() {
+
     },
-  	
-  	handleTheme: function(theme) {
-  		this.theme = theme.detail
-		this.ensureTheme()
-  	},
-  	
-  	ensureTheme: function() {
-  	if (this.theme) {
-  		if (this.$el) { 
-  			this.$el.querySelector("header").style.background=this.theme.primary
-  		}
-  	}
-  	}
-  	
-  	
+
+    handleTheme: function(theme) {
+      this.theme = theme.detail
+      this.ensureTheme()
+    },
+
+    ensureTheme: function() {
+      if (this.theme) {
+        if (this.$el) {
+          this.$el.querySelector("header").style.background = this.theme.primary
+        }
+      }
+    }
+
+
   }
 }
 </script>

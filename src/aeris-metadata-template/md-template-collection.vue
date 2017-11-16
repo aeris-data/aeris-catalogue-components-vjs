@@ -12,7 +12,7 @@
 </div>
 <div class="column">
   <aeris-metadata-datapolicy></aeris-metadata-datapolicy>
-  <aeris-metadata-data-links></aeris-metadata-data-links> 
+  <aeris-metadata-data-links></aeris-metadata-data-links>
   <aeris-metadata-platforms></aeris-metadata-platforms>
   <aeris-metadata-formats></aeris-metadata-formats>
   <aeris-metadata-parameters></aeris-metadata-parameters>
@@ -25,35 +25,28 @@
 
 <script>
 export default {
-	props: {
-	  	lang:  {
-	      type: String,
-	      default: 'en'
-	    }
-	},
-  
-  destroyed: function() {
-  },
-  
-  created: function () {
-  },
-
-  mounted: function() {
-  },
-  
-  computed: {
-  },
-
-   data () {
-    return {
+  props: {
+    lang: {
+      type: String,
+      default: 'en'
     }
   },
-  
-  updated: function() {
+
+  destroyed: function() {},
+
+  created: function() {},
+
+  mounted: function() {},
+
+  computed: {},
+
+  data() {
+    return {}
   },
-  
-  methods: {
-  }
+
+  updated: function() {},
+
+  methods: {}
 }
 </script>
 
@@ -72,7 +65,7 @@ export default {
 
 .md-template-collection-host .column .component-container {
 	margin-bottom: 10px;
-   
+
 }
 
 .md-template-collection-host .column~.column {

@@ -12,153 +12,146 @@
 </i18n>
 
 <template>
-<span class="aeris-temporal-search-criteria-content-host">
-<div class="aeris-input-group">
-   <span class="right">{{$t('from')}}</span>
-  <input id="from" v-model="from">
-</div>
-<aeris-datepicker for="input#from" format="DD/MM/YYYY"></aeris-datepicker>
-	<div class="aeris-input-group">
-		<span class="right">{{$t('to')}}</span>
-  <input id="to" v-model="to">
+<div class="aeris-temporal-search-criteria-content-host">
+  <div class="aeris-input-group">
+    <span class="right">{{$t('from')}}</span>
+    <input id="from" v-model="from">
   </div>
-  <aeris-datepicker for="input#to" format="DD/MM/YYYY"></aeris-datepicker> 
-<span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
+  <aeris-datepicker for="input#from" format="DD/MM/YYYY"></aeris-datepicker>
+  <div class="aeris-input-group">
+    <span class="right">{{$t('to')}}</span>
+    <input id="to" v-model="to">
+  </div>
+  <aeris-datepicker for="input#to" format="DD/MM/YYYY"></aeris-datepicker>
+  <span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
 
-</span>
+</div>
 </template>
 
 <script>
 export default {
-	 
+
   props: {
-  	lang:  {
+    lang: {
       type: String,
       default: 'en'
     }
   },
-  
+
   watch: {
-    lang (value) {
-	      this.$i18n.locale = value
+    lang(value) {
+      this.$i18n.locale = value
     }
   },
-  
+
   destroyed: function() {
-	  document.removeEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
-	  this.catalogueResetListener = null;
-	  document.removeEventListener('aerisCatalogueSearchEvent', this.aerisCatalogueSearchEventListener);
-	  this.aerisCatalogueSearchEventListener = null;
-  },
-  
-  created: function () {
-   this.$i18n.locale = this.lang
-   this.catalogueResetListener = this.handleCatalogueReset.bind(this) 
-   document.addEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
-   this.aerisCatalogueSearchEventListener = this.handleSearch.bind(this) 
-   document.addEventListener('aerisCatalogueSearchEvent', this.aerisCatalogueSearchEventListener);
+    document.removeEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
+    this.catalogueResetListener = null;
+    document.removeEventListener('aerisCatalogueSearchEvent', this.aerisCatalogueSearchEventListener);
+    this.aerisCatalogueSearchEventListener = null;
   },
 
-  mounted: function() {
+  created: function() {
+    this.$i18n.locale = this.lang
+    this.catalogueResetListener = this.handleCatalogueReset.bind(this)
+    document.addEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
+    this.aerisCatalogueSearchEventListener = this.handleSearch.bind(this)
+    document.addEventListener('aerisCatalogueSearchEvent', this.aerisCatalogueSearchEventListener);
   },
-  
+
+  mounted: function() {},
+
   computed: {
-  	
+
   },
 
-   data () {
+  data() {
     return {
-    	aerisCatalogueSearchEventListener: null,
-    	catalogueResetListener: null,
-    	from:null,
-    	to:null,
-    	errorMessage: null
-    	
+      aerisCatalogueSearchEventListener: null,
+      catalogueResetListener: null,
+      from: null,
+      to: null,
+      errorMessage: null
+
     }
   },
-  
-  updated: function() {
-  },
-  
+
+  updated: function() {},
+
   methods: {
-	  handleCatalogueReset: function() {
-		  this.from=""
-		  this.to=""
-		  
-	  },
-	  
-	  handleSearch: function(e) {
-		var temporal = {};
-	    var from = moment(this.from, this.format);
-	    var to = moment(this.to, this.format);
+    handleCatalogueReset: function() {
+      this.from = ""
+      this.to = ""
 
-	        temporal.from = from.isValid() ? from.format('YYYY-MM-DD') : '';
-	        temporal.to = to.isValid() ? to.format('YYYY-MM-DD') : '';
+    },
 
-	        e.detail.temporal = temporal;
-	  }
+    handleSearch: function(e) {
+      var temporal = {};
+      var from = moment(this.from, this.format);
+      var to = moment(this.to, this.format);
+
+      temporal.from = from.isValid() ? from.format('YYYY-MM-DD') : '';
+      temporal.to = to.isValid() ? to.format('YYYY-MM-DD') : '';
+
+      e.detail.temporal = temporal;
+    }
   }
 }
 </script>
 
 <style>
-
 .aeris-temporal-search-criteria-content-host {
-    display: block
+  display: block
 }
 
 .aeris-temporal-search-criteria-content-host .right {
-	min-width: 40px;
-	border-right: 1px solid #fff;
-	box-sizing: border-box;
-    display: block;
-    height: 100%;
-    text-align: center;
+  min-width: 40px;
+  border-right: 1px solid #fff;
+  box-sizing: border-box;
+  display: block;
+  height: 100%;
+  text-align: center;
 }
 
 .aeris-temporal-search-criteria-content-host .error-message {
-    font-size: 12px;
-    color: red
+  font-size: 12px;
+  color: red
 }
 
 .aeris-temporal-search-criteria-content-host .aeris-input-group {
-    border: none;
-    background-color: rgba(172,220,238,0.3);
+  border: none;
+  background-color: rgba(172, 220, 238, 0.3);
 }
 
 .aeris-temporal-search-criteria-content-host .aeris-input-group input {
-	border: none;
-	background-color: transparent;
-	padding: 0 5px;
-	outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 0 5px;
+  outline: none;
 }
-	
+
 .aeris-temporal-search-criteria-content-host .aeris-input-group aeris-datepicker {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 999;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
 }
 
 .aeris-temporal-search-criteria-content-host .aeris-input-group aeris-datepicker2 {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 999;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
 }
 
 .aeris-temporal-search-criteria-content-host .aeris-input-group {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    margin: 5px 0;
-    width: 100%;
-    height: 25px;
-    line-height: 25px;
-    overflow: hidden;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin: 5px 0;
+  width: 100%;
+  height: 25px;
+  line-height: 25px;
+  overflow: hidden;
 }
-
-
-
-
 </style>

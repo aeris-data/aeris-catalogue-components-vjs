@@ -20,7 +20,7 @@
 </i18n>
 
 <template>
-<span class="aeris-catalog-metadata-panel-host">
+<div class="aeris-catalog-metadata-panel-host">
 
 
   <aside id="metadataPanel" class="metadata-panel" :class="{maximize: maximize, minimize: minimize}">
@@ -50,7 +50,7 @@
       <slot></slot>
     </footer>
   </aside>
-</span>
+</div>
 </template>
 
 <script>
