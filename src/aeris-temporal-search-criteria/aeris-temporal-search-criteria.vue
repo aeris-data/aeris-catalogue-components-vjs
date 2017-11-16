@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="aeris-temporal-extents-search-criteria-host">
+<div data-aeris-temporal-extents-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t('temporal-extents')" header-icon-class="fa fa-calendar" :deployed="deployed">
     <aeris-temporal-search-criteria-content></aeris-temporal-search-criteria-content>
   </aeris-catalog-search-box>

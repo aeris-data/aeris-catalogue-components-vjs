@@ -11,7 +11,7 @@
 }
 </i18n>
 <template>
-<div class="aeris-catalog-default-summary-host" v-bind:class="{ showBody: deployed }">
+<div data-aeris-catalog-default-summary v-bind:class="{ showBody: deployed }">
   <div id="main" class="box noselect">
     <header class="box-heading" v-on:click="deployed = !deployed">
       <div class="box-title">
@@ -228,41 +228,41 @@ export default {
 
 <style>
 
-.aeris-catalog-default-summary-host .box-collapsable-part {
+[data-aeris-catalog-default-summary] .box-collapsable-part {
     display: none;
     transition: 0.3s
 }
 
-.aeris-catalog-default-summary-host.showBody .box-collapsable-part {
+[data-aeris-catalog-default-summary].showBody .box-collapsable-part {
     display: block;
     transition: 0.3s
 }
-.aeris-catalog-default-summary-host.showBody .chevron {
+[data-aeris-catalog-default-summary].showBody .chevron {
     transform: rotate(180deg)
 }
-.aeris-catalog-default-summary-host .chevron {
+[data-aeris-catalog-default-summary] .chevron {
     transition: 0.3s
 }
 
-.aeris-catalog-default-summary-host {
+[data-aeris-catalog-default-summary] {
     box-sizing: border-box;
     transition: transform 4s ease-out;
 }
 
-.aeris-catalog-default-summary-host > div {
+[data-aeris-catalog-default-summary] > div {
 	box-shadow:  2px 2px 2px 0px rgba(0,0,0,0.4);
 }
 
-.aeris-catalog-default-summary-host:hover {
+[data-aeris-catalog-default-summary]:hover {
     cursor: default
 }
-.aeris-catalog-default-summary-host .box {
+[data-aeris-catalog-default-summary] .box {
     box-sizing: border-box;
     width: 100%;
     color: #333;
     background-color: #fff
 }
-.aeris-catalog-default-summary-host .box-title {
+[data-aeris-catalog-default-summary] .box-title {
     display: flex;
     font-size: 16px;
     line-height: 1.2;
@@ -272,28 +272,28 @@ export default {
 	align-items: center;
 	justify-content: center;
 }
-.aeris-catalog-default-summary-host .box-title .plateform-icon,
-.aeris-catalog-default-summary-host .box-title .fa {
+[data-aeris-catalog-default-summary] .box-title .plateform-icon,
+[data-aeris-catalog-default-summary] .box-title .fa {
     margin-right: 10px
 }
 
-.aeris-catalog-default-summary-host header {
+[data-aeris-catalog-default-summary] header {
 	color:#fff;
 }
 
-.aeris-catalog-default-summary-host .box-title h4 {
+[data-aeris-catalog-default-summary] .box-title h4 {
     margin: 0;
     font-size: 16px;
 }
-.aeris-catalog-default-summary-host .box-body {
+[data-aeris-catalog-default-summary] .box-body {
     font-size: 14px;
     word-wrap: break-word
 }
-.aeris-catalog-default-summary-host .box-body .content {
+[data-aeris-catalog-default-summary] .box-body .content {
     padding: 10px;
     text-align: justify
 }
-.aeris-catalog-default-summary-host .box-toolbar {
+[data-aeris-catalog-default-summary] .box-toolbar {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -301,7 +301,7 @@ export default {
     border-bottom: 1px solid #ccc;
     background-color: #fafafa
 }
-.aeris-catalog-default-summary-host .box-heading {
+[data-aeris-catalog-default-summary] .box-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -309,25 +309,25 @@ export default {
     border: none;
     cursor: pointer
 }
-.aeris-catalog-default-summary-host .box-heading .box-heading-buttons {
+[data-aeris-catalog-default-summary] .box-heading .box-heading-buttons {
     display: flex;
     flex-flow: row nowrap;
     margin-right:5px;
 }
-.aeris-catalog-default-summary-host .box-heading .box-heading-buttons .fa {
+[data-aeris-catalog-default-summary] .box-heading .box-heading-buttons .fa {
     margin-left: 5px
 }
 
-.aeris-catalog-default-summary-host .box-collapsable-part {
+[data-aeris-catalog-default-summary] .box-collapsable-part {
 	border: 1px solid #ddd;
 }
-.aeris-catalog-default-summary-host .box-footer {
+[data-aeris-catalog-default-summary] .box-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px
 }
-.aeris-catalog-default-summary-host .expandButton {
+[data-aeris-catalog-default-summary] .expandButton {
     font-size: 14px;
     padding: 6px 13px;
     margin: 0 5px;
@@ -337,14 +337,14 @@ export default {
     opacity: 1;
     outline: none
 }
-.aeris-catalog-default-summary-host .expandButton:hover {
+[data-aeris-catalog-default-summary] .expandButton:hover {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     color: #fff;
     background-color: #d35400;
     opacity: 1
 }
-.aeris-catalog-default-summary-host .metadata-datalevel .cartouche {
+[data-aeris-catalog-default-summary] .metadata-datalevel .cartouche {
     display: inline-block;
     padding: 3px 5px;
     border-radius: 5px;
@@ -352,7 +352,7 @@ export default {
     font-size: 12px;
     background-color: #f0ad4e
 }
-.aeris-catalog-default-summary-host .metadata-datalevel .cartouche .fa {
+[data-aeris-catalog-default-summary] .metadata-datalevel .cartouche .fa {
     margin-right: 5px
 }
  </style>

@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-	<div class="aeris-catalogue-help-button-host">
+	<div data-aeris-catalogue-help-button>
 		<div class="map-rounded-button aeris-catalog-button tooltip " data-popup="right" :title="$t('help')" :data-title="$t('help')" @click="handleHelp">
 			<i class="fa fa-question"></i>
 		</div>

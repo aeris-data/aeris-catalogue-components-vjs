@@ -1,5 +1,5 @@
 <template>
-<div class="aeris-catalog-map-host" :class="hidemap ? hidemap : showmap">
+<div data-aeris-catalog-map :class="hidemap ? hidemap : showmap">
   <div class="map-container">
     <div id="mapMask" class="map-mask"></div>
     <div id="map" class="map" tabindex="0"></div>
@@ -410,39 +410,39 @@ export default {
 </script>
 
 <style>
-.aeris-catalog-map-host {
+[data-aeris-catalog-map] {
     display: block;
     position: relative;
     background-color: #fff;
 	margin-left: 10px;
 }
 
-.aeris-catalog-map-host.hidemap {
+[data-aeris-catalog-map].hidemap {
     overflow: ;
 }
 
-.aeris-catalog-map-host.showmap {
+[data-aeris-catalog-map].showmap {
 	overflow: hidden;
 }
 
 
-.aeris-catalog-map-host .map-container {
+[data-aeris-catalog-map] .map-container {
     position: relative;
     height: 100%;
     opacity: 1;
     transition: 0.3s
 }
-.aeris-catalog-map-host .map-container .map {
+[data-aeris-catalog-map] .map-container .map {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
     background-color: #2D4059;
     transition: 0.3s
 }
-.aeris-catalog-map-host .map-container:hover .map-coordinates {
+[data-aeris-catalog-map] .map-container:hover .map-coordinates {
     opacity: 1
 }
-.aeris-catalog-map-host .map-container .map-mask {
+[data-aeris-catalog-map] .map-container .map-mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -450,24 +450,24 @@ export default {
     height: 100%;
     background-color: #fff
 }
-.aeris-catalog-map-host .viewport {
+[data-aeris-catalog-map] .viewport {
     opacity: 0;
     transition: 0.6s
 }
-.aeris-catalog-map-host .map.reduced {
+[data-aeris-catalog-map] .map.reduced {
     padding-right: 300px
 }
-.aeris-catalog-map-host .map.reduced ~ .map-coordinates {
+[data-aeris-catalog-map] .map.reduced ~ .map-coordinates {
     right: 305px
 }
-.aeris-catalog-map-host aeris-spinner {
+[data-aeris-catalog-map] aeris-spinner {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     --spinner-main-color: #333
 }
-.aeris-catalog-map-host .feature-info-tooltip {
+[data-aeris-catalog-map] .feature-info-tooltip {
     position: absolute;
     max-width: 300px;
     background-color: rgba(255, 255, 255, 0.8);
@@ -481,19 +481,19 @@ export default {
     transform-origin: 0 50%;
     transition: opacity 0.3s, transform 0.3s
 }
-.aeris-catalog-map-host .feature-info-tooltip h4 {
+[data-aeris-catalog-map] .feature-info-tooltip h4 {
     margin: 0
 }
-.aeris-catalog-map-host .feature-info-tooltip ul {
+[data-aeris-catalog-map] .feature-info-tooltip ul {
     margin: 3px 0 0;
     padding-left: 15px
 }
-.aeris-catalog-map-host .feature-info-tooltip.hidden {
+[data-aeris-catalog-map] .feature-info-tooltip.hidden {
     transform: scaleX(0);
     opacity: 0;
     transition: 0s
 }
-.aeris-catalog-map-host .map-coordinates {
+[data-aeris-catalog-map] .map-coordinates {
     display: block;
     opacity: 0;
     width: 120px;

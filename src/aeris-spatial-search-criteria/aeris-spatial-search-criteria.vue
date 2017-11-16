@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="aeris-spatial-extents-search-criteria-host">
+<div data-aeris-spatial-extents-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t('spatial-extents')" header-icon-class="fa fa-globe" :deployed="deployed">
     <aeris-spatial-search-criteria-content></aeris-spatial-search-criteria-content>
   </aeris-catalog-search-box>

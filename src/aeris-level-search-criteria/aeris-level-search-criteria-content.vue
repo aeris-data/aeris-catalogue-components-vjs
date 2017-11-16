@@ -34,7 +34,7 @@
 </i18n>
 
 <template>
-<div class="aeris-level-search-criteria-content-host">
+<div data-aeris-level-search-criteria-content>
 
   <div v-for="(level, index) of levels" class="program">
 
@@ -238,45 +238,45 @@ export default {
 }
 </script>
 <style>
-.aeris-level-search-criteria-content-host .visible {
+[data-aeris-level-search-criteria-content] .visible {
   display: block;
 }
 
-.aeris-level-search-criteria-content-host .notvisible {
+[data-aeris-level-search-criteria-content] .notvisible {
   display: none;
 }
 
-.aeris-level-search-criteria-content-host {
+[data-aeris-level-search-criteria-content] {
   display: block;
 }
 
-.aeris-level-search-criteria-content-host .program {
+[data-aeris-level-search-criteria-content] .program {
   margin-bottom: 5px;
 }
 
-.aeris-level-search-criteria-content-host .program .program-header {
+[data-aeris-level-search-criteria-content] .program .program-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 5px;
 }
 
-.aeris-level-search-criteria-content-host .program .program-header label {
+[data-aeris-level-search-criteria-content] .program .program-header label {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
   margin: 2px;
 }
 
-.aeris-level-search-criteria-content-host .program .program-header .fa {
+[data-aeris-level-search-criteria-content] .program .program-header .fa {
   cursor: pointer;
 }
 
-.aeris-level-search-criteria-content-host .program .collection {
+[data-aeris-level-search-criteria-content] .program .collection {
   margin-left: 20px;
 }
 
-.aeris-level-search-criteria-content-host .icon-input {
+[data-aeris-level-search-criteria-content] .icon-input {
   height: 20px;
   line-height: 20px;
   font-size: 14px;
@@ -289,18 +289,18 @@ export default {
   color: #999;
 }
 
-.aeris-level-search-criteria-content-host .icon-input i {
+[data-aeris-level-search-criteria-content] .icon-input i {
   padding: 3px;
 }
 
-.aeris-level-search-criteria-content-host .filter-input {
+[data-aeris-level-search-criteria-content] .filter-input {
   border-style: none;
   border: none;
   outline: none;
   margin: 2px;
 }
 
-.aeris-level-search-criteria-content-host .badge {
+[data-aeris-level-search-criteria-content] .badge {
   display: inline-block;
   margin: 0 5px -2px;
   padding: 0 4px;

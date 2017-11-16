@@ -18,7 +18,7 @@
 </i18n>
 
 <template>
-<div class="aeris-collection-search-criteria-content-host">
+<div data-aeris-collection-search-criteria-content>
 
 
   <div v-if="isLoading" class="loadingbar">
@@ -390,45 +390,45 @@ export default {
   padding: 3px;
 }
 
-.aeris-collection-search-criteria-content-host .visible {
+[data-aeris-collection-search-criteria-content] .visible {
   display: block;
 }
 
-.aeris-collection-search-criteria-content-host .notvisible {
+[data-aeris-collection-search-criteria-content] .notvisible {
   display: none;
 }
 
-.aeris-collection-search-criteria-content-host {
+[data-aeris-collection-search-criteria-content] {
   display: block;
 }
 
-.aeris-collection-search-criteria-content-host .program {
+[data-aeris-collection-search-criteria-content] .program {
   margin-bottom: 5px;
 }
 
-.aeris-collection-search-criteria-content-host .program .program-header {
+[data-aeris-collection-search-criteria-content] .program .program-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 5px;
 }
 
-.aeris-collection-search-criteria-content-host .program .program-header label {
+[data-aeris-collection-search-criteria-content] .program .program-header label {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
   margin: 2px;
 }
 
-.aeris-collection-search-criteria-content-host .program .program-header .fa {
+[data-aeris-collection-search-criteria-content] .program .program-header .fa {
   cursor: pointer;
 }
 
-.aeris-collection-search-criteria-content-host .program .collection {
+[data-aeris-collection-search-criteria-content] .program .collection {
   margin-left: 20px;
 }
 
-.aeris-collection-search-criteria-content-host .icon-input {
+[data-aeris-collection-search-criteria-content] .icon-input {
   height: 20px;
   line-height: 20px;
   font-size: 14px;
@@ -441,18 +441,18 @@ export default {
   color: #999;
 }
 
-.aeris-collection-search-criteria-content-host .icon-input i {
+[data-aeris-collection-search-criteria-content] .icon-input i {
   padding: 3px;
 }
 
-.aeris-collection-search-criteria-content-host .filter-input {
+[data-aeris-collection-search-criteria-content] .filter-input {
   border-style: none;
   border: none;
   outline: none;
   margin: 2px;
 }
 
-.aeris-collection-search-criteria-content-host .badge {
+[data-aeris-collection-search-criteria-content] .badge {
   display: inline-block;
   margin: 0 5px -2px;
   padding: 0 4px;

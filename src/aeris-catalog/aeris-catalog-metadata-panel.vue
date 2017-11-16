@@ -20,7 +20,7 @@
 </i18n>
 
 <template>
-<div class="aeris-catalog-metadata-panel-host">
+<div data-aeris-catalog-metadata-panel>
 
 
   <aside id="metadataPanel" class="metadata-panel" :class="{maximize: maximize, minimize: minimize}">
@@ -267,15 +267,15 @@ export default {
 </script>
 
 <style>
-.aeris-catalog-metadata-panel-host .metadata-panel.minimize {
+[data-aeris-catalog-metadata-panel] .metadata-panel.minimize {
   width: 800px;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel.maximize {
+[data-aeris-catalog-metadata-panel] .metadata-panel.maximize {
   width: 100%;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel {
+[data-aeris-catalog-metadata-panel] .metadata-panel {
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -287,7 +287,7 @@ export default {
   transition: opacity 0.4s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1), width 0.3s ease-in-out 0.3s, height 0.3s ease-in-out 0.3s;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel.fullscreen {
+[data-aeris-catalog-metadata-panel] .metadata-panel.fullscreen {
   z-index: 12;
   width: 100vw;
   max-width: 100vw;
@@ -295,7 +295,7 @@ export default {
   transform: translate3d(320px, -5vh, 0);
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-header {
+[data-aeris-catalog-metadata-panel] .metadata-panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -304,29 +304,29 @@ export default {
   height: 4rem;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-header i {
+[data-aeris-catalog-metadata-panel] .metadata-panel-header i {
   cursor: pointer;
   color: #888;
   opacity: 0.5;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-header i:hover {
+[data-aeris-catalog-metadata-panel] .metadata-panel-header i:hover {
   opacity: 1;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-header .metadata-panel-title {
+[data-aeris-catalog-metadata-panel] .metadata-panel-header .metadata-panel-title {
   display: flex;
   align-items: center;
   color: #000
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-header .metadata-panel-title h2 {
+[data-aeris-catalog-metadata-panel] .metadata-panel-header .metadata-panel-title h2 {
   display: inline;
   margin: 0 10px;
   padding: 5px 0;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-content {
+[data-aeris-catalog-metadata-panel] .metadata-panel-content {
   max-height: calc(100vh - 13rem);
   padding: 10px 10px 0px 10px;
   overflow-y: auto;
@@ -334,7 +334,7 @@ export default {
   transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0s;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-footer {
+[data-aeris-catalog-metadata-panel] .metadata-panel-footer {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -346,16 +346,16 @@ export default {
   background-color: #fafafa;
 }
 
-.aeris-catalog-metadata-panel-host h2.metadata-panel-title {
+[data-aeris-catalog-metadata-panel] h2.metadata-panel-title {
   font-weight: normal
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-footer div{
+[data-aeris-catalog-metadata-panel] .metadata-panel-footer div{
   display: flex;
   flex-direction: row;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-footer .metadata-footer-icon {
+[data-aeris-catalog-metadata-panel] .metadata-panel-footer .metadata-footer-icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -368,7 +368,7 @@ export default {
   cursor: pointer;
 }
 
-.aeris-catalog-metadata-panel-host .metadata-panel-footer .metadata-footer-icon:hover {
+[data-aeris-catalog-metadata-panel] .metadata-panel-footer .metadata-footer-icon:hover {
   animation-name: pop;
   animation-duration: 0.3s;
 }

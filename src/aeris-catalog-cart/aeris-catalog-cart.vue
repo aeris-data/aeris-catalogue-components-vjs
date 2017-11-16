@@ -30,7 +30,7 @@
 </i18n>
 
 <template>
-<div class="aeris-catalog-cart-host">
+<div data-aeris-catalog-cart>
 
   <div class="cart-container">
     <div class="cart-panel-trigger" style="margin-right: 15px;">
@@ -517,19 +517,19 @@ export default {
 
 <style>
 
-	.aeris-catalog-cart-host {
+	[data-aeris-catalog-cart] {
 		box-sizing: border-box;
 		display: block;
 		background: transparent;
 	}
 
-	.aeris-catalog-cart-host .cart-container {
+	[data-aeris-catalog-cart] .cart-container {
 		position: relative;
 		display: flex;
 		align-items: center;
 	}
 
-	.aeris-catalog-cart-host .cart-container .nb-items {
+	[data-aeris-catalog-cart] .cart-container .nb-items {
 		position: relative;
 		display: inline-block;
 		padding: 3px 5px;
@@ -539,7 +539,7 @@ export default {
 		font-size: 12px;
 	}
 
-	.aeris-catalog-cart-host .cart-container .nb-items:after {
+	[data-aeris-catalog-cart] .cart-container .nb-items:after {
 		position: absolute;
 		left: 100%;
 		top: 50%;
@@ -552,24 +552,24 @@ export default {
 		border-color: transparent transparent transparent #f39c12;
 	}
 
-	.aeris-catalog-cart-host .cart-container.hidden {
+	[data-aeris-catalog-cart] .cart-container.hidden {
 		display: none;
 	}
 
-	.aeris-catalog-cart-host .fa {
+	[data-aeris-catalog-cart] .fa {
 		margin: 0 5px;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-trigger {
+	[data-aeris-catalog-cart] .cart-panel-trigger {
 		padding: 3px 5px;
 		color: #ddd;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-trigger .fa-shopping-cart {
+	[data-aeris-catalog-cart] .cart-panel-trigger .fa-shopping-cart {
 		margin-left: 3px;
 	}
 
-	.aeris-catalog-cart-host .cart-panel {
+	[data-aeris-catalog-cart] .cart-panel {
 		display: none;
 		position: absolute;
 		top: 99%;
@@ -585,7 +585,7 @@ export default {
 		font-size: 14px;
 	}
 
-	.aeris-catalog-cart-host .cart-panel * {
+	[data-aeris-catalog-cart] .cart-panel * {
 		white-space: nowrap;
 	}
 
@@ -593,51 +593,51 @@ export default {
 		display: inline-block;
 	}
 
-	.aeris-catalog-cart-host .item-list {
+	[data-aeris-catalog-cart] .item-list {
 		margin: 10px;
 		padding: 0;
 		list-style: none;
 		line-height: 1.2em;
 	}
 
-	.aeris-catalog-cart-host .item-list .files-size {
+	[data-aeris-catalog-cart] .item-list .files-size {
 		font-size: 10px;
 	}
 
-	.aeris-catalog-cart-host .item-list .fa-trash {
+	[data-aeris-catalog-cart] .item-list .fa-trash {
 		margin-left: 20px;
 	}
 
-	.aeris-catalog-cart-host .item-list .fa-trash:hover {
+	[data-aeris-catalog-cart] .item-list .fa-trash:hover {
 		cursor: pointer;
 		color: #e74c3c;
 	}
 
-	.aeris-catalog-cart-host .item-list li {
+	[data-aeris-catalog-cart] .item-list li {
 		display: flex;
 		justify-content: space-between;
 		flex-flow: row nowrap;
 		padding: 3px 0;
 	}
 
-	.aeris-catalog-cart-host .item-list li * {
+	[data-aeris-catalog-cart] .item-list li * {
 		display: flex;
 		flex-flow: row nowrap;
 	}
 
-	.aeris-catalog-cart-host .item-list li:not(:last-of-type) {
+	[data-aeris-catalog-cart] .item-list li:not(:last-of-type) {
 		border-bottom: 1px solid rgba(221, 221, 221, 0.5);
 	}
 
-	.aeris-catalog-cart-host .cart-panel-header {
+	[data-aeris-catalog-cart] .cart-panel-header {
 		border-bottom: 1px solid #ddd;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-header h5 {
+	[data-aeris-catalog-cart] .cart-panel-header h5 {
 		margin: 5px 0;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-footer {
+	[data-aeris-catalog-cart] .cart-panel-footer {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
@@ -645,7 +645,7 @@ export default {
 		border-top: 1px solid #ddd;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-footer .cart-button {
+	[data-aeris-catalog-cart] .cart-panel-footer .cart-button {
 		display: inline-flex;
 		align-items: center;
 		margin: 5px;
@@ -655,39 +655,39 @@ export default {
 		border: 1px solid;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-footer .cart-button:hover {
+	[data-aeris-catalog-cart] .cart-panel-footer .cart-button:hover {
 		cursor: pointer;
 		background-color: var(--main-color, #4765a0);
 		color: #fff;
 		border-color: var(--main-color, #4765a0);
 	}
 
-	.aeris-catalog-cart-host .cart-panel-footer .cart-button.green {
+	[data-aeris-catalog-cart] .cart-panel-footer .cart-button.green {
 		background-color: #fff;
 		color: #2EB872;
 		border-color: #2EB872;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-footer .cart-button.green:hover {
+	[data-aeris-catalog-cart] .cart-panel-footer .cart-button.green:hover {
 		background-color: #2EB872;
 		color: #fff;
 		border-color: #2EB872;
 	}
 
-	.aeris-catalog-cart-host .cart-panel-footer .total-files-size {
+	[data-aeris-catalog-cart] .cart-panel-footer .total-files-size {
 		font-size: 10px;
 	}
 
-	.aeris-catalog-cart-host .cart-collection-name {
+	[data-aeris-catalog-cart] .cart-collection-name {
 		font-weight: bold;
 	}
 
-	.aeris-catalog-cart-host .cart-collection-name:hover {
+	[data-aeris-catalog-cart] .cart-collection-name:hover {
 		cursor: pointer;
 		opacity: 0.8;
 	}
 
-	.aeris-catalog-cart-host .cart-popup {
+	[data-aeris-catalog-cart] .cart-popup {
 		display: inline-block;
 		position: fixed;
 		z-index: 9999;
@@ -701,35 +701,35 @@ export default {
 		padding: 10px;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .popup-title, .aeris-catalog-cart-host .cart-popup h3 {
+	[data-aeris-catalog-cart] .cart-popup .popup-title, [data-aeris-catalog-cart] .cart-popup h3 {
 		margin: 0;
 		padding: 0;
 		width: 100%;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .popup-title {
+	[data-aeris-catalog-cart] .cart-popup .popup-title {
 		display: flex;
 		flex: space-between;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .popup-title i {
+	[data-aeris-catalog-cart] .cart-popup .popup-title i {
 		cursor: pointer;
 		color: #888;
 		opacity: 0.5;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .popup-title i:hover {
+	[data-aeris-catalog-cart] .cart-popup .popup-title i:hover {
 		opacity: 1;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .popup-content {
+	[data-aeris-catalog-cart] .cart-popup .popup-content {
 		margin: 0;
 		padding: 0;
 		width: 100%;
 		display: flex;
 	}
 
-	.aeris-catalog-cart-host .cart-popup pre {
+	[data-aeris-catalog-cart] .cart-popup pre {
 		margin: 20px 10px;
 		padding: 5px;
 		resize: none;
@@ -741,7 +741,7 @@ export default {
 		border-radius: 5px;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .popup-buttons {
+	[data-aeris-catalog-cart] .cart-popup .popup-buttons {
 		width: 100%;
 		display: flex;
 		flex: flex-start;
@@ -750,7 +750,7 @@ export default {
 		padding: 5px;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .catalog-round-button {
+	[data-aeris-catalog-cart] .cart-popup .catalog-round-button {
 		box-sizing: border-box;
 		display: flex;
 		justify-content: center;
@@ -768,16 +768,16 @@ export default {
 		transition: background-color 0.3s;
 	}
 
-	.aeris-catalog-cart-host .cart-popup .catalog-round-button:hover {
+	[data-aeris-catalog-cart] .cart-popup .catalog-round-button:hover {
 		cursor: pointer;
 		background-color: var(--search-button-hover-color, #4765a0);
 	}
 
-	.aeris-catalog-cart-host .cart-popup .catalog-round-button :active {
+	[data-aeris-catalog-cart] .cart-popup .catalog-round-button :active {
 	    vertical-align: top;
 	    padding: 8px 8px 6px;
 	}
-	.aeris-catalog-cart-host .filter-description {
+	[data-aeris-catalog-cart] .filter-description {
 		font-size: smaller;
 	}
 

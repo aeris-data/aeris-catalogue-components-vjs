@@ -22,7 +22,7 @@
 </i18n>
 
 <template>
-<div class="aeris-spatial-search-criteria-content-host">
+<div data-aeris-spatial-search-criteria-content>
   <div class="box-toolbar">
     <button type="button" class="spatial-reset-button leftbutton" :title="$t('reset')" @click="handleReset"><i class="fa fa-times"></i></button>
     <button type="button" class="spatial-reset-button" v-bind:class="{isediting : editing}" :title="$t('draw')" @click="handleEdit"><i class="fa fa-edit"></i></button>
@@ -253,25 +253,25 @@ export default {
 </script>
 
 <style>
-.aeris-spatial-search-criteria-content-host {
+[data-aeris-spatial-search-criteria-content] {
   display: block
 }
 
-.aeris-spatial-search-criteria-content-host .aeris-catalog-box {
+[data-aeris-spatial-search-criteria-content] .aeris-catalog-box {
   font-size: 14px;
   word-wrap: break-word;
 }
 
-.aeris-spatial-search-criteria-content-host .aeris-input-group {
+[data-aeris-spatial-search-criteria-content] .aeris-input-group {
   border: none;
   background-color: rgba(172, 220, 238, 0.3);
 }
 
-.aeris-spatial-search-criteria-content-host .leftbutton {
+[data-aeris-spatial-search-criteria-content] .leftbutton {
   margin-right: 3px;
 }
 
-.aeris-spatial-search-criteria-content-host .aeris-input-group {
+[data-aeris-spatial-search-criteria-content] .aeris-input-group {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -282,15 +282,15 @@ export default {
   overflow: hidden;
 }
 
-.aeris-spatial-search-criteria-content-host input.incorrect-input {
+[data-aeris-spatial-search-criteria-content] input.incorrect-input {
   border: 2px solid red !important
 }
 
-.aeris-spatial-search-criteria-content-host .isediting {
+[data-aeris-spatial-search-criteria-content] .isediting {
   color: #f0ad4e
 }
 
-.aeris-spatial-search-criteria-content-host .right {
+[data-aeris-spatial-search-criteria-content] .right {
   min-width: 40px;
   border-right: 1px solid #fff;
   box-sizing: border-box;
@@ -299,15 +299,15 @@ export default {
   text-align: center;
 }
 
-.aeris-spatial-search-criteria-content-host .error-message {
+[data-aeris-spatial-search-criteria-content] .error-message {
   color: red
 }
 
-.aeris-spatial-search-criteria-content-host button {
+[data-aeris-spatial-search-criteria-content] button {
   cursor: pointer;
 }
 
-.aeris-spatial-search-criteria-content-host .aeris-input-group input.spatial-search-criteria {
+[data-aeris-spatial-search-criteria-content] .aeris-input-group input.spatial-search-criteria {
   background-color: transparent;
   box-sizing: border-box;
   height: 100%;
@@ -316,7 +316,7 @@ export default {
   outline: none;
 }
 
-.aeris-spatial-search-criteria-content-host .box-toolbar {
+[data-aeris-spatial-search-criteria-content] .box-toolbar {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;

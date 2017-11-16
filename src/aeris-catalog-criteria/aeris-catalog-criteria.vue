@@ -1,5 +1,5 @@
 <template>
-<div class="aeris-catalog-criteria-host">
+<div data-aeris-catalog-criteria>
   <div class="criteria-bar">
     <div class="criteria-content">
       <slot></slot>
@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style>
-.aeris-catalog-criteria-host {
+[data-aeris-catalog-criteria] {
   box-sizing: border-box;
   display: block;
   width: 300px;

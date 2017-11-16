@@ -11,7 +11,7 @@
 }
 </i18n>
 <template>
-<div class="aeris-international-field-host">
+<div data-aeris-international-field>
   <span v-if="!isDeployed">
     <span v-if="html" v-html="truncatedtext"></span>
   <span v-else>{{truncatedtext}}</span>
@@ -122,11 +122,11 @@ export default {
 </script>
 
 <style>
-.aeris-international-field-host {
+[data-aeris-international-field] {
   display: block
 }
 
-.aeris-international-field-host .more {
+[data-aeris-international-field] .more {
   cursor: pointer;
   font-size: smaller;
   color: #3395b9

@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="aeris-platform-search-criteria-host">
+<div data-aeris-platform-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t('platforms')" header-icon-class="fa fa-rocket" :deployed="deployed">
     <aeris-platform-search-criteria-content></aeris-platform-search-criteria-content>
   </aeris-catalog-search-box>

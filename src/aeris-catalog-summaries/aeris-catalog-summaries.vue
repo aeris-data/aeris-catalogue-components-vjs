@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="aeris-catalog-summaries-bar-host always-visible" :class="visibilityClass">
+<div data-aeris-catalog-summaries-bar class="always-visible" :class="visibilityClass">
   <div class="collection-bar">
     <header class="aeris-catalog-summaries-bar-header">
       <input class="filter-field" type="text" :placeholder="$t('filter')" v-model="filter">
@@ -184,7 +184,7 @@ export default {
 </script>
 
 <style>
-.aeris-catalog-summaries-bar-host {
+[data-aeris-catalog-summaries-bar] {
   top: 40px;
   height: 100%;
   right: 0px;
@@ -197,17 +197,17 @@ export default {
   overflow: scroll;
 }
 
-.aeris-catalog-summaries-bar-host.invisible {
+[data-aeris-catalog-summaries-bar].invisible {
   transform: translate3d(100%, 0, 0);
   transition-duration: 500ms;
 }
 
-.aeris-catalog-summaries-bar-host.visible {
+[data-aeris-catalog-summaries-bar].visible {
   transform: translate3d(0%, 0, 0);
   transition-duration: 500ms;
 }
 
-.aeris-catalog-summaries-bar-host .aeris-catalog-summaries-bar-header {
+[data-aeris-catalog-summaries-bar] .aeris-catalog-summaries-bar-header {
   position: relative;
   width: 100%;
   margin: 1Opx;
@@ -219,11 +219,11 @@ export default {
   margin-bottom: 5px;
 }
 
-.aeris-catalog-summaries-bar-host header i {
+[data-aeris-catalog-summaries-bar] header i {
   padding-right: 5px;
 }
 
-.aeris-catalog-summaries-bar-host header input {
+[data-aeris-catalog-summaries-bar] header input {
   background-color: transparent;
   width: 100%;
   height: 25px;
@@ -233,7 +233,7 @@ export default {
   padding-left: 5px;
 }
 
-.aeris-catalog-summaries-bar-host .filler {
+[data-aeris-catalog-summaries-bar] .filler {
   height: 5px;
 }
 

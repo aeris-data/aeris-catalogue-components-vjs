@@ -12,7 +12,7 @@
 </i18n>
 
 <template>
-<div class="aeris-temporal-search-criteria-content-host">
+<div data-aeris-temporal-search-criteria-content>
   <div class="aeris-input-group">
     <span class="right">{{$t('from')}}</span>
     <input id="from" v-model="from">
@@ -100,11 +100,11 @@ export default {
 </script>
 
 <style>
-.aeris-temporal-search-criteria-content-host {
+[data-aeris-temporal-search-criteria-content] {
   display: block
 }
 
-.aeris-temporal-search-criteria-content-host .right {
+[data-aeris-temporal-search-criteria-content] .right {
   min-width: 40px;
   border-right: 1px solid #fff;
   box-sizing: border-box;
@@ -113,38 +113,38 @@ export default {
   text-align: center;
 }
 
-.aeris-temporal-search-criteria-content-host .error-message {
+[data-aeris-temporal-search-criteria-content] .error-message {
   font-size: 12px;
   color: red
 }
 
-.aeris-temporal-search-criteria-content-host .aeris-input-group {
+[data-aeris-temporal-search-criteria-content] .aeris-input-group {
   border: none;
   background-color: rgba(172, 220, 238, 0.3);
 }
 
-.aeris-temporal-search-criteria-content-host .aeris-input-group input {
+[data-aeris-temporal-search-criteria-content] .aeris-input-group input {
   border: none;
   background-color: transparent;
   padding: 0 5px;
   outline: none;
 }
 
-.aeris-temporal-search-criteria-content-host .aeris-input-group aeris-datepicker {
+[data-aeris-temporal-search-criteria-content] .aeris-input-group aeris-datepicker {
   position: absolute;
   top: 100%;
   left: 0;
   z-index: 999;
 }
 
-.aeris-temporal-search-criteria-content-host .aeris-input-group aeris-datepicker2 {
+[data-aeris-temporal-search-criteria-content] .aeris-input-group aeris-datepicker2 {
   position: absolute;
   top: 100%;
   left: 0;
   z-index: 999;
 }
 
-.aeris-temporal-search-criteria-content-host .aeris-input-group {
+[data-aeris-temporal-search-criteria-content] .aeris-input-group {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;

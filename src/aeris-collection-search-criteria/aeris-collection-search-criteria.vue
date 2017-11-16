@@ -12,7 +12,7 @@
 </i18n>
 
 <template>
-<div class="aeris-platform-search-criteria-host">
+<div data-aeris-platform-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t(headertitle)" :header-icon-class="headericonclass" :deployed="deployed">
     <aeris-collection-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" :downloadable="downloadable" v-if="headertitle == 'collections'"></aeris-collection-search-criteria-content>
     <aeris-campaign-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" :downloadable="downloadable" v-else></aeris-campaign-search-criteria-content>

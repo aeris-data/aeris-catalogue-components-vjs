@@ -1,5 +1,5 @@
 <template>
-<div class="aeris-catalog-box-host" v-bind:class="{ showBody: isdeployed }">
+<div data-aeris-catalog-box v-bind:class="{ showBody: isdeployed }">
   <div id="main" class="box noselect">
     <header class="box-heading" v-on:click="isdeployed = !isdeployed">
       <div class="box-title">
@@ -106,24 +106,24 @@ export default {
 
 <style>
 
-.aeris-catalog-box-host .box-collapsable-part {
+[data-aeris-catalog-box] .box-collapsable-part {
     display: none;
     transition: 0.3s
 }
 
-.aeris-catalog-box-host.showBody .box-collapsable-part {
+[data-aeris-catalog-box].showBody .box-collapsable-part {
     display: block;
     transition: 0.3s
 }
-.aeris-catalog-box-host.showBody .chevron {
+[data-aeris-catalog-box].showBody .chevron {
     transform: rotate(180deg)
 }
-.aeris-catalog-box-host .chevron {
+[data-aeris-catalog-box] .chevron {
     transition: 0.3s
 }
 
 
-.aeris-catalog-box-host {
+[data-aeris-catalog-box] {
     box-sizing: border-box;
     position: relative;
     display: block;
@@ -132,42 +132,42 @@ export default {
     transition: transform 4s ease-out;
     box-shadow:  0 2px 5px rgba(0, 0, 0, 0.2)
 }
-.aeris-catalog-box-host:hover {
+[data-aeris-catalog-box]:hover {
     cursor: default
 }
-.aeris-catalog-box-host .box {
+[data-aeris-catalog-box] .box {
     box-sizing: border-box;
     width: 100%;
     color: var(--catalog-box-color, #333);
     background-color: var(--catalog-box-background-color, #fff)
 }
-.aeris-catalog-box-host .box-title {
+[data-aeris-catalog-box] .box-title {
     display: flex;
     font-size: 16px;
     line-height: 1.2
 }
-.aeris-catalog-box-host .box-title .plateform-icon,
-.aeris-catalog-box-host .box-title .fa {
+[data-aeris-catalog-box] .box-title .plateform-icon,
+[data-aeris-catalog-box] .box-title .fa {
     margin-right: 10px
 }
 
-.aeris-catalog-box-host header {
+[data-aeris-catalog-box] header {
 	color:#fff;
 }
 
-.aeris-catalog-box-host .box-title h4 {
+[data-aeris-catalog-box] .box-title h4 {
     margin: 0;
     font-size: 16px;
 }
-.aeris-catalog-box-host .box-body {
+[data-aeris-catalog-box] .box-body {
     font-size: 14px;
     word-wrap: break-word
 }
-.aeris-catalog-box-host .box-body .content {
+[data-aeris-catalog-box] .box-body .content {
     padding: 10px;
     text-align: justify
 }
-.aeris-catalog-box-host .box-toolbar {
+[data-aeris-catalog-box] .box-toolbar {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -176,7 +176,7 @@ export default {
     border: var(--catalog-box-toolbar-bo	rder);
     background-color: var(--catalog-box-toolbar-background-color, #fafafa)
 }
-.aeris-catalog-box-host .box-heading {
+[data-aeris-catalog-box] .box-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -185,24 +185,24 @@ export default {
     border: var(--catalog-box-header-border, none);
     cursor: pointer
 }
-.aeris-catalog-box-host .box-heading .box-heading-buttons {
+[data-aeris-catalog-box] .box-heading .box-heading-buttons {
     display: flex;
     flex-flow: row nowrap
 }
-.aeris-catalog-box-host .box-heading .box-heading-buttons .fa {
+[data-aeris-catalog-box] .box-heading .box-heading-buttons .fa {
     margin-left: 5px
 }
 
-.aeris-catalog-box-host .box-collapsable-part {
+[data-aeris-catalog-box] .box-collapsable-part {
     border: var(--catalog-box-main-border, none)
 }
-.aeris-catalog-box-host .box-footer {
+[data-aeris-catalog-box] .box-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px
 }
-.aeris-catalog-box-host .expandButton {
+[data-aeris-catalog-box] .expandButton {
     font-size: 14px;
     padding: 6px 13px;
     margin: 0 5px;
@@ -212,14 +212,14 @@ export default {
     opacity: var(--expand-button-opacity, 1);
     outline: none
 }
-.aeris-catalog-box-host .expandButton:hover {
+[data-aeris-catalog-box] .expandButton:hover {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     color: var(--expand-button-hover-text-color, #fff);
     background-color: var(--expand-button-secondary-color, #d35400);
     opacity: var(--expand-button-hover-opacity, 1)
 }
-.aeris-catalog-box-host .metadata-datalevel .cartouche {
+[data-aeris-catalog-box] .metadata-datalevel .cartouche {
     display: inline-block;
     padding: 3px 5px;
     border-radius: 5px;
@@ -227,7 +227,7 @@ export default {
     font-size: 12px;
     background-color: #f0ad4e
 }
-.aeris-catalog-box-host .metadata-datalevel .cartouche .fa {
+[data-aeris-catalog-box] .metadata-datalevel .cartouche .fa {
     margin-right: 5px
 }
  </style>

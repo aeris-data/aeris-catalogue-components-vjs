@@ -11,7 +11,7 @@
 }
 </i18n>
 <template>
-<div v-show="displayed" class="aeris-ui-confirmation-host">
+<div v-show="displayed" data-aeris-ui-confirmation>
   <div class="message-container">
     <span class="title">{{title}}</span>
     <span class="message">{{message}}</span>
@@ -78,7 +78,7 @@ export default {
 </script>
 
 <style>
-.aeris-ui-confirmation-host {
+[data-aeris-ui-confirmation] {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,7 +102,7 @@ export default {
   }
 }
 
-.aeris-ui-confirmation-host .message-container {
+[data-aeris-ui-confirmation] .message-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -112,25 +112,25 @@ export default {
   height: 15rem;
 }
 
-.aeris-ui-confirmation-host .title {
+[data-aeris-ui-confirmation] .title {
   border-bottom: 1px solid #F39C12;
   font-size: 1.4rem;
   font-weight: normal;
   color: #555;
 }
 
-.aeris-ui-confirmation-host .message {
+[data-aeris-ui-confirmation] .message {
   text-align: center;
   font-size: 1.1rem;
   margin: 1rem;
 }
 
-.aeris-ui-confirmation-host .buttons {
+[data-aeris-ui-confirmation] .buttons {
   display: flex;
   flex-direction: row;
 }
 
-.aeris-ui-confirmation-host .button {
+[data-aeris-ui-confirmation] .button {
   margin: 1rem;
 }
 </style>

@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="aeris-level-search-criteria-host">
+<div data-aeris-level-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t('levels')" header-icon-class="fa fa-cogs" :deployed="deployed">
     <aeris-level-search-criteria-content></aeris-level-search-criteria-content>
   </aeris-catalog-search-box>

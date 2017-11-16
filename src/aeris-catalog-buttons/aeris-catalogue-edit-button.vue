@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<div class="aeris-catalogue-edit-button-host">
+<div data-aeris-catalogue-edit-button>
   <div class="map-rounded-button aeris-catalog-button tooltip " data-popup="right" :title="$t('draw')" :data-title="$t('draw')" @click="handleClick">
     <i class="fa fa-pencil-square-o" v-bind:class="{isediting : editing}"></i>
   </div>
@@ -122,7 +122,7 @@ export default {
 
 <style src="./common-style.css"></style>
 <style>
-.aeris-catalogue-edit-button-host .isediting {
+[data-aeris-catalogue-edit-button] .isediting {
 	color:black;
 }
  </style>

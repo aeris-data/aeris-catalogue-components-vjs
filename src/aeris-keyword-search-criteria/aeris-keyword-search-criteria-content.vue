@@ -119,31 +119,31 @@ export default {
 </script>
 
 <style>
-.aeris-keyword-search-criteria-host {
+[data-aeris-keyword-search-criteria] {
         display: block
     }
-    .aeris-keyword-search-criteria-host .program {
+    [data-aeris-keyword-search-criteria] .program {
         margin-bottom: 5px
     }
-    .aeris-keyword-search-criteria-host .program .program-header {
+    [data-aeris-keyword-search-criteria] .program .program-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0 5px
     }
-    .aeris-keyword-search-criteria-host .program .program-header label {
+    [data-aeris-keyword-search-criteria] .program .program-header label {
         display: inline-flex;
         justify-content: flex-start;
         align-items: center;
         margin: 2px
     }
-    .aeris-keyword-search-criteria-host .program .program-header .fa {
+    [data-aeris-keyword-search-criteria] .program .program-header .fa {
         cursor: pointer
     }
-    .aeris-keyword-search-criteria-host .collection {
+    [data-aeris-keyword-search-criteria] .collection {
         margin-left: 20px
     }
-    .aeris-keyword-search-criteria-host .icon-input {
+    [data-aeris-keyword-search-criteria] .icon-input {
         height: 20px;
         line-height: 20px;
         font-size: 14px;
@@ -152,7 +152,7 @@ export default {
         color: #999
     }
 
-    .aeris-keyword-search-criteria-host .keyword-input {
+    [data-aeris-keyword-search-criteria] .keyword-input {
     	width: 100%;
     }
  </style>

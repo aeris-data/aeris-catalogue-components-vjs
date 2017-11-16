@@ -8,7 +8,7 @@
 </i18n>
 
 <template>
-<div class="aeris-checkbixtree-item-host">
+<div data-aeris-checkbixtree-item>
   <div v-for="item of parsedItems" class="program" :key="item.name">
     <div v-if="isFolder(item)">
       <div class="program-header">
@@ -181,49 +181,49 @@ export default {
   padding: 3px;
 }
 
-.aeris-checkbixtree-item-host .visible {
+[data-aeris-checkbixtree-item] .visible {
   display: block;
 }
 
-.aeris-checkbixtree-item-host .notvisible {
+[data-aeris-checkbixtree-item] .notvisible {
   display: none;
 }
 
-.aeris-checkbixtree-item-host {
+[data-aeris-checkbixtree-item] {
   display: block;
 }
 
-.aeris-checkbixtree-item-host .program {
+[data-aeris-checkbixtree-item] .program {
   margin-bottom: 5px;
 }
 
-.aeris-checkbixtree-item-host .program .program-header {
+[data-aeris-checkbixtree-item] .program .program-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 5px;
 }
 
-.aeris-checkbixtree-item-host .program .program-header label {
+[data-aeris-checkbixtree-item] .program .program-header label {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
   margin: 2px;
 }
 
-.aeris-checkbixtree-item-host .program .program-header .fa {
+[data-aeris-checkbixtree-item] .program .program-header .fa {
   cursor: pointer;
 }
 
-.aeris-checkbixtree-item-host .program .collection {
+[data-aeris-checkbixtree-item] .program .collection {
   margin-left: 20px;
 }
 
-.aeris-checkbixtree-item-host .offset {
+[data-aeris-checkbixtree-item] .offset {
   margin-left: 20px;
 }
 
-.aeris-checkbixtree-item-host .icon-input {
+[data-aeris-checkbixtree-item] .icon-input {
   height: 20px;
   line-height: 20px;
   font-size: 14px;
@@ -236,18 +236,18 @@ export default {
   color: #999;
 }
 
-.aeris-checkbixtree-item-host .icon-input i {
+[data-aeris-checkbixtree-item] .icon-input i {
   padding: 3px;
 }
 
-.aeris-checkbixtree-item-host .filter-input {
+[data-aeris-checkbixtree-item] .filter-input {
   border-style: none;
   border: none;
   outline: none;
   margin: 2px;
 }
 
-.aeris-checkbixtree-item-host .badge {
+[data-aeris-checkbixtree-item] .badge {
   display: inline-block;
   margin: 0 5px -2px;
   padding: 0 4px;
