@@ -131,7 +131,7 @@
 		    return {
 		    	parentService: null,
 				collections: [],
-				level3collections:[],
+				level3collections:[ESCOMPTE],
 				filterValue: '',
 				loading:false,
 				existing:false,
