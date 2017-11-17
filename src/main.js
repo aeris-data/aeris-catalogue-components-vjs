@@ -77,15 +77,28 @@ ljs.load('dep', function() {
 	window.ol = ol
 
 	var timer;
+	var bundleName = "aeris-catalogue-components-vjs"
 
-	function registerElement(name, component) {
+		function registerElement(name, component) {
 		if (!window.registredAerisElements) {
 			window.registredAerisElements = [];
 		}
 		if (window.registredAerisElements.indexOf(name) < 0) {
-			console.log("Aeris - Registration of "+name)
-			Vue.customElement(name, component);
-			window.registredAerisElements.push(name)
+			let registrable = true
+			if (window.aerisexclusions) {
+				var aux = window.aerisexclusions[bundleName]
+				if (aux) {
+					if (aux.indexOf(name)>= 0) {
+						console.log("Aeris - Exclusion of "+name)
+						registrable = false;
+					}
+				}
+			}
+			if (registrable) {
+				console.log("Aeris - Registration of "+name)
+				Vue.customElement(name, component);
+				window.registredAerisElements.push(name)
+			}
 		}
 	}
 
