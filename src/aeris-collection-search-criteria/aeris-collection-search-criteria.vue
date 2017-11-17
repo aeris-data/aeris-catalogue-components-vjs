@@ -14,8 +14,8 @@
 <template>
 <span class="aeris-platform-search-criteria-host" >
 <aeris-catalog-search-box id="box"  :title="$t(headertitle)" :header-icon-class="headericonclass" :deployed="deployed" >
-     <aeris-collection-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" v-if="headertitle == 'collections'"></aeris-collection-search-criteria-content>
-     <aeris-campaign-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" v-else></aeris-campaign-search-criteria-content>
+     <aeris-collection-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" :downloadable="downloadable"  v-if="headertitle == 'collections'"></aeris-collection-search-criteria-content>
+     <aeris-campaign-search-criteria-content :exclusion="exclusion" :inclusion="inclusion" :downloadable="downloadable" v-else></aeris-campaign-search-criteria-content>
 </aeris-catalog-search-box>
 </span>
 </template>
@@ -32,6 +32,11 @@ export default {
         type: String,
         default: 'collections'
       },
+      
+      downloadable:  {
+          type: String,
+          default: ''
+        },
       
       headericonclass:  {
           type: String,

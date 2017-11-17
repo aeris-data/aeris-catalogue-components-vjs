@@ -42,6 +42,10 @@
 		      default: 'en'
 		    },
 		    
+		    downloadable:  {
+			      type: String
+			    },
+		    
 		    inclusion:  {
 		          type: String,
 		          default: ''
@@ -122,6 +126,14 @@
 				  } else {
 					  return null;
 				  }
+			  },
+			  
+			  level3collections: function() {
+				  if (this.downloadable) {
+					  return this.downloadable.split(",");
+				  } else {
+					  return [];
+				  }
 			  }
 			  
 
@@ -131,7 +143,6 @@
 		    return {
 		    	parentService: null,
 				collections: [],
-				level3collections:["EUROCHAMP","GMOS"],
 				filterValue: '',
 				loading:false,
 				existing:false,

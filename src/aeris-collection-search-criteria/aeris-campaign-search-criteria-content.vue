@@ -42,6 +42,10 @@
 		      default: 'en'
 		    },
 		    
+		    downloadable:  {
+			      type: String
+			    },
+		    
 		    inclusion:  {
 		          type: String,
 		          default: ''
@@ -122,8 +126,16 @@
 				  } else {
 					  return null;
 				  }
-			  }
+			  },
 			  
+			  
+			  level3collections: function() {
+				  if (this.downloadable) {
+					  return this.downloadable.split(",");
+				  } else {
+					  return [];
+				  }
+			  }
 
 		  },
 
@@ -131,7 +143,6 @@
 		    return {
 		    	parentService: null,
 				collections: [],
-				level3collections:[ESCOMPTE],
 				filterValue: '',
 				loading:false,
 				existing:false,
@@ -344,7 +355,6 @@
 					entry.program= program;
 					result.push(entry);
 				}
-				console.log('ttt')
 				if (result.length > 0) {
 					if (e.detail.collections) {
 						for (var i = 0; i < result.length; i++) {
