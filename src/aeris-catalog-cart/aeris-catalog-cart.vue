@@ -9,7 +9,9 @@
 	  "downloadScript": "Download script",
 	  "loading": "Loading",
 	  "downloadingFiles": "Downloading files...",
-	  "years": "Year(s):"
+	  "years": "Year(s):",
+	  "download": "Download",
+	  "copy": "Copy script to the clipboard"
   },
   "fr": {
 	  "items": "Items",
@@ -20,7 +22,9 @@
 	  "downloadScript": "Script de téléchargement",
 	  "loading": "Chargement",
 	  "downloadingFiles": "Téléchargement en cours...",
-	  "years": "Année(s):"
+	  "years": "Année(s):",
+	  "download": "Télécharger",
+	  "copy": "Copier le script dans le presse-papier"
 		  
   }
 }
@@ -87,10 +91,10 @@
 			<div class="popup-content">
 				<pre class="text-to-copy language-bash">{{downloadScript}}</pre>            
 				<div class='popup-buttons'>	
-					<div class="map-rounded-button catalog-round-button"  @click="downloadFile">
+					<div class="map-rounded-button catalog-round-button"  @click="downloadFile" :title="$t('download')">
 						<i class="fa fa-download"></i>
 					</div>
-					<div class="map-rounded-button catalog-round-button" @click="copyToClipBoard">
+					<div class="map-rounded-button catalog-round-button" @click="copyToClipBoard" :title="$t('copy')">
 						<i class="fa fa-clipboard"></i>
 					</div>		
 				</div>
