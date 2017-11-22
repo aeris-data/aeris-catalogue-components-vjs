@@ -25,7 +25,7 @@
 
   <aside id="metadataPanel" class="metadata-panel" :class="{maximize: maximize, minimize: minimize}">
 
-    <aeris-ui-confirmation></aeris-ui-confirmation>
+    <aeris-catalog-ui-confirmation></aeris-catalog-ui-confirmation>
 
     <nav class="metadata-panel-header">
       <span class="metadata-panel-title">

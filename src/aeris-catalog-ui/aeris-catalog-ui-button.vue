@@ -1,5 +1,5 @@
 <template>
-<div data-aeris-ui-button>
+<div data-aeris-catalog-ui-button>
   <button type="button" :class='["button", theme]'>
     {{text}}
   </button>
@@ -9,7 +9,7 @@
 <script>
 export default {
 
-  name: 'aeris-ui-button',
+  name: 'aeris-catalog-ui-button',
 
   props: {
     theme: {
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style>
-[data-aeris-ui-button] .button {
+[data-aeris-catalog-ui-button] .button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,12 +38,12 @@ export default {
   cursor: pointer;
 }
 
-[data-aeris-ui-button] .accent {
+[data-aeris-catalog-ui-button] .accent {
   background: #F39C12;
   color: #FFF;
 }
 
-[data-aeris-ui-button] .button::-moz-focus-inner {
+[data-aeris-catalog-ui-button] .button::-moz-focus-inner {
   border: 0;
 }
 </style>

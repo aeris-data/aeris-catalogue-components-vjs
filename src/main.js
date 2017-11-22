@@ -16,21 +16,21 @@ Vue.use(VueColorPlugin)
 Vue.use(VueAerisLanguagePlugin)
 
 
-import AerisUiButton from './aeris-ui/aeris-ui-button.vue'
-import MdTemplateProxy from './aeris-metadata-template/md-template-proxy.vue'
-import AerisUiConfirmation from './aeris-ui/aeris-ui-confirmation.vue'
-import MdTemplateCollection from './aeris-metadata-template/md-template-collection.vue'
+import AerisUiButton from './aeris-catalog-ui/aeris-catalog-ui-button.vue'
+import MdTemplateProxy from './aeris-catalog-layout/aeris-metadata-template/md-template-proxy.vue'
+import AerisUiConfirmation from './aeris-catalog-ui/aeris-catalog-ui-confirmation.vue'
+import MdTemplateCollection from './aeris-catalog-layout/aeris-metadata-template/md-template-collection.vue'
 import AerisInternationalField from './misc/aeris-international-field.vue'
-import AerisCatalogSearchBox from './aeris-catalog-box/aeris-catalog-search-box.vue'
-import AerisCatalogMetadataPanel from './aeris-catalog/aeris-catalog-metadata-panel.vue'
-import AerisKeywordSearchCriteria from './aeris-keyword-search-criteria/aeris-keyword-search-criteria.vue'
-import AerisSpatialSearchCriteria from './aeris-spatial-search-criteria/aeris-spatial-search-criteria.vue'
-import AerisTemporalSearchCriteria from './aeris-temporal-search-criteria/aeris-temporal-search-criteria.vue'
-import AerisKeywordSearchCriteriaContent from './aeris-keyword-search-criteria/aeris-keyword-search-criteria-content.vue'
-import AerisSpatialSearchCriteriaContent from './aeris-spatial-search-criteria/aeris-spatial-search-criteria-content.vue'
-import AerisTemporalSearchCriteriaContent from './aeris-temporal-search-criteria/aeris-temporal-search-criteria-content.vue'
-import AerisCatalogDefaultSummary from './aeris-catalog-summary/aeris-catalog-default-summary.vue'
-import AerisCatalogProxySummary from './aeris-catalog-summary/aeris-catalog-proxy-summary.vue'
+import AerisCatalogSearchBox from './aeris-catalog-layout/aeris-search-criteria-layout/aeris-catalog-search-box.vue'
+import AerisCatalogMetadataPanel from './aeris-catalog-metadata-panel/aeris-catalog-metadata-panel.vue'
+import AerisKeywordSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/aeris-keyword-search-criteria.vue'
+import AerisSpatialSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/aeris-spatial-search-criteria.vue'
+import AerisTemporalSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/aeris-temporal-search-criteria.vue'
+import AerisKeywordSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/aeris-keyword-search-criteria-content.vue'
+import AerisSpatialSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/aeris-spatial-search-criteria-content.vue'
+import AerisTemporalSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/aeris-temporal-search-criteria-content.vue'
+import AerisCatalogDefaultSummary from './aeris-catalog-summaries/aeris-catalog-summary/aeris-catalog-default-summary.vue'
+import AerisCatalogProxySummary from './aeris-catalog-summaries/aeris-catalog-summary/aeris-catalog-proxy-summary.vue'
 import AerisCatalogCriteria from './aeris-catalog-criteria/aeris-catalog-criteria.vue'
 import AerisCatalogSummaries from './aeris-catalog-summaries/aeris-catalog-summaries.vue'
 import AerisCatalogMap from './aeris-catalog-map/aeris-catalog-map.vue'
@@ -42,14 +42,14 @@ import AerisCatalogEditButton from './aeris-catalog-buttons/aeris-catalogue-edit
 import AerisCatalogHelpButton from './aeris-catalog-buttons/aeris-catalogue-help-button.vue'
 import AerisCatalogCart from './aeris-catalog-cart/aeris-catalog-cart.vue'
 import AerisCatalogHelp from './aeris-catalog-help/aeris-catalog-help-content.vue'
-import AerisPlatformSearchCriteriaContent from './aeris-platform-search-criteria/aeris-platform-search-criteria-content.vue'
-import AerisPlatformSearchCriteria from './aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
-import AerisLevelSearchCriteriaContent from './aeris-level-search-criteria/aeris-level-search-criteria-content.vue'
-import AerisLevelSearchCriteria from './aeris-level-search-criteria/aeris-level-search-criteria.vue'
-import AerisCampaignSearchCriteriaContent from './aeris-collection-search-criteria/aeris-campaign-search-criteria-content.vue'
-import AerisCollectionSearchCriteriaContent from './aeris-collection-search-criteria/aeris-collection-search-criteria-content.vue'
-import AerisCollectionSearchCriteria from './aeris-collection-search-criteria/aeris-collection-search-criteria.vue'
-import AerisCheckboxtreeItem from './aeris-collection-search-criteria/aeris-checkboxtree-item.vue'
+import AerisPlatformSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria/aeris-platform-search-criteria-content.vue'
+import AerisPlatformSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
+import AerisLevelSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-level-search-criteria/aeris-level-search-criteria-content.vue'
+import AerisLevelSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-level-search-criteria/aeris-level-search-criteria.vue'
+import AerisCampaignSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-campaign-search-criteria-content.vue'
+import AerisCollectionSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria-content.vue'
+import AerisCollectionSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria.vue'
+import AerisCheckboxtreeItem from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-checkboxtree-item.vue'
 
 ljs.addAliases({
 	dep: [
@@ -110,8 +110,8 @@ ljs.load('dep', function() {
 			console.info("Début registration des custom elements catalog")
 			console.info("Registred elements at this time: "+window.registredAerisElements)
 			registerElement('aeris-checkboxtree-item', AerisCheckboxtreeItem)
-			registerElement('aeris-ui-button', AerisUiButton);
-			registerElement('aeris-ui-confirmation', AerisUiConfirmation);
+			registerElement('aeris-catalog-ui-button', AerisUiButton);
+			registerElement('aeris-catalog-ui-confirmation', AerisUiConfirmation);
 			registerElement('md-template-collection', MdTemplateCollection);
 			registerElement('md-template-proxy', MdTemplateProxy);
 			registerElement('aeris-international-field', AerisInternationalField);

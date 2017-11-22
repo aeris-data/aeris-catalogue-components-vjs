@@ -11,13 +11,13 @@
 }
 </i18n>
 <template>
-<div v-show="displayed" data-aeris-ui-confirmation>
+<div v-show="displayed" data-aeris-catalog-ui-confirmation>
   <div class="message-container">
     <span class="title">{{title}}</span>
     <span class="message">{{message}}</span>
     <div class="buttons">
-      <aeris-ui-button class="button" @click="cancel" :text="$t('no')"></aeris-ui-button>
-      <aeris-ui-button class="button" :theme="'accent'" @click="validate" :text="$t('yes')"></aeris-ui-button>
+      <aeris-catalog-ui-button class="button" @click="cancel" :text="$t('no')"></aeris-catalog-ui-button>
+      <aeris-catalog-ui-button class="button" :theme="'accent'" @click="validate" :text="$t('yes')"></aeris-catalog-ui-button>
     </div>
   </div>
 </div>
@@ -32,7 +32,7 @@ export default {
     }
   },
 
-  name: 'aeris-ui-confirmation',
+  name: 'aeris-catalog-ui-confirmation',
 
   data() {
     return {
@@ -78,7 +78,7 @@ export default {
 </script>
 
 <style>
-[data-aeris-ui-confirmation] {
+[data-aeris-catalog-ui-confirmation] {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,7 +102,7 @@ export default {
   }
 }
 
-[data-aeris-ui-confirmation] .message-container {
+[data-aeris-catalog-ui-confirmation] .message-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -112,25 +112,25 @@ export default {
   height: 15rem;
 }
 
-[data-aeris-ui-confirmation] .title {
+[data-aeris-catalog-ui-confirmation] .title {
   border-bottom: 1px solid #F39C12;
   font-size: 1.4rem;
   font-weight: normal;
   color: #555;
 }
 
-[data-aeris-ui-confirmation] .message {
+[data-aeris-catalog-ui-confirmation] .message {
   text-align: center;
   font-size: 1.1rem;
   margin: 1rem;
 }
 
-[data-aeris-ui-confirmation] .buttons {
+[data-aeris-catalog-ui-confirmation] .buttons {
   display: flex;
   flex-direction: row;
 }
 
-[data-aeris-ui-confirmation] .button {
+[data-aeris-catalog-ui-confirmation] .button {
   margin: 1rem;
 }
 </style>
