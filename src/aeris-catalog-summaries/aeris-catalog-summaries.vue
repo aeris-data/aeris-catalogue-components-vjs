@@ -1,30 +1,31 @@
 <i18n>
 {
   "en": {
-    "filter": "Filter"
+    "filter": "Filter",
+    "nometadata": "No metadata sheet found"
   },
   "fr": {
-    "filter": "Filtre"
+    "filter": "Filtre",
+    "nometadata": "Aucune fiche de métadonnées trouvée"
   }
 }
 </i18n>
 
 <template>
 <div data-aeris-catalog-summaries-bar class="always-visible" :class="visibilityClass">
-  <div class="collection-bar">
-    <header class="aeris-catalog-summaries-bar-header">
-      <input class="filter-field" type="text" :placeholder="$t('filter')" v-model="filter">
-      <i class="fa fa-filter"></i>
-    </header>
-    <section v-if="summaries">
-      <span v-for="summary in filteredsummaries" :key="summary.id">
-
-<aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
-<aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
-<div class="filler"></div>
-</span>
-    </section>
-  </div>
+  <header>
+    <aeris-catalog-ui-input icon="fa fa-filter" :placeholder="$t('filter')" :value="filter" @input="filter = $event.target.value"></aeris-catalog-ui-input>
+  </header>
+  <section v-if="summaries">
+    <div v-for="summary in filteredsummaries" :key="summary.id">
+      <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
+      <aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
+    </div>
+  </section>
+  <p v-else>
+    {{$t('nometadata')}}
+  </p>
+  <slot></slot>
 </div>
 </template>
 
@@ -36,10 +37,6 @@ export default {
     lang: {
       type: String,
       default: 'en'
-    },
-    barWidth: {
-      type: String,
-      default: "500px"
     },
     summaryMaxLength: {
       type: Number,
@@ -54,8 +51,6 @@ export default {
   },
 
   destroyed: function() {
-    document.removeEventListener('aerisTheme', this.aerisThemeListener);
-    this.aerisThemeListener = null;
     document.removeEventListener('aerisSummaries', this.aerisSummariesListener);
     this.aerisSummariesListener = null;
     document.removeEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetListener);
@@ -67,8 +62,6 @@ export default {
   },
 
   created: function() {
-    this.aerisThemeListener = this.handleTheme.bind(this)
-    document.addEventListener('aerisTheme', this.aerisThemeListener);
     this.aerisSummariesListener = this.handleSummaries.bind(this)
     document.addEventListener('aerisSummaries', this.aerisSummariesListener);
     this.aerisCatalogueResetListener = this.handleReset.bind(this)
@@ -78,9 +71,6 @@ export default {
   },
 
   mounted: function() {
-    if (this.$el) {
-      this.$el.style.width = this.barWidth;
-    }
     if (this.lang) {
       this.$i18n.locale = this.lang
     }
@@ -115,7 +105,6 @@ export default {
 
   data() {
     return {
-      aerisThemeListener: null,
       aerisSummariesListener: null,
       aerisCatalogueResetListener: null,
       aerisCatalogueSearchEventListener: null,
@@ -127,11 +116,6 @@ export default {
   updated: function() {},
 
   methods: {
-
-    handleTheme: function(theme) {
-      this.theme = theme.detail
-      this.ensureTheme()
-    },
 
     handleReset: function() {
       this.summaries = []
@@ -147,12 +131,6 @@ export default {
         console.log(this.summaries)
       } else {
         this.summaries = null
-      }
-    },
-
-    ensureTheme: function() {
-      if (this.theme) {
-        this.$el.querySelector("header").style.color = this.theme.primary
       }
     },
 
@@ -172,7 +150,7 @@ export default {
 
     removeDiacritics: function(str) {
 
-      for (var i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
+      for (var i = 0; i < Diacritics.length; i++) {
         str = str.replace(Diacritics[i].letters, Diacritics[i].base);
       }
 
@@ -185,60 +163,47 @@ export default {
 
 <style>
 [data-aeris-catalog-summaries-bar] {
-  top: 40px;
-  height: 100%;
-  right: 0px;
-  position: absolute;
-  z-index: 11;
   box-sizing: border-box;
   display: block;
-  padding: 10px;
-  background-color: #F5F5F5;
-  overflow: scroll;
+  height: 100%;
+  overflow: auto;
+  padding: 0 10px;
 }
 
-[data-aeris-catalog-summaries-bar].invisible {
-  transform: translate3d(100%, 0, 0);
-  transition-duration: 500ms;
+[data-aeris-catalog-summaries-bar]>header input {
+  color: #555;
 }
 
-[data-aeris-catalog-summaries-bar].visible {
-  transform: translate3d(0%, 0, 0);
-  transition-duration: 500ms;
-}
-
-[data-aeris-catalog-summaries-bar] .aeris-catalog-summaries-bar-header {
-  position: relative;
+[data-template="summary"] {
+  height: 100%;
   width: 100%;
-  margin: 1Opx;
-  border: 1px solid black;
-  background-color: #FFF;
+  margin: 10px 0;
   border-radius: 2px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #E1E1E1;
+  color: #333;
 }
 
-[data-aeris-catalog-summaries-bar] header i {
-  padding-right: 5px;
+[data-template="summary"]:hover {
+  cursor: pointer;
+  filter: brightness(90%);
 }
 
-[data-aeris-catalog-summaries-bar] header input {
-  background-color: transparent;
-  width: 100%;
-  height: 25px;
-  line-height: 100%;
-  border: none;
-  outline: none;
-  padding-left: 5px;
+[data-template="summary"] header .cartouche {
+  display: inline-block;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #FAFAFA;
 }
 
-[data-aeris-catalog-summaries-bar] .filler {
-  height: 5px;
+[data-template="summary"] header .cartouche .fa {
+  margin-right: 5px;
 }
 
-.always-visible.ps>.ps__scrollbar-x-rail,
-.always-visible.ps>.ps__scrollbar-y-rail {
-  opacity: 0.9;
+[data-template="summary"] main {
+  padding: 10px;
 }
 </style>

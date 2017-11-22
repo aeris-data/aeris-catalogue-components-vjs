@@ -33,7 +33,7 @@
 <div data-aeris-catalog-cart>
 
   <div class="cart-container">
-    <div class="cart-panel-trigger" style="margin-right: 15px;">
+    <div class="cart-panel-trigger">
       <span id="cartState" :style="{color:cartColor}" :v-if="calcCollNb"> {{ nbItems }} {{ cartLabel }} </span>
       <i class="fa fa-shopping-cart" :style="{color:cartColor}"></i>
     </div>
@@ -160,7 +160,7 @@ export default {
       if (this.cartContent.length > 0) {
         return '#f39c12';
       } else {
-        return 'gainsboro';
+        return '#555';
       }
     },
 
@@ -573,7 +573,6 @@ export default {
 		display: none;
 		position: absolute;
 		top: 99%;
-		right: 0;
 		z-index: 9999;
 		max-height: 500px;
 		overflow-x: hidden;
@@ -581,8 +580,8 @@ export default {
 		padding: 10px;
 		background-color: #fff;
 		border: 1px solid #ddd;
-		box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-		font-size: 14px;
+
+
 	}
 
 	[data-aeris-catalog-cart] .cart-panel * {
@@ -695,7 +694,7 @@ export default {
 		left: 50%;
 		transform: translate(-50%, -50%);
 		background-color: #fff;
-		box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+
 		border: 1px solid #ddd;
 		border-radius: 5px;
 		padding: 10px;
@@ -763,7 +762,7 @@ export default {
 		border-radius: 50%;
 		color: #fff;
 		font-size: 18px;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+
 		background-color: var(--search-button-color, #4765a0);
 		transition: background-color 0.3s;
 	}

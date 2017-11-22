@@ -10,10 +10,8 @@
 </i18n>
 
 <template>
-<div>
-  <div class="icon-input">
-    <input class="keyword-input" type="text" name="keywords" :placeholder="$t('keywords')" v-model="current" v-on:keypress="inputKeyword">
-  </div>
+<div data-aeris-keyword-search-criteria>
+  <aeris-catalog-ui-input name="keywords" :placeholder="$t('keywords')" :value="current" @input="current = $event.target.value" @keypress="inputKeyword"></aeris-catalog-ui-input>
   <aeris-cartouche edit="true" v-for="keyword in keywords" :key="keyword" :itemref="keyword">{{keyword}}</aeris-cartouche>
 </div>
 </template>
@@ -105,7 +103,6 @@ export default {
       var withComma = this.current.trim();
       if (withComma.length < 2) return;
       var keyCode = e.keyCode ? e.keyCode : e.charCode;
-
       if (withComma.endsWith(',') || keyCode === 13 || keyCode === 32) {
         var withoutComma = (withComma.endsWith(',')) ? withComma.substring(0, (withComma.length - 1)) : withComma;
         if (!this.keywords) this.keywords = [];
@@ -119,40 +116,9 @@ export default {
 </script>
 
 <style>
-[data-aeris-keyword-search-criteria] {
-        display: block
-    }
-    [data-aeris-keyword-search-criteria] .program {
-        margin-bottom: 5px
-    }
-    [data-aeris-keyword-search-criteria] .program .program-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 5px
-    }
-    [data-aeris-keyword-search-criteria] .program .program-header label {
-        display: inline-flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin: 2px
-    }
-    [data-aeris-keyword-search-criteria] .program .program-header .fa {
-        cursor: pointer
-    }
-    [data-aeris-keyword-search-criteria] .collection {
-        margin-left: 20px
-    }
-    [data-aeris-keyword-search-criteria] .icon-input {
-        height: 20px;
-        line-height: 20px;
-        font-size: 14px;
-        width: 100%;
-        margin-bottom: 10px;
-        color: #999
-    }
-
-    [data-aeris-keyword-search-criteria] .keyword-input {
-    	width: 100%;
-    }
- </style>
+[data-aeris-keyword-search-criteria] aeris-cartouche .aeris-cartouche-container  {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  margin-top: 8px;
+}
+</style>

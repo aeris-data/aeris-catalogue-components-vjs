@@ -123,7 +123,9 @@ export default {
 
 <style>
 [data-aeris-international-field] {
-  display: block
+  display: block;
+	hyphens: auto;
+	word-break: break-all;
 }
 
 [data-aeris-international-field] .more {

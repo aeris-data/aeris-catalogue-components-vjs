@@ -176,11 +176,6 @@ export default {
 }
 </script>
 <style>
-.loadingbar {
-  background: gainsboro;
-  padding: 3px;
-}
-
 [data-aeris-checkbixtree-item] .visible {
   display: block;
 }
@@ -226,7 +221,7 @@ export default {
 [data-aeris-checkbixtree-item] .icon-input {
   height: 20px;
   line-height: 20px;
-  font-size: 14px;
+
   width: 100%;
   margin-bottom: 10px;
   color: #999;
@@ -257,7 +252,6 @@ export default {
   border: var(--badge-border, none);
   border-radius: 8px;
   font-size: 10px;
-  background-color: var(--badge-main-color, #333);
   color: var(--badge-text-color, #fff);
 }
 </style>

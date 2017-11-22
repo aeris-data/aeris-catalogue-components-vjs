@@ -3,37 +3,53 @@
   "en": {
     "searching": "Searching...",
     "foundresults": "Found results: ",
-    "noresult": "No result corresponding to your request"
+    "noresult": "No result corresponding to your request",
+    "nometadata": "No metadata sheet displayed"
   },
   "fr": {
     "searching": "Recherche...",
     "foundresults": "Résultat trouvés: ",
-    "noresult": "Aucun résultat ne correspond à votre requête"
+    "noresult": "Aucun résultat ne correspond à votre requête",
+    "nometadata": "Aucune fiche de métadonnées affichée"
   }
 }
 </i18n>
 <template>
-<div data-aeris-catalog style="background:white">
-  <div class="app-container">
-    <aeris-notifier></aeris-notifier>
-    <aeris-catalog-criteria :lang="lang">
+<div data-aeris-catalog :class="{'withMap': !hidemap}">
+
+  <aeris-notifier></aeris-notifier>
+
+  <aeris-catalog-criteria data-criteria="container" :lang="lang">
+    <section data-criteria="content">
       <slot name="criteria"></slot>
-    </aeris-catalog-criteria>
-    <aeris-catalog-map :hidemap="hidemap">
-      <slot name="buttons"></slot>
-    </aeris-catalog-map>
-    <span class="cart-bar" :style="{width:summaryBarWidth}">
-			Your shopphing cart:
-			<aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken" ></aeris-catalog-cart>
-		</span>
-    <aeris-catalog-summaries :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries>
-    <div class="subpanel" style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
-      <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata"
-        :client-template="currentTemplate">
-        <slot name="metadatafooter"></slot>
-      </aeris-catalogue-metadata-panel>
-    </div>
-  </div>
+    </section>
+    <section data-criteria="buttons">
+      <slot name="buttons-criteria"></slot>
+    </section>
+  </aeris-catalog-criteria>
+
+  <aeris-catalog-map data-map v-if="!hidemap" :hidemap="hidemap">
+    <slot name="buttons-map"></slot>
+  </aeris-catalog-map>
+
+  <aeris-catalog-summaries data-summaries>
+  </aeris-catalog-summaries>
+
+  <section data-cart>
+    Your shopping cart
+    <aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart>
+  </section>
+
+  <aeris-catalogue-metadata-panel data-sheet="content" v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata"
+    :client-template="currentTemplate">
+    <slot name="buttons-metadata"></slot>
+  </aeris-catalogue-metadata-panel>
+
+  <section v-else data-sheet="placeholder">
+    <p>{{$t('nometadata')}}</p>
+    <slot name="buttons-no-metadata"></slot>
+  </section>
+
 </div>
 </template>
 
@@ -57,28 +73,6 @@ export default {
     program: {
       type: String,
       default: null
-    },
-
-    summaryBarWidth: {
-      type: String,
-      default: "400px"
-    },
-
-    summaryMaxLength: {
-      type: Number,
-      default: "150"
-    },
-
-    metadataPanelTopMargin: {
-      type: String,
-      default: "10px"
-
-    },
-
-    metadataPanelRightMargin: {
-      type: String,
-      default: "10px"
-
     },
 
     cartService: {
@@ -380,209 +374,84 @@ export default {
 
 <style>
 
-..aeris-vcal-day.month-calendar {
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-    vertical-align: top;
-    cursor: pointer;
-    position: relative;
-    z-index: 100;
-}
-
 [data-aeris-catalog] {
-	/*box-sizing: border-box;*/
-	position: relative;
-	display: block;
-	width: 100%;
-	height: 100vh;
-	margin: 0;
-	font-family: 'Open Sans', sans-serif;
-	line-height: 1.2;
-	overflow: hidden;
+  display: grid;
+  grid-template-columns: 20% 20% 1fr;
+  grid-template-rows: 6vh 47vh 47vh;
+  grid-template-areas:  "criteria cart sheet"
+                        "criteria summaries sheet"
+                        "criteria summaries sheet";
+  width: 100%;
+  background-color: #EEE;
+  position: relative;
 }
 
-[data-aeris-catalog] * {
-	/*box-sizing: border-box;*/
+[data-aeris-catalog].withMap {
+  grid-template-columns: 20% 20% 1fr;
+  grid-template-rows: 6vh 47vh 47vh;
+  grid-template-areas:    "criteria cart map"
+                          "criteria summaries map"
+                          "criteria summaries sheet";
 }
 
-@keyframes pop {
-	0% {
-		transform: scale(1);
-	}
-
-	70% {
-		transform: scale(1.2);
-	}
-
-	100% {
-		transform: scale(1);
-	}
+[data-aeris-catalog] [data-criteria="container"] {
+    grid-area: criteria;
+    position: relative;
 }
 
-[data-aeris-catalog] aeris-catalog-criteria,
-[data-aeris-catalog] aeris-catalog-map{
-	position: absolute;
-	z-index: 10;
+[data-aeris-catalog] [data-criteria="content"]>* {
+    width: 90%;
 }
 
-[data-aeris-catalog] aeris-catalog-criteria,
-[data-aeris-catalog] aeris-catalog-map {
-	top: 0;
-	height: 100vh;
+[data-aeris-catalog] [data-summaries] {
+    grid-area: summaries;
+    position: relative;
 }
 
-[data-aeris-catalog] aeris-catalog-criteria {
-	left: 0;
-	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+[data-aeris-catalog] [data-criteria="buttons"] {
+  position: absolute;
+  top: 0%;
+  right: 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
 }
 
-[data-aeris-catalog] .search-criteria-content {
-	position: relative;
-	height: 100vh;
-	padding-right: 20px;
-	overflow: auto;
+[data-aeris-catalog] [data-criteria="buttons"]>div>* {
+    margin: 5px;
 }
 
-[data-aeris-catalog] aeris-catalog-map {
-	left: 300px;
-	width: calc(100% - 300px);
+[data-aeris-catalog] [data-map] {
+    grid-area: map;
 }
 
-
-[data-aeris-catalog] .flex-summaries {
-	display: flex;
+[data-aeris-catalog] [data-cart] {
+  grid-area: cart;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-
-[data-aeris-catalog] .catalog-search-button:hover,
-[data-aeris-catalog] .catalog-reset-button:hover,
-[data-aeris-catalog] .catalog-more-button:hover,
-[data-aeris-catalog] .catalog-collapse-button:hover,
-[data-aeris-catalog] .catalog-fullscreen-button:hover,
-[data-aeris-catalog] .catalog-help-button:hover,
-[data-aeris-catalog] .catalog-draw-button:hover {
-	cursor: pointer;
-	background-color: var(--search-button-hover-color, #4765a0);
+[data-aeris-catalog] [data-sheet="content"] {
+    grid-area: sheet;
+    position: relative;
 }
 
-[data-aeris-catalog] .catalog-search-button {
-	top: 10px;
+[data-aeris-catalog] [data-sheet="placeholder"] {
+  grid-area: sheet;
+  background: #DDD;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 2.2rem;
+  font-weight: 300;
 }
 
-[data-aeris-catalog] .catalog-search-button .mask {
-	display: none;
-	cursor: initial;
-}
-
-[data-aeris-catalog] .catalog-search-button.disabled .mask {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(120, 120, 120, 0.8);
-	border-radius: 50%;
-}
-
-[data-aeris-catalog] .catalog-reset-button {
-	top: 70px;
-}
-
-[data-aeris-catalog] .catalog-more-button {
-	top: 150px;
-}
-
-[data-aeris-catalog] .catalog-draw-button {
-	top: 210px;
-}
-
-[data-aeris-catalog] .more-button:hover .catalog-collapse-button,
-[data-aeris-catalog] .more-button:hover .catalog-fullscreen-button,
-[data-aeris-catalog] .more-button:hover .catalog-help-button {
-	z-index: 12;
-	transform: translateY(0);
-	transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0s, z-index 0s ease 0.3s;
-}
-
-[data-aeris-catalog] .catalog-collapse-button,
-[data-aeris-catalog] .catalog-fullscreen-button,
-[data-aeris-catalog] .catalog-help-button {
-	z-index: 10;
-	top: 160px;
-	width: 25px;
-	height: 25px;
-	font-size: 12px;
-	background-color: var(--search-button-color, #4765a0);
-	transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.8s, background-color 0.3s;
-}
-
-[data-aeris-catalog] .catalog-collapse-button:hover,
-[data-aeris-catalog] .catalog-fullscreen-button:hover,
-[data-aeris-catalog] .catalog-help-button:hover {
-	background-color: var(--search-button-hover-color, #4765a0);
-	transform: translateX(0);
-}
-
-[data-aeris-catalog] .catalog-collapse-button {
-	left: 75px;
-	transform: translateX(-50px);
-}
-
-[data-aeris-catalog] .catalog-collapse-button:hover {
-	transform: translateX(0);
-}
-
-[data-aeris-catalog] .catalog-collapse-button i {
-	transition: transform 0.3s;
-}
-
-[data-aeris-catalog] .catalog-collapse-button i.rotate {
-	transform: rotate(180deg);
-}
-
-[data-aeris-catalog] .catalog-help-button {
-	left: 110px;
-	transform: translateX(-85px);
-}
-
-[data-aeris-catalog] .catalog-fullscreen-button {
-	left: 145px;
-	transform: translateX(-120px);
-}
-
-
-[data-aeris-catalog] .cart-bar {
-	position: relative;
-	/*top: 0;
-	right: 0;*/
-	float: right;
-	z-index: 12;
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	padding: 0px;
-	height: 40px;
-	width: 300px;
-background-color: #f5f5f5;
-}
-
-@media screen and (max-height: 800px) {
-	[data-aeris-catalog] aeris-catalog-criteria,
-  [data-aeris-catalog] aeris-catalog-map {
-		top: 0;
-		height: 100vh;
-	}
-
-	[data-aeris-catalog] .search-criteria-content {
-		height: 100vh;
-	}
-
-	[data-aeris-catalog] .metadata-panel {
-		height: 90vh;
-	}
+[data-aeris-catalog] [data-sheet="placeholder"]>div {
+  padding: 20px 0;
 }
  </style>

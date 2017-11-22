@@ -4,7 +4,7 @@
     <div id="mapMask" class="map-mask"></div>
     <div id="map" class="map" tabindex="0"></div>
     <div id="mapCoordinates" class="map-coordinates"></div>
-    <div style="position: absolute;left: 15px;top:10px;display: -webkit-flex;  -webkit-flex-direction: column;   display: flex;  flex-direction: column;">
+    <div class="button">
       <slot></slot>
     </div>
   </div>
@@ -411,10 +411,15 @@ export default {
 
 <style>
 [data-aeris-catalog-map] {
-    display: block;
     position: relative;
+    height: 100%;
     background-color: #fff;
-	margin-left: 10px;
+}
+
+[data-aeris-catalog-map] .button {
+  position: absolute;
+  top: 2%;
+  left: 2%;
 }
 
 [data-aeris-catalog-map].hidemap {

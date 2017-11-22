@@ -258,7 +258,7 @@ export default {
 }
 
 [data-aeris-spatial-search-criteria-content] .aeris-catalog-box {
-  font-size: 14px;
+
   word-wrap: break-word;
 }
 

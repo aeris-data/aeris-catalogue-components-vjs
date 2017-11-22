@@ -21,42 +21,30 @@
 
 <template>
 <div data-aeris-catalog-metadata-panel>
-
-
-  <aside id="metadataPanel" class="metadata-panel" :class="{maximize: maximize, minimize: minimize}">
-
-    <aeris-catalog-ui-confirmation></aeris-catalog-ui-confirmation>
-
-    <nav class="metadata-panel-header">
-      <span class="metadata-panel-title">
-          <span  :class="iconClass"   v-show="iconClass"></span>
-      <h2 class="metadata-panel-title">
-            <aeris-international-field html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
-          </h2>
-      </span>
-      <i class="fa fa-times" @click="broadcastCloseEvent" :title="$t('close')"></i>
-    </nav>
-    <div id="metadataPanelContent" class="metadata-panel-content">
-
-      <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
-      <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
-    </div>
-    <footer class="metadata-panel-footer">
-      <i class="fa fa-expand metadata-footer-icon" @click="switchmode" :title="$t('maximize')" v-if="minimize"></i>
-      <i class="fa fa-times metadata-footer-icon" @click="broadcastCloseEvent" :title="$t('close')"></i>
-      <i class="fa fa-compress metadata-footer-icon" @click="switchmode" :title="$t('minimize')" v-if="maximize"></i>
-      <i class="fa fa-code metadata-footer-icon" @click="showJson" :title="$t('json')" v-show="!edit"></i>
-      <i class="fa fa-floppy-o metadata-footer-icon" :title="$t('save')" v-show="edit" @click="sendSaveEvent()"></i>
+  <aeris-catalog-ui-confirmation></aeris-catalog-ui-confirmation>
+  <header>
+    <h2 class="metadata-panel-title">
+      <aeris-international-field html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
+    </h2>
+  </header>
+  <main>
+    <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
+    <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
+    <aside>
+      <aeris-catalog-ui-icon-button icon="fa-expand" @click="switchmode" :title="$t('maximize')" v-if="minimize"></aeris-catalog-ui-icon-button>
+      <aeris-catalog-ui-icon-button icon="fa-compress" @click="switchmode" :title="$t('minimize')" v-if="maximize"></aeris-catalog-ui-icon-button>
+      <aeris-catalog-ui-icon-button icon="fa-times" :title="$t('close')" @click="broadcastCloseEvent"></aeris-catalog-ui-icon-button>
+      <aeris-catalog-ui-icon-button v-show="!edit" icon="fa-code" :title="$t('json')" @click="showJson"></aeris-catalog-ui-icon-button>
+      <aeris-catalog-ui-icon-button v-show="edit" icon="fa-floppy-o" theme="primary" @click="sendSaveEvent"></aeris-catalog-ui-icon-button>
       <slot></slot>
-    </footer>
-  </aside>
+    </aside>
+  </main>
 </div>
 </template>
 
 <script>
 export default {
-  props:
-  {
+  props: {
     lang: {
       type: String,
       default: 'en'
@@ -89,8 +77,8 @@ export default {
       required: true
     },
     clientTemplate: {
-        type: String,
-    	default: ""
+      type: String,
+      default: ""
     }
   },
 
@@ -267,109 +255,32 @@ export default {
 </script>
 
 <style>
-[data-aeris-catalog-metadata-panel] .metadata-panel.minimize {
-  width: 800px;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel.maximize {
-  width: 100%;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel {
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-  background-color: #fafafa;
-  overflow: hidden;
-  cursor: default;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-  transform: translate3d(0, 0, 0);
-  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1), width 0.3s ease-in-out 0.3s, height 0.3s ease-in-out 0.3s;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel.fullscreen {
-  z-index: 12;
-  width: 100vw;
-  max-width: 100vw;
+[data-aeris-catalog-metadata-panel] {
   height: 100%;
-  transform: translate3d(320px, -5vh, 0);
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px 0 10px;
-  border-bottom: 1px solid #ddd;
-  height: 4rem;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-header i {
-  cursor: pointer;
-  color: #888;
-  opacity: 0.5;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-header i:hover {
-  opacity: 1;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-header .metadata-panel-title {
-  display: flex;
-  align-items: center;
-  color: #000
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-header .metadata-panel-title h2 {
-  display: inline;
-  margin: 0 10px;
-  padding: 5px 0;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-content {
-  max-height: calc(100vh - 13rem);
-  padding: 10px 10px 0px 10px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0s;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-footer {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  height: 4rem;
-  border-top: 1px solid #ddd;
-  background-color: #fafafa;
+  overflow-y: auto;
+  background: #FAFAFA;
 }
 
-[data-aeris-catalog-metadata-panel] h2.metadata-panel-title {
-  font-weight: normal
+[data-aeris-catalog-metadata-panel]>header {
+  display: flex;
+  align-items: center;
+  padding: 24px;
 }
 
-[data-aeris-catalog-metadata-panel] .metadata-panel-footer div{
+[data-aeris-catalog-metadata-panel]>header h2 {
+  font-weight: 600;
+}
+
+[data-aeris-catalog-metadata-panel]>main>aside {
+  position: absolute;
+  top: 8%;
+  right: 4%;
   display: flex;
   flex-direction: row;
 }
 
-[data-aeris-catalog-metadata-panel] .metadata-panel-footer .metadata-footer-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  margin: 0 5px;
-  border: 1px solid;
-  border-radius: 50%;
-  color: #bbb;
-  cursor: pointer;
-}
-
-[data-aeris-catalog-metadata-panel] .metadata-panel-footer .metadata-footer-icon:hover {
-  animation-name: pop;
-  animation-duration: 0.3s;
+[data-aeris-catalog-metadata-panel]>main>aside>* {
+  margin: 5px;
 }
 </style>

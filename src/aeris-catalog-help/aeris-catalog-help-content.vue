@@ -112,11 +112,9 @@ export default {
     ensureTheme: function() {
       if (this.isPopupOpen) {
         var okButton = this.$el.querySelector('.ok-button');
-        var messageButton = this.$el.querySelector('.map-rounded-button');
         var showAtStartButton = this.$el.querySelector('.show-at-startup-button');
         if (this.theme) {
           okButton.style.background = this.theme.primary;
-          messageButton.style.background = this.theme.primary;
           if (this.showAtStartVisible) {
             showAtStartButton.style.borderColor = this.theme.primary;
           }
@@ -206,7 +204,7 @@ export default {
 		left: 50%;
 		transform: translate(-50%, -50%);
 		background-color: #fff;
-		box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+
 		border: 1px solid #ddd;
 		border-radius: 5px;
 		padding: 10px;
@@ -227,7 +225,7 @@ export default {
 	    background-color: #8CD4F5;
 	    color: white;
 	    border: none;
-	    box-shadow: none;
+
 	    font-size: 17px;
 	    font-weight: 500;
 	    -webkit-border-radius: 4px;

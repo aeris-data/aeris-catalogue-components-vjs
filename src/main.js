@@ -16,12 +16,19 @@ Vue.use(VueColorPlugin)
 Vue.use(VueAerisLanguagePlugin)
 
 
+import AerisUiInput from './aeris-catalog-ui/aeris-catalog-ui-input.vue'
+import AerisUiCheckbox from './aeris-catalog-ui/aeris-catalog-ui-checkbox.vue'
+import AerisUiCheckboxList from './aeris-catalog-ui/aeris-catalog-ui-checkbox-list.vue'
+import AerisUiIconButton from './aeris-catalog-ui/aeris-catalog-ui-icon-button.vue'
 import AerisUiButton from './aeris-catalog-ui/aeris-catalog-ui-button.vue'
-import MdTemplateProxy from './aeris-catalog-layout/aeris-metadata-template/md-template-proxy.vue'
+import AerisUiDropdown from './aeris-catalog-ui/aeris-catalog-ui-dropdown.vue'
+import AerisUiSearch from './aeris-catalog-ui/aeris-catalog-ui-search.vue'
+
+import MdTemplateProxy from './aeris-catalog-layouts/aeris-metadata-template/md-template-proxy.vue'
 import AerisUiConfirmation from './aeris-catalog-ui/aeris-catalog-ui-confirmation.vue'
-import MdTemplateCollection from './aeris-catalog-layout/aeris-metadata-template/md-template-collection.vue'
+import MdTemplateCollection from './aeris-catalog-layouts/aeris-metadata-template/md-template-collection.vue'
 import AerisInternationalField from './misc/aeris-international-field.vue'
-import AerisCatalogSearchBox from './aeris-catalog-layout/aeris-search-criteria-layout/aeris-catalog-search-box.vue'
+import AerisCatalogSearchBox from './aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalog-search-box.vue'
 import AerisCatalogMetadataPanel from './aeris-catalog-metadata-panel/aeris-catalog-metadata-panel.vue'
 import AerisKeywordSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/aeris-keyword-search-criteria.vue'
 import AerisSpatialSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/aeris-spatial-search-criteria.vue'
@@ -109,8 +116,16 @@ ljs.load('dep', function() {
 		if ((window.registredAerisElements.indexOf("aeris-commons-components-vjs") > -1) && (window.registredAerisElements.indexOf("aeris-metadata-components-vjs") > -1)) {
 			console.info("Début registration des custom elements catalog")
 			console.info("Registred elements at this time: "+window.registredAerisElements)
-			registerElement('aeris-checkboxtree-item', AerisCheckboxtreeItem)
+
+			registerElement('aeris-catalog-ui-dropdown', AerisUiDropdown);
+			registerElement('aeris-catalog-ui-search', AerisUiSearch);
+			registerElement('aeris-catalog-ui-checkbox', AerisUiCheckbox);
+			registerElement('aeris-catalog-ui-input', AerisUiInput);
+			registerElement('aeris-catalog-ui-checkbox-list', AerisUiCheckboxList);
+			registerElement('aeris-catalog-ui-icon-button', AerisUiIconButton);
 			registerElement('aeris-catalog-ui-button', AerisUiButton);
+
+			registerElement('aeris-checkboxtree-item', AerisCheckboxtreeItem);
 			registerElement('aeris-catalog-ui-confirmation', AerisUiConfirmation);
 			registerElement('md-template-collection', MdTemplateCollection);
 			registerElement('md-template-proxy', MdTemplateProxy);
