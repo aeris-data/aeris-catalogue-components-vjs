@@ -16,9 +16,9 @@
 <span class="aeris-catalog-host" style="background:white">
   <div class="app-container">
     <aeris-notifier></aeris-notifier>
-    <aeris-catalog-bar :lang="lang">
+    <aeris-catalog-criteria :lang="lang">
       <slot name="criteria"></slot>
-    </aeris-catalog-bar>
+    </aeris-catalog-criteria>
     <aeris-catalog-map :hidemap="hidemap">
       <slot name="buttons"></slot>
     </aeris-catalog-map>
@@ -26,7 +26,7 @@
 			Your shopphing cart:
 			<aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken" ></aeris-catalog-cart>
 		</span>
-<aeris-catalog-summaries-bar :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries-bar>
+<aeris-catalog-summaries :bar-width="summaryBarWidth" :summary-max-length="summaryMaxLength"></aeris-catalog-summaries>
 <div class="subpanel" style="position:absolute;z-index:10;" :style="{marginRight: summaryBarWidth, right:metadataPanelRightMargin, top:metadataPanelTopMargin}">
   <aeris-catalogue-metadata-panel v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata" :client-template="currentTemplate">
     <slot name="metadatafooter"></slot>
@@ -419,21 +419,19 @@ export default {
 	}
 }
 
-.aeris-catalog-host aeris-catalog-bar,
-.aeris-catalog-host aeris-catalog-map,
-.aeris-catalog-host aeris-collection-bar {
+.aeris-catalog-host aeris-catalog-criteria,
+.aeris-catalog-host aeris-catalog-map{
 	position: absolute;
 	z-index: 10;
 }
 
-.aeris-catalog-host aeris-catalog-bar,
-.aeris-catalog-host aeris-catalog-map,
-.aeris-catalog-host aeris-collection-bar {
+.aeris-catalog-host aeris-catalog-criteria,
+.aeris-catalog-host aeris-catalog-map {
 	top: 0;
 	height: 100vh;
 }
 
-.aeris-catalog-host aeris-catalog-bar {
+.aeris-catalog-host aeris-catalog-criteria {
 	left: 0;
 	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
 }
@@ -555,10 +553,6 @@ export default {
 	transform: translateX(-120px);
 }
 
-.aeris-catalog-host aeris-collection-bar {
-	right: 0;
-	box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
-}
 
 .aeris-catalog-host .cart-bar {
 	position: relative;
@@ -576,9 +570,8 @@ background-color: #f5f5f5;
 }
 
 @media screen and (max-height: 800px) {
-	.aeris-catalog-host aeris-catalog-bar,
-  .aeris-catalog-host aeris-catalog-map,
-  .aeris-catalog-host aeris-collection-bar {
+	.aeris-catalog-host aeris-catalog-criteria,
+  .aeris-catalog-host aeris-catalog-map {
 		top: 0;
 		height: 100vh;
 	}

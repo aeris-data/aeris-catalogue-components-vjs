@@ -1,5 +1,5 @@
 <template>
-<span class="aeris-catalog-bar-host">
+<span class="aeris-catalog-criteria-host">
 <div class="criteria-bar">
 <div class="criteria-content">
   <slot></slot>
@@ -21,19 +21,19 @@ export default {
 	     	 default: true
 	    },
 	},
-  
+
   watch: {
   },
-  
+
   destroyed: function() {
   },
-  
+
   created: function () {
   },
 
   mounted: function() {
   },
-  
+
   computed: {
   },
 
@@ -41,10 +41,10 @@ export default {
     return {
     }
   },
-  
+
   updated: function() {
   },
-  
+
   methods: {
   }
 }
@@ -52,17 +52,14 @@ export default {
 
 <style>
 <style>
-.aeris-catalog-bar-host {
+.aeris-catalog-criteria-host {
     box-sizing: border-box;
     display: block;
     width: 300px;
     height: 100%;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.3);
-    
-}
 
-.aeris-catalog-bar-host .criteria-bar {
 }
 
 .criteria-content {

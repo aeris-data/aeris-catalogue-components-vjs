@@ -17,10 +17,9 @@ Vue.use(VueAerisLanguagePlugin)
 
 
 import AerisUiButton from './aeris-ui/aeris-ui-button.vue'
-import MdTemplateProxy from './aeris-catalog/md-template/md-template-proxy.vue'
+import MdTemplateProxy from './aeris-metadata-template/md-template-proxy.vue'
 import AerisUiConfirmation from './aeris-ui/aeris-ui-confirmation.vue'
-import MdTemplateCollection from './aeris-catalog/md-template/md-template-collection.vue'
-import MdTemplateCollection2 from './aeris-catalog/md-template/md-template-collection2.vue'
+import MdTemplateCollection from './aeris-metadata-template/md-template-collection.vue'
 import AerisInternationalField from './misc/aeris-international-field.vue'
 import AerisCatalogSearchBox from './aeris-catalog-box/aeris-catalog-search-box.vue'
 import AerisCatalogMetadataPanel from './aeris-catalog/aeris-catalog-metadata-panel.vue'
@@ -30,18 +29,17 @@ import AerisTemporalSearchCriteria from './aeris-temporal-search-criteria/aeris-
 import AerisKeywordSearchCriteriaContent from './aeris-keyword-search-criteria/aeris-keyword-search-criteria-content.vue'
 import AerisSpatialSearchCriteriaContent from './aeris-spatial-search-criteria/aeris-spatial-search-criteria-content.vue'
 import AerisTemporalSearchCriteriaContent from './aeris-temporal-search-criteria/aeris-temporal-search-criteria-content.vue'
-import CollectionSummary from './aeris-catalog-bar/summary/collection-summary.vue'
-import AerisCatalogDefaultSummary from './aeris-catalog-bar/summary/aeris-catalog-default-summary.vue'
-import AerisCatalogProxySummary from './aeris-catalog-bar/summary/aeris-catalog-proxy-summary.vue'
-import AerisCatalogBar from './aeris-catalog-bar/aeris-catalog-bar.vue'
-import AerisCatalogSummariesBar from './aeris-catalog-bar/aeris-catalog-summaries-bar.vue'
+import AerisCatalogDefaultSummary from './aeris-catalog-summary/aeris-catalog-default-summary.vue'
+import AerisCatalogProxySummary from './aeris-catalog-summary/aeris-catalog-proxy-summary.vue'
+import AerisCatalogCriteria from './aeris-catalog-criteria/aeris-catalog-criteria.vue'
+import AerisCatalogSummaries from './aeris-catalog-summaries/aeris-catalog-summaries.vue'
 import AerisCatalogMap from './aeris-catalog-map/aeris-catalog-map.vue'
 import AerisCatalog from './aeris-catalog/aeris-catalog.vue'
-import AerisCatalogMaximizeButton from './aeris-catalog/button/aeris-catalogue-maximize-button.vue'
-import AerisCatalogSearchButton from './aeris-catalog/button/aeris-catalogue-search-button.vue'
-import AerisCatalogResetButton from './aeris-catalog/button/aeris-catalogue-reset-button.vue'
-import AerisCatalogEditButton from './aeris-catalog/button/aeris-catalogue-edit-button.vue'
-import AerisCatalogHelpButton from './aeris-catalog/button/aeris-catalogue-help-button.vue'
+import AerisCatalogMaximizeButton from './aeris-catalog-buttons/aeris-catalogue-maximize-button.vue'
+import AerisCatalogSearchButton from './aeris-catalog-buttons/aeris-catalogue-search-button.vue'
+import AerisCatalogResetButton from './aeris-catalog-buttons/aeris-catalogue-reset-button.vue'
+import AerisCatalogEditButton from './aeris-catalog-buttons/aeris-catalogue-edit-button.vue'
+import AerisCatalogHelpButton from './aeris-catalog-buttons/aeris-catalogue-help-button.vue'
 import AerisCatalogCart from './aeris-catalog-cart/aeris-catalog-cart.vue'
 import AerisCatalogHelp from './aeris-catalog-help/aeris-catalog-help-content.vue'
 import AerisPlatformSearchCriteriaContent from './aeris-platform-search-criteria/aeris-platform-search-criteria-content.vue'
@@ -135,8 +133,8 @@ ljs.load('dep', function() {
 			registerElement('aeris-temporal-search-criteria', AerisTemporalSearchCriteria);
 			registerElement('aeris-catalog-default-summary', AerisCatalogDefaultSummary);
 			registerElement('aeris-catalog-proxy-summary', AerisCatalogProxySummary);
-			registerElement('aeris-catalog-summaries-bar', AerisCatalogSummariesBar);
-			registerElement('aeris-catalog-bar', AerisCatalogBar);
+			registerElement('aeris-catalog-summaries', AerisCatalogSummaries);
+			registerElement('aeris-catalog-criteria', AerisCatalogCriteria);
 			registerElement('aeris-catalog-map', AerisCatalogMap);
 			registerElement('aeris-catalog-cart', AerisCatalogCart);
 			registerElement('aeris-catalog-help-content', AerisCatalogHelp);
