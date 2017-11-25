@@ -437,6 +437,7 @@ export default {
 [data-aeris-catalog] [data-sheet="content"] {
     grid-area: sheet;
     position: relative;
+    overflow: auto;
 }
 
 [data-aeris-catalog] [data-sheet="placeholder"] {
