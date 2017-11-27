@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<aeris-catalog-ui-icon-button icon="fa-repeat" theme="primary" :title="$t('reset')" @click="handleReset"></aeris-catalog-ui-icon-button>
+<aeris-catalog-ui-icon-button icon="fa-eraser" theme="primary" :title="$t('reset')" @click="handleReset"></aeris-catalog-ui-icon-button>
 </template>
 
 <script>
