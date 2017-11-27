@@ -1,7 +1,7 @@
 <template>
 <div data-aeris-catalog-ui-input>
   <i v-if="icon" :class="icon"></i>
-  <input type="text" :name="name" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)" />
+  <input type="text" :name="name" :aria-label="ariaLabel" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)" />
 </div>
 </template>
 
@@ -19,6 +19,9 @@ export default {
       type: String
     },
     value: {
+      required: true
+    },
+    ariaLabel: {
       required: true
     }
   },

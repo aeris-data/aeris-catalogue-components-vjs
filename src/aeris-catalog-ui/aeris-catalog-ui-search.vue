@@ -2,7 +2,7 @@
 <div data-aeris-catalog-ui-search>
   <div ref="selected" class="input-container">
     <i v-if="icon" class="fa fa-search icon" aria-hidden="true" />
-    <input type="text" :placeholder="text" @input="typeText" :value="value" @click="openList" @keyup.enter="closeList" />
+    <input type="text" :aria-label="ariaLabel" :placeholder="text" @input="typeText" :value="value" @click="openList" @keyup.enter="closeList" />
   </div>
   <aeris-catalog-ui-dropdown v-show="openedList" :value="value" :visible='openedList' :items='JSON.stringify(visibleItems)' @close='closeList' @valueSelected='selectValue'></aeris-catalog-ui-dropdown>
 </div>
@@ -26,6 +26,9 @@ export default {
     icon: {
       required: false,
       default: true
+    },
+    ariaLabel: {
+      required: true
     }
   },
 

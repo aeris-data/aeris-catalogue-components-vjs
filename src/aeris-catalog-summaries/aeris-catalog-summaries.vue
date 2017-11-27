@@ -14,7 +14,7 @@
 <template>
 <div data-aeris-catalog-summaries-bar class="always-visible" :class="visibilityClass">
   <header>
-    <aeris-catalog-ui-input icon="fa fa-filter" :placeholder="$t('filter')" :value="filter" @input="filter = $event.target.value"></aeris-catalog-ui-input>
+    <aeris-catalog-ui-input icon="fa fa-filter" aria-label="filterSummaries" :placeholder="$t('filter')" :value="filter" @input="filter = $event.target.value"></aeris-catalog-ui-input>
   </header>
   <section v-if="summaries">
     <div v-for="summary in filteredsummaries" :key="summary.id">

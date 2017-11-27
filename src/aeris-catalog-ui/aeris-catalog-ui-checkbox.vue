@@ -1,7 +1,7 @@
 <template>
 <div data-aeris-catalog-ui-checkbox>
   <input type="checkbox" :id="id" :name="name" :value="value" @change="$emit('change', $event.target.value)">
-  <label class="program-name-row">{{label}}</label>
+  <label :for="id" class="program-name-row">{{label}}</label>
 </div>
 </template>
 
