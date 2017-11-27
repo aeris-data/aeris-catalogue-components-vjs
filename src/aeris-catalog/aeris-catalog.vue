@@ -1,4 +1,4 @@
-<i18n>
+7<i18n>
 {
   "en": {
     "searching": "Searching...",
@@ -15,7 +15,7 @@
 }
 </i18n>
 <template>
-<div data-aeris-catalog :class="{'withMap': !hidemap}">
+<div :style="{'--heightMap': heightMap, '--heightSheet': heightSheet}" data-aeris-catalog :class="{'withMap': !hidemap}">
 
   <aeris-notifier></aeris-notifier>
 
@@ -87,6 +87,10 @@ export default {
     edit: {
       type: Boolean,
       default: false
+    },
+    ratioMapSheet: {
+      type: String,
+      default: "1:3"
     }
   },
 
@@ -128,6 +132,7 @@ export default {
 
   created: function() {
     console.log("Aeris aeris-catalog creation")
+
     this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this)
     document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
 
@@ -159,7 +164,14 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    heightMap() {
+      return `${this.ratioMapSheet.split(":")[0]}fr`;
+    },
+    heightSheet() {
+      return `${this.ratioMapSheet.split(":")[1]}fr`;
+    }
+  },
 
   data() {
     return {
@@ -377,18 +389,19 @@ export default {
 [data-aeris-catalog] {
   display: grid;
   grid-template-columns: 20% 20% 1fr;
-  grid-template-rows: 6vh 47vh 47vh;
+  grid-template-rows: 6% 1fr 1fr;
   grid-template-areas:  "criteria cart sheet"
                         "criteria summaries sheet"
                         "criteria summaries sheet";
   width: 100%;
+  height: 100vh;
   background-color: #EEE;
   position: relative;
 }
 
 [data-aeris-catalog].withMap {
   grid-template-columns: 20% 20% 1fr;
-  grid-template-rows: 6vh 47vh 47vh;
+  grid-template-rows: 6% var(--heightMap) var(--heightSheet);
   grid-template-areas:    "criteria cart map"
                           "criteria summaries map"
                           "criteria summaries sheet";
