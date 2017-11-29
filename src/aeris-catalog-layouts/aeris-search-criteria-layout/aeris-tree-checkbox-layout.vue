@@ -14,39 +14,38 @@
 </i18n>
 
 <template>
-<div data-aeris-platform-search-criteria-content>
-  <div v-if="isLoading" class="loadingbar">
+<div data-aeris-tree-checkbox-layout>
+
+  <div v-if="isLoading" class="loading-bar">
     <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
     <span>{{$t('loading')}}</span>
   </div>
-  <div v-if="isUpdating" class="loadingbar">
+  <div v-if="isUpdating" class="loading-bar">
     <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
     <span>{{$t('updating')}}</span>
   </div>
 
-  <div v-for="(item,index) of items" :key="item.name">
-    <div class="program-header">
-      <input type="checkbox" class="program-checkbox" :id="`${name}${item.name}`" :aria-label="`${name}${item.name}`" :checked="item.checked" @change="checkFirstLevel(index)">
-      <span class="program-name-row">
-						<strong>
-						{{item.label}}
-						</strong>
-						<span class="badge">{{item.subitems.length}}</span>
-      </span>
-      </input>
-      <i v-show="item.deployed" class="fa fa-minus-square-o" @click="toggle(index)"></i>
-      <i v-show="!item.deployed" class="fa fa-plus-square-o" @click="toggle(index)"></i>
-      <i v-if="item.downloadable" class="fa fa-shopping-cart tooltip" :title="$t('directlydownloadable')"></i>
+  <main v-for="(item,index) of items" :key="item.name">
+    <div class="first-level">
+      <main>
+        <input type="checkbox" :id="`${name}${item.name}`" :checked="item.checked" @change="checkFirstLevel(index)">
+        <label :for="`${name}${item.name}`">{{item.label}}</label>
+      </main>
+      <aside>
+        <i v-if="item.downloadable" class="fa fa-shopping-cart tooltip downloadable" :title="$t('directlydownloadable')"></i>
+        <span v-if="item.subitems.length > 0" class="badge">{{item.subitems.length}}</span>
+        <i v-if="item.subitems.length > 0" v-show="item.deployed" class="fa fa-minus-square-o deployed" @click="toggle(index)"></i>
+        <i v-if="item.subitems.length > 0" v-show="!item.deployed" class="fa fa-plus-square-o deployed" @click="toggle(index)"></i>
+      </aside>
     </div>
-    <div class="folderContent" v-if="item.deployed">
-      <div class="offset">
-        <div v-for="(subitem, indexSubitem) of item.subitems">
-          <input type="checkbox" :id="`${prefix}${name}${subitem.name}`" :aria-label="`${name}${item.name}${subitem.name}`" :checked="subitem.checked" @change="checkSecondLevel(index, indexSubitem)" class="platform-checkbox">
-          <span>{{(subitem.label)}}</span>
-        </div>
-      </div>
-    </div>
-  </div>
+    <template v-if="item.deployed">
+	    <div class="second-level" v-for="(subitem, indexSubitem) of item.subitems">
+	      <input type="checkbox" :id="`${name}${item.name}${subitem.name}`" :checked="subitem.checked" @change="checkSecondLevel(index, indexSubitem)">
+	      <label :for="`${name}${item.name}${subitem.name}`">{{(subitem.label)}}</label>
+	    </div>
+		</template>
+  </main>
+
 </div>
 </template>
 
@@ -67,9 +66,6 @@ export default {
     },
     nameSubitems: {
       type: String
-    },
-    searchFirstLevel: {
-      default: false
     }
   },
 
@@ -234,7 +230,45 @@ export default {
 }
 </script>
 <style>
-[data-aeris-platform-search-criteria-content] .loadingbar {
-  padding: 3px;
+[data-aeris-tree-checkbox-layout] {
+  color: #FAFAFA;
+}
+
+[data-aeris-tree-checkbox-layout] .loading-bar {
+  padding: 8px 0;
+}
+
+[data-aeris-tree-checkbox-layout] .first-level {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+[data-aeris-tree-checkbox-layout] .second-level {
+  margin-left: 24px;
+  padding: 5px 0;
+}
+
+[data-aeris-tree-checkbox-layout] input {
+  margin-right: 15px;
+}
+
+[data-aeris-tree-checkbox-layout] .first-level aside {
+  display: flex;
+}
+
+[data-aeris-tree-checkbox-layout] .badge {
+  margin: 0 8px;
+  font-size: 0.7rem;
+  color: #FAFAFA;
+}
+
+[data-aeris-tree-checkbox-layout] .deployed {
+  cursor: pointer;
+}
+
+[data-aeris-tree-checkbox-layout] .downloadable {
+  color: #f39c12;
 }
 </style>
