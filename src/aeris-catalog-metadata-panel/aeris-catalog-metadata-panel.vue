@@ -51,7 +51,8 @@ export default {
     },
     edit: {
       type: Boolean,
-      default: false
+      default: false,
+      required: true
     },
     resourcetitle: {
       type: String,
@@ -85,6 +86,18 @@ export default {
   watch: {
     lang(value) {
       this.$i18n.locale = value
+    },
+    uuid(value) {
+      this.$el.scrollTop = 0;
+    },
+
+    edit(value) {
+      document.dispatchEvent(new CustomEvent('aerisCatalogueMetadataRendered', {
+        detail: {
+          uuid: this.uuid,
+          edit: value ? value : false
+        }
+      }));
     }
   },
 
@@ -95,7 +108,6 @@ export default {
     document.addEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
     this.aerisOrcidListener = this.handleOrcidResponse.bind(this);
     document.addEventListener('aerisOrcidResponse', this.aerisOrcidListener);
-
     this.$nextTick(function() {
       document.dispatchEvent(new CustomEvent('aerisCatalogueMetadataRendered', {
         detail: {

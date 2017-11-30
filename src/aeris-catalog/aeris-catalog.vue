@@ -203,6 +203,8 @@ export default {
     },
 
     handleDisplayMetadata: function(e) {
+      this.hideMetadataPanel();
+
       if (e.detail.uuid) {
         this.currentUuid = e.detail.uuid
       } else {
@@ -236,7 +238,7 @@ export default {
     },
 
     handleEditMetadata: function(e) {
-      this.editMetadataPanel = true;
+      this.hideMetadataPanel();
       this.currentEditedMetadata = e.detail
       if (e.detail.type) {
         this.currentType = e.detail.type
@@ -246,11 +248,13 @@ export default {
       this.currentMetadata = e.detail.metadata ? e.detail.metadata : null;
       this.currentUuid = e.detail.metadata ? e.detail.metadata.uuid : null;
       this.visibleMetadataPanel = true;
+      this.editMetadataPanel = true;
     },
 
     hideMetadataPanel: function() {
       this.visibleMetadataPanel = false;
       this.editMetadataPanel = false;
+      this.currentMetadata = null;
       this.currentTitle = "";
       this.currentUuid = ""
       this.currentType = ""
