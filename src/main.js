@@ -24,6 +24,7 @@ import AerisUiButton from './aeris-catalog-ui/aeris-catalog-ui-button.vue'
 import AerisUiDropdown from './aeris-catalog-ui/aeris-catalog-ui-dropdown.vue'
 import AerisUiSearch from './aeris-catalog-ui/aeris-catalog-ui-search.vue'
 
+import AerisTreeCheckboxLayout from './aeris-catalog-layouts/aeris-search-criteria-layout/aeris-tree-checkbox-layout.vue'
 import MdTemplateProxy from './aeris-catalog-layouts/aeris-metadata-template/md-template-proxy.vue'
 import AerisUiConfirmation from './aeris-catalog-ui/aeris-catalog-ui-confirmation.vue'
 import MdTemplateCollection from './aeris-catalog-layouts/aeris-metadata-template/md-template-collection.vue'
@@ -56,7 +57,6 @@ import AerisLevelSearchCriteria from './aeris-catalog-criteria/aeris-search-crit
 import AerisCampaignSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-campaign-search-criteria-content.vue'
 import AerisCollectionSearchCriteriaContent from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria-content.vue'
 import AerisCollectionSearchCriteria from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria.vue'
-import AerisCheckboxtreeItem from './aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-checkboxtree-item.vue'
 
 ljs.addAliases({
 	dep: [
@@ -125,7 +125,7 @@ ljs.load('dep', function() {
 			registerElement('aeris-catalog-ui-icon-button', AerisUiIconButton);
 			registerElement('aeris-catalog-ui-button', AerisUiButton);
 
-			registerElement('aeris-checkboxtree-item', AerisCheckboxtreeItem);
+      registerElement('aeris-tree-checkbox-layout', AerisTreeCheckboxLayout);
 			registerElement('aeris-catalog-ui-confirmation', AerisUiConfirmation);
 			registerElement('md-template-collection', MdTemplateCollection);
 			registerElement('md-template-proxy', MdTemplateProxy);
