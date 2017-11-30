@@ -42,18 +42,11 @@ export default {
   box-sizing: border-box;
   display: block;
   height: 100%;
-  overflow-y: scroll;
-  background: #21242b;
+  overflow-y: auto;
 }
 
 [data-aeris-catalog-criteria] span {
   font-weight: 300;
-  color: white;
-}
-
-[data-aeris-catalog-criteria] .aeris-datepicker-host,
-[data-aeris-catalog-criteria] .aeris-datepicker-host span {
-  color: #333;
 }
 
 [data-aeris-catalog-criteria] h3 {

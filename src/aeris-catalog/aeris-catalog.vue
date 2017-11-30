@@ -19,12 +19,13 @@
 
   <aeris-notifier></aeris-notifier>
 
-  <aeris-catalog-criteria data-criteria="container" :lang="lang">
+  <section data-criteria="buttons" :style="{'--criteriaBackgroundColor': criteriaBackgroundColor}">
+    <slot name="buttons-criteria"></slot>
+  </section>
+
+  <aeris-catalog-criteria data-criteria="container" :lang="lang" :style="{'--criteriaBackgroundColor': criteriaBackgroundColor, '--criteriaContentPrimaryColor': criteriaContentPrimaryColor, '--criteriaContentSecondaryColor': criteriaContentSecondaryColor, '--criteriaHeaderBackgroundColor': criteriaHeaderBackgroundColor, '--criteriaContentBackgroundColor': criteriaContentBackgroundColor, '--criteriaHeaderIconColor': criteriaHeaderIconColor}">
     <section data-criteria="content">
       <slot name="criteria"></slot>
-    </section>
-    <section data-criteria="buttons">
-      <slot name="buttons-criteria"></slot>
     </section>
   </aeris-catalog-criteria>
 
@@ -91,6 +92,24 @@ export default {
     ratioMapSheet: {
       type: String,
       default: "1:3"
+    },
+    criteriaBackgroundColor: {
+      required: false
+    },
+    criteriaHeaderBackgroundColor: {
+      required: false
+    },
+    criteriaHeaderIconColor: {
+      required: false
+    },
+    criteriaContentBackgroundColor: {
+      required: false
+    },
+    criteriaContentPrimaryColor: {
+      required: false
+    },
+    criteriaContentSecondaryColor: {
+      required: false
     }
   },
 
@@ -394,7 +413,7 @@ export default {
   display: grid;
   grid-template-columns: 20% 20% 1fr;
   grid-template-rows: 6% 1fr 1fr;
-  grid-template-areas:  "criteria cart sheet"
+  grid-template-areas:  "buttons-criteria cart sheet"
                         "criteria summaries sheet"
                         "criteria summaries sheet";
   width: 100%;
@@ -406,7 +425,7 @@ export default {
 [data-aeris-catalog].withMap {
   grid-template-columns: 20% 20% 1fr;
   grid-template-rows: 6% var(--heightMap) var(--heightSheet);
-  grid-template-areas:    "criteria cart map"
+  grid-template-areas:    "buttons-criteria cart map"
                           "criteria summaries map"
                           "criteria summaries sheet";
 }
@@ -416,25 +435,21 @@ export default {
     position: relative;
 }
 
-[data-aeris-catalog] [data-criteria="content"]>* {
-    width: 90%;
-}
-
 [data-aeris-catalog] [data-summaries] {
     grid-area: summaries;
     position: relative;
 }
 
 [data-aeris-catalog] [data-criteria="buttons"] {
-  position: absolute;
-  top: 0%;
-  right: 8%;
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  justify-content: start;
+  grid-area: buttons-criteria;
+  padding: 10px;
 }
 
+[data-aeris-catalog] [data-criteria="buttons"]>div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 [data-aeris-catalog] [data-criteria="buttons"]>div>* {
     margin: 5px;
 }
@@ -471,5 +486,41 @@ export default {
 
 [data-aeris-catalog] [data-sheet="placeholder"]>div {
   padding: 20px 0;
+}
+
+/* Customised style */
+
+[data-aeris-catalog] [data-criteria],
+[data-aeris-catalog] [data-criteria="buttons"] {
+  background: var(--criteriaBackgroundColor, #21242b);
+}
+
+[data-aeris-catalog] [data-layout="search-criteria"] .box-heading {
+  background: var(--criteriaHeaderBackgroundColor, transparent);
+}
+
+[data-aeris-catalog] [data-layout="search-criteria"] .box-heading h3,
+[data-aeris-catalog] [data-layout="search-criteria"] .box-heading i {
+  color: var(--criteriaHeaderIconColor, #FAFAFA);
+}
+
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content {
+  background: var(--criteriaContentBackgroundColor, transparent);
+}
+
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container,
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container i,
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content input,
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content label {
+  color: var(--criteriaContentPrimaryColor, #FAFAFA);
+}
+
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .input-container,
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content ::placeholder {
+   color: var(--criteriaContentSecondaryColor, #888);
+}
+
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container {
+  background: transparent;
 }
  </style>

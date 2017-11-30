@@ -28,8 +28,4 @@ export default {
 [data-aeris-catalog-ui-checkbox] input {
   margin-right: 15px;
 }
-
-[data-aeris-catalog-ui-checkbox] label {
-  color: #FAFAFA;
-}
 </style>

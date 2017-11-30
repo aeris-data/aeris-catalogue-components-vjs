@@ -1,5 +1,5 @@
 <template>
-<div data-aeris-catalog-ui-input>
+<div data-aeris-catalog-ui-input class="input-container">
   <i v-if="icon" :class="icon"></i>
   <input type="text" :name="name" :aria-label="ariaLabel" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)" />
 </div>
@@ -36,12 +36,12 @@ export default {
 
 <style>
 [data-aeris-catalog-ui-input] {
-  border-bottom: 1px solid #dfdfdf;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  border-bottom: 1px solid;
 }
 
 [data-aeris-catalog-ui-input] input {
@@ -51,13 +51,15 @@ export default {
   outline: none;
   padding: 12px;
   font-size: 1rem;
-  color: white;
   background: transparent;
+}
+
+[data-aeris-catalog-ui-input] input:focus {
+  outline: none;
 }
 
 [data-aeris-catalog-ui-input] i {
   padding: 10px;
-  color: #555;
   font-size: 1.1rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-<div data-aeris-catalog-box v-bind:class="{ showBody: isdeployed }">
+<div data-aeris-catalog-box data-layout="search-criteria" v-bind:class="{ showBody: isdeployed }">
   <div id="main" class="box noselect">
     <header class="box-heading" v-on:click="isdeployed = !isdeployed">
       <div class="box-heading-buttons">
@@ -107,7 +107,7 @@ export default {
 <style>
 [data-aeris-catalog-box] {
   font-size: 0.9rem;
-  padding: 10px 20px;
+  padding: 5px;
 }
 
 [data-aeris-catalog-box] .box-collapsable-part {
@@ -184,7 +184,7 @@ export default {
     display: flex;
     /*justify-content: space-between;*/
     align-items: center;
-    padding: 20px 5px;
+    padding: 5px 5px;
     border: var(--catalog-box-header-border, none);
     cursor: pointer
 }

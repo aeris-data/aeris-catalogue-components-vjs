@@ -1,9 +1,6 @@
 <template>
 <div data-aeris-catalog-ui-search>
-  <div ref="selected" class="input-container">
-    <i v-if="icon" class="fa fa-search icon" aria-hidden="true" />
-    <input type="text" :aria-label="ariaLabel" :placeholder="text" @input="typeText" :value="value" @click="openList" @keyup.enter="closeList" />
-  </div>
+  <aeris-catalog-ui-input ref="selected" type="text" :aria-label="ariaLabel" :placeholder="text" @input="typeText" :value="value" @click="openList" @keyup.enter="closeList"></aeris-catalog-ui-input>
   <aeris-catalog-ui-dropdown v-show="openedList" :value="value" :visible='openedList' :items='JSON.stringify(visibleItems)' @close='closeList' @valueSelected='selectValue'></aeris-catalog-ui-dropdown>
 </div>
 </template>
@@ -79,33 +76,5 @@ export default {
   flex-direction: column;
   user-select: none;
   cursor: default;
-}
-
-[data-aeris-catalog-ui-search] .input-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #dfdfdf;
-}
-
-[data-aeris-catalog-ui-search] input {
-  width: 100%;
-  box-shadow: none;
-  border: none;
-  padding: 12px 6px;
-  margin: 0;
-  font-size: 1rem;
-  background: transparent;
-  color: #FAFAFA;
-}
-
-[data-aeris-catalog-ui-search] input:focus {
-  outline: none;
-}
-
-[data-aeris-catalog-ui-search] i {
-  padding-left: 8px;
-  color: #AAA;
 }
 </style>
