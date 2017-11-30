@@ -90,9 +90,8 @@ export default {
     uuid(value) {
       this.$el.scrollTop = 0;
     },
-
     edit(value) {
-      document.dispatchEvent(new CustomEvent('aerisCatalogueMetadataRendered', {
+      document.dispatchEvent(new CustomEvent('aerisCatalogueInfoMetadata', {
         detail: {
           uuid: this.uuid,
           edit: value ? value : false
@@ -109,7 +108,7 @@ export default {
     this.aerisOrcidListener = this.handleOrcidResponse.bind(this);
     document.addEventListener('aerisOrcidResponse', this.aerisOrcidListener);
     this.$nextTick(function() {
-      document.dispatchEvent(new CustomEvent('aerisCatalogueMetadataRendered', {
+      document.dispatchEvent(new CustomEvent('aerisCatalogueInfoMetadata', {
         detail: {
           uuid: this.uuid,
           edit: this.edit
