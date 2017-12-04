@@ -28,7 +28,7 @@
 
       <aeris-theme id="theme2" active="true" primary="#19805e" emphasis="#C05A26"></aeris-theme>
 
-      <aeris-catalog metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/" program="GMOS" cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart" cart-token="gmos" summary-bar-width="600px" summary-max-length="200" hidemap="true">
+      <aeris-catalog metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/" program="GMOS" cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart" cart-token="gmos" summary-bar-width="600px" summary-max-length="200" >
         <div slot="criteria">
 
           <aeris-temporal-search-criteria></aeris-temporal-search-criteria>
@@ -45,6 +45,9 @@
           <aeris-catalogue-maximize-button></aeris-catalogue-maximize-button>
           <aeris-catalogue-help-button></aeris-catalogue-help-button>
         </div>
+          <div slot="buttons-map">
+      <aeris-catalogue-edit-button></aeris-catalogue-edit-button>
+    </div>
       </aeris-catalog>
       <div slot="help">
         <aeris-catalog-help-content helpcookie="help-popup"></aeris-catalog-help-content>

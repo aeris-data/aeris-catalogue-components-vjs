@@ -120,16 +120,18 @@ export default {
   methods: {
 
     isValidLatitude: function(latitude) {
-      if (!isNaN(latitude)) {
-        return ((latitude >= -90) && (latitude <= 90)) ? true : false;
+      let aux = parseFloat(latitude);
+      if (!Number.isNaN(aux)) {
+        return ((aux >= -90) && (aux <= 90)) ? true : false;
       }
 
       return false;
     },
 
     isValidLongitude: function(longitude) {
-      if (!isNaN(longitude)) {
-        return ((longitude >= -180) && (longitude <= 180)) ? true : false;
+      let aux = parseFloat(longitude);	
+      if (!Number.isNaN(aux)) {
+        return ((aux >= -180) && (aux <= 180)) ? true : false;
       }
 
       return false;
@@ -223,6 +225,7 @@ export default {
     },
 
     handleChange: function() {
+    console.log("Spock")
       this.correctCommas()
       if (this.isValidBox()) {
         var selectionEvent = {

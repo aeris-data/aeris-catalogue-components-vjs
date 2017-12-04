@@ -45,7 +45,7 @@ export default {
     this.aerisCatalogueStopEditEventListener = null;
     document.removeEventListener('aerisCatalogueMapAddSelectionRequest', this.aerisCatalogueAddSelectionListener);
     this.aerisCatalogueAddSelectionListener = null;
-    document.removeEventListener('aerisCatalogueMapRemoveSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
+    document.removeEventListener('aerisCatalogueMapClearSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
     this.aerisCatalogueRemoveSelectionListener = null;
 
   },
@@ -60,7 +60,7 @@ export default {
     this.aerisCatalogueAddSelectionListener = this.handleAddSelectionEvent.bind(this)
     document.addEventListener('aerisCatalogueMapAddSelectionRequest', this.aerisCatalogueAddSelectionListener);
     this.aerisCatalogueRemoveSelectionListener = this.handleRemoveSelectionEvent.bind(this)
-    document.addEventListener('aerisCatalogueMapRemoveSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
+    document.addEventListener('aerisCatalogueMapClearSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
 
   },
 
@@ -275,10 +275,6 @@ export default {
       });
 
       return feature;
-    },
-
-    handleRemoveSelectionEvent: function() {
-      console.log("totorfffo")
     },
 
     handleStartEditEvent: function() {
