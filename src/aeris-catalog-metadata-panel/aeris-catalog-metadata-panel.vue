@@ -26,10 +26,6 @@
     <h2 class="metadata-panel-title">
       <aeris-international-field html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
     </h2>
-  </header>
-  <main>
-    <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
-    <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
     <aside>
       <aeris-catalog-ui-icon-button icon="fa-expand" @click="switchmode" :title="$t('maximize')" v-if="minimize"></aeris-catalog-ui-icon-button>
       <aeris-catalog-ui-icon-button icon="fa-compress" @click="switchmode" :title="$t('minimize')" v-if="maximize"></aeris-catalog-ui-icon-button>
@@ -38,6 +34,10 @@
       <aeris-catalog-ui-icon-button v-show="edit" icon="fa-floppy-o" theme="primary" @click="sendSaveEvent"></aeris-catalog-ui-icon-button>
       <slot></slot>
     </aside>
+  </header>
+  <main>
+    <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
+    <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
   </main>
 </div>
 </template>
@@ -267,31 +267,60 @@ export default {
 
 <style>
 [data-aeris-catalog-metadata-panel] {
+  --gap: 12px;
+  --heightHeader: 80px;
   height: 100%;
-  width: 100%;
-  overflow-y: auto;
-  background: #FAFAFA;
+  background: #DDD;
 }
 
 [data-aeris-catalog-metadata-panel]>header {
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 24px;
+  justify-content: space-between;
+  height: var(--heightHeader);
+  padding: 0px 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.24);
+  background: #FAFAFA;
+  color: #333;
 }
 
 [data-aeris-catalog-metadata-panel]>header h2 {
-  font-weight: 600;
+  font-weight: 300;
 }
 
-[data-aeris-catalog-metadata-panel]>main>aside {
-  position: absolute;
-  top: 8%;
-  right: 4%;
+[data-aeris-catalog-metadata-panel]>header>aside {
   display: flex;
   flex-direction: row;
 }
 
-[data-aeris-catalog-metadata-panel]>main>aside>* {
+[data-aeris-catalog-metadata-panel]>header>aside>* {
   margin: 5px;
+}
+
+[data-aeris-catalog-metadata-panel]>main {
+  height: calc(100% - var(--heightHeader));
+  overflow-y: auto;
+}
+
+[data-aeris-catalog-metadata-panel] [data-template^="metadata-panel"] {
+  padding: var(--gap) var(--gap) 0 var(--gap);
+}
+
+[data-aeris-catalog-metadata-panel] [data-template^="metadata-panel"] [data-template^="metadata-block"] {
+  border-radius: 2px;
+  margin-bottom: var(--gap);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background: #FAFAFA;
+}
+
+[data-aeris-catalog-metadata-panel] [data-template="metadata-panel"] {
+  column-count: 2;
+  column-gap: var(--gap);
+  -moz-column-fill: balance;
+}
+
+[data-aeris-catalog-metadata-panel] [data-template="metadata-panel"] [data-template="metadata-block"] {
+  break-inside: avoid;
 }
 </style>

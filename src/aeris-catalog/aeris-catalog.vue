@@ -411,7 +411,7 @@ export default {
 
 [data-aeris-catalog] {
   display: grid;
-  grid-template-columns: 20% 20% 1fr;
+  grid-template-columns: 20% 20% 60%;
   grid-template-rows: 60px 1fr 1fr;
   grid-template-areas:  "buttons-criteria cart sheet"
                         "criteria summaries sheet"
@@ -470,8 +470,9 @@ export default {
 
 [data-aeris-catalog] [data-sheet="content"] {
     grid-area: sheet;
+    width: 100%;
     position: relative;
-    overflow: auto;
+    overflow: hidden;
 }
 
 [data-aeris-catalog] [data-sheet="placeholder"] {
