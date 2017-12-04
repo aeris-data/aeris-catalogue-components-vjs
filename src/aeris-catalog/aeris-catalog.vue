@@ -412,7 +412,7 @@ export default {
 [data-aeris-catalog] {
   display: grid;
   grid-template-columns: 20% 20% 1fr;
-  grid-template-rows: 6% 1fr 1fr;
+  grid-template-rows: 60px 1fr 1fr;
   grid-template-areas:  "buttons-criteria cart sheet"
                         "criteria summaries sheet"
                         "criteria summaries sheet";
@@ -424,7 +424,7 @@ export default {
 
 [data-aeris-catalog].withMap {
   grid-template-columns: 20% 20% 1fr;
-  grid-template-rows: 6% var(--heightMap) var(--heightSheet);
+  grid-template-rows: 60px var(--heightMap) var(--heightSheet);
   grid-template-areas:    "buttons-criteria cart map"
                           "criteria summaries map"
                           "criteria summaries sheet";
@@ -442,7 +442,9 @@ export default {
 
 [data-aeris-catalog] [data-criteria="buttons"] {
   grid-area: buttons-criteria;
-  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 [data-aeris-catalog] [data-criteria="buttons"]>div {
