@@ -227,8 +227,4 @@ export default {
     background-color: var(--expand-button-secondary-color, #d35400);
     opacity: var(--expand-button-hover-opacity, 1)
 }
-
-[data-aeris-catalog-box] i {
-  color: #FAFAFA;
-}
  </style>

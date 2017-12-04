@@ -511,7 +511,7 @@ export default {
 }
 
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container,
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container i,
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content i,
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content input,
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content label {
   color: var(--criteriaContentPrimaryColor, #FAFAFA);
