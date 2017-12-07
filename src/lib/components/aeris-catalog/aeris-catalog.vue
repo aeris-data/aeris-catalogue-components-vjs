@@ -58,7 +58,7 @@
 export default {
 
   name: 'aeris-catalog',
-  
+
   props: {
     lang: {
       type: String,
@@ -528,5 +528,9 @@ export default {
 
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container {
   background: transparent;
+}
+
+[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .badge {
+  color: var(--criteriaBackgroundColor, #21242b);
 }
  </style>

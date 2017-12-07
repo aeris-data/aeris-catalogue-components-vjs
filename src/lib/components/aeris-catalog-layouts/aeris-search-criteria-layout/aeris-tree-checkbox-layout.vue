@@ -1,15 +1,15 @@
 <i18n>
 {
-	  "en": {
-			"directlydownloadable": "This collection can be directly downloaded from this portal",
-		  "loading": "Loading...",
-		  "updating": "Checking for updates..."
-	  },
-	  "fr": {
-			"directlydownloadable": "Cette collection peut etre téléchargée directement à partir de ce portail",
-		  "loading": "Chargement...",
-		  "updating": "Recherche de mises à jour..."
-	  }
+    "en": {
+  "directlydownloadable": "This collection can be directly downloaded from this portal",
+    "loading": "Loading...",
+    "updating": "Checking for updates..."
+    },
+    "fr": {
+  "directlydownloadable": "Cette collection peut etre téléchargée directement à partir de ce portail",
+    "loading": "Chargement...",
+    "updating": "Recherche de mises à jour..."
+    }
 }
 </i18n>
 
@@ -39,11 +39,11 @@
       </aside>
     </div>
     <template v-if="item.deployed">
-	    <div class="second-level" v-for="(subitem, indexSubitem) of item.subitems">
-	      <input type="checkbox" :id="`${name}${item.name}${subitem.name}`" :checked="subitem.checked" @change="checkSecondLevel(index, indexSubitem)">
-	      <label :for="`${name}${item.name}${subitem.name}`">{{(subitem.label)}}</label>
-	    </div>
-		</template>
+      <div class="second-level" v-for="(subitem, indexSubitem) of item.subitems">
+        <input type="checkbox" :id="`${name}${item.name}${subitem.name}`" :checked="subitem.checked" @change="checkSecondLevel(index, indexSubitem)">
+        <label :for="`${name}${item.name}${subitem.name}`">{{(subitem.label)}}</label>
+      </div>
+  </template>
   </main>
 
 </div>
@@ -52,7 +52,7 @@
 <script>
 export default {
 
-	name: 'aeris-tree-checkbox-layout',
+  name: 'aeris-tree-checkbox-layout',
 
   props: {
     lang: {
@@ -136,7 +136,7 @@ export default {
 
     handleTheme: function(theme) {
       if (this.$el.querySelectorAll(".badge")) {
-        this.$el.querySelectorAll(".badge").forEach(el => el.style.color = theme.detail.emphasis);
+        this.$el.querySelectorAll(".badge").forEach(el => el.style.background = theme.detail.emphasis);
       }
     },
 
@@ -273,11 +273,19 @@ export default {
 
 [data-aeris-tree-checkbox-layout] .first-level aside {
   display: flex;
+  align-items: center;
 }
 
 [data-aeris-tree-checkbox-layout] .badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
   margin: 0 8px;
-  font-size: 0.7rem;
+  padding: 2px 6px;
+  font-size: 0.6em;
+  font-weight: 700;
+  line-height: 1;
 }
 
 [data-aeris-tree-checkbox-layout] .deployed {
