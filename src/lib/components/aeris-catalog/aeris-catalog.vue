@@ -1,4 +1,4 @@
-7<i18n>
+<i18n>
 {
   "en": {
     "searching": "Searching...",
