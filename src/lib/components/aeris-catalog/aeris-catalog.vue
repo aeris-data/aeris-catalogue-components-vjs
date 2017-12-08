@@ -4,13 +4,15 @@
     "searching": "Searching...",
     "foundresults": "Found results: ",
     "noresult": "No result corresponding to your request",
-    "nometadata": "No metadata sheet displayed"
+    "nometadata": "No metadata sheet displayed",
+    "shoppingCart": "Your shopping cart"
   },
   "fr": {
     "searching": "Recherche...",
     "foundresults": "Résultat trouvés: ",
     "noresult": "Aucun résultat ne correspond à votre requête",
-    "nometadata": "Aucune fiche de métadonnées affichée"
+    "nometadata": "Aucune fiche de métadonnées affichée",
+    "shoppingCart": "Votre panier"
   }
 }
 </i18n>
@@ -37,7 +39,7 @@
   </aeris-catalog-summaries>
 
   <section data-cart>
-    Your shopping cart
+    <div>{{$t('shoppingCart')}}</div>
     <aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart>
   </section>
 
