@@ -6,7 +6,8 @@
     "save": "Save",
     "maximize": "Full screen mode",
     "minimize": "Normal screen mode",
-    "saving": "Save in progress..."
+    "saving": "Save in progress...",
+    "addTitle": "Add a new metadata sheet"
   },
   "fr": {
     "close": "Fermer",
@@ -14,7 +15,8 @@
     "save": "Sauver",
     "maximize": "Mode plein écran",
     "minimize": "Mode écran normal",
-    "saving": "Sauvegarde en cours..."
+    "saving": "Sauvegarde en cours...",
+    "addTitle": "Ajouter une nouvelle fiche de métadonnées"
   }
 }
 </i18n>
@@ -24,7 +26,8 @@
   <aeris-catalog-ui-confirmation></aeris-catalog-ui-confirmation>
   <header>
     <h2 class="metadata-panel-title">
-      <aeris-international-field html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
+      <aeris-international-field v-if="resourcetitle" html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
+      <div v-else>{{$t('addTitle')}}</div>
     </h2>
     <aside>
       <aeris-catalog-ui-icon-button icon="fa-expand" @click="switchmode" :title="$t('maximize')" v-if="minimize"></aeris-catalog-ui-icon-button>
@@ -59,7 +62,7 @@ export default {
     },
     resourcetitle: {
       type: String,
-      default: ""
+      default: null
     },
     iconClass: {
       type: String,
@@ -283,7 +286,7 @@ export default {
   justify-content: space-between;
   height: var(--heightHeader);
   padding: 0px 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.24);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
   background: #FAFAFA;
   color: #333;
 }
@@ -313,7 +316,7 @@ export default {
 [data-aeris-catalog-metadata-panel] [data-template^="metadata-panel"] [data-template^="metadata-block"] {
   border-radius: 2px;
   margin-bottom: var(--gap);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   background: #FAFAFA;
 }
 

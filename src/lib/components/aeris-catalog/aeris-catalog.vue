@@ -267,6 +267,8 @@ export default {
       } else {
         this.currentType = ''
       }
+      let metadataParsed = JSON.parse(e.detail.metadata);
+      this.currentTitle = metadataParsed.resourceTitle ? JSON.stringify(metadataParsed.resourceTitle) : null;
       this.currentMetadata = e.detail.metadata ? e.detail.metadata : null;
       this.currentUuid = e.detail.metadata ? e.detail.metadata.uuid : null;
       this.visibleMetadataPanel = true;
