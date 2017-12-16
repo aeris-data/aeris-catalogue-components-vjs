@@ -2,29 +2,11 @@
 <span v-html="contenu"></span>
 </template>
 <script>
+import store from '../../../store/index.js'
+
 export default {
 
   name: 'md-template-proxy',
-
-  props: {
-	  value:  {
-          type: String,
-          default: ''
-        },
-        type:  {
-            type: String,
-            default: ''
-          },
-       edit:  {
-           type: Boolean,
-              default: false
-        },
-        clientTemplateName: {
-            type: String,
-            default: ''
-       }
-
-  },
 
   watch: {
 
@@ -40,6 +22,18 @@ export default {
   },
 
   computed: {
+
+    edit() {
+      return store.state.metadata.isEdited;
+    },
+
+    type() {
+      return store.state.metadata.type;
+    },
+
+    clientTemplateName() {
+      return store.state.metadata.template;
+    },
 
 	  contenu: function() {
 		  if (!this.edit) {

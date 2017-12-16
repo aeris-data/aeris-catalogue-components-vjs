@@ -161,16 +161,12 @@ export default {
     },
 
     displayDetails: function() {
-      var event = new CustomEvent('aerisCatalogueDisplayMetadata', {
-        detail: {
-          type: this.type,
-          uuid: this.uuid,
-          title: this.title,
-          iconClass: this.headerIconClass,
-          clientTemplateName: this.clientTemplateName
-        }
+      store.commit('displayMetadata', {
+        type: this.type,
+        uuid: this.uuid,
+        title: this.title,
+        template: this.clientTemplateName
       });
-      document.dispatchEvent(event);
     }
 
 

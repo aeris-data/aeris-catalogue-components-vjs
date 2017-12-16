@@ -26,7 +26,7 @@
   <aeris-catalog-ui-confirmation></aeris-catalog-ui-confirmation>
   <header>
     <h2 class="metadata-panel-title">
-      <aeris-international-field v-if="resourcetitle" html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
+      <aeris-international-field v-if="title" html="true" :lang="lang" :value="title"></aeris-international-field>
       <div v-else>{{$t('addTitle')}}</div>
     </h2>
     <aside>
@@ -39,8 +39,8 @@
     </aside>
   </header>
   <main>
-    <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
-    <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
+    <aeris-metadata :identifier="uuid" lang="fr" :service="`${metadataService}id/`" v-if="!edit"></aeris-metadata>
+    <md-template-proxy></md-template-proxy>
   </main>
 </div>
 </template>
@@ -56,34 +56,6 @@ export default {
     lang: {
       type: String,
       default: 'en'
-    },
-    edit: {
-      type: Boolean,
-      default: false,
-      required: true
-    },
-    resourcetitle: {
-      type: String,
-      default: null
-    },
-    iconClass: {
-      type: String,
-      default: ""
-    },
-    uuid: {
-      type: String,
-      default: ""
-    },
-    type: {
-      type: String,
-      default: ""
-    },
-    metadata: {
-      required: true
-    },
-    clientTemplate: {
-      type: String,
-      default: ""
     }
   },
 
@@ -93,14 +65,6 @@ export default {
     },
     uuid(value) {
       this.$el.scrollTop = 0;
-    },
-    edit(value) {
-      document.dispatchEvent(new CustomEvent('aerisCatalogueInfoMetadata', {
-        detail: {
-          uuid: this.uuid,
-          edit: value ? value : false
-        }
-      }));
     }
   },
 
@@ -111,21 +75,12 @@ export default {
     document.addEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
     this.aerisOrcidListener = this.handleOrcidResponse.bind(this);
     document.addEventListener('aerisOrcidResponse', this.aerisOrcidListener);
-    this.$nextTick(function() {
-      document.dispatchEvent(new CustomEvent('aerisCatalogueInfoMetadata', {
-        detail: {
-          uuid: this.uuid,
-          edit: this.edit
-        }
-      }));
-    })
   },
 
   mounted: function() {
     if (this.lang) {
       this.$i18n.locale = this.lang
     }
-    document.dispatchEvent(new CustomEvent('aerisOrcidRequest', {}));
   },
 
   destroyed() {
@@ -138,22 +93,32 @@ export default {
   },
 
   computed: {
-    idservice: function() {
-      var result = this.metadataService;
-      if (this.metadataService.endsWith("/")) {
-        result = result + "id"
-      } else {
-        result = result + "/id"
-      }
-      return result;
-    },
-
     minimize: function() {
       return !this.maximize
     },
 
     metadataService() {
       return store.state.catalogue.services ? store.state.catalogue.services.metadata : null;
+    },
+
+    uuid() {
+      return store.state.metadata.uuid;
+    },
+
+    title() {
+      return store.state.metadata.title;
+    },
+
+    template() {
+      return store.state.metadata.template;
+    },
+
+    type() {
+      return store.state.metadata.type;
+    },
+
+    edit() {
+      return store.state.metadata.isEdited;
     }
   },
 
@@ -182,12 +147,8 @@ export default {
     },
 
     broadcastCloseEvent: function() {
-      this.forceNormalMode()
-      console.log("aerisCatalogueHideMetadata event")
-      var event = new CustomEvent('aerisCatalogueHideMetadata', {
-        detail: {}
-      });
-      document.dispatchEvent(event);
+      this.forceNormalMode();
+      store.commit('hideMetadata');
     },
 
     forceNormalMode: function() {

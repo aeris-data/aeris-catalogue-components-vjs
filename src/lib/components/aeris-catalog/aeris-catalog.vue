@@ -41,8 +41,7 @@
     <aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart>
   </section>
 
-  <aeris-catalogue-metadata-panel data-sheet="content" v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata"
-    :client-template="currentTemplate">
+  <aeris-catalogue-metadata-panel data-sheet="content" v-if="visibleMetadataPanel">
     <slot name="buttons-metadata"></slot>
   </aeris-catalogue-metadata-panel>
 
@@ -148,31 +147,8 @@ export default {
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
-    this.aerisCatalogueDisplayMetadataEventListener = null;
-
-    document.removeEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
-    this.aerisCatalogueHideMetadataEventListener = null;
-
-    document.removeEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
-    this.aerisCatalogueEditMetadataEventListener = null;
-  },
-
   created: function() {
     console.log("Aeris aeris-catalog creation")
-
-    this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this)
-    document.addEventListener('aerisCatalogueDisplayMetadata', this.aerisCatalogueDisplayMetadataEventListener);
-
-    this.aerisCatalogueHideMetadataEventListener = this.handleHideMetadata.bind(this)
-    document.addEventListener('aerisCatalogueHideMetadata', this.aerisCatalogueHideMetadataEventListener);
-
-    this.aerisCatalogueEditMetadataEventListener = this.handleEditMetadata.bind(this)
-    document.addEventListener('aerisCatalogueEditMetadata', this.aerisCatalogueEditMetadataEventListener);
-
-    this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this)
-    document.addEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
 
     store.commit('updateServices', {
       services: this.services
@@ -186,23 +162,6 @@ export default {
   mounted: function() {
     if (this.lang) {
       this.$i18n.locale = this.lang
-    }
-  },
-
-  data() {
-    return {
-      aerisCatalogueDisplayMetadataEventListener: null,
-      aerisCatalogueEditMetadataEventListener: null,
-      aerisCatalogueHideMetadataEventListener: null,
-      currentEditedMetadata: null,
-      currentTitle: null,
-      currentIconClass: null,
-      currentUuid: null,
-      currentType: null,
-      currentMetadata: null,
-      currentTemplate: null,
-      visibleMetadataPanel: false,
-      editMetadataPanel: false
     }
   },
 
@@ -229,6 +188,9 @@ export default {
     },
     maximize() {
       return store.state.catalogue.maximize;
+    },
+    visibleMetadataPanel() {
+      return store.state.metadata.isVisible;
     }
   },
 
@@ -236,71 +198,9 @@ export default {
 
   methods: {
 
-    handleDisplayMetadata: function(e) {
-      this.hideMetadataPanel();
-
-      if (e.detail.uuid) {
-        this.currentUuid = e.detail.uuid
-      } else {
-        this.currentUuid = ""
-      }
-      if (e.detail.title) {
-        this.currentTitle = e.detail.title
-      } else {
-        this.currentTitle = ""
-      }
-      if (e.detail.iconClass) {
-        this.currentIconClass = e.detail.iconClass
-      } else {
-        this.currentIconClass = ''
-      }
-      if (e.detail.type) {
-        this.currentType = e.detail.type
-      } else {
-        this.currentType = ''
-      }
-      if (e.detail.clientTemplateName) {
-        this.currentTemplate = e.detail.clientTemplateName
-      } else {
-        this.currentTemplate = ''
-      }
-      this.visibleMetadataPanel = true;
-    },
-
-    handleHideMetadata: function() {
-      this.hideMetadataPanel();
-    },
-
-    handleEditMetadata: function(e) {
-      this.hideMetadataPanel();
-      this.currentEditedMetadata = e.detail
-      if (e.detail.type) {
-        this.currentType = e.detail.type
-      } else {
-        this.currentType = ''
-      }
-      let metadataParsed = JSON.parse(e.detail.metadata);
-      this.currentTitle = metadataParsed.resourceTitle ? JSON.stringify(metadataParsed.resourceTitle) : null;
-      this.currentMetadata = e.detail.metadata ? e.detail.metadata : null;
-      this.currentUuid = e.detail.metadata ? e.detail.metadata.uuid : null;
-      this.visibleMetadataPanel = true;
-      this.editMetadataPanel = true;
-    },
-
-    hideMetadataPanel: function() {
-      this.visibleMetadataPanel = false;
-      this.editMetadataPanel = false;
-      this.currentMetadata = null;
-      this.currentTitle = "";
-      this.currentUuid = ""
-      this.currentType = ""
-      this.currentIconClass = ''
-      this.currentEditedMetadata = null
-    },
-
     handleCatalogueSearchStart: function() {
 
-      this.hideMetadataPanel();
+      store.commit('hideMetadata');
 
       console.log("Connecting with metadata server")
 
@@ -331,12 +231,6 @@ export default {
       });
 
 
-    },
-
-    handleCurrentEditedMetadataRequest: function() {
-      document.dispatchEvent(new CustomEvent('currentEditedMetadataResponse', {
-        'detail': this.currentEditedMetadata
-      }))
     },
 
     handleMaximize: function() {
