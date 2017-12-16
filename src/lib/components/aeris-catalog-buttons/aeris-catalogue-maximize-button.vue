@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import store from '../../store/index.js'
+
 export default {
 
   name: 'aeris-catalogue-maximize-button',
@@ -65,16 +67,11 @@ export default {
     handleMaximize: function() {
       if (this.maximize) {
         this.maximize = false
-        var e = new CustomEvent("aerisCatalogueMaximizeEvent", {
-          detail: {}
-        })
-        document.dispatchEvent(e);
+        store.commit('maximize');
       } else {
         this.maximize = true
-        var e = new CustomEvent("aerisCatalogueMinimizeEvent", {
-          detail: {}
-        })
-        document.dispatchEvent(e);
+        store.commit('minimize');
+
       }
     }
   }

@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import store from '../../store/index.js'
+
 export default {
 
   name: 'aeris-catalogue-metadata-panel',
@@ -69,10 +71,6 @@ export default {
       default: ""
     },
     uuid: {
-      type: String,
-      default: ""
-    },
-    metadataService: {
       type: String,
       default: ""
     },
@@ -152,6 +150,10 @@ export default {
 
     minimize: function() {
       return !this.maximize
+    },
+
+    metadataService() {
+      return store.state.catalogue.services ? store.state.catalogue.services.metadata : null;
     }
   },
 

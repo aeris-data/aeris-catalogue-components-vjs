@@ -73,10 +73,34 @@ export default {
     }
   },
 
+  computed: {
+
+
+    isLoading: function() {
+      return ((this.loading) && (!this.existing))
+    },
+
+    isUpdating: function() {
+      return ((this.loading) && (this.existing))
+    },
+
+    parentService() {
+      return store.state.catalogue.services ? store.state.catalogue.services.metadata : null;
+    },
+
+    program() {
+      return store.state.catalogue.program;
+    },
+
+    theme() {
+      return store.state.common.theme;
+    }
+  },
+
   watch: {
     lang(value) {
       this.$i18n.locale = value
-    }
+    },
   },
 
   destroyed: function() {
@@ -96,25 +120,12 @@ export default {
     document.addEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
     this.handleItemsListener = this.handleItemsEvent.bind(this);
     document.addEventListener(`aeris${this.name}ItemsEvent`, this.handleItemsListener);
-
-    this.load();
   },
 
-  computed: {
-
-
-    isLoading: function() {
-      return ((this.loading) && (!this.existing))
-    },
-
-    isUpdating: function() {
-      return ((this.loading) && (this.existing))
-    },
-
-    theme() {
-      return store.state.common.theme;
-    }
-
+  mounted() {
+    this.$nextTick(() => {
+      this.load();
+    });
   },
 
   data() {
@@ -122,7 +133,6 @@ export default {
       handleSearchBarListener: null,
       handleSearchBarResetListener: null,
       handleItemsListener: null,
-      parentService: null,
       items: [],
       loading: false,
       existing: false
@@ -149,37 +159,29 @@ export default {
     },
 
     load() {
-      this.loading = true;
-      if (window.localStorage) {
-        let aux = window.localStorage.getItem('aeris' + this.name + 'Types');
-        if ((aux != null) && (aux != "undefined")) {
-          this.items = JSON.parse(aux);
-          this.existing = true;
-        }
-      }
 
-      let parentService = document.querySelector('aeris-catalog').attributes.getNamedItem('metadata-service').value;
-      parentService = parentService.endsWith('/') ? parentService + this.type + '/' : parentService + '/' + this.type + '/';
-      let url = this.service || parentService;
-
-      if (document.querySelector('aeris-catalog').attributes.getNamedItem('program')) {
-        let program = document.querySelector('aeris-catalog').attributes.getNamedItem('program').value;
-        if (program) {
-          url += "?program=" + program;
-        }
-      }
-      console.log("Aeris - load - Appel au serveur")
-      this.$http.get(url, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+      if (this.parentService && this.program) {
+        this.loading = true;
+        if (window.localStorage) {
+          let aux = window.localStorage.getItem('aeris' + this.name + 'Types');
+          if ((aux != null) && (aux != "undefined")) {
+            this.items = JSON.parse(aux);
+            this.existing = true;
           }
-        })
-        .then((response) => {
-          this.handleResponse(response)
-        }, (response) => {
-          this.handleError(response)
-        });
+        }
+        console.log("Aeris - load - Appel au serveur")
+        this.$http.get(`${this.parentService}${this.type}/?program=${this.program}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          })
+          .then((response) => {
+            this.handleResponse(response)
+          }, (response) => {
+            this.handleError(response)
+          });
+      }
     },
 
     handleResponse: function(response) {

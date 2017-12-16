@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import store from '../../store/index.js'
+
 export default {
 
   name: 'aeris-catalogue-search-button',
@@ -45,10 +47,8 @@ export default {
 
   methods: {
     handleSearch: function() {
-      var e = new CustomEvent("aerisCatalogueSearchStartEvent", {
-        detail: {}
-      })
-      document.dispatchEvent(e);
+
+      store.commit('startSearch');
     }
   }
 }
