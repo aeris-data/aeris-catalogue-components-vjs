@@ -47,6 +47,7 @@ const VueCustomElementRecorder = {
           console.info("Début registration des aeris catalogue components");
           console.info("Registred elements at this time: " + window.registredAerisElements);
 
+          // Vue.use(AerisCatalogueComponents);
           for (let component in AerisCatalogueComponents) {
             if (AerisCatalogueComponents[component] && component !== 'install') {
               if (window.registredAerisElements.indexOf(AerisCatalogueComponents[component].name) < 0) {
