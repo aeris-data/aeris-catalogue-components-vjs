@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import store from '../../store/index.js'
+
 export default {
 
   name: 'aeris-catalogue-help-button',
@@ -39,8 +41,7 @@ export default {
   methods: {
 
     handleHelp: function() {
-      var event = new CustomEvent('aerisAskForHelp', {});
-      document.dispatchEvent(event);
+      store.commit('openHelp');
     }
   }
 }

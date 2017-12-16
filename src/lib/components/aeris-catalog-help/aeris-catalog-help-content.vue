@@ -14,7 +14,7 @@
 </i18n>
 
 <template>
-<div class="help-popup" v-show="isPopupOpen">
+<div class="help-popup" v-show="isPopupVisible">
 
   <div class="popup-title">
     <h3>{{$t('help')}}</h3>
@@ -35,7 +35,6 @@
       <button class="show-at-startup-button" type="button" v-on:click.stop="doNotShow" v-if="showAtStartVisible">{{$t('doNotDisplay')}}</button>
     </div>
   </div>
-
 </div>
 </template>
 
@@ -63,22 +62,15 @@ export default {
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener('askForHelp', this.askForHelpListener);
-    this.askForHelpListener = null;
-  },
-
   created: function() {
     console.log("aeris-catalog-help-content creation")
     this.$i18n.locale = this.lang
-    // listen calls for help
-    this.askForHelpListener = this.showHelp.bind(this)
-    document.addEventListener('aerisAskForHelp', this.askForHelpListener);
+
     if (this.helpcookie == null || this.getCookie(this.helpcookie)) {
-      this.isPopupOpen = false;
+      store.commit('closeHelp');
       this.showAtStartVisible = false;
     } else {
-      this.isPopupOpen = true;
+      store.commit('openHelp');
     }
   },
 
@@ -87,11 +79,9 @@ export default {
   },
 
   computed: {
-    togglePopup: function() {
-      this.isPopupOpen = !this.isPopupOpen;
-      return this.isPopupOpen;
+    isPopupVisible() {
+      return store.state.help.isVisible
     },
-
     theme() {
       return store.state.common.theme;
     }
@@ -99,10 +89,12 @@ export default {
 
   data() {
     return {
-      aerisThemeListener: null,
-      isPopupOpen: false,
       showAtStartVisible: true
     }
+  },
+
+  mounted() {
+    this.$nextTick(() => this.ensureTheme());
   },
 
   updated: function() {},
@@ -110,14 +102,12 @@ export default {
   methods: {
 
     ensureTheme: function() {
-      if (this.isPopupOpen) {
+      if (this.theme) {
         var okButton = this.$el.querySelector('.ok-button');
         var showAtStartButton = this.$el.querySelector('.show-at-startup-button');
-        if (this.theme) {
-          okButton.style.background = this.theme.primary;
-          if (this.showAtStartVisible) {
-            showAtStartButton.style.borderColor = this.theme.primary;
-          }
+        okButton.style.background = this.theme.primary;
+        if (this.showAtStartVisible) {
+          showAtStartButton.style.borderColor = this.theme.primary;
         }
         var primary = this.theme.primary;
         var darker = this.colorLuminance(primary, -0.3)
@@ -152,13 +142,8 @@ export default {
       return rgb;
     },
 
-    showHelp: function() {
-      this.isPopupOpen = true;
-      this.ensureTheme();
-    },
-
     closePopup: function() {
-      this.togglePopup;
+      store.commit("closeHelp");
     },
 
     doNotShow: function() {
