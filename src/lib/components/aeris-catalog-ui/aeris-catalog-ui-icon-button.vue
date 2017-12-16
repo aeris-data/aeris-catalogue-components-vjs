@@ -1,12 +1,14 @@
 <template>
 <div data-aeris-catalog-ui-icon-button>
-  <button type="button" :class='[theme, type, "tooltip"]' :title="title" aria-hidden="true">
+  <button :style="{'background': theming && theme == 'primary' ? theming.emphasis : ''}" type="button" :class='[theme, type, "tooltip"]' :title="title" aria-hidden="true" @click="click">
     <i :class='["fa", icon]'></i>
   </button>
 </div>
 </template>
 
 <script>
+import store from '../../store/index.js'
+
 export default {
 
   name: 'aeris-catalog-ui-icon-button',
@@ -27,32 +29,16 @@ export default {
     }
   },
 
-  data() {
-    return {
-      aerisThemeListener: null
+  computed: {
+    theming() {
+      return store.state.common.theme;
     }
-  },
-
-  created() {
-    this.aerisThemeListener = this.handleTheme.bind(this);
-    document.addEventListener('aerisTheme', this.aerisThemeListener);
-  },
-
-  mounted() {
-    document.dispatchEvent(new CustomEvent('aerisThemeRequest', {}));
-  },
-
-  destroyed() {
-    document.removeEventListener('aerisTheme', this.aerisThemeListener);
-    this.aerisThemeListener = null;
   },
 
   methods: {
 
-    handleTheme: function(theme) {
-      if (this.theme == "primary") {
-        this.$el.querySelector("button").style.background = theme.detail.emphasis;
-      }
+    click(e) {
+      this.$emit('click');
     }
   }
 }

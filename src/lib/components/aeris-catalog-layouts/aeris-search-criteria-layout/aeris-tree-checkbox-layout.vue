@@ -33,7 +33,7 @@
       </main>
       <aside>
         <i v-if="item.downloadable" class="fa fa-shopping-cart tooltip downloadable" :title="$t('directlydownloadable')"></i>
-        <span v-if="item.subitems.length > 0" class="badge">{{item.subitems.length}}</span>
+        <span v-if="item.subitems.length > 0" class="badge" :style="{'background': theme.emphasis}">{{item.subitems.length}}</span>
         <i v-if="item.subitems.length > 0" v-show="item.deployed" class="fa fa-minus-square-o deployed" @click="toggle(index)"></i>
         <i v-if="item.subitems.length > 0" v-show="!item.deployed" class="fa fa-plus-square-o deployed" @click="toggle(index)"></i>
       </aside>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import store from '../../../store/index.js'
+
 export default {
 
   name: 'aeris-tree-checkbox-layout',
@@ -78,8 +80,6 @@ export default {
   },
 
   destroyed: function() {
-    document.removeEventListener('aerisTheme', this.aerisThemeListener);
-    this.aerisThemeListener = null;
     document.removeEventListener('aerisCatalogueSearchEvent', this.handleSearchBarListener);
     this.handleSearchBarListener = null;
     document.removeEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
@@ -90,8 +90,6 @@ export default {
 
   created: function() {
     this.$i18n.locale = this.lang;
-    this.aerisThemeListener = this.handleTheme.bind(this);
-    document.addEventListener('aerisTheme', this.aerisThemeListener);
     this.handleSearchBarListener = this.handleSearchBarEvent.bind(this);
     document.addEventListener('aerisCatalogueSearchEvent', this.handleSearchBarListener);
     this.handleSearchBarResetListener = this.handleSearchBarResetEvent.bind(this);
@@ -100,10 +98,6 @@ export default {
     document.addEventListener(`aeris${this.name}ItemsEvent`, this.handleItemsListener);
 
     this.load();
-  },
-
-  mounted() {
-    document.dispatchEvent(new CustomEvent('aerisThemeRequest', {}));
   },
 
   computed: {
@@ -115,13 +109,16 @@ export default {
 
     isUpdating: function() {
       return ((this.loading) && (this.existing))
+    },
+
+    theme() {
+      return store.state.common.theme;
     }
 
   },
 
   data() {
     return {
-      aerisThemeListener: null,
       handleSearchBarListener: null,
       handleSearchBarResetListener: null,
       handleItemsListener: null,
@@ -133,12 +130,6 @@ export default {
   },
 
   methods: {
-
-    handleTheme: function(theme) {
-      if (this.$el.querySelectorAll(".badge")) {
-        this.$el.querySelectorAll(".badge").forEach(el => el.style.background = theme.detail.emphasis);
-      }
-    },
 
     checkFirstLevel(index)  {
       this.items[index].checked = !this.items[index].checked;

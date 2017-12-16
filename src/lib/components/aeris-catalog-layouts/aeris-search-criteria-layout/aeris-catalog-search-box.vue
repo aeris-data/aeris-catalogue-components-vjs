@@ -7,7 +7,7 @@
       </div>
       <div class="box-title">
         <i :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
-        <h3 no-label-float>{{title}}</h3>
+        <h3 :style="{'color': theme.primary}" no-label-float>{{title}}</h3>
       </div>
     </header>
     <div id="collapse" class="box-collapsable-part">
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import store from '../../../store/index.js'
+
 export default {
 
   name: 'aeris-catalog-search-box',
@@ -49,60 +51,31 @@ export default {
 
   watch: {},
 
-  destroyed: function() {
-    document.removeEventListener('aerisTheme', this.aerisThemeListener);
-    this.aerisThemeListener = null;
-  },
-
   created: function() {
     console.log("aeris-keyword-search-criteria - Creating");
-    this.aerisThemeListener = this.handleTheme.bind(this)
-    document.addEventListener('aerisTheme', this.aerisThemeListener);
     this.isdeployed = this.deployed
-  },
-
-  mounted: function() {
-    var event = new CustomEvent('aerisThemeRequest', {});
-    document.dispatchEvent(event);
   },
 
   computed: {
 
+    theme() {
+      return store.state.common.theme;
+    }
   },
 
   data() {
     return {
       theme: null,
-      aerisThemeListener: null,
       hasToolbar: false,
       isdeployed: null
     }
-  },
-
-  updated: function() {
-    this.ensureTheme()
   },
 
   methods: {
 
     handleChevronClick: function() {
 
-    },
-
-    handleTheme: function(theme) {
-      this.theme = theme.detail
-      this.ensureTheme()
-    },
-
-    ensureTheme: function() {
-      if (this.theme) {
-        if (this.$el) {
-          this.$el.querySelector("h3").style.color = this.theme.primary;
-        }
-      }
     }
-
-
   }
 }
 </script>

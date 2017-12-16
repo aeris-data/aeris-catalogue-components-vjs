@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import store from '../../store/index.js'
+
 export default {
 
   name: 'aeris-catalog-help-content',
@@ -62,8 +64,6 @@ export default {
   },
 
   destroyed: function() {
-    document.removeEventListener('aerisTheme', this.aerisThemeListener);
-    this.aerisThemeListener = null;
     document.removeEventListener('askForHelp', this.askForHelpListener);
     this.askForHelpListener = null;
   },
@@ -71,8 +71,6 @@ export default {
   created: function() {
     console.log("aeris-catalog-help-content creation")
     this.$i18n.locale = this.lang
-    this.aerisThemeListener = this.handleTheme.bind(this)
-    document.addEventListener('aerisTheme', this.aerisThemeListener);
     // listen calls for help
     this.askForHelpListener = this.showHelp.bind(this)
     document.addEventListener('aerisAskForHelp', this.askForHelpListener);
@@ -84,15 +82,18 @@ export default {
     }
   },
 
-  mounted: function() {
-    var event = new CustomEvent('aerisThemeRequest', {});
-    document.dispatchEvent(event);
+  mounted() {
+    this.$nextTick(() => this.ensureTheme);
   },
 
   computed: {
     togglePopup: function() {
       this.isPopupOpen = !this.isPopupOpen;
       return this.isPopupOpen;
+    },
+
+    theme() {
+      return store.state.common.theme;
     }
   },
 
@@ -107,10 +108,6 @@ export default {
   updated: function() {},
 
   methods: {
-    handleTheme: function(theme) {
-      this.theme = theme.detail
-      this.ensureTheme()
-    },
 
     ensureTheme: function() {
       if (this.isPopupOpen) {

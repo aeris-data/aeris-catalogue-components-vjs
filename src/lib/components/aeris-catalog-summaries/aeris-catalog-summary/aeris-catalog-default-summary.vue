@@ -13,7 +13,7 @@
 <template>
 <div data-template="summary" v-bind:class="{ showBody: deployed }" v-on:click="displayDetails">
   <header>
-    <div v-if="dataProcessingLevel" class="cartouche"><i class="fa fa-cogs"></i>{{$t("level")}} {{dataProcessingLevel}}</div>
+    <div v-if="dataProcessingLevel" class="cartouche" :style="{'background': $colorLuminance(theme.primary, -0.1)}"><i class="fa fa-cogs"></i>{{$t("level")}} {{dataProcessingLevel}}</div>
   </header>
   <main>
     <aeris-international-field class="title" html="true" :lang="lang" :value="title"></aeris-international-field>
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import store from '../../../store/index.js'
+
 export default {
 
   name: 'aeris-catalog-default-summary',
@@ -62,26 +64,21 @@ export default {
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener('aerisTheme', this.aerisThemeListener);
-    this.aerisThemeListener = null;
-  },
-
   created: function() {
     console.log("aeris-keyword-search-criteria - Creating");
-    this.aerisThemeListener = this.handleTheme.bind(this)
-    document.addEventListener('aerisTheme', this.aerisThemeListener);
   },
 
   mounted: function() {
-    var event = new CustomEvent('aerisThemeRequest', {});
-    document.dispatchEvent(event);
     if (this.lang) {
       this.$i18n.locale = this.lang
     }
   },
 
   computed: {
+
+    theme() {
+      return store.state.common.theme;
+    },
 
     title: function() {
       var aux = JSON.parse(this.value)
@@ -153,31 +150,14 @@ export default {
 
   data() {
     return {
-      theme: null,
-      aerisThemeListener: null,
       hasToolbar: false
     }
-  },
-
-  updated: function() {
-    this.ensureTheme()
   },
 
   methods: {
 
     handleChevronClick: function() {
 
-    },
-
-    handleTheme: function(theme) {
-      this.theme = theme.detail
-      this.ensureTheme()
-    },
-
-    ensureTheme: function() {
-      if (this.theme) {
-        this.$el.querySelector(".cartouche").style.background = this.$colorLuminance(this.theme.primary, -0.1);
-      }
     },
 
     displayDetails: function() {
