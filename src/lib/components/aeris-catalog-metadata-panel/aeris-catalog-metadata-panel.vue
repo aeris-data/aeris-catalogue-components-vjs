@@ -174,7 +174,7 @@ export default {
     },
 
     showJson: function() {
-      var baseUrl = 'http://www.jsoneditoronline.org/?url=';
+      var baseUrl = 'http://jsoneditoronline.org/?url=';
       var url = baseUrl + this.metadataService + "id/" + this.uuid;
       window.open(url, '_blank', 'toolbar=no, status=no, scrollbars=no, menubar=no, width=1000, height=800');
     },
