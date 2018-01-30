@@ -1,5 +1,5 @@
 <template>
-<div data-template="metadata-panel">
+<div class="metadata-panel">
   <aeris-metadata-description></aeris-metadata-description>
   <aeris-metadata-contacts></aeris-metadata-contacts>
   <aeris-metadata-spatial-extents></aeris-metadata-spatial-extents>
