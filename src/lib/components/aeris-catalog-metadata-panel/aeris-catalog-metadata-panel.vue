@@ -24,24 +24,28 @@
 <template>
 <div data-aeris-catalog-metadata-panel>
   <aeris-catalog-ui-confirmation></aeris-catalog-ui-confirmation>
-  <header>
-    <h2 class="metadata-panel-title">
-      <aeris-international-field v-if="resourcetitle" html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
-      <div v-else>{{$t('addTitle')}}</div>
-    </h2>
-    <aside>
-      <aeris-catalog-ui-icon-button icon="fa-expand" @click="switchmode" :title="$t('maximize')" v-if="minimize"></aeris-catalog-ui-icon-button>
-      <aeris-catalog-ui-icon-button icon="fa-compress" @click="switchmode" :title="$t('minimize')" v-if="maximize"></aeris-catalog-ui-icon-button>
-      <aeris-catalog-ui-icon-button icon="fa-times" :title="$t('close')" @click="broadcastCloseEvent"></aeris-catalog-ui-icon-button>
-      <aeris-catalog-ui-icon-button v-show="!edit" icon="fa-code" :title="$t('json')" @click="showJson"></aeris-catalog-ui-icon-button>
-      <aeris-catalog-ui-icon-button v-show="edit" icon="fa-floppy-o" theme="primary" @click="sendSaveEvent"></aeris-catalog-ui-icon-button>
-      <slot></slot>
-    </aside>
-  </header>
-  <main>
+  <aside>
+    <aeris-catalog-ui-icon-button icon="fa-expand" @click="switchmode" :title="$t('maximize')" theme="primary" v-if="minimize"></aeris-catalog-ui-icon-button>
+    <aeris-catalog-ui-icon-button icon="fa-compress" @click="switchmode" :title="$t('minimize')" theme="primary" v-if="maximize"></aeris-catalog-ui-icon-button>
+    <aeris-catalog-ui-icon-button icon="fa-times" :title="$t('close')" @click="broadcastCloseEvent"></aeris-catalog-ui-icon-button>
+    <aeris-catalog-ui-icon-button v-show="!edit" icon="fa-code" :title="$t('json')" @click="showJson"></aeris-catalog-ui-icon-button>
+    <aeris-catalog-ui-icon-button v-show="edit" icon="fa-floppy-o" theme="primary" @click="sendSaveEvent"></aeris-catalog-ui-icon-button>
+    <slot></slot>
+  </aside>
+
+  <aeris-catalog-metadata-panel-nav :edit="edit"></aeris-catalog-metadata-panel-nav>
+
+  <section>
+    <header>
+      <h2>
+        <aeris-international-field v-if="resourcetitle" html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
+        <div v-else>{{$t('addTitle')}}</div>
+      </h2>
+    </header>
     <aeris-metadata :identifier="uuid" lang="fr" :service="idservice" v-if="!edit"></aeris-metadata>
     <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
-  </main>
+  </section>
+
 </div>
 </template>
 
@@ -107,6 +111,8 @@ export default {
   },
 
   created() {
+    this.aerisThemeListener = this.handleTheme.bind(this);
+    document.addEventListener('aerisTheme', this.aerisThemeListener);
     this.eurochampDataBlockInitListener = this.initDataBlock.bind(this);
     document.addEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
     this.eurochampDataBlockSetListener = this.setDataBlock.bind(this);
@@ -128,9 +134,14 @@ export default {
       this.$i18n.locale = this.lang
     }
     document.dispatchEvent(new CustomEvent('aerisOrcidRequest', {}));
+    var event = new CustomEvent('aerisThemeRequest', {});
+    document.dispatchEvent(event);
+
   },
 
   destroyed() {
+    document.removeEventListener('aerisTheme', this.aerisThemeListener);
+    this.aerisThemeListener = null;
     document.removeEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
     this.eurochampDataBlockInitListener = null;
     document.removeEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
@@ -157,6 +168,8 @@ export default {
 
   data() {
     return {
+      theme: null,
+      aerisThemeListener: null,
       orcid: '',
       maximize: false,
       eurochampDataBlockInitListener: null,
@@ -168,6 +181,17 @@ export default {
   updated: function() {},
 
   methods: {
+
+    handleTheme: function(event) {
+      this.theme = event.detail;
+      this.ensureTheme();
+    },
+
+    ensureTheme: function() {
+      if (this.$el && this.$el.querySelectorAll("[data-aeris-catalog-metadata-panel] [class*='aeris-metadata-block'] header>h4>i").length > 0) {
+        this.$el.querySelectorAll("[data-aeris-catalog-metadata-panel] [class*='aeris-metadata-block'] header>h4>i").forEach(el => el.style.color = this.theme.primary);
+      }
+    },
 
     handleOrcidResponse(e) {
       e.detail.user ? this.orcid = e.detail.user.orcid : null;
@@ -273,60 +297,64 @@ export default {
 
 <style>
 [data-aeris-catalog-metadata-panel] {
-  --gap: 12px;
-  --heightHeader: 80px;
   height: 100%;
-  background: #DDD;
+  overflow-y: auto;
+  padding: 12px;
 }
 
 [data-aeris-catalog-metadata-panel]>header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: var(--heightHeader);
-  padding: 0px 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
-  background: #FAFAFA;
   color: #333;
+  margin-left: 16em;
 }
 
-[data-aeris-catalog-metadata-panel]>header h2 {
+[data-aeris-catalog-metadata-panel]>section>header>h2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  font-size: 1.7em;
   font-weight: 300;
+  color: #777;
 }
 
-[data-aeris-catalog-metadata-panel]>header>aside {
+[data-aeris-catalog-metadata-panel]>section {
+  padding-left: 17em;
+  margin-top: 50px;
+}
+
+[data-aeris-catalog-metadata-panel]>aside {
+  position: absolute;
   display: flex;
   flex-direction: row;
 }
 
-[data-aeris-catalog-metadata-panel]>header>aside>* {
+[data-aeris-catalog-metadata-panel]>aside>* {
   margin: 5px;
 }
 
-[data-aeris-catalog-metadata-panel]>main {
-  height: calc(100% - var(--heightHeader));
-  overflow-y: auto;
+[data-aeris-catalog-metadata-panel] [class*=aeris-metadata-panel] {
+  display: flex;
+  flex-direction: row;
 }
 
-[data-aeris-catalog-metadata-panel] [data-template^="metadata-panel"] {
-  padding: var(--gap) var(--gap) 0 var(--gap);
+[data-aeris-catalog-metadata-panel] [class*="aeris-metadata-block"] h4 {
+  display: flex;
+  align-items: center;
+  margin: 8px;
+  font-weight: 400;
+  font-size: 1.1em;
+  color: #555;
 }
 
-[data-aeris-catalog-metadata-panel] [data-template^="metadata-panel"] [data-template^="metadata-block"] {
-  border-radius: 2px;
-  margin-bottom: var(--gap);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  background: #FAFAFA;
+[data-aeris-catalog-metadata-panel] [class*="aeris-metadata-block"] header>h4>i {
+  font-size: 2.5em;
+  margin-right: 24px;
 }
 
-[data-aeris-catalog-metadata-panel] [data-template="metadata-panel"] {
-  column-count: 2;
-  column-gap: var(--gap);
-  -moz-column-fill: balance;
-}
-
-[data-aeris-catalog-metadata-panel] [data-template="metadata-panel"] [data-template="metadata-block"] {
-  break-inside: avoid;
+[data-aeris-catalog-metadata-panel] [class*="aeris-metadata-block"] p {
+  max-width: 42em;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.6em;
 }
 </style>

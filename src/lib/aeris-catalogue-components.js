@@ -12,6 +12,7 @@ import AerisUiConfirmation from './components/aeris-catalog-ui/aeris-catalog-ui-
 import MdTemplateCollection from './components/aeris-catalog-layouts/aeris-metadata-template/md-template-collection.vue'
 import AerisInternationalField from './components/misc/aeris-international-field.vue'
 import AerisCatalogSearchBox from './components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalog-search-box.vue'
+import AerisCatalogMetadataPanelVue from './components/aeris-catalog-metadata-panel/aeris-catalog-metadata-panel-nav.vue'
 import AerisCatalogMetadataPanel from './components/aeris-catalog-metadata-panel/aeris-catalog-metadata-panel.vue'
 import AerisKeywordSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/aeris-keyword-search-criteria.vue'
 import AerisSpatialSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/aeris-spatial-search-criteria.vue'
@@ -54,6 +55,7 @@ const AerisCatalogueComponents = {
   MdTemplateCollection,
   AerisInternationalField,
   AerisCatalogSearchBox,
+  AerisCatalogMetadataPanelVue,
   AerisCatalogMetadataPanel,
   AerisKeywordSearchCriteria,
   AerisSpatialSearchCriteria,
