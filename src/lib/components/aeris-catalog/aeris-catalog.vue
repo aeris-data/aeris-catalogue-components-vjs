@@ -5,50 +5,57 @@
     "foundresults": "Found results: ",
     "noresult": "No result corresponding to your request",
     "nometadata": "No metadata sheet displayed",
-    "shoppingCart": "Your shopping cart"
+    "shoppingCart": "Cart"
   },
   "fr": {
     "searching": "Recherche...",
     "foundresults": "Résultat trouvés: ",
     "noresult": "Aucun résultat ne correspond à votre requête",
     "nometadata": "Aucune fiche de métadonnées affichée",
-    "shoppingCart": "Votre panier"
+    "shoppingCart": "Panier"
   }
 }
 </i18n>
 <template>
-<div :style="{'--heightMap': heightMap, '--heightSheet': heightSheet}" data-aeris-catalog :class="{'withMap': !hidemap}">
+<div data-aeris-catalog :style="{'--heightMap': heightMap, '--heightSheet': heightSheet}" :class="{'withMap': !hidemap}">
+
+  <header>
+    <h1>Database of atmospheric simulation chamber studies</h1>
+    <div class="commons">
+      <section class="cart">
+        <div>{{$t('shoppingCart')}}</div>
+        <aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart>
+      </section>
+      <div class="buttons">
+        <slot name="buttons-commons"></slot>
+      </div>
+    </div>
+  </header>
 
   <aeris-notifier></aeris-notifier>
 
-  <section data-criteria="buttons" :style="{'--criteriaBackgroundColor': criteriaBackgroundColor}">
-    <slot name="buttons-criteria"></slot>
-  </section>
-
-  <aeris-catalog-criteria data-criteria="container" :lang="lang" :style="{'--criteriaBackgroundColor': criteriaBackgroundColor, '--criteriaContentPrimaryColor': criteriaContentPrimaryColor, '--criteriaContentSecondaryColor': criteriaContentSecondaryColor, '--criteriaHeaderBackgroundColor': criteriaHeaderBackgroundColor, '--criteriaContentBackgroundColor': criteriaContentBackgroundColor, '--criteriaHeaderIconColor': criteriaHeaderIconColor}">
-    <section data-criteria="content">
+  <div class="criteria" :lang="lang" :style="{'--criteriaBackgroundColor': criteriaBackgroundColor, '--criteriaContentPrimaryColor': criteriaContentPrimaryColor, '--criteriaContentSecondaryColor': criteriaContentSecondaryColor, '--criteriaHeaderBackgroundColor': criteriaHeaderBackgroundColor, '--criteriaContentBackgroundColor': criteriaContentBackgroundColor, '--criteriaHeaderIconColor': criteriaHeaderIconColor}">
+    <aeris-catalog-criteria>
       <slot name="criteria"></slot>
-    </section>
-  </aeris-catalog-criteria>
+    </aeris-catalog-criteria>
+    <div class="buttons">
+      <slot name="buttons-criteria"></slot>
+    </div>
+  </div>
 
-  <aeris-catalog-map data-map v-if="!hidemap" :hidemap="hidemap">
+  <aeris-catalog-map class="map" v-if="!hidemap" :hidemap="hidemap">
     <slot name="buttons-map"></slot>
   </aeris-catalog-map>
 
-  <aeris-catalog-summaries data-summaries>
+  <aeris-catalog-summaries class="summaries">
   </aeris-catalog-summaries>
 
-  <section data-cart>
-    <div>{{$t('shoppingCart')}}</div>
-    <aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart>
-  </section>
-
-  <aeris-catalogue-metadata-panel data-sheet="content" v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata"
+  <aeris-catalogue-metadata-panel class="metadata" v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata"
     :client-template="currentTemplate">
     <slot name="buttons-metadata"></slot>
   </aeris-catalogue-metadata-panel>
 
-  <section v-else data-sheet="placeholder">
+  <section v-else class="metadata-placeholder">
     <p>{{$t('nometadata')}}</p>
     <slot name="buttons-no-metadata"></slot>
   </section>
@@ -415,76 +422,113 @@ export default {
 </script>
 
 <style>
-
 [data-aeris-catalog] {
+  position: relative;
   display: grid;
   grid-template-columns: 20% 20% 60%;
-  grid-template-rows: 60px 1fr 1fr;
-  grid-template-areas:  "buttons-criteria cart sheet"
-                        "criteria summaries sheet"
+  grid-template-rows: 48px calc(100% - 48px);
+  grid-template-areas:  "header header header"
                         "criteria summaries sheet";
   width: 100%;
   height: 100vh;
-  background-color: #EEE;
-  position: relative;
+  padding: 0;
+  background-color: #FAFAFA;
 }
+
 
 [data-aeris-catalog].withMap {
-  grid-template-columns: 20% 20% 1fr;
-  grid-template-rows: 60px var(--heightMap) var(--heightSheet);
-  grid-template-areas:    "buttons-criteria cart map"
-                          "criteria summaries map"
-                          "criteria summaries sheet";
+  grid-template-columns: 20% 20% 60%;
+  grid-template-rows: 48px var(--heightMap) var(--heightSheet);
+  grid-template-areas:    "header header header"
+  "criteria summaries map"
+  "criteria summaries sheet";
 }
 
-[data-aeris-catalog] [data-criteria="container"] {
-    grid-area: criteria;
-    position: relative;
-}
-
-[data-aeris-catalog] [data-summaries] {
-    grid-area: summaries;
-    position: relative;
-}
-
-[data-aeris-catalog] [data-criteria="buttons"] {
-  grid-area: buttons-criteria;
+[data-aeris-catalog]>header {
+  grid-area: header;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #EEE;
+  border-bottom: 1px solid #EEE;
+  background: #FFF;
+  color: #333;
 }
 
-[data-aeris-catalog] [data-criteria="buttons"]>div {
+[data-aeris-catalog]>header>h1 {
+  font-weight: 400;
+  font-size: 1.1em;
+  margin: 8px;
+}
+
+[data-aeris-catalog] .commons {
+  grid-area: commons;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-[data-aeris-catalog] [data-criteria="buttons"]>div>* {
-    margin: 5px;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
-[data-aeris-catalog] [data-map] {
-    grid-area: map;
+[data-aeris-catalog] .commons .buttons>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
-[data-aeris-catalog] [data-cart] {
-  grid-area: cart;
+[data-aeris-catalog] .cart {
   position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  padding: 8px;
+  font-weight: 300;
+  color: #333;
 }
 
-[data-aeris-catalog] [data-sheet="content"] {
+[data-aeris-catalog] .criteria {
+    grid-area: criteria;
+    position: relative;
+}
+
+[data-aeris-catalog] .criteria .buttons {
+  grid-area: buttons-criteria;
+  position: absolute;
+  top: 4px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+[data-aeris-catalog] .criteria .buttons>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+[data-aeris-catalog] .buttons>div>* {
+  margin: 5px;
+}
+
+[data-aeris-catalog] .summaries {
+    grid-area: summaries;
+    position: relative;
+}
+
+[data-aeris-catalog] .map {
+    grid-area: map;
+}
+
+[data-aeris-catalog] .metadata {
     grid-area: sheet;
     width: 100%;
     position: relative;
-    overflow: hidden;
+    overflow: none;
 }
 
-[data-aeris-catalog] [data-sheet="placeholder"] {
+[data-aeris-catalog] .metadata-placeholder {
   grid-area: sheet;
-  background: #DDD;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -494,47 +538,42 @@ export default {
   font-weight: 300;
 }
 
-[data-aeris-catalog] [data-sheet="placeholder"]>div {
-  padding: 20px 0;
-}
-
 /* Customised style */
 
-[data-aeris-catalog] [data-criteria],
-[data-aeris-catalog] [data-criteria="buttons"] {
-  background: var(--criteriaBackgroundColor, #21242b);
+[data-aeris-catalog] .criteria {
+  background: var(--criteriaBackgroundColor, #333);
 }
 
-[data-aeris-catalog] [data-layout="search-criteria"] .box-heading {
+[data-aeris-catalog] .aeris-criterion header {
   background: var(--criteriaHeaderBackgroundColor, transparent);
 }
 
-[data-aeris-catalog] [data-layout="search-criteria"] .box-heading h3,
-[data-aeris-catalog] [data-layout="search-criteria"] .box-heading i {
+[data-aeris-catalog] .aeris-criterion header h4,
+[data-aeris-catalog] .aeris-criterion header i {
   color: var(--criteriaHeaderIconColor, #FAFAFA);
 }
 
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content {
+[data-aeris-catalog] .aeris-criterion article {
   background: var(--criteriaContentBackgroundColor, transparent);
 }
 
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container,
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content i,
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content input,
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content label {
+[data-aeris-catalog] .aeris-criterion article .aeris-cartouche-container,
+[data-aeris-catalog] .aeris-criterion article i,
+[data-aeris-catalog] .aeris-criterion article input,
+[data-aeris-catalog] .aeris-criterion article label {
   color: var(--criteriaContentPrimaryColor, #FAFAFA);
 }
 
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .input-container,
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content ::placeholder {
+[data-aeris-catalog] .aeris-criterion article .input-container,
+[data-aeris-catalog] .aeris-criterion article ::placeholder {
    color: var(--criteriaContentSecondaryColor, #888);
 }
 
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container {
+[data-aeris-catalog] .aeris-criterion article .aeris-cartouche-container {
   background: transparent;
 }
 
-[data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .badge {
+[data-aeris-catalog] .aeris-criterion article .badge {
   color: var(--criteriaBackgroundColor, #21242b);
 }
  </style>
