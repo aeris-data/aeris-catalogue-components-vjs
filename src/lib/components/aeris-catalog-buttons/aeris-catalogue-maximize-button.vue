@@ -15,8 +15,8 @@
 
 <template>
 <div>
-  <aeris-catalog-ui-icon-button v-if="maximize" icon="fa-expand" theme="primary" :title="computeTitle" @click="handleMaximize"></aeris-catalog-ui-icon-button>
-  <aeris-catalog-ui-icon-button v-else icon="fa-compress" theme="primary" :title="computeTitle" @click="handleMaximize"></aeris-catalog-ui-icon-button>
+  <aeris-catalog-ui-icon-button v-if="maximize" theme="accent" icon="fa-expand" :title="computeTitle" @click="handleMaximize"></aeris-catalog-ui-icon-button>
+  <aeris-catalog-ui-icon-button v-else theme="accent" icon="fa-compress" :title="computeTitle" @click="handleMaximize"></aeris-catalog-ui-icon-button>
 </div>
 </template>
 

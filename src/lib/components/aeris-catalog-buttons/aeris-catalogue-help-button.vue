@@ -10,7 +10,7 @@
 </i18n>
 
 <template>
-<aeris-catalog-ui-icon-button icon="fa-question" theme="primary" :title="$t('help')" @click="handleHelp"></aeris-catalog-ui-icon-button>
+<aeris-catalog-ui-icon-button icon="fa-question" theme="accent" :title="$t('help')" @click="handleHelp"></aeris-catalog-ui-icon-button>
 </template>
 
 <script>

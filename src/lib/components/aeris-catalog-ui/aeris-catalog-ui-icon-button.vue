@@ -81,8 +81,8 @@ export default {
 }
 
 [data-aeris-catalog-ui-icon-button] .accent {
-  background: #F39C12;
-  color: #FFF;
+  background: #333;
+  color: #FAFAFA;
 }
 
 [data-aeris-catalog-ui-icon-button] button::-moz-focus-inner {
