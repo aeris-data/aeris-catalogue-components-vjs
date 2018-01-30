@@ -576,6 +576,7 @@ export default {
 		display: none;
 		position: absolute;
 		top: 99%;
+    right: 0;
 		z-index: 9999;
 		max-height: 500px;
 		overflow-x: hidden;
