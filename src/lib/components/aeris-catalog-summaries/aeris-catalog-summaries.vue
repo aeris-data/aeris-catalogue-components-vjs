@@ -12,20 +12,24 @@
 </i18n>
 
 <template>
-<div data-aeris-catalog-summaries-bar class="always-visible" :class="visibilityClass">
-  <header>
-    <aeris-catalog-ui-input icon="fa fa-filter" aria-label="filterSummaries" :placeholder="$t('filter')" :value="filter" @input="filter = $event.target.value"></aeris-catalog-ui-input>
-  </header>
-  <section v-if="summaries">
-    <div v-for="summary in filteredsummaries" :key="summary.id">
-      <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
-      <aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
-    </div>
-  </section>
-  <p v-else>
-    {{$t('nometadata')}}
-  </p>
-  <slot></slot>
+<div data-aeris-catalog-summaries-bar :class="visibilityClass">
+  <figure>
+    <figcaption>
+      Summaries
+      <aeris-catalog-ui-input icon="fa fa-filter" aria-label="filterSummaries" :placeholder="$t('filter')" :value="filter" @input="filter = $event.target.value"></aeris-catalog-ui-input>
+    </figcaption>
+    <ul v-if="summaries">
+      <li>
+        <div v-for="summary in filteredsummaries" :key="summary.id">
+          <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
+          <aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
+        </div>
+      </li>
+    </ul>
+    <p v-else>
+      {{$t('nometadata')}}
+    </p>
+  </figure>
 </div>
 </template>
 
@@ -171,42 +175,66 @@ export default {
   height: 100%;
   overflow: auto;
   padding: 0 10px;
+  background: #EEE;
 }
 
-[data-aeris-catalog-summaries-bar]>header input {
-  color: #555;
+
+[data-aeris-catalog-summaries-bar] figure {
+  margin: 0;
+  padding: 0;
 }
 
-[data-template="summary"] {
+[data-aeris-catalog-summaries-bar] figure figcaption {
+  font-weight: 300;
+  font-size: 1.2rem;
+  margin: 12px;
+  color: #333;
+}
+
+[data-aeris-catalog-summaries-bar] .input-container {
+  color: #AAA;
+}
+
+[data-aeris-catalog-summaries-bar] ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-aeris-catalog-summaries-bar] .summary {
   height: 100%;
   width: 100%;
   margin: 10px 0;
   border-radius: 2px;
   box-sizing: border-box;
   padding: 10px;
-  background: #E1E1E1;
+  font-size: 0.9em;
+  font-weight: 300;
+  background: #e1e1e1;
   color: #333;
 }
 
-[data-template="summary"]:hover {
+[data-aeris-catalog-summaries-bar] .summary:hover {
   cursor: pointer;
   filter: brightness(90%);
 }
 
-[data-template="summary"] header .cartouche {
+[data-aeris-catalog-summaries-bar] .summary header .cartouche {
   display: inline-block;
   padding: 3px 5px;
   border-radius: 5px;
-  font-size: 0.9rem;
-  font-weight: 400;
+  font-size: 0.9em;
+  font-weight: 300;
   color: #FAFAFA;
 }
 
-[data-template="summary"] header .cartouche .fa {
+[data-aeris-catalog-summaries-bar] .summary header .cartouche .fa {
   margin-right: 5px;
 }
 
-[data-template="summary"] main {
+[data-aeris-catalog-summaries-bar] .summary main {
   padding: 10px;
+  font-weight: 300;
+  font-size: 1.2em;
 }
 </style>

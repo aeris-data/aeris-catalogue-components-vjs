@@ -11,7 +11,7 @@
 }
 </i18n>
 <template>
-<div data-template="summary" v-bind:class="{ showBody: deployed }" v-on:click="displayDetails">
+<div class="summary" v-bind:class="{ showBody: deployed }" v-on:click="displayDetails">
   <header>
     <div v-if="dataProcessingLevel" class="cartouche"><i class="fa fa-cogs"></i>{{$t("level")}} {{dataProcessingLevel}}</div>
   </header>
