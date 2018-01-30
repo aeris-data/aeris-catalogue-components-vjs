@@ -26,7 +26,7 @@
 }
 
 [data-app]>ul {
-  position: fixed;
+  /*position: fixed;*/
   display: flex;
   flex-direction: row;
   top: 0;
