@@ -107,6 +107,8 @@ export default {
   },
 
   created() {
+    this.eurochampSaveListener = this.resetDataBlocks.bind(this);
+    document.addEventListener('eurochampSaveEvent', this.eurochampSaveListener);
     this.eurochampDataBlockInitListener = this.initDataBlock.bind(this);
     document.addEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
     this.eurochampDataBlockSetListener = this.setDataBlock.bind(this);
@@ -131,6 +133,8 @@ export default {
   },
 
   destroyed() {
+    document.removeEventListener('eurochampSaveEvent', this.eurochampSaveListener);
+    this.eurochampSaveListener = null;
     document.removeEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
     this.eurochampDataBlockInitListener = null;
     document.removeEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
@@ -159,6 +163,7 @@ export default {
     return {
       orcid: '',
       maximize: false,
+      eurochampSaveListener: null,
       eurochampDataBlockInitListener: null,
       eurochampDataBlockSetListener: null,
       dataBlocks: new Map()
@@ -227,6 +232,10 @@ export default {
 
     initDataBlock(e) {
       this.dataBlocks = this.dataBlocks.set(e.detail.name, undefined);
+    },
+
+    resetDataBlocks() {
+      Array.from(this.dataBlocks.keys()).forEach(key => this.dataBlocks.set(key, undefined));
     },
 
     setDataBlock(e) {

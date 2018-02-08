@@ -3,12 +3,14 @@
   "en": {
     "help": "Help",
     "helpMessage": "To search for data, select criterias in the column at the left of your screen, then click on the search button:",
+    "warningMessage": "This catalogue is still in development: we are working on improving both its features and its content. If you detect some bugs or if you have ideas for evolutions, please contact us with this <a href='https://en.aeris-data.fr/contact/' target='_blank'>form</a>.",
     "doNotDisplay": "Do not display this message again"
   },
   "fr": {
     "help": "Aide",
     "helpMessage": "Pour effectuer une recherche, sélectionnez vos critères dans la colonne à gauche de votre écran, puis cliquez sur le bouton rechercher :",
-    "doNotDisplay": "Ne plus afficher ce message"
+    "doNotDisplay": "Ne plus afficher ce message",
+    "warningMessage": "Ce catalogue est toujours en développement: nous travaillons à améliorer son contenu et ses fonctionnalités. Si vous détectez une anomalie ou si vous avez des idées d'évolutions, n'hésitez pas à nous le signaler avec ce <a href='https://www.aeris-data.fr/contact/' target='_blank'>formulaire</a>."
   }
 }
 </i18n>
@@ -27,7 +29,7 @@
         <i class="fa fa-search"></i>
       </div>
     </div>
-  </div>
+   
 
   <div class='popup-buttons'>
     <div class="ok-button" @click="closePopup">OK</div>
@@ -35,6 +37,11 @@
       <button class="show-at-startup-button" type="button" v-on:click.stop="doNotShow" v-if="showAtStartVisible">{{$t('doNotDisplay')}}</button>
     </div>
   </div>
+  <br></br>
+  <div>
+  <i class="fa fa-warning fa-2x" style="padding-right: 10px;"></i><span v-html="$t('warningMessage')"></span>
+  </div>
+</div>
 
 </div>
 </template>
