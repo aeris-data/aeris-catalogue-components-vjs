@@ -180,6 +180,10 @@ export default {
 
     this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this)
     document.addEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
+
+    document.dispatchEvent(new CustomEvent('aerisCatalogueProgram', {
+      detail: this.program
+    }));
   },
 
   mounted: function() {
