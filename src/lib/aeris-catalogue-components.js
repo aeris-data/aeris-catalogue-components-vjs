@@ -8,7 +8,6 @@ import AerisUiSearch from './components/aeris-catalog-ui/aeris-catalog-ui-search
 
 import AerisTreeCheckboxLayout from './components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-tree-checkbox-layout.vue'
 import MdTemplateProxy from './components/aeris-catalog-layouts/aeris-metadata-template/md-template-proxy.vue'
-import AerisUiConfirmation from './components/aeris-catalog-ui/aeris-catalog-ui-confirmation.vue'
 import MdTemplateCollection from './components/aeris-catalog-layouts/aeris-metadata-template/md-template-collection.vue'
 import MdTemplateSingleFileDownload from './components/aeris-catalog-layouts/aeris-metadata-template/md-template-single-file-download.vue'
 import MdTemplateYearSelectDownload from './components/aeris-catalog-layouts/aeris-metadata-template/md-template-year-select-download.vue'
@@ -52,7 +51,6 @@ const AerisCatalogueComponents = {
   AerisUiSearch,
   AerisTreeCheckboxLayout,
   MdTemplateProxy,
-  AerisUiConfirmation,
   MdTemplateCollection,
   MdTemplateSingleFileDownload,
   MdTemplateYearSelectDownload,
