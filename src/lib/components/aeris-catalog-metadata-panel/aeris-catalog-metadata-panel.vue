@@ -23,7 +23,6 @@
 
 <template>
 <div data-aeris-catalog-metadata-panel>
-  <aeris-catalog-ui-confirmation></aeris-catalog-ui-confirmation>
   <header>
     <h2 class="metadata-panel-title">
       <aeris-international-field v-if="resourcetitle" html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
@@ -107,14 +106,6 @@ export default {
   },
 
   created() {
-    this.eurochampSaveListener = this.resetDataBlocks.bind(this);
-    document.addEventListener('eurochampSaveEvent', this.eurochampSaveListener);
-    this.eurochampDataBlockInitListener = this.initDataBlock.bind(this);
-    document.addEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
-    this.eurochampDataBlockSetListener = this.setDataBlock.bind(this);
-    document.addEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
-    this.aerisOrcidListener = this.handleOrcidResponse.bind(this);
-    document.addEventListener('aerisOrcidResponse', this.aerisOrcidListener);
     this.$nextTick(function() {
       document.dispatchEvent(new CustomEvent('aerisCatalogueInfoMetadata', {
         detail: {
@@ -129,18 +120,6 @@ export default {
     if (this.lang) {
       this.$i18n.locale = this.lang
     }
-    document.dispatchEvent(new CustomEvent('aerisOrcidRequest', {}));
-  },
-
-  destroyed() {
-    document.removeEventListener('eurochampSaveEvent', this.eurochampSaveListener);
-    this.eurochampSaveListener = null;
-    document.removeEventListener('eurochampDataBlockInitEvent', this.eurochampDataBlockInitListener);
-    this.eurochampDataBlockInitListener = null;
-    document.removeEventListener('eurochampDataBlockSetEvent', this.eurochampDataBlockSetListener);
-    this.eurochampDataBlockSetListener = null;
-    document.removeEventListener('aerisOrcidResponse', this.aerisOrcidListener);
-    this.aerisOrcidListener = null;
   },
 
   computed: {
@@ -161,22 +140,13 @@ export default {
 
   data() {
     return {
-      orcid: '',
-      maximize: false,
-      eurochampSaveListener: null,
-      eurochampDataBlockInitListener: null,
-      eurochampDataBlockSetListener: null,
-      dataBlocks: new Map()
+      maximize: false
     }
   },
 
   updated: function() {},
 
   methods: {
-
-    handleOrcidResponse(e) {
-      e.detail.user ? this.orcid = e.detail.user.orcid : null;
-    },
 
     showJson: function() {
       var baseUrl = 'http://jsoneditoronline.org/?url=';
@@ -225,56 +195,9 @@ export default {
     sendSaveEvent() {
       document.dispatchEvent(new CustomEvent('eurochampSaveEvent', {
         detail: {
-          metadata: {}
+          loadingMessage: this.$i18n.t('saving')
         }
       }));
-    },
-
-    initDataBlock(e) {
-      this.dataBlocks = this.dataBlocks.set(e.detail.name, undefined);
-    },
-
-    resetDataBlocks() {
-      Array.from(this.dataBlocks.keys()).forEach(key => this.dataBlocks.set(key, undefined));
-    },
-
-    setDataBlock(e) {
-
-      this.dataBlocks = this.dataBlocks.set(e.detail.name, e.detail);
-      delete e.detail.name;
-      Array.from(this.dataBlocks.values()).every(value => value != undefined) ? this.handleSave() : null;
-    },
-
-    handleSave() {
-
-      let newMetadata = Array.from(this.dataBlocks.values()).reduce((acc, current) => Object.assign({}, acc, current.metadata), JSON.parse(this.metadata));
-      let existingFiles = Array.from(this.dataBlocks.values()).reduce((acc, current) => current.existingFiles ? acc.concat(current.existingFiles) : acc, new Array());
-      let newFiles = Array.from(this.dataBlocks.values()).reduce((acc, current) => current.newFiles ? acc.concat(current.newFiles) : acc, new Array());
-
-      let formData = new FormData();
-      formData.append("metadata", JSON.stringify(newMetadata));
-      existingFiles.forEach(file => formData.append("existingfiles", file));
-      newFiles.forEach((file, index) => formData.append("newfiles", file, file.name));
-
-      document.dispatchEvent(new CustomEvent('aerisLongActionStartEvent', {
-        'detail': {
-          message: this.$t('saving')
-        }
-      }));
-
-      this.$http.post(`${this.metadataService}save?orcid=${this.orcid}`, formData)
-        .then(response => {
-          document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
-            'detail': {
-              message: this.$t('saving')
-            }
-          }));
-          this.broadcastCloseEvent();
-        }, response => document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
-          'detail': {
-            message: this.$t('saving')
-          }
-        })));
     }
   }
 }

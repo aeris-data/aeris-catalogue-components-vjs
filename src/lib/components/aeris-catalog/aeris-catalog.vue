@@ -180,6 +180,19 @@ export default {
 
     this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this)
     document.addEventListener('currentEditedMetadataRequest', this.aerisCurrentEditedMetadataRequestListener);
+
+    document.dispatchEvent(new CustomEvent('aerisCatalogueProgram', {
+      detail: this.program
+    }));
+
+    document.dispatchEvent(new CustomEvent('aerisCatalogueServices', {
+      detail: Array.from(document.querySelector('aeris-catalog').attributes).filter(attribute => attribute.name.endsWith('-service')).map(attribute => {
+        return {
+          name: attribute.name,
+          value: attribute.value
+        }
+      })
+    }));
   },
 
   mounted: function() {
@@ -269,8 +282,7 @@ export default {
       } else {
         this.currentType = ''
       }
-      let metadataParsed = JSON.parse(e.detail.metadata);
-      this.currentTitle = metadataParsed.resourceTitle ? JSON.stringify(metadataParsed.resourceTitle) : null;
+      this.currentTitle = e.detail.metadata.resourceTitle ? JSON.stringify(e.detail.metadata.resourceTitle) : null;
       this.currentMetadata = e.detail.metadata ? e.detail.metadata : null;
       this.currentUuid = e.detail.metadata ? e.detail.metadata.uuid : null;
       this.visibleMetadataPanel = true;
