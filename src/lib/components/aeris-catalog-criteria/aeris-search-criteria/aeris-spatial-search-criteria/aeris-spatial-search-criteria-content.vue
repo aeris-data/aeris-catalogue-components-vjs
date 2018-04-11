@@ -246,11 +246,13 @@ export default {
     },
 
     handleSearch: function(e) {
-      e.detail.box = this.asBox();
-      if (this.editing) {
-        this.handleStopEdit()
-        document.dispatchEvent(new CustomEvent("aerisCatalogueStopEditEvent"));
-      }
+    	if (this.isValidBox()) {
+    	      e.detail.box = this.asBox();
+    	      if (this.editing) {
+    	        this.handleStopEdit()
+    	        document.dispatchEvent(new CustomEvent("aerisCatalogueStopEditEvent"));
+    	      }	
+    	}
     }
 
   }

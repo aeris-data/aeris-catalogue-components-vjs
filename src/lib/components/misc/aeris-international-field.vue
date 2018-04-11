@@ -83,12 +83,13 @@ export default {
         if (key === 'DEFAULT_VALUE_KEY') {
           /* If there's only a default language */
           return json['DEFAULT_VALUE_KEY'];
-        } else if (key.length > 2) {
-          /* key = String language in the object */
-          newKey = key.substr(0, 2);
-          json[newKey] = json[key];
-          delete json[key];
-        }
+        } 
+//        else if (key.length > 2) {
+//          /* key = String language in the object */
+//          let newKey = key.substr(0, 2);
+//          json[newKey] = json[key];
+//          delete json[key];
+//        }
       }
 
       if (json[this.lang]) {

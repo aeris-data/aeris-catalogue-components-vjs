@@ -5,14 +5,16 @@
     "foundresults": "Found results: ",
     "noresult": "No result corresponding to your request",
     "nometadata": "No metadata sheet displayed",
-    "shoppingCart": "Your shopping cart"
+    "shoppingCart": "Your shopping cart",
+    "nocriteria": "No criteria selected"
   },
   "fr": {
     "searching": "Recherche...",
     "foundresults": "Résultat trouvés: ",
     "noresult": "Aucun résultat ne correspond à votre requête",
     "nometadata": "Aucune fiche de métadonnées affichée",
-    "shoppingCart": "Votre panier"
+    "shoppingCart": "Votre panier",
+    "nocriteria": "Aucun critère sélectionné"
   }
 }
 </i18n>
@@ -302,6 +304,10 @@ export default {
 
     handleCatalogueSearchStart: function() {
       this.hideMetadataPanel()
+      
+      // block the buttons
+      document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "none";
+      
       var e = new CustomEvent("aerisCatalogueSearchEvent", {
         detail: {}
       })
@@ -328,13 +334,26 @@ export default {
           message: this.$t('searching')
         }
       }))
-
-      this.$http.post(url, e.detail).then(response => {
-        this.handleSuccess(response)
-      }, response => {
-        this.handleError(response)
-      });
-
+      
+      // do not search if there's no criteria
+      if ((!e.detail.collections || e.detail.collections.length < 1) && (!e.detail.keywords || e.detail.keywords.length < 1) && (!e.detail.box || e.detail.box.north == "")
+    		 && (!e.detail.temporal || e.detail.temporal.from == "")  && (!e.detail.platforms) && (!e.detail.sublevels)) {
+    	 document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
+    	        'detail': {
+    	          message: this.$t('searching')
+    	        }
+    	 }));
+    	 // tell the user
+    	 document.dispatchEvent(new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$t('nocriteria')}}));
+	     // unblock the buttons
+	     document.querySelector("section[data-criteria='buttons']").style.pointerEvents = "auto";
+      } else {
+         this.$http.post(url, e.detail).then(response => {
+             this.handleSuccess(response)
+         }, response => {
+             this.handleError(response)
+         });
+      };
 
     },
 
@@ -373,7 +392,13 @@ export default {
         'detail': {
           message: this.$t('searching')
         }
-      }))
+      }))      
+      
+      this.$nextTick(function () {
+    	  // unblock the button
+          document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
+        })
+      
       console.log("SUCCESS: Response")
       console.log(response)
       var summaries = response.body
@@ -403,6 +428,12 @@ export default {
           message: this.$t('searching')
         }
       }))
+  	  
+      this.$nextTick(function () {
+    	  // unblock the button
+          document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
+        })
+      
       console.log("ERROR: Response")
       console.log(response)
       document.dispatchEvent(new CustomEvent('aerisSummaries', {

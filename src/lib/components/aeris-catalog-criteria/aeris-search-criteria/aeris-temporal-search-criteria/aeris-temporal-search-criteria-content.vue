@@ -17,12 +17,13 @@
     <span class="right">{{$t('from')}}</span>
     <input id="from" v-model="from">
   </div>
-  <aeris-datepicker for="input#from" format="DD/MM/YYYY"></aeris-datepicker>
+  <aeris-datepicker for="input#from" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
+  
   <div class="aeris-input-group">
     <span class="right">{{$t('to')}}</span>
     <input id="to" v-model="to">
   </div>
-  <aeris-datepicker for="input#to" format="DD/MM/YYYY"></aeris-datepicker>
+  <aeris-datepicker for="input#to" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
   <span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
 
 </div>
@@ -54,6 +55,7 @@ export default {
   },
 
   created: function() {
+	console.log('aeristemporal search criteria - created');
     this.$i18n.locale = this.lang
     this.catalogueResetListener = this.handleCatalogueReset.bind(this)
     document.addEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
@@ -61,7 +63,8 @@ export default {
     document.addEventListener('aerisCatalogueSearchEvent', this.aerisCatalogueSearchEventListener);
   },
 
-  mounted: function() {},
+  mounted: function() {
+  },
 
   computed: {
 
@@ -73,8 +76,8 @@ export default {
       catalogueResetListener: null,
       from: null,
       to: null,
-      errorMessage: null
-
+      errorMessage: null,
+      dateFormat: "DD/MM/YYYY HH:mm:ss"
     }
   },
 
@@ -88,16 +91,23 @@ export default {
     },
 
     handleSearch: function(e) {
+   
+      this.from = document.querySelector("#from").value;
+      this.to = document.querySelector("#to").value;
+      //console.log('date avant format: ' + this.from);
+      
       var temporal = {};
-      var from = moment(this.from, this.format);
-      var to = moment(this.to, this.format);
+      var from = moment(this.from, this.dateFormat);
+      var to = moment(this.to, this.dateFormat);
 
-      temporal.from = from.isValid() ? from.format('YYYY-MM-DD') : '';
-      temporal.to = to.isValid() ? to.format('YYYY-MM-DD') : '';
+      //console.log('date apres format: ' + from);
+   
+      temporal.from = from.isValid() ? from.format('YYYY-MM-DDTHH:mm:ss') : '';
+      temporal.to = from.isValid() ? to.format('YYYY-MM-DDTHH:mm:ss') : '';
 
       e.detail.temporal = temporal;
     }
-  }
+  }  
 }
 </script>
 

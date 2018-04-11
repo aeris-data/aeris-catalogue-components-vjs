@@ -128,6 +128,7 @@ export default {
       parentService: null,
       items: [],
       loading: false,
+      theme: [],
       existing: false
     }
   },
@@ -135,11 +136,16 @@ export default {
   methods: {
 
     handleTheme: function(theme) {
-      if (this.$el.querySelectorAll(".badge")) {
+    	this.theme = theme;
+    	this.colorBaddges(this.theme);
+    },
+    
+    colorBaddges: function(theme) {
+	  if (this.$el.querySelectorAll(".badge")) {
         this.$el.querySelectorAll(".badge").forEach(el => el.style.background = theme.detail.emphasis);
       }
     },
-
+    
     checkFirstLevel(index)  {
       this.items[index].checked = !this.items[index].checked;
       this.items[index].deployed = this.items[index].checked;
@@ -219,6 +225,13 @@ export default {
       if (window.localStorage) {
         window.localStorage.setItem('aeris' + this.name + 'Types', JSON.stringify(this.items));
       }
+      this.$nextTick(function () {
+          // Defer the callback to be executed after the next DOM update cycle
+    	  // otherwise badges won't be visible on first load
+    	  this.colorBaddges(this.theme);
+        })
+
+  	  
     },
 
     handleSearchBarEvent: function(e) {

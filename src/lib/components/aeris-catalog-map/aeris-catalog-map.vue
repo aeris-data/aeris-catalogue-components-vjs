@@ -131,7 +131,7 @@ export default {
 
     });
 
-    //Ajout des coordonn�es Lon/Lat du curseur en bas � droite
+    //Ajout des coordonnees Lon/Lat du curseur en bas a droite
     this.map.addControl(new ol.control.MousePosition({
       projection: 'EPSG:4326',
       coordinateFormat: ol.coordinate.createStringXY(3),

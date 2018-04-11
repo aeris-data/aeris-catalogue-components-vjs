@@ -43,7 +43,7 @@ export default {
     },
     summaryMaxLength: {
       type: Number,
-      default: "150"
+      default: 150
     },
   },
 

@@ -49,10 +49,6 @@ export default {
     value: {
       type: String,
       default: ''
-    },
-    clientTemplateName: {
-      type: String,
-      default: ''
     }
   },
 
@@ -175,7 +171,7 @@ export default {
     },
 
     ensureTheme: function() {
-      if (this.theme) {
+      if (this.theme && this.$el.querySelector(".cartouche")) {
         this.$el.querySelector(".cartouche").style.background = this.$colorLuminance(this.theme.primary, -0.1);
       }
     },
