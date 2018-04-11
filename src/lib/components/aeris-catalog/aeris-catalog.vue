@@ -346,7 +346,7 @@ export default {
     	 // tell the user
     	 document.dispatchEvent(new CustomEvent('aerisErrorNotificationMessageEvent', { 'detail': {message: this.$t('nocriteria')}}));
 	     // unblock the buttons
-	     document.querySelector("section[data-criteria='buttons']").style.pointerEvents = "auto";
+	     document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
       } else {
          this.$http.post(url, e.detail).then(response => {
              this.handleSuccess(response)
