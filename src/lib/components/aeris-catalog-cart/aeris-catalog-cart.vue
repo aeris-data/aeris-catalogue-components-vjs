@@ -191,10 +191,6 @@ export default {
       this.totalFiles = filesNumber;
       this.totalFilesSize = this.computeFileSize(filesSize);
       return this.totalFiles > 0 ? true : false;
-    },
-    togglePopup: function() {
-      this.isPopupOpen = !this.isPopupOpen;
-      return this.isPopupOpen;
     }
 
   },
@@ -219,6 +215,11 @@ export default {
 
   methods: {
 
+    togglePopup: function() {
+	  this.isPopupOpen = !this.isPopupOpen;
+	  return this.isPopupOpen;
+	},
+	
     contentRequestHandler: function() {
       this.dispatchContent();
     },
@@ -231,7 +232,6 @@ export default {
       });
       document.dispatchEvent(event);
     },
-
 
     filterDescription: function(item) {
       if (item.items) {
@@ -407,7 +407,7 @@ export default {
     },
 
     checkout: function() {
-      this.togglePopup;
+      this.togglePopup();
       var url = this.cartService + '/toscript';
       this.$http.post(url, JSON.stringify(this.cartContent))
         .then((response) => {

@@ -336,8 +336,10 @@ export default {
       }))
       
       // do not search if there's no criteria
-      if ((!e.detail.collections || e.detail.collections.length < 1) && (!e.detail.keywords || e.detail.keywords.length < 1) && (!e.detail.box || e.detail.box.north == "")
-    		 && (!e.detail.temporal || e.detail.temporal.from == "")  && (!e.detail.platforms) && (!e.detail.sublevels)) {
+      if ( (!this.program) &&
+    		  ((!e.detail.collections || e.detail.collections.length < 1) && (!e.detail.keywords || e.detail.keywords.length < 1) && (!e.detail.box || e.detail.box.north == "")
+    		 && (!e.detail.temporal || e.detail.temporal.from == "")  && (!e.detail.platforms) && (!e.detail.sublevels))
+    		 ) {
     	 document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
     	        'detail': {
     	          message: this.$t('searching')
