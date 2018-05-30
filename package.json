@@ -1,9 +1,9 @@
 {
   "name": "aeris-catalogue-components-vjs",
   "description": "Aeris catalogue components. ",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "author": "Aeris",
-  "private": false,
+  "private": false,ll
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf --progress",
     "build": "node build/build.js"
