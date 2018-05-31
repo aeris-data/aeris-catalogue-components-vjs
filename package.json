@@ -3,7 +3,7 @@
   "description": "Aeris catalogue components. ",
   "version": "0.3.0",
   "author": "Aeris",
-  "private": false,ll
+  "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf --progress",
     "build": "node build/build.js"
