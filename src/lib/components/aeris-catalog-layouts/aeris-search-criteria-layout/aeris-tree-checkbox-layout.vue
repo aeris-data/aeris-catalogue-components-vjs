@@ -209,7 +209,7 @@ export default {
 
     handleError: function(request) {
       this.loading = false;
-      console.log("Aeris platform criteria - Error while accessing server:");
+      console.log("Aeris " + this.name + " criteria - Error while accessing server:");
       var error = response.status;
       var message = response.statusText;
       if (!error) message = 'Can\'t connect to the server';
