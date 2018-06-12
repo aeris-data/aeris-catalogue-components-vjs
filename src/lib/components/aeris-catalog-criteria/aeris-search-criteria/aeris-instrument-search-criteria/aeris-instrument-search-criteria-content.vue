@@ -1,3 +1,7 @@
+<i18n>
+{
+}
+</i18n>
 <template>
 	<div data-aeris-instrument-search-criteria-content>
 		<aeris-instrument-tree-checkbox-layout type="instruments" name="Instrument" name-subitems="instruments"></aeris-instrument-tree-checkbox-layout>
@@ -58,21 +62,21 @@ export default {
 	                  checked: false,
 	                  deployed: false,
 	                  name: item.name,
-	                  label: (this.lang = "fr") ? item.translation.fr : item.translation.en,
+	                  label: (this.lang == "fr") ? item.translation.fr : item.translation.en,
 	                  search: item.searchConcat,
 	                  instruments: item.instruments.map(subitem => {
 	                    return {
 	                      checked: false,
 		                  deployed: false,
 	                      name: subitem.name,
-	                      label: (this.lang = "fr") ? subitem.translation.fr : subitem.translation.en,
+	                      label: (this.lang == "fr") ? subitem.translation.fr : subitem.translation.en,
 	                      search: subitem.searchConcat,
 	                      instruments: subitem.instruments.map(subsubitem => {
     		                    return {
     		                      checked: false,
     			                  deployed: false,
     		                      name: subsubitem.name,
-    		                      label: (this.lang = "fr") ? subsubitem.translation.fr : subsubitem.translation.en,
+    		                      label: (this.lang == "fr") ? subsubitem.translation.fr : subsubitem.translation.en,
     		                      search: subsubitem.searchConcat
     		                    }
     		                  })

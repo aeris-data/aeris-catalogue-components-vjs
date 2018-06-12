@@ -10,6 +10,7 @@
   <aeris-metadata-datapolicy :lang="lang"></aeris-metadata-datapolicy>
   <aeris-metadata-data-links :lang="lang"></aeris-metadata-data-links>
   <aeris-metadata-platforms :lang="lang"></aeris-metadata-platforms>
+  <aeris-metadata-instruments :lang="lang"></aeris-metadata-instruments>
   <aeris-metadata-formats :lang="lang"></aeris-metadata-formats>
   <aeris-metadata-parameters :lang="lang"></aeris-metadata-parameters>
   <aeris-metadata-publications :lang="lang"></aeris-metadata-publications>
