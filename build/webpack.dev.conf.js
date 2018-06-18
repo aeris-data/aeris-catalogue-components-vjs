@@ -7,7 +7,7 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 module.exports = merge(baseWebpackConfig, {
   entry: {
-    app: './src/demo/main.js'
+	app: './src/demo/main.js'
   },
   devtool: '#cheap-module-eval-source-map',
   plugins: [

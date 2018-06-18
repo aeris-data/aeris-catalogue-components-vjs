@@ -40,6 +40,9 @@ import AerisLevelSearchCriteria from './components/aeris-catalog-criteria/aeris-
 import AerisCampaignSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-campaign-search-criteria-content.vue'
 import AerisCollectionSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria-content.vue'
 import AerisCollectionSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria.vue'
+import AerisInstrumentSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria/aeris-instrument-search-criteria-content.vue'
+import AerisInstrumentSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria/aeris-instrument-search-criteria.vue'
+import AerisInstrumentTreeCheckboxLayout from './components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-instrument-tree-checkbox-layout.vue'
 
 const AerisCatalogueComponents = {
   AerisUiInput,
@@ -82,7 +85,10 @@ const AerisCatalogueComponents = {
   AerisLevelSearchCriteria,
   AerisCampaignSearchCriteriaContent,
   AerisCollectionSearchCriteriaContent,
-  AerisCollectionSearchCriteria
+  AerisCollectionSearchCriteria,
+  AerisInstrumentSearchCriteriaContent,
+  AerisInstrumentSearchCriteria,
+  AerisInstrumentTreeCheckboxLayout
 };
 
 AerisCatalogueComponents.install = (Vue) => {

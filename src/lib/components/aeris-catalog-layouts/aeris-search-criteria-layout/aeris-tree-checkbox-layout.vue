@@ -245,8 +245,6 @@
                     // otherwise badges won't be visible on first load
                     this.colorBaddges(this.theme);
                 })
-
-
             },
 
             handleSearchBarEvent: function (e) {
@@ -294,10 +292,11 @@
         margin-left: 24px;
         padding: 5px 0;
     }
-
+    
     [data-aeris-tree-checkbox-layout] input {
         margin-right: 15px;
     }
+
 
     [data-aeris-tree-checkbox-layout] .first-level aside {
         display: flex;
