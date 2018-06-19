@@ -11,7 +11,7 @@
 
 <template>
 <div data-aeris-instrument-search-criteria>
-  <aeris-catalog-search-box id="box" :title="$t('instruments')" header-icon-class="fa fa-rocket" :deployed="deployed">
+  <aeris-catalog-search-box id="box" :title="$t('instruments')" header-icon-class="fa fa-calculator" :deployed="deployed">
     <aeris-instrument-search-criteria-content></aeris-instrument-search-criteria-content>
   </aeris-catalog-search-box>
 </div>
