@@ -1,93 +1,106 @@
 <i18n>
-{
-  "en": {
-    "keywords": "Keywords"
-  },
-  "fr": {
-    "keywords": "Mots-clés"
-  }
-}
+    {
+    "en": {
+    "keywords": "Keywords",
+    "fulltextsearch": "Full text search"
+    },
+    "fr": {
+    "keywords": "Mots-clés",
+    "fulltextsearch": "Recherche full text"
+    }
+    }
 </i18n>
 
 <template>
-<div data-aeris-keyword-search-criteria>
-  <aeris-catalog-search-box id="box" :title="$t('keywords')" header-icon-class="fa fa-terminal" :deployed="deployed">
-    <aeris-keyword-search-criteria-content></aeris-keyword-search-criteria-content>
-  </aeris-catalog-search-box>
-</div>
+    <div data-aeris-keyword-search-criteria>
+        <aeris-catalog-search-box id="box" :title="$t('fulltextsearch')" header-icon-class="fa fa-terminal"
+                                  :deployed="deployed">
+            <aeris-keyword-search-criteria-content
+                    :isShowOperators="isShowOperators"></aeris-keyword-search-criteria-content>
+        </aeris-catalog-search-box>
+    </div>
 </template>
 
 <script>
-export default {
+    export default {
 
-  name: 'aeris-keyword-search-criteria',
-  
-  props: {
-    lang: {
-      type: String,
-      default: 'en'
-    },
-    deployed: {
-      type: Boolean,
-      default: false
+        name: 'aeris-keyword-search-criteria',
+
+        props: {
+            lang: {
+                type: String,
+                default: 'en'
+            },
+            deployed: {
+                type: Boolean,
+                default: false
+            },
+            isShowOperators: {
+                type: Boolean,
+                default: true
+            }
+        },
+
+        watch: {
+            lang(value) {
+                this.$i18n.locale = value
+            }
+        },
+
+        destroyed: function () {
+        },
+
+        created: function () {
+            this.$i18n.locale = this.lang
+        },
+
+        mounted: function () {
+        },
+
+        computed: {},
+
+        data() {
+            return {}
+        },
+
+        updated: function () {
+        },
+
+        methods: {}
     }
-  },
-
-  watch: {
-    lang(value) {
-      this.$i18n.locale = value
-    }
-  },
-
-  destroyed: function() {},
-
-  created: function() {
-    this.$i18n.locale = this.lang
-  },
-
-  mounted: function() {},
-
-  computed: {
-
-  },
-
-  data() {
-    return {}
-  },
-
-  updated: function() {},
-
-  methods: {
-
-  }
-}
 </script>
 
 <style>
-[data-aeris-keyword-search-criteria] {
+    [data-aeris-keyword-search-criteria] {
         display: block
     }
+
     [data-aeris-keyword-search-criteria] .program {
         margin-bottom: 5px
     }
+
     [data-aeris-keyword-search-criteria] .program .program-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0 5px
     }
+
     [data-aeris-keyword-search-criteria] .program .program-header label {
         display: inline-flex;
         justify-content: flex-start;
         align-items: center;
         margin: 2px
     }
+
     [data-aeris-keyword-search-criteria] .program .program-header .fa {
         cursor: pointer
     }
+
     [data-aeris-keyword-search-criteria] .collection {
         margin-left: 20px
     }
+
     [data-aeris-keyword-search-criteria] .icon-input {
         height: 20px;
         line-height: 20px;
@@ -98,6 +111,6 @@ export default {
     }
 
     [data-aeris-keyword-search-criteria] .keyword-input {
-    	width: 100%;
+        width: 100%;
     }
- </style>
+</style>
