@@ -43,7 +43,7 @@
                 </aside>
             </div>
             <template v-if="item.deployed">
-                <div class="second-level" v-for="(subitem, indexSubitem) of item.subitems">
+                <div class="second-level" v-for="(subitem, indexSubitem) of item.subitems" :key="subitem.name">
                     <input type="checkbox" :id="`${name}${item.name}${subitem.name}`" :checked="subitem.checked"
                            @change="checkSecondLevel(index, indexSubitem)">
                     <label :for="`${name}${item.name}${subitem.name}`">{{(subitem.label)}}</label>

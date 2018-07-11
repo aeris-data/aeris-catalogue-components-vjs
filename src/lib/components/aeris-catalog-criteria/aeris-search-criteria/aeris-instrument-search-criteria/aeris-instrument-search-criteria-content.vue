@@ -50,49 +50,40 @@ export default {
     }
   },
 
-  updated: function() {},
-
   methods: {
-	  
 
-	    handleInstrumentResponse: function(e) {
-	    	var itemsArray = e.detail.items
-	    		.map(item => {
-	              return {
-	                  checked: false,
-	                  deployed: false,
-	                  name: item.name,
-	                  label: (this.lang == "fr") ? item.translation.fr : item.translation.en,
-	                  search: item.searchConcat,
-	                  instruments: item.instruments.map(subitem => {
-	                    return {
-	                      checked: false,
-		                  deployed: false,
-	                      name: subitem.name,
-	                      label: (this.lang == "fr") ? subitem.translation.fr : subitem.translation.en,
-	                      search: subitem.searchConcat,
-	                      instruments: subitem.instruments.map(subsubitem => {
-    		                    return {
-    		                      checked: false,
-    			                  deployed: false,
-    		                      name: subsubitem.name,
-    		                      label: (this.lang == "fr") ? subsubitem.translation.fr : subsubitem.translation.en,
-    		                      search: subsubitem.searchConcat
-    		                    }
-    		                  })
-	                    }
+    handleInstrumentResponse: function(e) {
+      var itemsArray = e.detail.items.map(item => {
+                  return {
+                    checked: false,
+                    deployed: false,
+                    name: item.name,
+                    label: (this.lang == "fr") ?  item.translation.fr ? item.translation.fr : item.translation.en : item.translation.en,
+                    search: item.searchConcat,
+                    instruments: item.instruments.map(subitem => {
+                              return {
+                                checked: false,
+                                deployed: false,
+                                name: subitem.name,
+                                label: (this.lang == "fr") ?  subitem.translation.fr ? subitem.translation.fr : subitem.translation.en : subitem.translation.en,
+                                search: subitem.searchConcat,
+                                instruments: subitem.instruments.map(subsubitem => {
+                                        return {
+                                              checked: false,
+                                              deployed: false,
+                                              name: subsubitem.name,
+                                              label: (this.lang == "fr") ? subsubitem.translation.fr ? subsubitem.translation.fr : subsubitem.translation.en : subsubitem.translation.en,
+                                              search: subsubitem.searchConcat
+                                              }
+                                  })
+                            }
 	                  })
-	                }
-	              });
-	    	
-            this.instruments = itemsArray;            
-            
-            document.dispatchEvent(new CustomEvent('aerisInstrumentItemsEvent', {    	  
-              detail: {
-                items: this.instruments
-              }
-            }));
-	        	
+                  }
+        });
+
+        this.instruments = itemsArray;
+
+        document.dispatchEvent(new CustomEvent('aerisInstrumentItemsEvent', {detail: {items: this.instruments}}));
     }
   } // methods
 } // export default

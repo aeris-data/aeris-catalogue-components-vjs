@@ -23,7 +23,7 @@
     <span>{{$t('updating')}}</span>
   </div>
 
-  <main v-for="(item,index) of items" :key="item.name">
+  <main v-for="(item,index) of items" :key="item.searchString">
     <div class="first-level">
       <main>
         <input type="checkbox" :id="`${name}${item.name}`" :checked="item.checked" @change="checkFirstLevel(index)">
@@ -36,7 +36,7 @@
       </aside>
     </div>
     <div v-if="item.deployed">
-	  <div class="second-level" v-for="(instrument, indexSubitem) of item.instruments">
+	  <div class="second-level" v-for="(instrument, indexSubitem) of item.instruments" :key="instrument.searchString">
 	  	<div>
 		   	<main>
 		        <input type="checkbox" :id="`${name}${item.name}${instrument.name}`" :checked="instrument.checked" @change="checkSecondLevel(index, indexSubitem)">
@@ -49,7 +49,7 @@
 		    </aside>
 	    </div>
 	    <div class="third-level" v-show="instrument.deployed">
-		      <div v-for="(thirdInstrument, indexThirdInstrument) of instrument.instruments">
+		      <div v-for="(thirdInstrument, indexThirdInstrument) of instrument.instruments" :key="thirdInstrument.searchString">
 		        <input type="checkbox" :id="`${name}${item.name}${thirdInstrument.name}`" :checked="thirdInstrument.checked" @change="checkThirdLevel(index, indexSubitem, indexThirdInstrument)">
 		        <label :for="`${name}${item.name}${thirdInstrument.name}`">{{(thirdInstrument.label)}}</label>
 		      </div>

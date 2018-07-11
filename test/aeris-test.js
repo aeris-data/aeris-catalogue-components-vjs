@@ -1,7 +1,7 @@
 // to run the tests install testcafe globaly : npm install -g testcafe
 // to run one test file : testcafe chromium test/aeris-test.js / testcafe firefox test/aeris-test.js 
 //			(the browser has to be installed on the machine where you run the test)
-import Page from './aeris-page-model';
+import Page from './aeris-page-model-fr';
 
 fixture `FirstTest`
     .page `http://localhost:8080/`;
@@ -21,7 +21,7 @@ test('Aeris catalog test', async t => {
     .expect(page.instrumentSearchCriteria.exists).ok("instrument search criteria ok")
     .expect(page.optdetectorInstrumentValue.exists).ok("optical detector ok")
     .click(page.openInstrumentCriteria)
-    .click(page.chemicalmetersInstrumentValue)
+    .click(page.hygrometersInstrumentValue)
     .click(page.searchButton)
-    .expect(page.escompteDummyTest.exists).ok("dummy instrument summary ok");
+    .expect(page.hygrometersTest.exists).ok("dummy instrument summary ok");
 });    
