@@ -12,12 +12,14 @@ test('Aeris catalog test', async t => {
     await t
     .click(page.aerisTest)
     .expect(page.searchButton.exists).ok("search button ok")
-    .expect(page.aircraftPlatformValue.exists).ok("aircraft ok")
-    .click(page.openPlatformCriteria)
-    .click(page.spacestationCriteria)
-    .click(page.searchButton)
-    .expect(page.cats2Summary.exists).ok("cats level 2 summary ok")
-    .click(page.resetButton)
+    .expect(page.instrumentSearchCriteria.exists).ok("instrument search criteria ok")
+    .expect(page.optdetectorInstrumentValue.exists).ok("optical detector ok")
+});    
+
+test('Aeris instrument test', async t => {
+    await t
+    .click(page.aerisTest)
+    .expect(page.searchButton.exists).ok("search button ok")
     .expect(page.instrumentSearchCriteria.exists).ok("instrument search criteria ok")
     .expect(page.optdetectorInstrumentValue.exists).ok("optical detector ok")
     .click(page.openInstrumentCriteria)
@@ -25,3 +27,13 @@ test('Aeris catalog test', async t => {
     .click(page.searchButton)
     .expect(page.hygrometersTest.exists).ok("dummy instrument summary ok");
 });    
+
+test('Aeris platform test', async t => {
+   await t
+   .click(page.aerisTest)
+   .click(page.openPlatformCriteria)
+   .click(page.insituPlatfformValue)
+   .expect(page.asosPlatformValue.exists).ok("asos value ok")
+   .click(page.searchButton)
+   .expect(page.asosTest.exists).ok("dumb platfomr metadata found")
+});

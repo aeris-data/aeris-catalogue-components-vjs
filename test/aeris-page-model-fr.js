@@ -14,11 +14,13 @@ export default class Page {
         // specific data values
     	// platform
         this.aircraftPlatformValue = Selector('#PlatformAIRCRAFT');
-        this.spacestationCriteria = Selector('#PlatformSPACESTATION');      
+        this.insituPlatfformValue = Selector('#PlatformIN_SITU_LAND_BASED_PLATFORMS');
+        this.asosPlatformValue = Selector('#PlatformIN_SITU_LAND_BASED_PLATFORMSASOS');
         this.cats2Summary= Selector('aeris-catalog-default-summary[value*="21c5fa49-34b9-47b3-9340-521727574da1"]');
+        this.asosTest= Selector('aeris-catalog-default-summary[value*="marinaplatform"]');
         // instrument
         this.optdetectorInstrumentValue = Selector('#InstrumentOPTICAL_DETECTORS');
-        this.hygrometersInstrumentValue = Selector('#InstrumentTEMP_HUM_SENSORSHYGROMETERS');        
+        this.hygrometersInstrumentValue = Selector('#InstrumentTEMP_HUM_SENSORS');        
         this.hygrometersTest= Selector('aeris-catalog-default-summary[value*="61e54760-86ba-4b69-804b-06a7793f9104"]');
     }
 }

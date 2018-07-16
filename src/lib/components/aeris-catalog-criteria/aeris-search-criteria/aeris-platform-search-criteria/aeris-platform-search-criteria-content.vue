@@ -1,38 +1,15 @@
 <i18n>
 {
 	  "en": {
-		  "AIRCRAFT": "Aircraft",
-		  "ATMOSPHERICSIMULATIONCHAMBER": "Atmospheric simulation chamber",
-		  "BALLOON": "Balloon",
-		  "EOS": "Earth Observation Satellite",
-		  "GEO": "Geostationnary earth orbit",
-		  "INSITULANDPLATFORM": "In Situ Land-based Platform",
-		  "LEO": "Low earth orbit",
-		  "METEOROLOGICALPROPERTIES": "Meteorological properties",
-		  "OTHER_AIRCRAFT": "Other aircraft",
-		  "PLATFORM": "Platform",
-		  "SPACESTATION": "Space Station",
-		  "UNKNOWN": "Unknown"
 	  },
 	  "fr": {
-		  "AIRCRAFT": "Aeronef",
-		  "ATMOSPHERICSIMULATIONCHAMBER": "Chambre de simulation atmosphérique",
-		  "BALLOON": "Ballons",
-		  "EOS": "Satellite d Observation de la Terre",
-		  "GEO": "Orbite terrestre geostationnaire",
-		  "INSITULANDPLATFORM": "Laboratoire in situ terrestre",
-		  "LEO": "Orbite terrestre basse",
-		  "OTHER_AIRCRAFT": "Autre aeronef",
-		  "PLATFORM": "Platforme",
-		  "SPACESTATION": "Station spatiale",
-		  "UNKNOWN": "Inconnu"
 	  }
 }
 </i18n>
 
 <template>
 <div data-aeris-platform-search-criteria-content>
-  <aeris-tree-checkbox-layout type="plateforms" name="Platform" name-subitems="platforms"></aeris-tree-checkbox-layout>
+  <aeris-platform-tree-checkbox-layout type="platforms" name="Platform" name-subitems="platforms"></aeris-platform-tree-checkbox-layout>
 </div>
 </template>
 
@@ -88,21 +65,32 @@ export default {
             .filter(item => this.parsedExclusions ? !this.parsedExclusions.some(itemToExclude => item.name == itemToExclude) : true)
             .filter(item => this.parsedInclusions ? this.parsedInclusions.some(itemToInclude => item.name == itemToInclude) : true)
             .map(item => {
-              return {
-                checked: false,
-                deployed: false,
-                name: item.name,
-                label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
-                subitems: item.platforms.map(subitem => {
                   return {
                     checked: false,
-                    name: subitem.name,
-                    payload: subitem.name,
-                    label: this.$i18n.te(subitem.name) ? this.$i18n.t(subitem.name) : subitem.name
+                    deployed: false,
+                    name: item.name,
+                    label: (this.lang == "fr") ?  item.translation.fr ? item.translation.fr : item.translation.en : item.translation.en,
+                    search: item.searchConcat,
+                    platforms: item.platforms.map(subitem => {
+                              return {
+                                checked: false,
+                                deployed: false,
+                                name: subitem.name,
+                                label: (this.lang == "fr") ?  subitem.translation.fr ? subitem.translation.fr : subitem.translation.en : subitem.translation.en,
+                                search: subitem.searchConcat,
+                                platforms: subitem.platforms.map(subsubitem => {
+                                        return {
+                                              checked: false,
+                                              deployed: false,
+                                              name: subsubitem.name,
+                                              label: (this.lang == "fr") ? subsubitem.translation.fr ? subsubitem.translation.fr : subsubitem.translation.en : subsubitem.translation.en,
+                                              search: subsubitem.searchConcat
+                                              }
+                                  })
+                            }
+	                  })
                   }
-                })
-              }
-            })
+             })
         }
       }));
     }
