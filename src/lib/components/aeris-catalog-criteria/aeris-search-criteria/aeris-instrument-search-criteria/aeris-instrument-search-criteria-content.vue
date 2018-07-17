@@ -4,7 +4,7 @@
 </i18n>
 <template>
 	<div data-aeris-instrument-search-criteria-content>
-		<aeris-instrument-tree-checkbox-layout type="instruments" name="Instrument" name-subitems="instruments"></aeris-instrument-tree-checkbox-layout>
+		<aeris-thesaurus-item-tree-checkbox-layout type="instruments" name="Instrument" name-subitems="instruments"></aeris-thesaurus-item-tree-checkbox-layout>
 	</div>
 </template>
 
@@ -60,14 +60,14 @@ export default {
                     name: item.name,
                     label: (this.lang == "fr") ?  item.translation.fr ? item.translation.fr : item.translation.en : item.translation.en,
                     search: item.searchConcat,
-                    instruments: item.instruments.map(subitem => {
+                    thesaurusItems: item.thesaurusItems.map(subitem => {
                               return {
                                 checked: false,
                                 deployed: false,
                                 name: subitem.name,
                                 label: (this.lang == "fr") ?  subitem.translation.fr ? subitem.translation.fr : subitem.translation.en : subitem.translation.en,
                                 search: subitem.searchConcat,
-                                instruments: subitem.instruments.map(subsubitem => {
+                                thesaurusItems: subitem.thesaurusItems.map(subsubitem => {
                                         return {
                                               checked: false,
                                               deployed: false,

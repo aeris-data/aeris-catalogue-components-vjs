@@ -12,7 +12,7 @@
 </i18n>
 
 <template>
-<div data-aeris-instrument-tree-checkbox-layout>
+<div data-aeris-thesaurus-item-tree-checkbox-layout>
 
   <div v-if="isLoading" class="loading-bar">
     <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
@@ -30,28 +30,28 @@
         <label :for="`${name}${item.name}`">{{item.label}}</label>
       </main>
       <aside>
-      <span v-if="instrumentsLength(item) > 0" class="badge">{{instrumentsLength(item)}}</span>
-      <i v-if="instrumentsLength(item) > 0" v-show="item.deployed" class="fa fa-minus-square-o deployed" @click="toggle(index)"></i>
-      <i v-if="instrumentsLength(item) > 0" v-show="!item.deployed" class="fa fa-plus-square-o deployed" @click="toggle(index)"></i>
+      <span v-if="thesaurusItemsLength(item) > 0" class="badge">{{thesaurusItemsLength(item)}}</span>
+      <i v-if="thesaurusItemsLength(item) > 0" v-show="item.deployed" class="fa fa-minus-square-o deployed" @click="toggle(index)"></i>
+      <i v-if="thesaurusItemsLength(item) > 0" v-show="!item.deployed" class="fa fa-plus-square-o deployed" @click="toggle(index)"></i>
       </aside>
     </div>
     <div v-if="item.deployed">
-	  <div class="second-level" v-for="(instrument, indexSubitem) of item.instruments" :key="instrument.searchString">
+	  <div class="second-level" v-for="(thesaurusItem, indexSubitem) of item.thesaurusItems" :key="thesaurusItem.searchString">
 	  	<div>
 		   	<main>
-		        <input type="checkbox" :id="`${name}${item.name}${instrument.name}`" :checked="instrument.checked" @change="checkSecondLevel(index, indexSubitem)">
-		        <label :for="`${name}${item.name}${instrument.name}`">{{(instrument.label)}}</label>
+		        <input type="checkbox" :id="`${name}${item.name}${thesaurusItem.name}`" :checked="thesaurusItem.checked" @change="checkSecondLevel(index, indexSubitem)">
+		        <label :for="`${name}${item.name}${thesaurusItem.name}`">{{(thesaurusItem.label)}}</label>
 	        </main>
 	        <aside>
-		      <span v-if="thirdLevelLength(instrument) > 0" class="badge">{{thirdLevelLength(instrument)}}</span>
-		      <i v-if="thirdLevelLength(instrument) > 0" v-show="instrument.deployed" class="fa fa-minus-square-o deployed" @click="toggleThirdLevel(index, indexSubitem)"></i>
-		      <i v-if="thirdLevelLength(instrument) > 0" v-show="!instrument.deployed" class="fa fa-plus-square-o deployed" @click="toggleThirdLevel(index, indexSubitem)"></i>
+		      <span v-if="thirdLevelLength(thesaurusItem) > 0" class="badge">{{thirdLevelLength(thesaurusItem)}}</span>
+		      <i v-if="thirdLevelLength(thesaurusItem) > 0" v-show="thesaurusItem.deployed" class="fa fa-minus-square-o deployed" @click="toggleThirdLevel(index, indexSubitem)"></i>
+		      <i v-if="thirdLevelLength(thesaurusItem) > 0" v-show="!thesaurusItem.deployed" class="fa fa-plus-square-o deployed" @click="toggleThirdLevel(index, indexSubitem)"></i>
 		    </aside>
 	    </div>
-	    <div class="third-level" v-show="instrument.deployed">
-		      <div v-for="(thirdInstrument, indexThirdInstrument) of instrument.instruments" :key="thirdInstrument.searchString">
-		        <input type="checkbox" :id="`${name}${item.name}${thirdInstrument.name}`" :checked="thirdInstrument.checked" @change="checkThirdLevel(index, indexSubitem, indexThirdInstrument)">
-		        <label :for="`${name}${item.name}${thirdInstrument.name}`">{{(thirdInstrument.label)}}</label>
+	    <div class="third-level" v-show="thesaurusItem.deployed">
+		      <div v-for="(thirdthesaurusItem, indexThirdthesaurusItem) of thesaurusItem.thesaurusItems" :key="thirdthesaurusItem.searchString">
+		        <input type="checkbox" :id="`${name}${item.name}${thirdthesaurusItem.name}`" :checked="thirdthesaurusItem.checked" @change="checkThirdLevel(index, indexSubitem, indexThirdthesaurusItem)">
+		        <label :for="`${name}${item.name}${thirdthesaurusItem.name}`">{{(thirdthesaurusItem.label)}}</label>
 		      </div>
 	    </div>
       </div>
@@ -64,7 +64,7 @@
 <script>
 export default {
 
-  name: 'aeris-instrument-tree-checkbox-layout',
+  name: 'aeris-thesaurus-item-tree-checkbox-layout',
 
   props: {
     lang: {
@@ -148,17 +148,17 @@ export default {
 
   methods: {
 
-    instrumentsLength: function(item) {
-    	if (item.instruments) {
-    		return item.instruments.length;
+    thesaurusItemsLength: function(item) {
+    	if (item.thesaurusItems) {
+    		return item.thesaurusItems.length;
     	} else {
     		return 0;
     	}
     },
     
-    thirdLevelLength: function(instrument) {
-    	if (instrument && instrument.instruments) {
-    		return instrument.instruments.length;
+    thirdLevelLength: function(thesaurusItem) {
+    	if (thesaurusItem && thesaurusItem.thesaurusItems) {
+    		return thesaurusItem.thesaurusItems.length;
     	} else {
     		return 0;
     	}
@@ -178,8 +178,8 @@ export default {
     checkFirstLevel(index)  {
       this.items[index].checked = !this.items[index].checked;
       this.items[index].deployed = this.items[index].checked;
-      if (this.items[index].instruments) {
-    	  for (let i = 0; i < this.items[index].instruments.length; i++) { 
+      if (this.items[index].thesaurusItems) {
+    	  for (let i = 0; i < this.items[index].thesaurusItems.length; i++) { 
         	  this.checkSecondLevel(index, i, this.items[index].checked);
     		}
       }
@@ -194,39 +194,39 @@ export default {
 
     checkSecondLevel(index, indexSubitem, aboveLevel) {
     	if (typeof aboveLevel != 'undefined') {
-    		this.items[index].instruments[indexSubitem].checked = aboveLevel;
+    		this.items[index].thesaurusItems[indexSubitem].checked = aboveLevel;
     	} else {
-    		this.items[index].instruments[indexSubitem].checked = !this.items[index].instruments[indexSubitem].checked;
+    		this.items[index].thesaurusItems[indexSubitem].checked = !this.items[index].thesaurusItems[indexSubitem].checked;
     	}
-    	if (this.items[index].instruments[indexSubitem].instruments) {
-    	  for (let i = 0; i < this.items[index].instruments[indexSubitem].instruments.length; i++) { 
-    		  this.checkThirdLevel(index, indexSubitem, i, this.items[index].instruments[indexSubitem].checked);
+    	if (this.items[index].thesaurusItems[indexSubitem].thesaurusItems) {
+    	  for (let i = 0; i < this.items[index].thesaurusItems[indexSubitem].thesaurusItems.length; i++) { 
+    		  this.checkThirdLevel(index, indexSubitem, i, this.items[index].thesaurusItems[indexSubitem].checked);
     		}
     	}
-        this.items[index].instruments[indexSubitem].deployed = this.items[index].instruments[indexSubitem].checked;
+        this.items[index].thesaurusItems[indexSubitem].deployed = this.items[index].thesaurusItems[indexSubitem].checked;
         this.$nextTick(function () {
             // Defer the callback to be executed after the next DOM update cycle
       	  // otherwise badges won't be visible on first load
       	  this.colorBaddges(this.theme);
           })
     	// for handle search
-    	let searchString = this.items[index].instruments[indexSubitem].search;
-    	if (this.items[index].instruments[indexSubitem].checked) {
+    	let searchString = this.items[index].thesaurusItems[indexSubitem].search;
+    	if (this.items[index].thesaurusItems[indexSubitem].checked) {
     	  this.selectedItems.push(searchString);
     	} else {
     	  this.selectedItems.splice(this.selectedItems.indexOf(searchString), 1);
     	}
     },
 
-    checkThirdLevel(index, indexSubitem, indexThirdInstrument, aboveLevel) {
+    checkThirdLevel(index, indexSubitem, indexThirdthesaurusItem, aboveLevel) {
     	if (typeof aboveLevel != 'undefined') {
-    	      this.items[index].instruments[indexSubitem].instruments[indexThirdInstrument].checked = aboveLevel;
+    	      this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked = aboveLevel;
     	} else {
 
-    	      this.items[index].instruments[indexSubitem].instruments[indexThirdInstrument].checked = !this.items[index].instruments[indexSubitem].instruments[indexThirdInstrument].checked;
+    	      this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked = !this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked;
     	}
-      let searchString = this.items[index].instruments[indexSubitem].instruments[indexThirdInstrument].search;
-      if (this.items[index].instruments[indexSubitem].instruments[indexThirdInstrument].checked) {
+      let searchString = this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].search;
+      if (this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked) {
     	  this.selectedItems.push(searchString);
       } else {
     	  this.selectedItems.splice(this.selectedItems.indexOf(searchString), 1);
@@ -244,7 +244,7 @@ export default {
     },
     
     toggleThirdLevel(index, indexSubitem) {
-        this.items[index].instruments[indexSubitem].deployed = !this.items[index].instruments[indexSubitem].deployed;
+        this.items[index].thesaurusItems[indexSubitem].deployed = !this.items[index].thesaurusItems[indexSubitem].deployed;
         //this.items = this.items.slice(0, this.items.length);
         this.$nextTick(function () {
             // Defer the callback to be executed after the next DOM update cycle
@@ -340,33 +340,33 @@ export default {
 }
 </script>
 <style>
-[data-aeris-instrument-tree-checkbox-layout] {
+[data-aeris-thesaurus-item-tree-checkbox-layout] {
   color: #FAFAFA;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .loading-bar {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .loading-bar {
   padding: 8px 0;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .first-level {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .first-level {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 5px 0;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .second-level {    
+[data-aeris-thesaurus-item-tree-checkbox-layout] .second-level {    
   	margin-left: 12px;
   	padding: 5px 0;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .second-level > div:first-child {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .second-level > div:first-child {
 	display : flex;
 	align-items: flex-start;
 	justify-content: space-between;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] label {
+[data-aeris-thesaurus-item-tree-checkbox-layout] label {
 	overflow-wrap:break-word;
 	-webkit-hyphens: auto;
 	-moz-hyphens: auto;
@@ -375,26 +375,26 @@ export default {
 	hyphens:auto;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .third-level {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .third-level {
   margin-left: 15px;
   padding: 5px 0;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] input {
+[data-aeris-thesaurus-item-tree-checkbox-layout] input {
   margin-right: 15px;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .first-level aside {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .first-level aside {
   display: flex;
   align-items: center;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .second-level aside {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .second-level aside {
   display: flex;
   align-items: center;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .badge {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .badge {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -406,11 +406,11 @@ export default {
   line-height: 1;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .deployed {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .deployed {
   cursor: pointer;
 }
 
-[data-aeris-instrument-tree-checkbox-layout] .downloadable {
+[data-aeris-thesaurus-item-tree-checkbox-layout] .downloadable {
   color: #f39c12;
 }
 </style>

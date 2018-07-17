@@ -9,7 +9,7 @@
 
 <template>
 <div data-aeris-platform-search-criteria-content>
-  <aeris-platform-tree-checkbox-layout type="platforms" name="Platform" name-subitems="platforms"></aeris-platform-tree-checkbox-layout>
+  <aeris-thesaurus-item-tree-checkbox-layout type="platforms" name="Platform" name-subitems="platforms"></aeris-thesaurus-item-tree-checkbox-layout>
 </div>
 </template>
 
@@ -71,14 +71,14 @@ export default {
                     name: item.name,
                     label: (this.lang == "fr") ?  item.translation.fr ? item.translation.fr : item.translation.en : item.translation.en,
                     search: item.searchConcat,
-                    platforms: item.platforms.map(subitem => {
+                    thesaurusItems: item.thesaurusItems.map(subitem => {
                               return {
                                 checked: false,
                                 deployed: false,
                                 name: subitem.name,
                                 label: (this.lang == "fr") ?  subitem.translation.fr ? subitem.translation.fr : subitem.translation.en : subitem.translation.en,
                                 search: subitem.searchConcat,
-                                platforms: subitem.platforms.map(subsubitem => {
+                                thesaurusItems: subitem.thesaurusItems.map(subsubitem => {
                                         return {
                                               checked: false,
                                               deployed: false,
