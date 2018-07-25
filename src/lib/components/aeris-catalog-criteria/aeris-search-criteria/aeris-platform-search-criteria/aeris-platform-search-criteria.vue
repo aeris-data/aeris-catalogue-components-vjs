@@ -12,7 +12,7 @@
 <template>
 <div data-aeris-platform-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t('platforms')" header-icon-class="fa fa-rocket" :deployed="deployed">
-    <aeris-platform-search-criteria-content></aeris-platform-search-criteria-content>
+    <aeris-thesaurus-item-tree-checkbox-layout type="platforms" name="Platform" name-subitems="platforms"></aeris-thesaurus-item-tree-checkbox-layout>
   </aeris-catalog-search-box>
 </div>
 </template>
@@ -32,7 +32,6 @@ export default {
       default: false
     }
   },
-
 
   watch: {
     lang(value) {

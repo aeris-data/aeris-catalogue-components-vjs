@@ -12,7 +12,7 @@
 <template>
 <div data-aeris-parameter-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t('parameters')" header-icon-class="fa fa-thermometer-half" :deployed="deployed">
-    <aeris-parameter-search-criteria-content></aeris-parameter-search-criteria-content>
+    <aeris-thesaurus-item-tree-checkbox-layout type="parameters" name="Parameter" name-subitems="parameters"></aeris-thesaurus-item-tree-checkbox-layout>
   </aeris-catalog-search-box>
 </div>
 </template>

@@ -96,8 +96,6 @@ export default {
     this.handleSearchBarListener = null;
     document.removeEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
     this.handleSearchBarResetListener = null;
-    document.removeEventListener(`aeris${this.name}ItemsEvent`, this.handleItemsListener);
-    this.handleItemsListener = null;
   },
 
   created: function() {
@@ -108,8 +106,6 @@ export default {
     document.addEventListener('aerisCatalogueSearchEvent', this.handleSearchBarListener);
     this.handleSearchBarResetListener = this.handleSearchBarResetEvent.bind(this);
     document.addEventListener('aerisCatalogueResetEvent', this.handleSearchBarResetListener);
-    this.handleItemsListener = this.handleItemsEvent.bind(this);
-    document.addEventListener(`aeris${this.name}ItemsEvent`, this.handleItemsListener);
 
     this.load();
   },
@@ -120,16 +116,12 @@ export default {
   },
 
   computed: {
-
-
     isLoading: function() {
       return ((this.loading) && (!this.existing))
     },
-
     isUpdating: function() {
       return ((this.loading) && (this.existing))
     }
-
   },
 
   data() {
@@ -137,7 +129,6 @@ export default {
       aerisThemeListener: null,
       handleSearchBarListener: null,
       handleSearchBarResetListener: null,
-      handleItemsListener: null,
       parentService: null,
       items: [],
       loading: false,
@@ -226,7 +217,6 @@ export default {
     	if (typeof aboveLevel != 'undefined') {
     	      this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked = aboveLevel;
     	} else {
-
     	      this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked = !this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked;
     	}
       let searchString = this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].search;
@@ -242,7 +232,6 @@ export default {
 
     toggle(index) {
       this.items[index].deployed = !this.items[index].deployed;
-      //this.items = this.items.slice(0, this.items.length);
       this.$nextTick(function () {
           // Defer the callback to be executed after the next DOM update cycle
     	  // otherwise badges won't be visible on first load
@@ -252,7 +241,6 @@ export default {
     
     toggleThirdLevel(index, indexSubitem) {
         this.items[index].thesaurusItems[indexSubitem].deployed = !this.items[index].thesaurusItems[indexSubitem].deployed;
-        //this.items = this.items.slice(0, this.items.length);
         this.$nextTick(function () {
             // Defer the callback to be executed after the next DOM update cycle
       	  // otherwise badges won't be visible on first load
@@ -263,12 +251,12 @@ export default {
     load() {
       this.loading = true;
       if (window.localStorage) {
-        let aux = window.localStorage.getItem('aeris' + this.name + 'Types');
-        if ((aux != null) && (aux != "undefined")) {
-          this.items = JSON.parse(aux);
+        let storedValues = window.localStorage.getItem('aeris' + this.name + 'Types');
+        if ((storedValues != null) && (storedValues != "undefined")) {
+          this.items = JSON.parse(storedValues);
           this.existing = true;
         }
-      }
+      };
 
       let parentService = document.querySelector('aeris-catalog').attributes.getNamedItem('metadata-service').value;
       parentService = parentService.endsWith('/') ? parentService + this.type + '/' : parentService + '/' + this.type + '/';
@@ -296,37 +284,59 @@ export default {
 
     handleResponse: function(response) {
       this.loading = false;
-      var event = new CustomEvent('aeris' + this.name + 'DownloadResponse', {
-        detail: {
-          items: response.body
+      let itemsArray = response.body.map(item => {
+                  return {
+                    checked: false,
+                    deployed: false,
+                    name: item.name,
+                    label: (this.lang == "fr") ?  item.translation.fr ? item.translation.fr : item.translation.en : item.translation.en,
+                    search: item.searchConcat,
+                    thesaurusItems: item.thesaurusItems.map(subitem => {
+                              return {
+                                checked: false,
+                                deployed: false,
+                                name: subitem.name,
+                                label: (this.lang == "fr") ?  subitem.translation.fr ? subitem.translation.fr : subitem.translation.en : subitem.translation.en,
+                                search: subitem.searchConcat,
+                                thesaurusItems: subitem.thesaurusItems.map(subsubitem => {
+                                        return {
+                                              checked: false,
+                                              deployed: false,
+                                              name: subsubitem.name,
+                                              label: (this.lang == "fr") ? subsubitem.translation.fr ? subsubitem.translation.fr : subsubitem.translation.en : subsubitem.translation.en,
+                                              search: subsubitem.searchConcat
+                                              }
+                                  }).sort(function(a, b){
+                                          return a.label > b.label ? 1 : a.label < b.label ? -1 : 0;
+                                  })
+                            }
+	                  }).sort(function(a, b){
+                           return a.label > b.label ? 1 : a.label < b.label ? -1 : 0;
+                    })
+                  }
+        }).sort(function(a, b){
+           return a.label > b.label ? 1 : a.label < b.label ? -1 : 0;
+        });
+
+        this.items = itemsArray;
+        this.existing = true;
+        if (window.localStorage) {
+          window.localStorage.setItem('aeris' + this.name + 'Types', JSON.stringify(this.items));
         }
-      });
-      document.dispatchEvent(event);
+        this.$nextTick(function () {
+           // Defer the callback to be executed after the next DOM update cycle
+           // otherwise badges won't be visible on first load
+           this.colorBaddges(this.theme);
+        })  	  
     },
 
-    handleError: function(request) {
+    handleError: function(response) {
       this.loading = false;
       console.log("Aeris " + this.name + " criteria - Error while accessing server:");
-      var error = response.status;
-      var message = response.statusText;
+      let error = response.status;
+      let message = response.statusText;
       if (!error) message = 'Can\'t connect to the server';
       console.log('Error ' + error + ': ' + message);
-    },
-
-    handleItemsEvent(e) {
-      document.removeEventListener(`aeris${this.name}ItemsEvent`, this.handleItemsListener);
-      this.handleItemsListener = null;
-      this.items = e.detail.items;
-      this.loading = false;
-      this.existing = true;
-      if (window.localStorage) {
-        window.localStorage.setItem('aeris' + this.name + 'Types', JSON.stringify(this.items));
-      }
-      this.$nextTick(function () {
-          // Defer the callback to be executed after the next DOM update cycle
-    	  // otherwise badges won't be visible on first load
-    	  this.colorBaddges(this.theme);
-        })  	  
     },
 
     handleSearchBarEvent: function(e) {      

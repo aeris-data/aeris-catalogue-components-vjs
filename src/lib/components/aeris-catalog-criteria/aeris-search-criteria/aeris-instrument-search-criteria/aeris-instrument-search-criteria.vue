@@ -12,7 +12,7 @@
 <template>
 <div data-aeris-instrument-search-criteria>
   <aeris-catalog-search-box id="box" :title="$t('instruments')" header-icon-class="fa fa-calculator" :deployed="deployed">
-    <aeris-instrument-search-criteria-content></aeris-instrument-search-criteria-content>
+    <aeris-thesaurus-item-tree-checkbox-layout type="instruments" name="Instrument" name-subitems="instruments"></aeris-thesaurus-item-tree-checkbox-layout>
   </aeris-catalog-search-box>
 </div>
 </template>

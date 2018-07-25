@@ -33,18 +33,15 @@ import AerisCatalogEditButton from './components/aeris-catalog-buttons/aeris-cat
 import AerisCatalogHelpButton from './components/aeris-catalog-buttons/aeris-catalogue-help-button.vue'
 import AerisCatalogCart from './components/aeris-catalog-cart/aeris-catalog-cart.vue'
 import AerisCatalogHelp from './components/aeris-catalog-help/aeris-catalog-help-content.vue'
-import AerisPlatformSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria/aeris-platform-search-criteria-content.vue'
-import AerisPlatformSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
 import AerisLevelSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-level-search-criteria/aeris-level-search-criteria-content.vue'
 import AerisLevelSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-level-search-criteria/aeris-level-search-criteria.vue'
 import AerisCampaignSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-campaign-search-criteria-content.vue'
 import AerisCollectionSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria-content.vue'
 import AerisCollectionSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/aeris-collection-search-criteria.vue'
-import AerisInstrumentSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria/aeris-instrument-search-criteria-content.vue'
+import AerisPlatformSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria/aeris-platform-search-criteria.vue'
 import AerisInstrumentSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria/aeris-instrument-search-criteria.vue'
-import AerisThesaurusItemTreeCheckboxLayout from './components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout.vue'
-import AerisParameterSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria/aeris-parameter-search-criteria-content.vue'
 import AerisParameterSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria/aeris-parameter-search-criteria.vue'
+import AerisThesaurusItemTreeCheckboxLayout from './components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout.vue'
 
 const AerisCatalogueComponents = {
   AerisUiInput,
@@ -81,18 +78,15 @@ const AerisCatalogueComponents = {
   AerisCatalogHelpButton,
   AerisCatalogCart,
   AerisCatalogHelp,
-  AerisPlatformSearchCriteriaContent,
-  AerisPlatformSearchCriteria,
   AerisLevelSearchCriteriaContent,
   AerisLevelSearchCriteria,
   AerisCampaignSearchCriteriaContent,
   AerisCollectionSearchCriteriaContent,
   AerisCollectionSearchCriteria,
-  AerisInstrumentSearchCriteriaContent,
+  AerisPlatformSearchCriteria,
   AerisInstrumentSearchCriteria,
-  AerisThesaurusItemTreeCheckboxLayout,
-  AerisParameterSearchCriteriaContent,
-  AerisParameterSearchCriteria
+  AerisParameterSearchCriteria,
+  AerisThesaurusItemTreeCheckboxLayout
 };
 
 AerisCatalogueComponents.install = (Vue) => {
