@@ -11,7 +11,9 @@ export default class Page {
         this.openPlatformCriteria = Selector('aeris-platform-search-criteria .box-heading-buttons i');
         this.instrumentSearchCriteria = Selector('aeris-instrument-search-criteria');
         this.openInstrumentCriteria = Selector('aeris-instrument-search-criteria .box-heading-buttons i');
-        // specific data values
+        this.openParameterCriteria = Selector('aeris-parameter-search-criteria .box-heading-buttons i');
+
+        // specific data values (used for test in dev environnement)
     	// platform
         this.aircraftPlatformValue = Selector('#PlatformAIRCRAFT');
         this.insituPlatfformValue = Selector('#PlatformIN_SITU_LAND_BASED_PLATFORMS');
@@ -22,5 +24,8 @@ export default class Page {
         this.optdetectorInstrumentValue = Selector('#InstrumentOPTICAL_DETECTORS');
         this.hygrometersInstrumentValue = Selector('#InstrumentTEMP_HUM_SENSORS');        
         this.hygrometersTest= Selector('aeris-catalog-default-summary[value*="61e54760-86ba-4b69-804b-06a7793f9104"]');
+        // parameter
+        this.atmosphericChemistry = Selector("#ParameterATMOSPHERIC_CHEMISTRY");
+        this.nitrogenCompoundsTest= Selector('aeris-catalog-default-summary[value*="61e54760-86ba-4b69-804b-06a7793f9104"]');
     }
 }

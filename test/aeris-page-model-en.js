@@ -11,6 +11,7 @@ export default class Page {
         this.openPlatformCriteria = Selector('aeris-platform-search-criteria .box-heading-buttons i');
         this.instrumentSearchCriteria = Selector('aeris-instrument-search-criteria');
         this.openInstrumentCriteria = Selector('aeris-instrument-search-criteria .box-heading-buttons i');
+        this.openParameterCriteria = Selector('aeris-parameter-search-criteria .box-heading-buttons i');
         // specific data values
     	// platform
         this.aircraftPlatformValue = Selector('#PlatformAIRCRAFT');

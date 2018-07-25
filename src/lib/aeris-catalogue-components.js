@@ -43,6 +43,8 @@ import AerisCollectionSearchCriteria from './components/aeris-catalog-criteria/a
 import AerisInstrumentSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria/aeris-instrument-search-criteria-content.vue'
 import AerisInstrumentSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria/aeris-instrument-search-criteria.vue'
 import AerisThesaurusItemTreeCheckboxLayout from './components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout.vue'
+import AerisParameterSearchCriteriaContent from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria/aeris-parameter-search-criteria-content.vue'
+import AerisParameterSearchCriteria from './components/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria/aeris-parameter-search-criteria.vue'
 
 const AerisCatalogueComponents = {
   AerisUiInput,
@@ -88,7 +90,9 @@ const AerisCatalogueComponents = {
   AerisCollectionSearchCriteria,
   AerisInstrumentSearchCriteriaContent,
   AerisInstrumentSearchCriteria,
-  AerisThesaurusItemTreeCheckboxLayout
+  AerisThesaurusItemTreeCheckboxLayout,
+  AerisParameterSearchCriteriaContent,
+  AerisParameterSearchCriteria
 };
 
 AerisCatalogueComponents.install = (Vue) => {

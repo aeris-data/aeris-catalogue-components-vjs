@@ -23,7 +23,7 @@
     <span>{{$t('updating')}}</span>
   </div>
 
-  <main v-for="(item,index) of items" :key="item.searchString">
+  <main v-for="(item,index) of items" :key="item.search">
     <div class="first-level">
       <main>
         <input type="checkbox" :id="`${name}${item.name}`" :checked="item.checked" @change="checkFirstLevel(index)">
@@ -36,7 +36,7 @@
       </aside>
     </div>
     <div v-if="item.deployed">
-	  <div class="second-level" v-for="(thesaurusItem, indexSubitem) of item.thesaurusItems" :key="thesaurusItem.searchString">
+	  <div class="second-level" v-for="(thesaurusItem, indexSubitem) of item.thesaurusItems" :key="thesaurusItem.search">
 	  	<div>
 		   	<main>
 		        <input type="checkbox" :id="`${name}${item.name}${thesaurusItem.name}`" :checked="thesaurusItem.checked" @change="checkSecondLevel(index, indexSubitem)">
@@ -49,7 +49,7 @@
 		    </aside>
 	    </div>
 	    <div class="third-level" v-show="thesaurusItem.deployed">
-		      <div v-for="(thirdthesaurusItem, indexThirdthesaurusItem) of thesaurusItem.thesaurusItems" :key="thirdthesaurusItem.searchString">
+		      <div v-for="(thirdthesaurusItem, indexThirdthesaurusItem) of thesaurusItem.thesaurusItems" :key="thirdthesaurusItem.search">
 		        <input type="checkbox" :id="`${name}${item.name}${thirdthesaurusItem.name}`" :checked="thirdthesaurusItem.checked" @change="checkThirdLevel(index, indexSubitem, indexThirdthesaurusItem)">
 		        <label :for="`${name}${item.name}${thirdthesaurusItem.name}`">{{(thirdthesaurusItem.label)}}</label>
 		      </div>
@@ -115,6 +115,7 @@ export default {
   },
 
   mounted() {
+    console.log('Aeris thesaurus tree checkbox - created');
     document.dispatchEvent(new CustomEvent('aerisThemeRequest', {}));
   },
 
@@ -205,14 +206,17 @@ export default {
     	}
         this.items[index].thesaurusItems[indexSubitem].deployed = this.items[index].thesaurusItems[indexSubitem].checked;
         this.$nextTick(function () {
-            // Defer the callback to be executed after the next DOM update cycle
+          // Defer the callback to be executed after the next DOM update cycle
       	  // otherwise badges won't be visible on first load
       	  this.colorBaddges(this.theme);
           })
     	// for handle search
     	let searchString = this.items[index].thesaurusItems[indexSubitem].search;
     	if (this.items[index].thesaurusItems[indexSubitem].checked) {
-    	  this.selectedItems.push(searchString);
+        let searchValues = searchString.substring(0, (searchString.lastIndexOf(";") == -1 ? searchString.length : searchString.lastIndexOf(";")));
+        searchValues = searchValues.split(";");
+        let searchArray = this.selectedItems.concat(searchValues);
+        this.selectedItems = searchArray;
     	} else {
     	  this.selectedItems.splice(this.selectedItems.indexOf(searchString), 1);
     	}
@@ -227,7 +231,10 @@ export default {
     	}
       let searchString = this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].search;
       if (this.items[index].thesaurusItems[indexSubitem].thesaurusItems[indexThirdthesaurusItem].checked) {
-    	  this.selectedItems.push(searchString);
+        let searchValues = searchString.substring(0, (searchString.lastIndexOf(";") == -1 ? searchString.length : searchString.lastIndexOf(";")));
+        searchValues = searchValues.split(";");
+        let searchArray = this.selectedItems.concat(searchValues);
+        this.selectedItems = searchArray;
       } else {
     	  this.selectedItems.splice(this.selectedItems.indexOf(searchString), 1);
       }

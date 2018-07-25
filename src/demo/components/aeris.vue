@@ -4,6 +4,7 @@
     <div slot="criteria">
       <aeris-keyword-search-criteria></aeris-keyword-search-criteria>
       <aeris-instrument-search-criteria></aeris-instrument-search-criteria>
+      <aeris-parameter-search-criteria></aeris-parameter-search-criteria>
       <aeris-temporal-search-criteria></aeris-temporal-search-criteria>
       <aeris-spatial-search-criteria></aeris-spatial-search-criteria>
       <aeris-platform-search-criteria></aeris-platform-search-criteria>
