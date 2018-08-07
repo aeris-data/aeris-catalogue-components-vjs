@@ -51,7 +51,7 @@
   </aeris-catalogue-metadata-panel>
 
   <section v-else data-sheet="placeholder">
-    <p>{{$t('nometadata')}}</p>
+    <p>{{$t(message)}}</p>
     <slot name="buttons-no-metadata"></slot>
   </section>
 
@@ -117,7 +117,11 @@ export default {
     },
     criteriaContentSecondaryColor: {
       required: false
-    }
+    },
+    message: {
+      type: String,
+      default: "nometadata"
+    },
   },
 
   watch: {
