@@ -29,6 +29,9 @@ module.exports = merge(baseWebpackConfig, {
     historyApiFallback: true,
     open: true,
     hot: true,
-    inline: true
+    inline: true,
+    watchOptions: {
+      poll: true
+    }
   }
 })
