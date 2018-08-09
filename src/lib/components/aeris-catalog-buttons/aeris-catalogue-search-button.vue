@@ -46,7 +46,12 @@ export default {
   methods: {
     handleSearch: function() {
       var e = new CustomEvent("aerisCatalogueSearchStartEvent", {
-        detail: {}
+        detail: {
+          range: {
+            min: 0,
+            max: 24
+          }
+        }
       })
       document.dispatchEvent(e);
     }

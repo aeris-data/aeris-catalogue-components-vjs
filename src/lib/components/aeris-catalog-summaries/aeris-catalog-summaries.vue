@@ -1,27 +1,27 @@
 <i18n>
 {
   "en": {
-    "filter": "Filter",
-    "nometadata": "No metadata sheet found"
+    "nometadata": "No metadata sheet found",
+    "showMore": "Show more"
   },
   "fr": {
-    "filter": "Filtre",
-    "nometadata": "Aucune fiche de métadonnées trouvée"
+    "nometadata": "Aucune fiche de métadonnées trouvée",
+    "showMore": "Voir plus"
   }
 }
 </i18n>
 
 <template>
 <div data-aeris-catalog-summaries-bar class="always-visible" :class="visibilityClass">
-  <header>
-    <aeris-catalog-ui-input icon="fa fa-filter" aria-label="filterSummaries" :placeholder="$t('filter')" :value="filter" @input="filter = $event.target.value"></aeris-catalog-ui-input>
-  </header>
-  <section v-if="summaries">
-    <div v-for="summary in filteredsummaries" :key="summary.id">
-      <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
-      <aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
-    </div>
-  </section>
+  <template v-if="summaries.length > 0">
+    <section>
+      <div v-for="summary in summaries" :key="summary.id">
+        <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
+        <aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
+      </div>
+    </section>
+    <button v-if="summaries.length !== total" @click="showMore"><i class="fa fa-arrow-down"/>{{$t("showMore")}}</button>
+  </template>
   <p v-else>
     {{$t('nometadata')}}
   </p>
@@ -58,10 +58,6 @@ export default {
     this.aerisSummariesListener = null;
     document.removeEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetListener);
     this.aerisCatalogueResetListener = null;
-    document.removeEventListener('aerisCatalogueSearchEvent', this.aerisCatalogueSearchEventListener);
-    this.aerisCatalogueSearchEventListener = null;
-
-
   },
 
   created: function() {
@@ -69,8 +65,6 @@ export default {
     document.addEventListener('aerisSummaries', this.aerisSummariesListener);
     this.aerisCatalogueResetListener = this.handleReset.bind(this)
     document.addEventListener('aerisCatalogueResetEvent', this.aerisCatalogueResetListener);
-    this.aerisCatalogueSearchEventListener = this.handleSearch.bind(this)
-    document.addEventListener('aerisCatalogueSearchEvent', this.aerisCatalogueSearchEventListener);
   },
 
   mounted: function() {
@@ -83,19 +77,6 @@ export default {
 
 
   computed: {
-
-    filteredsummaries: function() {
-      if (this.filter.trim().length == 0) {
-        return this.summaries;
-      } else {
-        var filter = this.filter;
-        var self = this;
-        return this.summaries.filter(function(summary) {
-          console.log(self.removeDiacritics(JSON.stringify(summary).toLowerCase()))
-          return self.removeDiacritics(JSON.stringify(summary).toLowerCase()).indexOf(self.removeDiacritics(filter.toLowerCase())) >= 0
-        })
-      }
-    },
 
     visibilityClass: function() {
       if ((!this.summaries) || (this.summaries.length == 0)) {
@@ -111,8 +92,13 @@ export default {
       aerisSummariesListener: null,
       aerisCatalogueResetListener: null,
       aerisCatalogueSearchEventListener: null,
-      summaries: null,
-      filter: ''
+      summaries: [],
+      range: {
+        min: 0,
+        max: 24
+      },
+      step: 25,
+      total: 0
     }
   },
 
@@ -121,20 +107,18 @@ export default {
   methods: {
 
     handleReset: function() {
-      this.summaries = []
+      this.range = {
+        min: 0,
+        max: 24
+      };
+      this.total = 0;
+      this.summaries = [];
     },
 
-    handleSearch: function() {
-      this.handleReset();
-    },
-
-    handleSummaries: function(summaries) {
-      if (summaries.detail) {
-        this.summaries = summaries.detail.summaries
-        console.log(this.summaries)
-      } else {
-        this.summaries = null
-      }
+    handleSummaries: function(response) {
+      this.range = response.detail.range;
+      this.summaries = this.range.min === 0 ? response.detail.search.results : [...this.summaries, ...response.detail.search.results];
+      this.total = response.detail.search.total;
     },
 
     isDefaultSummary: function(summary) {
@@ -159,6 +143,18 @@ export default {
 
       return str;
 
+    },
+
+    showMore() {
+      this.range = {
+        min: this.range.min + this.step,
+        max: this.range.max + this.step
+      };
+      document.dispatchEvent(new CustomEvent("aerisCatalogueSearchStartEvent", {
+        detail: {
+          range: this.range
+        }
+      }));
     }
   }
 }
@@ -174,6 +170,26 @@ export default {
 }
 
 [data-aeris-catalog-summaries-bar]>header input {
+  color: #555;
+}
+
+[data-aeris-catalog-summaries-bar]>button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 4px 4px 0 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #333;
+  background: #ccc;
+}
+
+[data-aeris-catalog-summaries-bar]>button:hover {
+  filter: brightness(80%);
+}
+
+[data-aeris-catalog-summaries-bar]>button i {
+  margin-right: 8px;
   color: #555;
 }
 

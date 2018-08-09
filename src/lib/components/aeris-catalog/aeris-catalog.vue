@@ -100,6 +100,11 @@ export default {
       type: String,
       default: "1:3"
     },
+    customSearch: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     criteriaBackgroundColor: {
       required: false
     },
@@ -137,8 +142,10 @@ export default {
     document.removeEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
     this.aerisCatalogueMinimizetEventListener = null;
 
-    document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
-    this.aerisCatalogueSearchStartEventListener = null;
+    if (!this.customSearch) {
+      document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+      this.aerisCatalogueSearchStartEventListener = null;
+    }
 
     document.removeEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
     this.aerisCatalogueSearchStartEventListener = null;
@@ -163,8 +170,10 @@ export default {
   created: function() {
     console.log("Aeris aeris-catalog creation")
 
-    this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this)
-    document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+    if (!this.customSearch) {
+      this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this)
+      document.addEventListener('aerisCatalogueSearchStartEvent', this.aerisCatalogueSearchStartEventListener);
+    }
 
     this.aerisCatalogueMinimizeEventListener = this.handleMinimize.bind(this)
     document.addEventListener('aerisCatalogueMinimizeEvent', this.aerisCatalogueMinimizeEventListener);
@@ -306,12 +315,12 @@ export default {
       this.currentEditedMetadata = null
     },
 
-    handleCatalogueSearchStart: function() {
+    handleCatalogueSearchStart: function(event) {
       this.hideMetadataPanel()
-      
+
       // block the buttons
       document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "none";
-      
+
       var e = new CustomEvent("aerisCatalogueSearchEvent", {
         detail: {}
       })
@@ -329,6 +338,7 @@ export default {
         url = this.metadataService + 'request';
       }
 
+
       if (this.program) {
         url = url + "?program=" + this.program;
       }
@@ -338,7 +348,6 @@ export default {
           message: this.$t('searching')
         }
       }))
-      
       // do not search if there's no criteria
       if ( (!this.program) &&
     		  ((!e.detail.collections || e.detail.collections.length < 1) && (!e.detail.keywords || e.detail.keywords.length < 1) && (!e.detail.box || e.detail.box.north == "")
@@ -354,8 +363,9 @@ export default {
 	     // unblock the buttons
 	     document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
       } else {
-         this.$http.post(url, e.detail).then(response => {
-             this.handleSuccess(response)
+        let range = event.detail.range;
+         this.$http.post(this.program ? `${url}&range=${range.min}-${range.max}` : `${url}?range=${range.min}-${range.max}`, e.detail).then(response => {
+             this.handleSuccess(response, range)
          }, response => {
              this.handleError(response)
          });
@@ -393,37 +403,33 @@ export default {
     },
 
 
-    handleSuccess: function(response) {
+    handleSuccess: function(response, range) {
       document.dispatchEvent(new CustomEvent('aerisLongActionStopEvent', {
         'detail': {
           message: this.$t('searching')
         }
-      }))      
-      
+      }))
+
       this.$nextTick(function () {
     	  // unblock the button
           document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
         })
-      
+
       console.log("SUCCESS: Response")
       console.log(response)
-      var summaries = response.body
-      if (summaries) {
+      var search = response.body
+
+      if (search.total === 0) {
         document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', {
           'detail': {
-            message: this.$t('foundresults') + summaries.length
-          }
-        }))
-      } else {
-        document.dispatchEvent(new CustomEvent('aerisNotificationMessageEvent', {
-          'detail': {
-            message: this.$t('noresult') + summaries.length
+            message: this.$t('noresult')
           }
         }))
       }
       document.dispatchEvent(new CustomEvent('aerisSummaries', {
         'detail': {
-          summaries: summaries
+          search: search,
+          range : range
         }
       }))
     },
@@ -434,12 +440,12 @@ export default {
           message: this.$t('searching')
         }
       }))
-  	  
+
       this.$nextTick(function () {
     	  // unblock the button
           document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
         })
-      
+
       console.log("ERROR: Response")
       console.log(response)
       document.dispatchEvent(new CustomEvent('aerisSummaries', {
