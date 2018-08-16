@@ -1,10 +1,12 @@
 <i18n>
 {
   "en": {
+    "message": "Please make a search to access the content",
     "nometadata": "No metadata sheet found",
     "showMore": "Show more"
   },
   "fr": {
+    "message": "Veuillez faire une recherche pour accéder au contenu",
     "nometadata": "Aucune fiche de métadonnées trouvée",
     "showMore": "Voir plus"
   }
@@ -13,17 +15,22 @@
 
 <template>
 <div data-aeris-catalog-summaries-bar class="always-visible" :class="visibilityClass">
-  <template v-if="summaries.length > 0">
-    <section>
-      <div v-for="summary in summaries" :key="summary.id">
-        <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
-        <aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
-      </div>
-    </section>
-    <button v-if="summaries.length !== total" @click="showMore"><i class="fa fa-arrow-down"/>{{$t("showMore")}}</button>
+  <template v-if="summaries">
+    <template v-if="summaries.length > 0">
+      <section>
+        <div v-for="summary in summaries" :key="summary.id">
+          <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
+          <aeris-catalog-proxy-summary :value="JSON.stringify(summary)" :name="getCustomNodeName(summary)" v-else></aeris-catalog-proxy-summary>
+        </div>
+      </section>
+      <button v-if="summaries.length !== total" @click="showMore"><i class="fa fa-arrow-down"/>{{$t("showMore")}}</button>
+    </template>
+    <p v-else>
+      {{$t("nometadata")}}
+    </p>
   </template>
   <p v-else>
-    {{$t('nometadata')}}
+    {{message ? message : $t("message")}}
   </p>
   <slot></slot>
 </div>
@@ -45,6 +52,11 @@ export default {
       type: Number,
       default: 150
     },
+    message: {
+      type: String,
+      required: false,
+      default: null
+    }
   },
 
   watch: {
@@ -92,7 +104,7 @@ export default {
       aerisSummariesListener: null,
       aerisCatalogueResetListener: null,
       aerisCatalogueSearchEventListener: null,
-      summaries: [],
+      summaries: null,
       range: {
         min: 0,
         max: 24
@@ -112,7 +124,7 @@ export default {
         max: 24
       };
       this.total = 0;
-      this.summaries = [];
+      this.summaries = null;
     },
 
     handleSummaries: function(response) {

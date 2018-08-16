@@ -35,8 +35,8 @@
   <aeris-catalog-map data-map v-if="!hidemap" :hidemap="hidemap">
     <slot name="buttons-map"></slot>
   </aeris-catalog-map>
-
-  <aeris-catalog-summaries data-summaries>
+  
+  <aeris-catalog-summaries data-summaries :message="messageSummaries">
   </aeris-catalog-summaries>
 
   <section data-cart>
@@ -126,6 +126,11 @@ export default {
       type: String,
       default: "nometadata"
     },
+    messageSummaries: {
+      type: String,
+      required: false,
+      default: null
+    }
   },
 
   watch: {
