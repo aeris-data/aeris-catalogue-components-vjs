@@ -43,9 +43,9 @@ export default {
 <style>
 [data-aeris-catalog-criteria] {
   box-sizing: border-box;
-  display: block;
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  overflow-y: auto;
 }
 
 [data-aeris-catalog-criteria] span {

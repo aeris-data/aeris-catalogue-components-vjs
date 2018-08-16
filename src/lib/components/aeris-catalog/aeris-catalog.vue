@@ -23,11 +23,10 @@
 
   <aeris-notifier></aeris-notifier>
 
-  <section data-criteria="buttons" :style="{'--criteriaBackgroundColor': criteriaBackgroundColor}">
-    <slot name="buttons-criteria"></slot>
-  </section>
-
   <aeris-catalog-criteria data-criteria="container" :lang="lang" :style="{'--criteriaBackgroundColor': criteriaBackgroundColor, '--criteriaContentPrimaryColor': criteriaContentPrimaryColor, '--criteriaContentSecondaryColor': criteriaContentSecondaryColor, '--criteriaHeaderBackgroundColor': criteriaHeaderBackgroundColor, '--criteriaContentBackgroundColor': criteriaContentBackgroundColor, '--criteriaHeaderIconColor': criteriaHeaderIconColor}">
+    <section data-criteria="buttons">
+      <slot name="buttons-criteria"></slot>
+    </section>
     <section data-criteria="content">
       <slot name="criteria"></slot>
     </section>
@@ -475,9 +474,9 @@ export default {
   display: grid;
   grid-template-columns: 20% 20% 60%;
   grid-template-rows: 60px 1fr 1fr;
-  grid-template-areas:  "buttons-criteria cart sheet"
-                        "criteria summaries sheet"
-                        "criteria summaries sheet";
+  grid-template-areas: "criteria cart sheet"
+                       "criteria summaries sheet"
+                       "criteria summaries sheet";
   width: 100%;
   height: 100vh;
   background-color: #EEE;
@@ -487,9 +486,9 @@ export default {
 [data-aeris-catalog].withMap {
   grid-template-columns: 20% 20% 1fr;
   grid-template-rows: 60px var(--heightMap) var(--heightSheet);
-  grid-template-areas:    "buttons-criteria cart map"
-                          "criteria summaries map"
-                          "criteria summaries sheet";
+  grid-template-areas: "criteria cart map"
+                       "criteria summaries map"
+                       "criteria summaries sheet";
 }
 
 [data-aeris-catalog] [data-criteria="container"] {
@@ -497,25 +496,27 @@ export default {
     position: relative;
 }
 
-[data-aeris-catalog] [data-summaries] {
-    grid-area: summaries;
-    position: relative;
+[data-aeris-catalog] [data-criteria="content"] {
+  overflow-y: auto;
 }
 
 [data-aeris-catalog] [data-criteria="buttons"] {
   grid-area: buttons-criteria;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 }
 
 [data-aeris-catalog] [data-criteria="buttons"]>div {
   display: flex;
+  flex-flow: wrap;
   justify-content: flex-start;
   align-items: center;
 }
 [data-aeris-catalog] [data-criteria="buttons"]>div>* {
     margin: 5px;
+}
+
+[data-aeris-catalog] [data-summaries] {
+  grid-area: summaries;
+  position: relative;
 }
 
 [data-aeris-catalog] [data-map] {
@@ -555,8 +556,7 @@ export default {
 
 /* Customised style */
 
-[data-aeris-catalog] [data-criteria],
-[data-aeris-catalog] [data-criteria="buttons"] {
+[data-aeris-catalog] [data-criteria] {
   background: var(--criteriaBackgroundColor, #21242b);
 }
 
