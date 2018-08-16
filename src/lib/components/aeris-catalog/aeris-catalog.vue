@@ -5,7 +5,7 @@
     "foundresults": "Found results: ",
     "noresult": "No result corresponding to your request",
     "nometadata": "No metadata sheet displayed",
-    "shoppingCart": "Your shopping cart",
+    "shoppingCart": "Your downloads",
     "nocriteria": "No criteria selected"
   },
   "fr": {
@@ -13,7 +13,7 @@
     "foundresults": "Résultat trouvés: ",
     "noresult": "Aucun résultat ne correspond à votre requête",
     "nometadata": "Aucune fiche de métadonnées affichée",
-    "shoppingCart": "Votre panier",
+    "shoppingCart": "Vos téléchargements",
     "nocriteria": "Aucun critère sélectionné"
   }
 }
@@ -35,7 +35,7 @@
   <aeris-catalog-map data-map v-if="!hidemap" :hidemap="hidemap">
     <slot name="buttons-map"></slot>
   </aeris-catalog-map>
-  
+
   <aeris-catalog-summaries data-summaries :message="messageSummaries">
   </aeris-catalog-summaries>
 

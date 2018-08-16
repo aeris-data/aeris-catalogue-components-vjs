@@ -3,8 +3,8 @@
   "en": {
 	  "items": "Items",
 	  "item": "Item",
-	  "yourShoppingCart": "Your shopping cart",
-	  "emptyCart": "Empty cart",
+	  "yourShoppingCart": "Your downloads",
+	  "emptyCart": "Empty",
 	  "validate": "Validate",
 	  "downloadScript": "Download script",
 	  "loading": "Loading",
@@ -16,8 +16,8 @@
   "fr": {
 	  "items": "Items",
 	  "item": "Item",
-	  "yourShoppingCart": "Votre panier ",
-	  "emptyCart": "Vider le panier",
+	  "yourShoppingCart": "Vos téléchargements",
+	  "emptyCart": "Vider",
 	  "validate": "Valider",
 	  "downloadScript": "Script de téléchargement",
 	  "loading": "Chargement",
@@ -35,7 +35,7 @@
   <div class="cart-container">
     <div class="cart-panel-trigger">
       <span id="cartState" :style="{color:cartColor}" :v-if="calcCollNb"> {{ nbItems }} {{ cartLabel }} </span>
-      <i class="fa fa-shopping-cart" :style="{color:cartColor}"></i>
+      <i class="fa fa-download" :style="{color:cartColor}"></i>
     </div>
 
     <div class="cart-panel">
@@ -219,7 +219,7 @@ export default {
 	  this.isPopupOpen = !this.isPopupOpen;
 	  return this.isPopupOpen;
 	},
-	
+
     contentRequestHandler: function() {
       this.dispatchContent();
     },
