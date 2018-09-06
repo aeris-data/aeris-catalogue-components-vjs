@@ -12,7 +12,7 @@
 </i18n>
 
 <template>
-<div data-aeris-thesaurus-item-tree-checkbox-layout>
+<div data-aeris-thesaurus-item-tree-checkbox-layout title="">
 
   <div v-if="isLoading" class="loading-bar">
     <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
