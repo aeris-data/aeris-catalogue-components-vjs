@@ -221,16 +221,17 @@ export default {
   filter: brightness(90%);
 }
 
-[data-template="summary"] header .cartouche {
+[data-template="summary"] footer .cartouche {
   display: inline-block;
   padding: 3px 5px;
   border-radius: 5px;
   font-size: 0.9rem;
   font-weight: 400;
   color: #FAFAFA;
+  margin:10px
 }
 
-[data-template="summary"] header .cartouche .fa {
+[data-template="summary"] footer .cartouche .fa {
   margin-right: 5px;
 }
 
