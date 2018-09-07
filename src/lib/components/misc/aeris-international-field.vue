@@ -129,7 +129,7 @@ export default {
 [data-aeris-international-field] {
   display: block;
 	hyphens: auto;
-	word-break: break-all;
+  word-wrap: break-word;
 }
 
 [data-aeris-international-field] .more {
