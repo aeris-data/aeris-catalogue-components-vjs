@@ -3,6 +3,7 @@
   <aeris-catalog metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/" message="Test message : vous êtes sur le catalogue aeris" criteria-header-icon-color="grey" criteria-background-color="#F5F5F5" criteria-content-primary-color="grey" summary-bar-width="400px" summary-max-length="200" cart-token="aeris" cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart">
     <div slot="criteria">
       <aeris-keyword-search-criteria></aeris-keyword-search-criteria>
+      <aeris-project-search-criteria></aeris-project-search-criteria>
       <aeris-instrument-search-criteria></aeris-instrument-search-criteria>
       <aeris-parameter-search-criteria></aeris-parameter-search-criteria>
       <aeris-temporal-search-criteria></aeris-temporal-search-criteria>

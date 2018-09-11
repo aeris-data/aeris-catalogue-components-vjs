@@ -64,7 +64,7 @@ export default {
   },
 
   created: function() {
-    console.log("aeris-keyword-search-criteria - Creating");
+    console.log("aeris-default-summary-criteria - Creating");
     this.aerisThemeListener = this.handleTheme.bind(this)
     document.addEventListener('aerisTheme', this.aerisThemeListener);
   },
@@ -144,6 +144,23 @@ export default {
       }
     },
 
+    projects: function() {
+      var aux = JSON.parse(this.value)
+      if (aux.projectList) {
+        return JSON.stringify(aux.projectList);
+      } else {
+        return "";
+      }
+    },
+
+    downloadable: function() {
+      var aux = JSON.parse(this.value)
+      if (aux.downloadable) {
+        return aux.downloadable;
+      } else {
+        return "";
+      }
+    }
 
   },
 
@@ -183,7 +200,9 @@ export default {
           uuid: this.uuid,
           title: this.title,
           iconClass: this.headerIconClass,
-          clientTemplateName: this.clientTemplateName
+          clientTemplateName: this.clientTemplateName,
+          projects: this.projects,
+          downloadable: this.downloadable
         }
       });
       document.dispatchEvent(event);

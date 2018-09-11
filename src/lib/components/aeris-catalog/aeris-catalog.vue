@@ -45,7 +45,7 @@
   </section>
 
   <aeris-catalogue-metadata-panel data-sheet="content" v-if="visibleMetadataPanel" :edit="editMetadataPanel" :resourcetitle="currentTitle" :icon-class="currentIconClass" :metadata-service="metadataService" :uuid="currentUuid" :type="currentType" :metadata="currentMetadata"
-    :client-template="currentTemplate">
+    :client-template="currentTemplate" :projects="currentProjects">
     <slot name="buttons-metadata"></slot>
   </aeris-catalogue-metadata-panel>
 
@@ -245,6 +245,7 @@ export default {
       currentType: null,
       currentMetadata: null,
       currentTemplate: null,
+      currentProjects: null,
       visibleMetadataPanel: false,
       editMetadataPanel: false
     }
@@ -260,7 +261,6 @@ export default {
 
     handleDisplayMetadata: function(e) {
       this.hideMetadataPanel();
-
       if (e.detail.uuid) {
         this.currentUuid = e.detail.uuid
       } else {
@@ -285,6 +285,12 @@ export default {
         this.currentTemplate = e.detail.clientTemplateName
       } else {
         this.currentTemplate = ''
+      }
+      // no need to display project code when on a specific catalog
+      if (e.detail.projects && !this.program) {
+        this.currentProjects = e.detail.projects;
+      } else {
+        this.currentProjects = "";
       }
       this.visibleMetadataPanel = true;
     },
