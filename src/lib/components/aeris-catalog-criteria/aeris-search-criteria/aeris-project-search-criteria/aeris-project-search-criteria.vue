@@ -4,7 +4,7 @@
     "projects": "Projects"
   },
   "fr": {
-    "projects": "Projects"
+    "projects": "Projets"
   }
 }
 </i18n>

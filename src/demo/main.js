@@ -29,6 +29,7 @@ import app from './components/app.vue'
 import eurochamp from './components/eurochamp.vue'
 import gmos from './components/gmos.vue'
 import actris from './components/actris.vue'
+import iagos from './components/iagos.vue'
 import aeris from './components/aeris.vue'
 
 const router = new VueRouter({
@@ -44,6 +45,10 @@ const router = new VueRouter({
     {
       path: '/actris',
       component: actris
+    },
+    {
+      path: '/iagos',
+      component: iagos
     },
     {
       path: '/aeris',

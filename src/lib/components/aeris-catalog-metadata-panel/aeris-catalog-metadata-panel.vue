@@ -28,6 +28,13 @@
       <aeris-international-field v-if="resourcetitle" html="true" :lang="lang" :value="resourcetitle"></aeris-international-field>
       <div v-else>{{$t('addTitle')}}</div>
     </h2>
+    <div data-aeris-metadata-panel-project-list>
+      <ul class="cartouche">
+        <li v-for="project in projectsList" :key="project.projectName">
+          <component :is="project.aerisProjectUuid?'a':'span'" :href="projectLandingPage(project.aerisProjectUuid) || ''" target="_blank">{{project.projectName}}</component>
+        </li>  
+      </ul>
+    </div>
     <aside>
       <aeris-catalog-ui-icon-button icon="fa-expand" @click="switchmode" :title="$t('maximize')" v-if="minimize"></aeris-catalog-ui-icon-button>
       <aeris-catalog-ui-icon-button icon="fa-compress" @click="switchmode" :title="$t('minimize')" v-if="maximize"></aeris-catalog-ui-icon-button>
@@ -85,6 +92,10 @@ export default {
     clientTemplate: {
       type: String,
       default: ""
+    },
+    projects: {
+      type: String,
+      default: null
     }
   },
 
@@ -105,7 +116,15 @@ export default {
     }
   },
 
-  created() {
+  destroyed: function() {
+    document.removeEventListener('aerisTheme', this.aerisThemeListener);
+    this.aerisThemeListener = null;
+  },
+
+  created() {    
+    this.aerisThemeListener = this.handleTheme.bind(this)
+    document.addEventListener('aerisTheme', this.aerisThemeListener);
+    
     this.$nextTick(function() {
       document.dispatchEvent(new CustomEvent('aerisCatalogueInfoMetadata', {
         detail: {
@@ -117,9 +136,16 @@ export default {
   },
 
   mounted: function() {
+    var event = new CustomEvent('aerisThemeRequest', {});
+    document.dispatchEvent(event);
+
     if (this.lang) {
       this.$i18n.locale = this.lang
     }
+  },
+
+  updated: function() {
+    this.ensureTheme()
   },
 
   computed: {
@@ -135,16 +161,19 @@ export default {
 
     minimize: function() {
       return !this.maximize
+    },
+
+    projectsList: function() {
+      return this.projects ? JSON.parse(this.projects) : "";
     }
   },
 
   data() {
     return {
+      theme: null,
       maximize: false
     }
   },
-
-  updated: function() {},
 
   methods: {
 
@@ -198,6 +227,24 @@ export default {
           loadingMessage: this.$i18n.t('saving')
         }
       }));
+    },
+
+    handleTheme: function(theme) {
+      this.theme = theme.detail
+      this.ensureTheme()
+    },
+
+    ensureTheme: function() {
+      if (this.theme) {
+        let cartoucheList = document.querySelectorAll("[data-aeris-catalog-metadata-panel]>header .cartouche li");
+        cartoucheList.forEach(element => {
+          element.style.background = this.theme.primary;
+        });
+      }
+    },
+
+    projectLandingPage: function(projectId) {
+      return "https://www.aeris-data.fr/project/" + projectId;
     }
   }
 }
@@ -216,11 +263,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: var(--heightHeader);
   padding: 0px 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
   background: #FAFAFA;
   color: #333;
+}
+
+[data-aeris-catalog-metadata-panel]>header [data-aeris-metadata-panel-project-list] {
+  display: flex;
+  flex-direction: row;
+}
+
+[data-aeris-catalog-metadata-panel]>header .cartouche li {
+  	display: inline-block;
+    margin-bottom: 5px;
+    padding: 4px 5px 3px;
+    border-radius: 5px;
+    color: #FAFAFA;
+}
+
+[data-aeris-catalog-metadata-panel]>header .cartouche li + li {
+    margin-left: 5px;
 }
 
 [data-aeris-catalog-metadata-panel]>header h2 {
@@ -255,6 +318,7 @@ export default {
 [data-aeris-catalog-metadata-panel] [data-template="metadata-panel"] {
   column-count: 2;
   column-gap: var(--gap);
+  column-fill: balance;
   -moz-column-fill: balance;
 }
 
