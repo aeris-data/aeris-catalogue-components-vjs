@@ -281,6 +281,9 @@ export default {
     border-radius: 5px;
     color: #FAFAFA;
 }
+[data-aeris-catalog-metadata-panel]>header .cartouche li a {
+  color: #FAFAFA;
+}
 
 [data-aeris-catalog-metadata-panel]>header .cartouche li + li {
     margin-left: 5px;
