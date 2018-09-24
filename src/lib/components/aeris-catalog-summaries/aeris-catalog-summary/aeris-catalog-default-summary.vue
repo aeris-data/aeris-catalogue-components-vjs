@@ -2,25 +2,28 @@
 {
   "en": {
     "level": "Level",
-    "details": "Details",
-    "addingToCart": "Adding to cart"
+    "addingToCart": "Adding to cart",
+    "removeToCart": "Remove from cart"
   },
   "fr": {
     "level": "Niveau",
-    "details": "Détails",
-    "addingToCart": "Ajout au panier"
+    "addingToCart": "Ajouter au panier",
+    "removeToCart": "Retirer du panier"
   }
 }
 </i18n>
 
 <template>
-<div data-template="summary" v-bind:class="{ showBody: deployed }"  @click="displayDetails" >
-  <!--  <i @click.stop ="addToCart" class="fa fa-download" style="color: rgb(85, 85, 85);float:right;"></i> -->
+<div data-template="summary" v-bind:class="{ showBody: deployed }"  @click="displayDetails">
+  <div  v-if="downloadable" class="cartButton">
+    <i v-if="!isInCart" @click.stop="addToCart" class="cartouche fa fa-download addToCartButton"  :title='$t("addingToCart")'></i>
+    <i v-else  @click.stop="removeCartItem(collectionId)"  class="fa fa-times removeToCartButton"  :title='$t("removeToCart")'></i>
+  </div>
   <main>
-    <aeris-international-field class="title" html="false" :lang="lang" :value="title" :maxLength="maxLength"></aeris-international-field> 
+    <aeris-international-field class="title" html="true" :lang="lang" :value="title" :maxLength="maxLength"></aeris-international-field> 
   </main>
   <footer>
-    <div v-if="projectList" class="cartouche" v-for="project in projectList" >{{project.projectName}}</div>
+    <div v-if="projectList" class="cartouche" v-for="project in projectList" :key="project.projectName" >{{project.projectName}}</div>
   </footer>
 </div>
 </template>
@@ -44,10 +47,12 @@ export default {
       type: Boolean,
       default: false
     },
+
     openIconClass: {
       type: String,
       default: "fa fa-chevron-down"
     },
+
     value: {
       type: String,
       default: ""
@@ -69,6 +74,10 @@ export default {
     console.log("aeris-keyword-search-criteria - Creating");
     this.aerisThemeListener = this.handleTheme.bind(this);
     document.addEventListener("aerisTheme", this.aerisThemeListener);
+    this.cartContentResponseListener = this.cartContentResponse.bind(this);
+    document.addEventListener('cartContentResponse', this.cartContentResponseListener);
+    this.removeListener = this.removeCartItemFromEvent.bind(this);
+    document.addEventListener('deleteItemFromCartEvent', this.removeListener);
   },
 
   mounted: function() {
@@ -157,7 +166,6 @@ export default {
     downloadable: function() {
       var aux = JSON.parse(this.value);
       if (aux.downloadable) {
-        console.log(aux.downloadable);
         return aux.downloadable;
       } else {
         return "";
@@ -167,7 +175,6 @@ export default {
     collectionId: function() {
       var aux = JSON.parse(this.value);
       if (aux.id) {
-        console.log(aux.id);
         return aux.id;
       } else {
         return "";
@@ -178,8 +185,8 @@ export default {
       return {
         theme: null,
         aerisThemeListener: null,
-        hasToolbar: false,
-        urlService: null
+        isInCart: false,
+        cartContent :null
       };
     },
 
@@ -189,36 +196,85 @@ export default {
 
   methods: {
 
-    handleSuccess: function(response) {
-     
-      this.downloadEntries = response.body.entries;
+    cartContentResponse: function (e) {
+      this.isInCart = false
+      this.cartContent = e.detail.cartContent
 
-      if (this.downloadEntries.length > 0) {
-        this.downloadEntry = this.downloadEntries[0];
-        this.visible = true;
-        //this.ensureTheme();
-        this.isInCart = false;
+      if (this.cartContent) {
+        for (var i =0; i <this.cartContent.length; i++) {
+          var cartItem = this.cartContent[i]
+          if (cartItem.collectionId== this.collectionId) {
+            this.isInCart = true
+          }
+        }
       }
+    },
 
-      var url_download_service = this.downloadable;
-      var obj = {
-        collectionName: this.title,
-        url: url_download_service,
-        collectionId: this.collectionId,
-        id: this.collectionId,
-        data: "",
-        fileNumber: this.downloadEntry.fileNumber,
-        totalSize: this.downloadEntry.totalSize,
-        type: "nofilter"
-      };
+    removeCartItem: function(collectionId) {
+      var cartClone = this.cartContent;
 
-      
-      // send the informations
-      var event = new CustomEvent("addItemToCartEvent", {detail: obj,lang: this.lang});
+      cartClone.forEach(function(collection, ind) {
+        if (collection.collectionId === collectionId) {
+          cartClone.splice(ind, 1);
+        }
+      });
+      this.saveCart();
+      this.dispatchContent();
+    },
+
+    dispatchContent: function() {
+      let event = new CustomEvent('cartContentResponse', {detail: {cartContent: this.cartContent}});
       document.dispatchEvent(event);
-      this.isInCart = true;
-      // hide notification
-      document.dispatchEvent(new CustomEvent("aerisLongActionStopEvent", {detail: { message: this.$t("addingToCart") }}));
+    },
+
+    saveCart: function() {},
+
+    removeCartItemFromEvent: function(e) {
+      var result = []
+      var item = e.detail;
+      var collection = null
+
+      for (let j = 0; j < this.cartContent.length; j++) {
+          collection = this.cartContent[j]
+          if (collection.collectionId === item.collectionId) {
+            for (let i = 0; i < item.elements.length; i++) {
+              let index = collection.items.elements.indexOf(item.elements[i])
+              if (index >= 0) {
+                collection.items.elements.splice(index, 1);
+              }
+              collection.filterDescription = this.filterDescription(collection);
+              collection.fileNumber -= item.fileNumber;
+              collection.fileSize -= item.totalSize;
+          }
+        }
+        if (collection.items.elements.length > 0) {
+          result.push(collection)
+        }
+      }
+      this.cartContent = result;
+      this.dispatchContent();
+    }, 
+
+    handleSuccess: function(response) {
+      let downloadEntries = response.body.entries;
+
+      if (downloadEntries.length > 0) {
+        let downloadEntry = downloadEntries[0];
+        let url_download_service = this.downloadable;
+        let obj = {
+          collectionName: this.title,
+          url: url_download_service,
+          collectionId: this.collectionId,
+          id: this.collectionId,
+          data: "",
+          fileNumber: downloadEntry.fileNumber,
+          totalSize: downloadEntry.totalSize,
+          type: "nofilter"
+        }
+        var event = new CustomEvent("addItemToCartEvent", {detail: obj,lang: this.lang});
+        document.dispatchEvent(event);
+        document.dispatchEvent(new CustomEvent("aerisLongActionStopEvent", {detail: { message: this.$t("addingToCart") }}));
+      }
     },
 
     handleChevronClick: function() {},
@@ -229,7 +285,7 @@ export default {
     },
 
     ensureTheme: function() {
-      if (this.theme && this.projectList) {
+      if (this.theme) {
         let listCartouche = this.$el.querySelectorAll(".cartouche"); 
         for (var cartouche of listCartouche) {
           cartouche.style.background = this.$colorLuminance(this.theme.primary,-0.1);
@@ -250,8 +306,10 @@ export default {
       document.dispatchEvent(event);   
     },
     
-    addToCart: function(e) {
-   
+    addToCart: function() {
+
+      var rootUrlServiceCartInfo = this.downloadable
+      
       if (!this.isInCart) {
         // Show notification
         document.dispatchEvent(
@@ -261,11 +319,10 @@ export default {
         );
         // search the informations for the cart
         if (this.downloadable && this.collectionId) {
-          var url = null;
           if (this.downloadable.endsWith("/")) {
-            this.this.downloadable = this.this.downloadable.substring(0, this.this.downloadable.length - 1);
+          rootUrlServiceCartInfo =this.downloadable.slice(0, -1)  
         } 
-        url = this.downloadable + "/request?collection=" + this.collectionId;
+        var url = rootUrlServiceCartInfo + "/request?collection=" + this.collectionId;
         this.$http.get(url).then(response => {this.handleSuccess(response);}, response => {this.handleError(response);});
         }
       }
@@ -273,10 +330,20 @@ export default {
   }
 };
 </script>
-<style>
-.cartIconDefaultSummary {
-margin-top:10px; 
-width:42px;
 
+<style>
+.addToCartButton,.removeToCartButton {
+  float:right;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #FAFAFA;
+}
+.removeToCartButton {
+  background:red !important;
+}
+.cartButton {
+  height: 20px;
 }
 </style>

@@ -214,21 +214,41 @@ export default {
   padding: 10px;
   background: #E1E1E1;
   color: #333;
+ 
 }
 
+[data-template="summary"]>div>i:hover {
+  cursor: pointer;
+  filter : brightness(120%) ;
+}
 [data-template="summary"]:hover {
   cursor: pointer;
   filter: brightness(90%);
 }
-
-[data-template="summary"] footer .cartouche {
+[data-template="summary"] header .cartouche {
   display: inline-block;
   padding: 3px 5px;
   border-radius: 5px;
   font-size: 0.9rem;
   font-weight: 400;
   color: #FAFAFA;
-  margin:10px
+}
+[data-template="summary"] header .cartouche .fa {
+  margin-right: 5px;
+}
+
+[data-template="summary"] footer {
+  margin-top: 5px;
+}
+[data-template="summary"] footer .cartouche {
+  display: inline-block;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 0.55rem;
+  font-weight: 400;
+  color: #FAFAFA;
+  margin-left: 5px;
+  font-weight: bold
 }
 
 [data-template="summary"] footer .cartouche .fa {
@@ -236,6 +256,7 @@ export default {
 }
 
 [data-template="summary"] main {
-  padding: 10px;
+  padding-left: 5px;
+  
 }
 </style>
