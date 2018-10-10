@@ -1,12 +1,10 @@
 <i18n>
 {
   "en": {
-    "level": "Level",
     "addingToCart": "Adding to cart",
     "removeToCart": "Remove from cart"
   },
   "fr": {
-    "level": "Niveau",
     "addingToCart": "Ajouter au panier",
     "removeToCart": "Retirer du panier"
   }
@@ -15,15 +13,15 @@
 
 <template>
 <div data-template="summary" v-bind:class="{ showBody: deployed }"  @click="displayDetails">
-  <div  v-if="downloadable" class="cartButton">
-    <i v-if="!isInCart" @click.stop="addToCart" class="cartouche fa fa-download addToCartButton"  :title='$t("addingToCart")'></i>
-    <i v-else  @click.stop="removeCartItem(collectionId)"  class="fa fa-times removeToCartButton"  :title='$t("removeToCart")'></i>
+  <div v-if="downloadable" class="cartButton">
+    <i v-if="!isInCart" @click.stop="addToCart" class="cartouche fa fa-download addToCartButton" :title='$t("addingToCart")' key="Add"></i>
+    <i v-else @click.stop="removeCartItem(collectionId)" class="fa fa-times removeToCartButton" :title='$t("removeToCart")' key="Remove"></i>
   </div>
   <main>
     <aeris-international-field class="title" html="true" :lang="lang" :value="title" :maxLength="maxLength"></aeris-international-field> 
   </main>
   <footer>
-    <div v-if="projectList" class="cartouche" v-for="project in projectList" :key="project.projectName" >{{project.projectName}}</div>
+    <div v-if="projectList" class="cartouche" v-for="project in projectList" :key="project.projectName">{{project.projectName}}</div>
   </footer>
 </div>
 </template>
@@ -98,30 +96,10 @@ export default {
       }
     },
 
-    uuid: function() {
-      var aux = JSON.parse(this.value);
-      if (aux.id) {
-        var tmp = JSON.stringify(aux.id);
-        return tmp.replace(/['"]+/g, "");
-      } else {
-        return "";
-      }
-    },
-
     description: function() {
       var aux = JSON.parse(this.value);
       if (aux.description) {
         return JSON.stringify(aux.description);
-      } else {
-        return "";
-      }
-    },
-
-    dataProcessingLevel: function() {
-      var aux = JSON.parse(this.value);
-      if (aux.dataProcessingLevel) {
-        var tmp = JSON.stringify(aux.dataProcessingLevel);
-        return tmp.replace(/L/gi, "").replace(/['"]+/g, "");
       } else {
         return "";
       }
@@ -197,14 +175,14 @@ export default {
   methods: {
 
     cartContentResponse: function (e) {
-      this.isInCart = false
-      this.cartContent = e.detail.cartContent
+      this.isInCart = false;
+      this.cartContent = e.detail.cartContent;
 
       if (this.cartContent) {
         for (var i =0; i <this.cartContent.length; i++) {
-          var cartItem = this.cartContent[i]
+          var cartItem = this.cartContent[i];
           if (cartItem.collectionId== this.collectionId) {
-            this.isInCart = true
+            this.isInCart = true;
           }
         }
       }
@@ -218,7 +196,6 @@ export default {
           cartClone.splice(ind, 1);
         }
       });
-      this.saveCart();
       this.dispatchContent();
     },
 
@@ -227,15 +204,13 @@ export default {
       document.dispatchEvent(event);
     },
 
-    saveCart: function() {},
-
     removeCartItemFromEvent: function(e) {
-      var result = []
+      var result = [];
       var item = e.detail;
-      var collection = null
+      var collection = null;
 
       for (let j = 0; j < this.cartContent.length; j++) {
-          collection = this.cartContent[j]
+          collection = this.cartContent[j];
           if (collection.collectionId === item.collectionId) {
             for (let i = 0; i < item.elements.length; i++) {
               let index = collection.items.elements.indexOf(item.elements[i])
@@ -248,7 +223,7 @@ export default {
           }
         }
         if (collection.items.elements.length > 0) {
-          result.push(collection)
+          result.push(collection);
         }
       }
       this.cartContent = result;
@@ -277,8 +252,6 @@ export default {
       }
     },
 
-    handleChevronClick: function() {},
-
     handleTheme: function(theme) {
       this.theme = theme.detail;
       this.ensureTheme();
@@ -286,7 +259,7 @@ export default {
 
     ensureTheme: function() {
       if (this.theme) {
-        let listCartouche = this.$el.querySelectorAll(".cartouche"); 
+        let listCartouche = this.$el.querySelectorAll(".cartouche");
         for (var cartouche of listCartouche) {
           cartouche.style.background = this.$colorLuminance(this.theme.primary,-0.1);
         }
@@ -297,7 +270,7 @@ export default {
       var event = new CustomEvent("aerisCatalogueDisplayMetadata", {
         detail: {
           type: this.type,
-          uuid: this.uuid,
+          uuid: this.collectionId,
           title: this.title,
           iconClass: this.headerIconClass,
           clientTemplateName: this.clientTemplateName
@@ -308,7 +281,7 @@ export default {
     
     addToCart: function() {
 
-      var rootUrlServiceCartInfo = this.downloadable
+      var rootUrlServiceCartInfo = this.downloadable;
       
       if (!this.isInCart) {
         // Show notification
@@ -320,7 +293,7 @@ export default {
         // search the informations for the cart
         if (this.downloadable && this.collectionId) {
           if (this.downloadable.endsWith("/")) {
-          rootUrlServiceCartInfo =this.downloadable.slice(0, -1)  
+          rootUrlServiceCartInfo =this.downloadable.slice(0, -1);
         } 
         var url = rootUrlServiceCartInfo + "/request?collection=" + this.collectionId;
         this.$http.get(url).then(response => {this.handleSuccess(response);}, response => {this.handleError(response);});
@@ -341,7 +314,7 @@ export default {
   color: #FAFAFA;
 }
 .removeToCartButton {
-  background:red !important;
+  background:red;
 }
 .cartButton {
   height: 20px;

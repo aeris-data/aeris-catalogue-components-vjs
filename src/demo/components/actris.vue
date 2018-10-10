@@ -1,6 +1,6 @@
 <template>
 <div>
-  <aeris-catalog metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/" cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart" program="ACTRIS-FR" cart-token="actris">
+  <aeris-catalog metadata-service="http://localhost:9080/catalogue/rest/metadatarecette/" cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart" program="ACTRIS-FR" cart-token="actris">
     <div slot="criteria">
       <actris-collection-search-criteria></actris-collection-search-criteria>
       <actris-site-search-criteria></actris-site-search-criteria>
