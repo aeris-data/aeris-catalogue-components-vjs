@@ -15,7 +15,7 @@
 <div data-template="summary" v-bind:class="{ showBody: deployed }"  @click="displayDetails">
   <div v-if="downloadable" class="cartButton">
     <i v-if="!isInCart" @click.stop="addToCart" class="cartouche fa fa-download addToCartButton" :title='$t("addingToCart")' key="Add"></i>
-    <i v-else @click.stop="removeCartItem(collectionId)" class="fa fa-times removeToCartButton" :title='$t("removeToCart")' key="Remove"></i>
+    <i v-else @click.stop="removeCartItem(collectionId)" class="fa fa-check removeToCartButton" :title='$t("removeToCart")' key="Remove"></i>
   </div>
   <main>
     <aeris-international-field class="title" html="true" :lang="lang" :value="title" :maxLength="maxLength"></aeris-international-field> 
@@ -261,7 +261,7 @@ export default {
       if (this.theme) {
         let listCartouche = this.$el.querySelectorAll(".cartouche");
         for (var cartouche of listCartouche) {
-          cartouche.style.background = this.$colorLuminance(this.theme.primary,-0.1);
+          cartouche.style.background = this.$colorLuminance(this.theme.emphasis);
         }
       }
     },
@@ -314,7 +314,7 @@ export default {
   color: #FAFAFA;
 }
 .removeToCartButton {
-  background:red;
+  background:green;
 }
 .cartButton {
   height: 20px;
