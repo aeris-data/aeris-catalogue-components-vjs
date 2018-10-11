@@ -1,36 +1,39 @@
 <i18n>
 {
   "en": {
-    "level": "Level",
-    "details": "Details"
+    "addingToCart": "Adding to cart",
+    "removeToCart": "Remove from cart"
   },
   "fr": {
-    "level": "Niveau",
-    "details": "Détails"
+    "addingToCart": "Ajouter au panier",
+    "removeToCart": "Retirer du panier"
   }
 }
 </i18n>
+
 <template>
-<div data-template="summary" v-bind:class="{ showBody: deployed }" v-on:click="displayDetails">
-  <header>
-    <div v-if="dataProcessingLevel" class="cartouche"><i class="fa fa-cogs"></i>{{$t("level")}} {{dataProcessingLevel}}</div>
-  </header>
+<div data-template="summary" v-bind:class="{ showBody: deployed }"  @click="displayDetails">
+  <div v-if="downloadable" class="cartButton">
+    <i v-if="!isInCart" @click.stop="addToCart" class="cartouche fa fa-download addToCartButton" :title='$t("addingToCart")' key="Add"></i>
+    <i v-else @click.stop="removeCartItem(collectionId)" class="fa fa-check removeToCartButton" :title='$t("removeToCart")' key="Remove"></i>
+  </div>
   <main>
-    <aeris-international-field class="title" html="true" :lang="lang" :value="title"></aeris-international-field>
+    <aeris-international-field class="title" html="true" :lang="lang" :value="title" :maxLength="maxLength"></aeris-international-field> 
   </main>
+  <footer>
+    <div v-if="projectList" class="cartouche" v-for="project in projectList" :key="project.projectName">{{project.projectName}}</div>
+  </footer>
 </div>
 </template>
 
 <script>
 export default {
-
-  name: 'aeris-catalog-default-summary',
+  name: "aeris-catalog-default-summary",
 
   props: {
-
     lang: {
       type: String,
-      default: 'en'
+      default: "en"
     },
 
     maxLength: {
@@ -42,92 +45,77 @@ export default {
       type: Boolean,
       default: false
     },
+
     openIconClass: {
       type: String,
-      default: 'fa fa-chevron-down'
+      default: "fa fa-chevron-down"
     },
+
     value: {
       type: String,
-      default: ''
+      default: ""
     }
   },
 
   watch: {
     lang(value) {
-      this.$i18n.locale = value
+      this.$i18n.locale = value;
     }
   },
 
   destroyed: function() {
-    document.removeEventListener('aerisTheme', this.aerisThemeListener);
-    this.aerisThemeListener = null;
+    document.removeEventListener("aerisTheme", this.aerisThemeListener);
+    this.aerisThemeListener = null;    
   },
 
   created: function() {
     console.log("aeris-default-summary-criteria - Creating");
     this.aerisThemeListener = this.handleTheme.bind(this)
     document.addEventListener('aerisTheme', this.aerisThemeListener);
+    this.cartContentResponseListener = this.cartContentResponse.bind(this);
+    document.addEventListener('cartContentResponse', this.cartContentResponseListener);
+    this.removeListener = this.removeCartItemFromEvent.bind(this);
+    document.addEventListener('deleteItemFromCartEvent', this.removeListener);
   },
 
   mounted: function() {
-    var event = new CustomEvent('aerisThemeRequest', {});
+    var event = new CustomEvent("aerisThemeRequest", {});
     document.dispatchEvent(event);
     if (this.lang) {
-      this.$i18n.locale = this.lang
+      this.$i18n.locale = this.lang;
     }
   },
 
   computed: {
-
     title: function() {
-      var aux = JSON.parse(this.value)
+      var aux = JSON.parse(this.value);
       if (aux.title) {
-        return JSON.stringify(aux.title)
-      } else {
-        return "";
-      }
-    },
-
-    uuid: function() {
-      var aux = JSON.parse(this.value)
-      if (aux.id) {
-        var tmp = JSON.stringify(aux.id)
-        return tmp.replace(/['"]+/g, '')
+        return JSON.stringify(aux.title);
       } else {
         return "";
       }
     },
 
     description: function() {
-      var aux = JSON.parse(this.value)
+      var aux = JSON.parse(this.value);
       if (aux.description) {
-        return JSON.stringify(aux.description)
-      } else {
-        return "";
-      }
-    },
-
-    dataProcessingLevel: function() {
-      var aux = JSON.parse(this.value)
-      if (aux.dataProcessingLevel) {
-        var tmp = JSON.stringify(aux.dataProcessingLevel);
-        return tmp.replace(/L/gi, '').replace(/['"]+/g, '');
+        return JSON.stringify(aux.description);
       } else {
         return "";
       }
     },
 
     headerIconClass: function() {
-      var aux = JSON.parse(this.value)
+      var aux = JSON.parse(this.value);
       if (aux.plateformType) {
-        return "aeris-icon aeris-icon-" + aux.plateformType
+        return "aeris-icon aeris-icon-" + aux.plateformType;
       } else {
-        return "aeris-icon aeris-icon-unknown"
+        return "aeris-icon aeris-icon-unknown";
       }
     },
 
     type: function() {
-      var aux = JSON.parse(this.value)
+      var aux = JSON.parse(this.value);
       if (aux.type) {
         return aux.type;
       } else {
@@ -136,7 +124,7 @@ export default {
     },
 
     clientTemplateName: function() {
-      var aux = JSON.parse(this.value)
+      var aux = JSON.parse(this.value);
       if (aux.clientTemplateName) {
         return aux.clientTemplateName;
       } else {
@@ -144,10 +132,11 @@ export default {
       }
     },
 
-    projects: function() {
-      var aux = JSON.parse(this.value)
+
+    projectList: function() {
+      var aux = JSON.parse(this.value);
       if (aux.projectList) {
-        return JSON.stringify(aux.projectList);
+        return aux.projectList;
       } else {
         return "";
       }
@@ -160,44 +149,129 @@ export default {
       } else {
         return "";
       }
-    }
+    },
 
-  },
-
-  data() {
-    return {
-      theme: null,
-      aerisThemeListener: null,
-      hasToolbar: false
-    }
-  },
+    collectionId: function() {
+      var aux = JSON.parse(this.value);
+      if (aux.id) {
+        return aux.id;
+      } else {
+        return "";
+      }
+    },
+},
+    data() {
+      return {
+        theme: null,
+        aerisThemeListener: null,
+        isInCart: false,
+        cartContent :null
+      };
+    },
 
   updated: function() {
-    this.ensureTheme()
+    this.ensureTheme();
   },
 
   methods: {
 
-    handleChevronClick: function() {
+    cartContentResponse: function (e) {
+      this.isInCart = false;
+      this.cartContent = e.detail.cartContent;
 
-    },
-
-    handleTheme: function(theme) {
-      this.theme = theme.detail
-      this.ensureTheme()
-    },
-
-    ensureTheme: function() {
-      if (this.theme && this.$el.querySelector(".cartouche")) {
-        this.$el.querySelector(".cartouche").style.background = this.$colorLuminance(this.theme.primary, -0.1);
+      if (this.cartContent) {
+        for (var i =0; i <this.cartContent.length; i++) {
+          var cartItem = this.cartContent[i];
+          if (cartItem.collectionId== this.collectionId) {
+            this.isInCart = true;
+          }
+        }
       }
     },
 
-    displayDetails: function() {
-      var event = new CustomEvent('aerisCatalogueDisplayMetadata', {
+    removeCartItem: function(collectionId) {
+      var cartClone = this.cartContent;
+
+      cartClone.forEach(function(collection, ind) {
+        if (collection.collectionId === collectionId) {
+          cartClone.splice(ind, 1);
+        }
+      });
+      this.dispatchContent();
+    },
+
+    dispatchContent: function() {
+      let event = new CustomEvent('cartContentResponse', {detail: {cartContent: this.cartContent}});
+      document.dispatchEvent(event);
+    },
+
+    removeCartItemFromEvent: function(e) {
+      var result = [];
+      var item = e.detail;
+      var collection = null;
+
+      for (let j = 0; j < this.cartContent.length; j++) {
+          collection = this.cartContent[j];
+          if (collection.collectionId === item.collectionId) {
+            for (let i = 0; i < item.elements.length; i++) {
+              let index = collection.items.elements.indexOf(item.elements[i])
+              if (index >= 0) {
+                collection.items.elements.splice(index, 1);
+              }
+              collection.filterDescription = this.filterDescription(collection);
+              collection.fileNumber -= item.fileNumber;
+              collection.fileSize -= item.totalSize;
+          }
+        }
+        if (collection.items.elements.length > 0) {
+          result.push(collection);
+        }
+      }
+      this.cartContent = result;
+      this.dispatchContent();
+    }, 
+
+    handleSuccess: function(response) {
+      let downloadEntries = response.body.entries;
+
+      if (downloadEntries.length > 0) {
+        let downloadEntry = downloadEntries[0];
+        let url_download_service = this.downloadable;
+        let obj = {
+          collectionName: this.title,
+          url: url_download_service,
+          collectionId: this.collectionId,
+          id: this.collectionId,
+          data: "",
+          fileNumber: downloadEntry.fileNumber,
+          totalSize: downloadEntry.totalSize,
+          type: "nofilter"
+        }
+        var event = new CustomEvent("addItemToCartEvent", {detail: obj,lang: this.lang});
+        document.dispatchEvent(event);
+        document.dispatchEvent(new CustomEvent("aerisLongActionStopEvent", {detail: { message: this.$t("addingToCart") }}));
+      }
+    },
+
+    handleTheme: function(theme) {
+      this.theme = theme.detail;
+      this.ensureTheme();
+    },
+
+    ensureTheme: function() {
+      if (this.theme) {
+        let listCartouche = this.$el.querySelectorAll(".cartouche");
+        for (var cartouche of listCartouche) {
+          cartouche.style.background = this.$colorLuminance(this.theme.emphasis);
+        }
+      }
+    },
+
+    displayDetails: function(e) {
+      var event = new CustomEvent("aerisCatalogueDisplayMetadata", {
         detail: {
           type: this.type,
-          uuid: this.uuid,
+          uuid: this.collectionId,
           title: this.title,
           iconClass: this.headerIconClass,
           clientTemplateName: this.clientTemplateName,
@@ -205,10 +279,47 @@ export default {
           downloadable: this.downloadable
         }
       });
-      document.dispatchEvent(event);
+      document.dispatchEvent(event);   
+    },
+    
+    addToCart: function() {
+
+      var rootUrlServiceCartInfo = this.downloadable;
+      
+      if (!this.isInCart) {
+        // Show notification
+        document.dispatchEvent(
+          new CustomEvent("aerisLongActionStartEvent", {
+            detail: { message: this.$t("addingToCart") }
+          })
+        );
+        // search the informations for the cart
+        if (this.downloadable && this.collectionId) {
+          if (this.downloadable.endsWith("/")) {
+          rootUrlServiceCartInfo =this.downloadable.slice(0, -1);
+        } 
+        var url = rootUrlServiceCartInfo + "/request?collection=" + this.collectionId;
+        this.$http.get(url).then(response => {this.handleSuccess(response);}, response => {this.handleError(response);});
+        }
+      }
     }
-
-
   }
-}
+};
 </script>
+
+<style>
+.addToCartButton,.removeToCartButton {
+  float:right;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #FAFAFA;
+}
+.removeToCartButton {
+  background:green;
+}
+.cartButton {
+  height: 20px;
+}
+</style>
