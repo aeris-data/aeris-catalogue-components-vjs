@@ -79,7 +79,7 @@ export default {
   },
 
   mounted: function() {
-    var event = new CustomEvent("aerisThemeRequest", {});
+    let event = new CustomEvent("aerisThemeRequest", {});
     document.dispatchEvent(event);
     if (this.lang) {
       this.$i18n.locale = this.lang;
@@ -88,7 +88,7 @@ export default {
 
   computed: {
     title: function() {
-      var aux = JSON.parse(this.value);
+      let aux = JSON.parse(this.value);
       if (aux.title) {
         return JSON.stringify(aux.title);
       } else {
@@ -97,7 +97,7 @@ export default {
     },
 
     description: function() {
-      var aux = JSON.parse(this.value);
+      let aux = JSON.parse(this.value);
       if (aux.description) {
         return JSON.stringify(aux.description);
       } else {
@@ -106,7 +106,7 @@ export default {
     },
 
     headerIconClass: function() {
-      var aux = JSON.parse(this.value);
+      let aux = JSON.parse(this.value);
       if (aux.plateformType) {
         return "aeris-icon aeris-icon-" + aux.plateformType;
       } else {
@@ -115,7 +115,7 @@ export default {
     },
 
     type: function() {
-      var aux = JSON.parse(this.value);
+      let aux = JSON.parse(this.value);
       if (aux.type) {
         return aux.type;
       } else {
@@ -124,7 +124,7 @@ export default {
     },
 
     clientTemplateName: function() {
-      var aux = JSON.parse(this.value);
+      let aux = JSON.parse(this.value);
       if (aux.clientTemplateName) {
         return aux.clientTemplateName;
       } else {
@@ -134,7 +134,7 @@ export default {
 
 
     projectList: function() {
-      var aux = JSON.parse(this.value);
+      let aux = JSON.parse(this.value);
       if (aux.projectList) {
         return aux.projectList;
       } else {
@@ -143,7 +143,7 @@ export default {
     },
 
     downloadable: function() {
-      var aux = JSON.parse(this.value)
+      let aux = JSON.parse(this.value)
       if (aux.downloadable) {
         return aux.downloadable;
       } else {
@@ -152,7 +152,7 @@ export default {
     },
 
     collectionId: function() {
-      var aux = JSON.parse(this.value);
+      let aux = JSON.parse(this.value);
       if (aux.id) {
         return aux.id;
       } else {
@@ -180,8 +180,8 @@ export default {
       this.cartContent = e.detail.cartContent;
 
       if (this.cartContent) {
-        for (var i =0; i <this.cartContent.length; i++) {
-          var cartItem = this.cartContent[i];
+        for (let i =0; i <this.cartContent.length; i++) {
+          let cartItem = this.cartContent[i];
           if (cartItem.collectionId== this.collectionId) {
             this.isInCart = true;
           }
@@ -190,7 +190,7 @@ export default {
     },
 
     removeCartItem: function(collectionId) {
-      var cartClone = this.cartContent;
+      let cartClone = this.cartContent;
 
       cartClone.forEach(function(collection, ind) {
         if (collection.collectionId === collectionId) {
@@ -206,9 +206,9 @@ export default {
     },
 
     removeCartItemFromEvent: function(e) {
-      var result = [];
-      var item = e.detail;
-      var collection = null;
+      let result = [];
+      let item = e.detail;
+      let collection = null;
 
       for (let j = 0; j < this.cartContent.length; j++) {
           collection = this.cartContent[j];
@@ -247,7 +247,7 @@ export default {
           totalSize: downloadEntry.totalSize,
           type: "nofilter"
         }
-        var event = new CustomEvent("addItemToCartEvent", {detail: obj,lang: this.lang});
+        let event = new CustomEvent("addItemToCartEvent", {detail: obj,lang: this.lang});
         document.dispatchEvent(event);
         document.dispatchEvent(new CustomEvent("aerisLongActionStopEvent", {detail: { message: this.$t("addingToCart") }}));
       }
@@ -261,21 +261,21 @@ export default {
     ensureTheme: function() {
       if (this.theme) {
         let listCartouche = this.$el.querySelectorAll(".cartouche");
-        for (var cartouche of listCartouche) {
+        for (let cartouche of listCartouche) {
           cartouche.style.background = this.$colorLuminance(this.theme.emphasis);
         }
       }
     },
 
     displayDetails: function(e) {
-      var event = new CustomEvent("aerisCatalogueDisplayMetadata", {
+      let event = new CustomEvent("aerisCatalogueDisplayMetadata", {
         detail: {
           type: this.type,
           uuid: this.collectionId,
           title: this.title,
           iconClass: this.headerIconClass,
           clientTemplateName: this.clientTemplateName,
-          projects: this.projects,
+          projects: JSON.stringify(this.projectList),
           downloadable: this.downloadable
         }
       });
@@ -284,7 +284,7 @@ export default {
     
     addToCart: function() {
 
-      var rootUrlServiceCartInfo = this.downloadable;
+      let rootUrlServiceCartInfo = this.downloadable;
       
       if (!this.isInCart) {
         // Show notification
@@ -298,7 +298,7 @@ export default {
           if (this.downloadable.endsWith("/")) {
           rootUrlServiceCartInfo =this.downloadable.slice(0, -1);
         } 
-        var url = rootUrlServiceCartInfo + "/request?collection=" + this.collectionId;
+        let url = rootUrlServiceCartInfo + "/request?collection=" + this.collectionId;
         this.$http.get(url).then(response => {this.handleSuccess(response);}, response => {this.handleError(response);});
         }
       }

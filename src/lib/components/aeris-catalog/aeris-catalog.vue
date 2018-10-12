@@ -286,8 +286,7 @@ export default {
       } else {
         this.currentTemplate = ''
       }
-      // no need to display project code when on a specific catalog
-      if (e.detail.projects && !this.program) {
+      if (e.detail.projects) {
         this.currentProjects = e.detail.projects;
       } else {
         this.currentProjects = "";
@@ -335,8 +334,6 @@ export default {
         detail: {}
       })
       document.dispatchEvent(e);
-      //console.log(e)
-      console.log("Connecting with metadata server")
 
       if (!(this.metadataService)) {
         console.error("AerisCatalogueSearcEvent detected but metadataService not provided in props...")
@@ -425,8 +422,6 @@ export default {
           document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
         })
 
-      console.log("SUCCESS: Response")
-      console.log(response)
       var search = response.body
 
       if (search.total === 0) {
@@ -435,6 +430,12 @@ export default {
             message: this.$t('noresult')
           }
         }))
+      }
+      // do not display project on specific catalogue
+      if ( this.program != null){
+        search.results.map(summary => {
+          summary.projectList = null;
+        });
       }
       document.dispatchEvent(new CustomEvent('aerisSummaries', {
         'detail': {
@@ -456,23 +457,12 @@ export default {
           document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
         })
 
-      console.log("ERROR: Response")
-      console.log(response)
+      
       document.dispatchEvent(new CustomEvent('aerisSummaries', {
         'detail': {
           summaries: []
         }
       }))
-      //		  var statusMessage = e.detail.error.message;
-      //	        if(!navigator.onLine) statusMessage = 'You are not connected to internet';
-      //	        var errorMessage = this._localize('error_occured', this.lang);
-      //	        if(statusMessage) errorMessage = errorMessage + ':<p>' + statusMessage + '</p>';
-      //	        this.fire('longActionStopEvent', {
-      //	          message: this._localize('loading', this.lang) + '...'
-      //	        });
-      //	        this.fire('errorNotificationMessageEvent', {
-      //	          message: errorMessage
-      //	        });
     }
 
   }
