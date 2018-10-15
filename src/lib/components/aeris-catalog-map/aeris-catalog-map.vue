@@ -60,7 +60,7 @@
 
         created: function () {
             console.log("Aeris catalog map created")
-            this.ol = window.ol;
+            this.ol = ol;
             this.aerisCatalogueStartEditEventListener = this.handleStartEditEvent.bind(this)
             document.addEventListener('aerisCatalogueStartEditEvent', this.aerisCatalogueStartEditEventListener);
             this.aerisCatalogueStopEditEventListener = this.handleStopEditEvent.bind(this)

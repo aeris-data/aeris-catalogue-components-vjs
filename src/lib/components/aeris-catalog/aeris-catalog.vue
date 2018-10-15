@@ -203,15 +203,6 @@ export default {
     document.dispatchEvent(new CustomEvent('aerisCatalogueProgram', {
       detail: this.program
     }));
-
-    document.dispatchEvent(new CustomEvent('aerisCatalogueServices', {
-      detail: Array.from(document.querySelector('aeris-catalog').attributes).filter(attribute => attribute.name.endsWith('-service')).map(attribute => {
-        return {
-          name: attribute.name,
-          value: attribute.value
-        }
-      })
-    }));
   },
 
   mounted: function() {
@@ -457,7 +448,7 @@ export default {
           document.querySelector("aeris-catalogue-search-button").style.pointerEvents = "auto";
         })
 
-      
+
       document.dispatchEvent(new CustomEvent('aerisSummaries', {
         'detail': {
           summaries: []

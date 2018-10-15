@@ -1,6 +1,6 @@
 <template>
 <div data-aeris-catalog-ui-icon-button>
-  <button type="button" :class='[theme, type, "tooltip"]' :title="title" aria-hidden="true">
+  <button type="button" :class='[theme, type, "tooltip"]' :title="title" aria-hidden="true" @click="handleClick">
     <i :class='["fa", icon]'></i>
   </button>
 </div>
@@ -53,6 +53,9 @@ export default {
       if (this.theme == "primary") {
         this.$el.querySelector("button").style.background = theme.detail.emphasis;
       }
+    },
+    handleClick() {
+      this.$emit("click");
     }
   }
 }

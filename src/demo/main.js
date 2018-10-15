@@ -19,9 +19,6 @@ import {
 Vue.use(VueColorPlugin)
 Vue.use(VueAerisLanguagePlugin)
 
-import AerisCatalogueComponents from '../lib/aeris-catalogue-components.js'
-// Vue.use(AerisCatalogueComponents);
-
 import VueCustomElementRecorder from '../lib/vue-custom-element-recorder.js'
 VueCustomElementRecorder.run();
 
