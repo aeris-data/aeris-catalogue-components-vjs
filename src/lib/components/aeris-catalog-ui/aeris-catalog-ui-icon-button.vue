@@ -54,8 +54,8 @@ export default {
         this.$el.querySelector("button").style.background = theme.detail.emphasis;
       }
     },
-    handleClick() {
-      this.$emit("click");
+    handleClick(e) {
+      window.registredAerisElements.includes("aeris-catalog-ui-icon-button") ? null : this.$emit("click");
     }
   }
 }
