@@ -46,12 +46,12 @@ import AerisParameterSearchCriteria from "./components/aeris-catalog-criteria/ae
 import AerisProjectSearchCriteria from "./components/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria/aeris-project-search-criteria.vue";
 import AerisThesaurusItemTreeCheckboxLayout from "./components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout.vue";
 
-const css = [
+var css = [
   "https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css",
   "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css",
   "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.css"
 ];
-const js = [
+var js = [
   "https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js",
   "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js",
@@ -59,21 +59,23 @@ const js = [
   "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.js"
 ];
 
-css.forEach(file => {
-  let link = document.createElement("link");
+var i;
+for (i = 0; i < css.length; i++) {
+  var link = document.createElement("link");
   link.setAttribute("type", "text/css");
   link.setAttribute("rel", "stylesheet");
-  link.setAttribute("href", file);
+  link.setAttribute("href", css[i]);
   document.head.appendChild(link);
-});
+}
 
-js.forEach(file => {
-  let script = document.createElement("script");
+for (i = 0; i < js.length; i++) {
+  var script = document.createElement("script");
   script.setAttribute("type", "text/javascript");
-  script.setAttribute("src", file);
+  script.setAttribute("src", js[i]);
   document.head.appendChild(script);
-});
-const components = [
+}
+
+var components = [
   AerisUiInput,
   AerisUiCheckbox,
   AerisUiCheckboxList,
@@ -121,9 +123,9 @@ const components = [
 ];
 
 export default {
-  install: Vue => {
+  install: function(Vue) {
     Vue.use(AerisMetadataComponents);
-    for (let component in components) {
+    for (var component in components) {
       if (components[component]) {
         Vue.component(components[component].name, components[component]);
       }
