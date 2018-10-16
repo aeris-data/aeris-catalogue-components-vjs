@@ -4,13 +4,12 @@
   "version": "0.17.2",
   "author": "Aeris",
   "private": false,
-  "main": "src/lib/aeris-catalogue-components.js",
+  "main": "dist/aeris-catalogue-components-vjs-simple.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf --progress",
     "build": "node build/build.js"
   },
   "dependencies": {
-    "aeris-metadata-components-vjs": "git+https://git@github.com/aeris-data/aeris-metadata-components-vjs.git#develop",
     "aeris-mixins": "^0.1.1",
     "marked": "0.3.9",
     "moment": "^2.22.1",

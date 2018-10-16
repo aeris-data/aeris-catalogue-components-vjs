@@ -1,31 +1,27 @@
-'use strict'
-const path = require('path')
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.base.conf')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const PACKAGE = require('../package.json')
-const buildVersion = PACKAGE.version
-const buildName = PACKAGE.name
+"use strict";
+const path = require("path");
+const webpack = require("webpack");
+const merge = require("webpack-merge");
+const baseWebpackConfig = require("./webpack.base.conf");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const PACKAGE = require("../package.json");
+const buildVersion = PACKAGE.version;
+const buildName = PACKAGE.name;
 
 const webpackConfig = merge(baseWebpackConfig, {
-  entry: {
-    app: './src/lib/main.js'
-  },
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    publicPath: '/dist/',
-    filename: buildName + '_' + buildVersion + '.js'
+    path: path.resolve(__dirname, "../dist"),
+    publicPath: "/dist/"
   },
-  devtool: '#source-map',
+  devtool: "#source-map",
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': {
+      "process.env": {
         NODE_ENV: '"production"'
       }
     }),
-    new CleanWebpackPlugin(['dist/*.*'], {
-      root: path.resolve(__dirname, '../')
+    new CleanWebpackPlugin(["dist/*.*"], {
+      root: path.resolve(__dirname, "../")
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -34,6 +30,21 @@ const webpackConfig = merge(baseWebpackConfig, {
       sourceMap: true
     })
   ]
-})
+});
 
-module.exports = webpackConfig
+module.exports = [
+  merge(webpackConfig, {
+    entry: path.resolve("./src/lib/main.js"),
+    output: {
+      filename: "aeris-catalogue-components-vjs_" + buildVersion + ".js"
+    }
+  }),
+  merge(webpackConfig, {
+    entry: path.resolve("./src/lib/aeris-catalogue-components.js"),
+    output: {
+      filename: "aeris-catalogue-components-vjs-simple.js",
+      libraryTarget: 'umd',
+      library: 'AerisCatalogueComponents',
+    }
+  })
+];

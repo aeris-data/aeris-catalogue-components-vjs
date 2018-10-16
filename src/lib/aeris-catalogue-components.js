@@ -1,5 +1,3 @@
-import AerisMetadataComponents from "aeris-metadata-components-vjs";
-
 import AerisUiInput from "./components/aeris-catalog-ui/aeris-catalog-ui-input.vue";
 import AerisUiCheckbox from "./components/aeris-catalog-ui/aeris-catalog-ui-checkbox.vue";
 import AerisUiCheckboxList from "./components/aeris-catalog-ui/aeris-catalog-ui-checkbox-list.vue";
@@ -123,8 +121,7 @@ var components = [
 ];
 
 export default {
-  install: function(Vue) {
-    Vue.use(AerisMetadataComponents);
+  install: (Vue) => {
     for (var component in components) {
       if (components[component]) {
         Vue.component(components[component].name, components[component]);
