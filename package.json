@@ -1,7 +1,7 @@
 {
   "name": "aeris-catalogue-components-vjs",
   "description": "Aeris catalogue components. ",
-  "version": "0.17.2",
+  "version": "0.17.3",
   "author": "Aeris",
   "private": false,
   "main": "dist/aeris-catalogue-components-vjs-simple.js",
