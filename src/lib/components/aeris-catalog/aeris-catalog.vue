@@ -19,7 +19,7 @@
 }
 </i18n>
 <template>
-<div :style="{'--heightMap': heightMap, '--heightSheet': heightSheet}" data-aeris-catalog :class="{'withMap': !hidemap}">
+<div data-aeris-catalog>
 
   <aeris-notifier></aeris-notifier>
 
@@ -31,10 +31,6 @@
       <slot name="criteria"></slot>
     </section>
   </aeris-catalog-criteria>
-
-  <aeris-catalog-map data-map v-if="!hidemap" :hidemap="hidemap">
-    <slot name="buttons-map"></slot>
-  </aeris-catalog-map>
 
   <aeris-catalog-summaries data-summaries :message="messageSummaries">
   </aeris-catalog-summaries>
@@ -67,26 +63,18 @@ export default {
       type: String,
       default: 'en'
     },
-    hidemap: {
-      type: Boolean,
-      default: false
-    },
-
     metadataService: {
       type: String,
       default: null
     },
-
     program: {
       type: String,
       default: null
     },
-
     cartService: {
       type: String,
       default: null
     },
-
     cartToken: {
       type: String,
       default: null
@@ -94,10 +82,6 @@ export default {
     edit: {
       type: Boolean,
       default: false
-    },
-    ratioMapSheet: {
-      type: String,
-      default: "1:3"
     },
     customSearch: {
       type: Boolean,
@@ -212,12 +196,6 @@ export default {
   },
 
   computed: {
-    heightMap() {
-      return `${this.ratioMapSheet.split(":")[0]}fr`;
-    },
-    heightSheet() {
-      return `${this.ratioMapSheet.split(":")[1]}fr`;
-    }
   },
 
   data() {
@@ -347,6 +325,8 @@ export default {
         }
       }))
       // do not search if there's no criteria
+        console.log(this.program)
+        console.log(e.detail)
       if ( (!this.program) &&
     		  ((!e.detail.collections || e.detail.collections.length < 1) && (!e.detail.keywords || e.detail.keywords.length < 1) && (!e.detail.box || e.detail.box.north == "")
     		 && (!e.detail.temporal || e.detail.temporal.from == "")  && (!e.detail.platforms) && (!e.detail.sublevels) && (!e.detail.instruments) && (!e.detail.parameters) && (!e.detail.projects))
@@ -475,14 +455,6 @@ export default {
   position: relative;
 }
 
-[data-aeris-catalog].withMap {
-  grid-template-columns: 20% 20% 1fr;
-  grid-template-rows: 60px var(--heightMap) var(--heightSheet);
-  grid-template-areas: "criteria cart map"
-                       "criteria summaries map"
-                       "criteria summaries sheet";
-}
-
 [data-aeris-catalog] [data-criteria="container"] {
     grid-area: criteria;
     position: relative;
@@ -509,10 +481,6 @@ export default {
 [data-aeris-catalog] [data-summaries] {
   grid-area: summaries;
   position: relative;
-}
-
-[data-aeris-catalog] [data-map] {
-    grid-area: map;
 }
 
 [data-aeris-catalog] [data-cart] {

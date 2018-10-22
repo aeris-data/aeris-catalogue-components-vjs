@@ -1,6 +1,6 @@
 <template>
 <div>
-  <aeris-catalog metadata-service="http://localhost:9080/catalogue/rest/metadatarecette/" message="Test message : vous êtes sur le catalogue aeris" criteria-header-icon-color="grey" criteria-background-color="#F5F5F5" criteria-content-primary-color="grey" summary-bar-width="400px" summary-max-length="200" cart-token="aeris" cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart">
+  <aeris-catalog metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/" message="Test message : vous êtes sur le catalogue aeris" criteria-header-icon-color="grey" criteria-background-color="#F5F5F5" criteria-content-primary-color="grey" summary-bar-width="400px" summary-max-length="200" cart-token="aeris" cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart">
     <div slot="criteria">
       <aeris-keyword-search-criteria></aeris-keyword-search-criteria>
       <aeris-project-search-criteria></aeris-project-search-criteria>
@@ -19,9 +19,6 @@
       <aeris-catalogue-maximize-button></aeris-catalogue-maximize-button>
       <aeris-catalogue-reset-button></aeris-catalogue-reset-button>
       <aeris-catalogue-search-button></aeris-catalogue-search-button>
-    </div>
-    <div slot="buttons-map">
-      <aeris-catalogue-edit-button></aeris-catalogue-edit-button>
     </div>
   </aeris-catalog>
   <aeris-catalog-help-content helpcookie="aeris-help-popup"></aeris-catalog-help-content>
