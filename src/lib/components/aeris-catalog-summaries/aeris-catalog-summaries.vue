@@ -3,12 +3,14 @@
   "en": {
     "message": "Please make a search to access the content",
     "nometadata": "No metadata sheet found",
-    "showMore": "Show more"
+    "showMore": "Show more",
+    "resultsFound": "Results found"
   },
   "fr": {
     "message": "Veuillez faire une recherche pour accéder au contenu",
     "nometadata": "Aucune fiche de métadonnées trouvée",
-    "showMore": "Voir plus"
+    "showMore": "Voir plus",
+    "resultsFound": "Résultats trouvés"
   }
 }
 </i18n>
@@ -17,6 +19,9 @@
 <div data-aeris-catalog-summaries-bar class="always-visible" :class="visibilityClass">
   <template v-if="summaries">
     <template v-if="summaries.length > 0">
+      <div>
+        {{$t('resultsFound')}}{{': '+this.total}}
+      </div>
       <section>
         <div v-for="summary in summaries" :key="summary.id">
           <aeris-catalog-default-summary :value="JSON.stringify(summary)" deployed="true" v-if="isDefaultSummary(summary)" :max-length="summaryMaxLength"></aeris-catalog-default-summary>
