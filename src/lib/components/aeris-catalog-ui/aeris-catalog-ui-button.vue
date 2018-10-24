@@ -22,6 +22,35 @@ export default {
     text: {
       type: String
     }
+  },
+
+  data() {
+    return {
+      aerisThemeListener: null
+    }
+  },
+
+  created() {
+    this.aerisThemeListener = this.handleTheme.bind(this);
+    document.addEventListener('aerisTheme', this.aerisThemeListener);
+  },
+
+  mounted() {
+    document.dispatchEvent(new CustomEvent('aerisThemeRequest', {}));
+  },
+
+  destroyed() {
+    document.removeEventListener('aerisTheme', this.aerisThemeListener);
+    this.aerisThemeListener = null;
+  },
+
+  methods: {
+
+    handleTheme: function(theme) {
+      if (this.theme == "primary") {
+        this.$el.querySelector("button").style.background = theme.detail.emphasis;
+      }
+    }
   }
 }
 </script>
@@ -33,7 +62,7 @@ export default {
   align-items: center;
   border: none;
   outline: none;
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
   padding: 16px;
   background: #ddd;
   color: #444;
@@ -43,6 +72,10 @@ export default {
 
 [data-aeris-catalog-ui-button] button i {
   margin-right: 10px;
+}
+
+[data-aeris-catalog-ui-button] .primary {
+  color: #FAFAFA;
 }
 
 [data-aeris-catalog-ui-button] .accent {
