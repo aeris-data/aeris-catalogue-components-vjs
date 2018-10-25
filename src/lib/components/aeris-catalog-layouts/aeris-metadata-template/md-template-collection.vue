@@ -1,6 +1,6 @@
 <template>
 <div data-template="metadata-panel">
-  <aeris-metadata-description :markdown="true" :lang="lang"></aeris-metadata-description>
+  <aeris-metadata-description :markdown="true" :lang="lang" show-title="false"></aeris-metadata-description>
   <aeris-metadata-contacts :lang="lang"></aeris-metadata-contacts>
   <aeris-metadata-spatial-extents :lang="lang"></aeris-metadata-spatial-extents>
   <aeris-metadata-temporal-extents :lang="lang"></aeris-metadata-temporal-extents>
