@@ -188,7 +188,7 @@ export default {
 
 [data-aeris-catalog-summaries-bar] > div:first-child{
   position: absolute;
-  top: -20px;
+  top: -25px;
 }
 
 [data-aeris-catalog-summaries-bar]>header input {
