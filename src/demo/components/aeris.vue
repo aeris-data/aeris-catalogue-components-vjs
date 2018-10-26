@@ -15,10 +15,8 @@
       <aeris-collection-search-criteria headertitle="campaigns" headericonclass="fa fa-map-o" inclusion="CAPITOUL,ESCOMPTE,PASSY" downloadable="ESCOMPTE"></aeris-collection-search-criteria>
     </div>
     <div slot="buttons-criteria">
-      <aeris-catalogue-help-button></aeris-catalogue-help-button>
-      <aeris-catalogue-maximize-button></aeris-catalogue-maximize-button>
-      <aeris-catalogue-reset-button></aeris-catalogue-reset-button>
-      <aeris-catalogue-search-button></aeris-catalogue-search-button>
+      <aeris-catalogue-reset-text-button></aeris-catalogue-reset-text-button>
+      <aeris-catalogue-search-text-button></aeris-catalogue-search-text-button>
     </div>
   </aeris-catalog>
   <aeris-catalog-help-content helpcookie="aeris-help-popup"></aeris-catalog-help-content>
