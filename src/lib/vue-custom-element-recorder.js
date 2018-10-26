@@ -51,12 +51,10 @@ import AerisProjectSearchCriteria from "./components/aeris-catalog-criteria/aeri
 import AerisThesaurusItemTreeCheckboxLayout from "./components/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout.vue";
 
 const css = [
-  "https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css",
   "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css",
   "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.css"
 ];
 const js = [
-  "https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js",
   "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-bash.min.js",
