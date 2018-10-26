@@ -186,6 +186,11 @@ export default {
   padding: 0 10px;
 }
 
+[data-aeris-catalog-summaries-bar] > div:first-child{
+  position: absolute;
+  top: -20px;
+}
+
 [data-aeris-catalog-summaries-bar]>header input {
   color: #555;
 }
