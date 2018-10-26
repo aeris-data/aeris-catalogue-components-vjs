@@ -1,5 +1,6 @@
 <template>
-<span v-html="contenu"></span>
+  <component v-if="templateVueComponents.includes(elementName)" :is="elementName"></component>
+  <span v-else v-html="contenu"></span>
 </template>
 <script>
 export default {
@@ -26,6 +27,12 @@ export default {
 
   },
 
+  data() {
+    return {
+      templateVueComponents: ["md-template-chamber-measurement-metadata", "md-template-ir-spectrum-metadata", "md-template-mass-spectrum-metadata"]
+    }
+  },
+
   watch: {
 
 
@@ -40,6 +47,10 @@ export default {
   },
 
   computed: {
+
+    elementName() {
+      return this.type ? "md-template-"+this.type.toLowerCase().replace(/_/g, '-') : null;
+    },
 
 	  contenu: function() {
 		  if (!this.edit) {
@@ -74,11 +85,6 @@ export default {
 		  }
 	  }
 
-  },
-
-   data () {
-    return {
-    }
   },
 
   updated: function() {
