@@ -55,7 +55,6 @@ const css = [
 ];
 const js = [
   "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js",
-  "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.js"
 ];
 
 css.forEach(file => {
