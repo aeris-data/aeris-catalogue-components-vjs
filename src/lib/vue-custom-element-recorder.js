@@ -52,12 +52,9 @@ import AerisThesaurusItemTreeCheckboxLayout from "./components/aeris-catalog-lay
 
 const css = [
   "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol.css",
-  "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.css"
 ];
 const js = [
   "https://cdnjs.cloudflare.com/ajax/libs/ol3/4.2.0/ol-debug.js",
-  "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js",
-  "https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-bash.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.js"
 ];
 
