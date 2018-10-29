@@ -226,7 +226,7 @@ export default {
         let searchArray = this.selectedItems.concat(searchValues);
         this.selectedItems = searchArray;
       } else {
-    	  this.selectedItems.splice(this.selectedItems.indexOf(searchString), 1);
+    	  this.selectedItems.splice(this.selectedItems.indexOf(searchString.split(";")[0]), 1);
       }
     },
 
