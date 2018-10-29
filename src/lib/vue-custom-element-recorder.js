@@ -181,7 +181,7 @@ const VueCustomElementRecorder = {
 
     timer = setInterval(function() {
       registerComponents();
-    }, 1000);
+    }, 200);
   }
 };
 

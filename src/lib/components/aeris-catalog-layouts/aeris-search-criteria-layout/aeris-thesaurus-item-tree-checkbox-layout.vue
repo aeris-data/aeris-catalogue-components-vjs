@@ -50,8 +50,8 @@
 	    </div>
 	    <div class="third-level" v-show="thesaurusItem.deployed">
 		      <div v-for="(thirdthesaurusItem, indexThirdthesaurusItem) of thesaurusItem.thesaurusItems" :key="thirdthesaurusItem.search">
-		        <input type="checkbox" :id="`${name}${item.name}${thirdthesaurusItem.name}`" :checked="thirdthesaurusItem.checked" @change="checkThirdLevel(index, indexSubitem, indexThirdthesaurusItem)">
-		        <label :for="`${name}${item.name}${thirdthesaurusItem.name}`">{{(thirdthesaurusItem.label)}}</label>
+		        <input type="checkbox" :id="`${name}${item.name}${thesaurusItem.name}${thirdthesaurusItem.name}`" :checked="thirdthesaurusItem.checked" @change="checkThirdLevel(index, indexSubitem, indexThirdthesaurusItem)">
+		        <label :for="`${name}${item.name}${thesaurusItem.name}${thirdthesaurusItem.name}`">{{(thirdthesaurusItem.label)}}</label>
 		      </div>
 	    </div>
       </div>
@@ -147,7 +147,7 @@ export default {
     		return 0;
     	}
     },
-    
+
     thirdLevelLength: function(thesaurusItem) {
     	if (thesaurusItem && thesaurusItem.thesaurusItems) {
     		return thesaurusItem.thesaurusItems.length;
@@ -155,23 +155,23 @@ export default {
     		return 0;
     	}
     },
-    
+
 	handleTheme: function(theme) {
     	this.theme = theme;
     	this.colorBaddges(this.theme);
     },
-    
+
     colorBaddges: function(theme) {
 	  if (this.$el.querySelectorAll(".badge")) {
         this.$el.querySelectorAll(".badge").forEach(el => el.style.background = theme.detail.emphasis);
       }
     },
-    
+
     checkFirstLevel(index)  {
       this.items[index].checked = !this.items[index].checked;
       this.items[index].deployed = this.items[index].checked;
       if (this.items[index].thesaurusItems) {
-    	  for (let i = 0; i < this.items[index].thesaurusItems.length; i++) { 
+    	  for (let i = 0; i < this.items[index].thesaurusItems.length; i++) {
         	  this.checkSecondLevel(index, i, this.items[index].checked);
     		}
       }
@@ -191,7 +191,7 @@ export default {
     		this.items[index].thesaurusItems[indexSubitem].checked = !this.items[index].thesaurusItems[indexSubitem].checked;
     	}
     	if (this.items[index].thesaurusItems[indexSubitem].thesaurusItems) {
-    	  for (let i = 0; i < this.items[index].thesaurusItems[indexSubitem].thesaurusItems.length; i++) { 
+    	  for (let i = 0; i < this.items[index].thesaurusItems[indexSubitem].thesaurusItems.length; i++) {
     		  this.checkThirdLevel(index, indexSubitem, i, this.items[index].thesaurusItems[indexSubitem].checked);
     		}
     	}
@@ -238,7 +238,7 @@ export default {
     	  this.colorBaddges(this.theme);
         })
     },
-    
+
     toggleThirdLevel(index, indexSubitem) {
         this.items[index].thesaurusItems[indexSubitem].deployed = !this.items[index].thesaurusItems[indexSubitem].deployed;
         this.$nextTick(function () {
@@ -327,7 +327,7 @@ export default {
            // Defer the callback to be executed after the next DOM update cycle
            // otherwise badges won't be visible on first load
            this.colorBaddges(this.theme);
-        })  	  
+        })
     },
 
     handleError: function(response) {
@@ -339,7 +339,7 @@ export default {
       console.log('Error ' + error + ': ' + message);
     },
 
-    handleSearchBarEvent: function(e) {      
+    handleSearchBarEvent: function(e) {
       if (this.selectedItems.length > 0) {
         e.detail[this.nameSubitems] = this.selectedItems;
       }
@@ -350,7 +350,7 @@ export default {
     	for (i = 0; i < this.items.length; i++) {
     		this.items[i].checked = true;
     		this.checkFirstLevel(i);
-    	}  
+    	}
     	this.selectedItems = [];
     }
   }
@@ -372,7 +372,7 @@ export default {
   padding: 5px 0;
 }
 
-[data-aeris-thesaurus-item-tree-checkbox-layout] .second-level {    
+[data-aeris-thesaurus-item-tree-checkbox-layout] .second-level {
   	margin-left: 12px;
   	padding: 5px 0;
 }
