@@ -6,17 +6,15 @@
     },
     "fr": {
     "keywords": "Mots-clés",
-    "fulltextsearch": "Recherche full text"
+    "fulltextsearch": "Recherche text libre"
     }
     }
 </i18n>
 
 <template>
     <div data-aeris-keyword-search-criteria>
-        <aeris-catalog-search-box id="box" :title="$t('fulltextsearch')" header-icon-class="fa fa-terminal"
-                                  :deployed="deployed">
-            <aeris-keyword-search-criteria-content
-                    :isShowOperators="isShowOperators"></aeris-keyword-search-criteria-content>
+        <aeris-catalog-search-box id="box" :title="$t('fulltextsearch')" header-icon-class="fa fa-terminal" :deployed="deployed">
+            <aeris-keyword-search-criteria-content :isShowOperators="isShowOperators"></aeris-keyword-search-criteria-content>
         </aeris-catalog-search-box>
     </div>
 </template>

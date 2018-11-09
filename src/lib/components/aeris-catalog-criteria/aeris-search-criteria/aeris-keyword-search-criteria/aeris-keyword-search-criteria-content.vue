@@ -16,16 +16,10 @@
 <template>
     <div data-aeris-keyword-search-criteria>
         <div class="operator" :v-show="isShowOperators">
-            <input type="radio" :id="typeIndex('or')" value="or" v-model="operator">
-            <label :for="typeIndex('or')">{{$t('or')}}</label>
-            <br>
-            <input type="radio" :id="typeIndex('and')" value="and" v-model="operator">
-            <label :for="typeIndex('and')">{{$t('and')}}</label>
-            <br>
+            <label :for="typeIndex('or')"><input type="radio" :id="typeIndex('or')" value="or" v-model="operator" > {{$t('or')}}</label>
+            <label :for="typeIndex('and')"><input type="radio" :id="typeIndex('and')" value="and" v-model="operator"> {{$t('and')}}</label>
         </div>
-        <aeris-catalog-ui-input name="keywords" :placeholder="$t('keywords')" :value="current"
-                                @input="current = $event.target.value"
-                                @keypress="inputKeyword"></aeris-catalog-ui-input>
+        <aeris-catalog-ui-input name="keywords" :value="current" @input="current = $event.target.value" @keyup.enter="inputKeyword" autofocus></aeris-catalog-ui-input>
         <aeris-cartouche edit="true" v-for="keyword in keywords" :key="keyword" :itemref="keyword">{{keyword}}
         </aeris-cartouche>
     </div>
@@ -103,8 +97,8 @@
 
             handleKeywordDeletion: function (e) {
                 console.log(e.detail.itemref)
-                var itemref = e.detail.itemref;
-                var index = this.keywords.indexOf(itemref)
+                let itemref = e.detail.itemref;
+                let index = this.keywords.indexOf(itemref)
                 if (index > -1) {
                     this.keywords.splice(index, 1);
                 }
@@ -118,7 +112,7 @@
 
             handleCatalogueSearch: function (e) {
                 if (this.current.length > 0) {
-                    var aux = this.current;
+                    let aux = this.current;
                     this.keywords.push(aux);
                     this.current = ""
                 }
@@ -127,11 +121,11 @@
             },
 
             inputKeyword: function (e) {
-                var withComma = this.current.trim();
+                let withComma = this.current.trim();
                 if (withComma.length < 2) return;
-                var keyCode = e.keyCode ? e.keyCode : e.charCode;
+                let keyCode = e.keyCode ? e.keyCode : e.charCode;
                 if (withComma.endsWith(',') || keyCode === 13 || keyCode === 32) {
-                    var withoutComma = (withComma.endsWith(',')) ? withComma.substring(0, (withComma.length - 1)) : withComma;
+                    let withoutComma = (withComma.endsWith(',')) ? withComma.substring(0, (withComma.length - 1)) : withComma;
                     if (!this.keywords) this.keywords = [];
                     this.keywords.push(withoutComma);
                     this.current = '';
