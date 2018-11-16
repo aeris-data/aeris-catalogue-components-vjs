@@ -8,7 +8,8 @@
 	  "validate": "Validate",
 	  "downloadScript": "Download script",
 	  "loading": "Loading",
-	  "downloadingFiles": "Downloading files...",
+    "downloadingFiles": "Downloading files...",
+    "removeFromDownload": "Remove from download list",
 	  "years": "Year(s):",
 	  "download": "Download",
 	  "copy": "Copy script to the clipboard",
@@ -22,7 +23,8 @@
 	  "validate": "Valider",
 	  "downloadScript": "Script de téléchargement",
 	  "loading": "Chargement",
-	  "downloadingFiles": "Téléchargement en cours...",
+    "downloadingFiles": "Téléchargement en cours...",
+    "removeFromDownload": "Supprimer de la liste de téléchargement",
 	  "years": "Année(s):",
 	  "download": "Télécharger",
 	  "copy": "Copier le script dans le presse-papier",
@@ -47,7 +49,7 @@
       <ul class="item-list">
         <template id="cartTemplate" v-for="item in this.cartContent">
           <li class="cart-line" :key="item.id">
-            <i class="fa fa-times" @click="removeCartItem(item.collectionId)"></i>
+            <i class="fa fa-times" @click="removeCartItem(item.collectionId)" :title="$t('removeFromDownload')"></i>
             <div>
               <aeris-metadata-international-field class="cart-collection-name" :content="item.collectionName" :lang="lang" no-label-float></aeris-metadata-international-field>
               <span>
