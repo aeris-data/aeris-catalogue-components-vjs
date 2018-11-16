@@ -2,12 +2,12 @@
     {
     "en": {
             "keywords": "Full text search",
-            "titleHelp" : "To perform a search you can use the following operators:\\n'-'to exclude a term from the search\\n'+'to obtain results that must contain the terms\\nIf no operator is used, then the 'or' operator will be used\\nExample query: iagos + mistral -Menorca "
+            "titleHelp" : "To perform a search you can use the following operators:\\n '-' to exclude a term from the search\\n '+' to obtain results that must contain the terms\\nIf no operator is used, then the 'or' operator will be used\\nExample query: iagos + mistral -Menorca "
 
           },
     "fr": {
             "keywords": "Recherche texte libre",
-            "titleHelp" :"Pour effectuer une recherche vous pouvez utilisez les opérateurs suivant:\\n'-' pour exclure un terme de la recherche\\n'+' pour avoir des resultats qui contiennent obligatoirement les termes\\nSi aucun opérateur n'est utilisé, alors l'opérateur 'ou' sera utilisé\\nExemple de requête : iagos+mistral -Menorca"
+            "titleHelp" :"Pour effectuer une recherche vous pouvez utiliser les opérateurs suivant:\\n '-' pour exclure un terme de la recherche\\n '+' pour avoir des résultats qui contiennent obligatoirement les termes\\nSi aucun opérateur n'est utilisé, alors l'opérateur 'ou' sera utilisé\\nExemple de requête : iagos+mistral -Menorca"
           }
     }
 </i18n>

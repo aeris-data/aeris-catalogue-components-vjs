@@ -1,7 +1,7 @@
 <template>
     <div data-aeris-keyword-search-criteria>
         <aeris-catalog-search-box header="false" :deployed="deployed">
-            <aeris-keyword-search-criteria-content :isShowOperators="isShowOperators"></aeris-keyword-search-criteria-content>
+            <aeris-keyword-search-criteria-content ></aeris-keyword-search-criteria-content>
         </aeris-catalog-search-box>
     </div>
 </template>
