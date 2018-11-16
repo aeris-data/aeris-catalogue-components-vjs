@@ -30,6 +30,8 @@ import AerisCatalogMaximizeButton from "./components/aeris-catalog-buttons/aeris
 import AerisCatalogSearchButton from "./components/aeris-catalog-buttons/aeris-catalogue-search-button.vue";
 import AerisCatalogResetButton from "./components/aeris-catalog-buttons/aeris-catalogue-reset-button.vue";
 import AerisCatalogEditButton from "./components/aeris-catalog-buttons/aeris-catalogue-edit-button.vue";
+import AerisCatalogSelectMapButton, from "./components/aeris-catalog-buttons/aeris-catalogue-select-map-button.vue";
+import AerisCatalogDrawMapButton, from "./components/aeris-catalog-buttons/aeris-catalogue-draw-map-button.vue";
 import AerisCatalogHelpButton from "./components/aeris-catalog-buttons/aeris-catalogue-help-button.vue";
 import AerisCatalogCart from "./components/aeris-catalog-cart/aeris-catalog-cart.vue";
 import AerisCatalogHelp from "./components/aeris-catalog-help/aeris-catalog-help-content.vue";
@@ -105,6 +107,8 @@ var components = [
   AerisCatalogSearchButton,
   AerisCatalogResetButton,
   AerisCatalogEditButton,
+    AerisCatalogSelectMapButton,
+    AerisCatalogDrawMapButton,
   AerisCatalogHelpButton,
   AerisCatalogCart,
   AerisCatalogHelp,

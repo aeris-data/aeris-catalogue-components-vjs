@@ -1,7 +1,5 @@
 import Vue from "vue";
 
-import EurochampMetadataComponents from "eurochamp-components";
-
 import AerisUiInput from "./components/aeris-catalog-ui/aeris-catalog-ui-input.vue";
 import AerisUiCheckbox from "./components/aeris-catalog-ui/aeris-catalog-ui-checkbox.vue";
 import AerisUiCheckboxList from "./components/aeris-catalog-ui/aeris-catalog-ui-checkbox-list.vue";
@@ -36,6 +34,8 @@ import AerisCatalogSearchTextButton from "./components/aeris-catalog-buttons/aer
 import AerisCatalogResetButton from "./components/aeris-catalog-buttons/aeris-catalogue-reset-button.vue";
 import AerisCatalogResetTextButton from "./components/aeris-catalog-buttons/aeris-catalogue-reset-text-button.vue";
 import AerisCatalogEditButton from "./components/aeris-catalog-buttons/aeris-catalogue-edit-button.vue";
+import AerisCatalogSelectMapButton from "./components/aeris-catalog-buttons/aeris-catalogue-select-map-button.vue";
+import AerisCatalogDrawMapButton  from "./components/aeris-catalog-buttons/aeris-catalogue-draw-map-button.vue";
 import AerisCatalogHelpButton from "./components/aeris-catalog-buttons/aeris-catalogue-help-button.vue";
 import AerisCatalogCart from "./components/aeris-catalog-cart/aeris-catalog-cart.vue";
 import AerisCatalogHelp from "./components/aeris-catalog-help/aeris-catalog-help-content.vue";
@@ -112,6 +112,8 @@ const components = [
   AerisCatalogResetButton,
   AerisCatalogResetTextButton,
   AerisCatalogEditButton,
+    AerisCatalogSelectMapButton,
+    AerisCatalogDrawMapButton,
   AerisCatalogHelpButton,
   AerisCatalogCart,
   AerisCatalogHelp,
@@ -146,7 +148,6 @@ const VueCustomElementRecorder = {
         window.registredAerisElements.indexOf("aeris-commons-components-vjs") > -1 &&
         window.registredAerisElements.indexOf("aeris-metadata-components-vjs") > -1
       ) {
-        Vue.use(EurochampMetadataComponents);
         console.info("trying to register aeris catalogue components");
         console.info("Début registration des aeris catalogue components");
         console.info("Registred elements at this time: " + window.registredAerisElements);

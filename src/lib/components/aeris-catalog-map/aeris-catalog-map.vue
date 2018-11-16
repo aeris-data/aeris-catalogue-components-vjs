@@ -5,7 +5,8 @@
             <div id="map" class="map" tabindex="0"></div>
             <div id="mapCoordinates" class="map-coordinates"></div>
             <div class="button">
-                <slot></slot>
+                <slot name="select"></slot>
+                <slot name="draw"></slot>
             </div>
         </div>
     </div>
@@ -43,8 +44,15 @@
             }
         },
 
-
-        watch: {},
+        watch: {
+            isDrawMode(value){
+                if(value){
+                    this.handleStartEditEvent();
+                }else{
+                    this.handleStopEditEvent();
+                }
+            }
+        },
 
         destroyed: function () {
             document.removeEventListener('aerisCatalogueStartEditEvent', this.aerisCatalogueStartEditEventListener);
@@ -55,6 +63,8 @@
             this.aerisCatalogueAddSelectionListener = null;
             document.removeEventListener('aerisCatalogueMapClearSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
             this.aerisCatalogueRemoveSelectionListener = null;
+            document.removeEventListener('aerisSpatialExtentMapMode', this.aerisSpatialExtentMapModeListener);
+            this.aerisSpatialExtentMapModeListener = null;
 
         },
 
@@ -69,7 +79,8 @@
             document.addEventListener('aerisCatalogueMapAddSelectionRequest', this.aerisCatalogueAddSelectionListener);
             this.aerisCatalogueRemoveSelectionListener = this.handleRemoveSelectionEvent.bind(this)
             document.addEventListener('aerisCatalogueMapClearSelectionRequest', this.aerisCatalogueRemoveSelectionListener);
-
+            this.aerisSpatialExtentMapModeListener = this.aerisSpatialExtentMapModeHandle.bind(this);
+            document.addEventListener('aerisSpatialExtentMapMode', this.aerisSpatialExtentMapModeListener);
         },
 
         mounted: function () {
@@ -108,6 +119,9 @@
                     minZoom: 0,
                 })
             });
+
+            let extent = ol.proj.transformExtent([-150, 70, 150, -50], 'EPSG:4326', 'EPSG:900913');
+            this.map.getView().fit(extent, this.map.getSize());
 
             /* Add layers */
             this.map.addLayer(this.previewLayer);
@@ -205,11 +219,12 @@
                 previewLayer: null,
                 previewClusteredLayer: null,
                 defaultCenter: null,
-                isDrawMode: false,
+                isDrawMode : false,
                 aerisCatalogueStartEditEventListener: null,
                 aerisCatalogueStopEditEventListener: null,
                 aerisCatalogueAddSelectionListener: null,
                 aerisCatalogueRemoveSelectionListener: null,
+                aerisSpatialExtentMapModeListener : null,
                 draw: null,
                 selectionBox: null,
                 area: null
@@ -286,12 +301,10 @@
             },
 
             handleStartEditEvent: function () {
-                this.isDrawMode = true;
                 this.map.addInteraction(this.draw);
             },
 
             handleStopEditEvent: function () {
-                this.isDrawMode = false;
                 this.map.removeInteraction(this.draw);
             },
 
@@ -404,6 +417,10 @@
                     source: this.clusterPreviewClusteredSource,
                     style: this.featuresStyle
                 });
+            },
+
+            aerisSpatialExtentMapModeHandle(e){
+                this.isDrawMode = e.detail;
             }
 
         }
@@ -419,12 +436,15 @@
 
     [data-aeris-catalog-map] .button {
         position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         top: 2%;
         left: 2%;
     }
 
     [data-aeris-catalog-map].hidemap {
-        overflow: ;
+        overflow: hidden;
     }
 
     [data-aeris-catalog-map].showmap {
