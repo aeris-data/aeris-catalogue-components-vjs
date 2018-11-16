@@ -2,7 +2,7 @@
     {
     "en": {
             "keywords": "Full text search",
-            "titleHelp" : "toto"
+            "titleHelp" : "To perform a search you can use the following operators:\\n'-'to exclude a term from the search\\n'+'to obtain results that must contain the terms\\nIf no operator is used, then the 'or' operator will be used\\nExample query: iagos + mistral -Menorca "
 
           },
     "fr": {
