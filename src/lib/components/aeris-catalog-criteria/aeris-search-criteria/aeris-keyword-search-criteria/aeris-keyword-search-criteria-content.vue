@@ -1,27 +1,20 @@
 <i18n>
     {
     "en": {
-    "keywords": "Keywords",
-    "or" :"OR",
-    "and" :"AND"
-    },
+            "keywords": "Full text search",
+            "titleHelp" : "toto"
+
+          },
     "fr": {
-    "keywords": "Mots-clés",
-    "or" : "OU",
-    "and":"ET"
-    }
+            "keywords": "Recherche texte libre",
+            "titleHelp" :"Pour effectuer une recherche vous pouvez utilisez les opérateurs suivant:\\n'-' pour exclure un terme de la recherche\\n'+' pour avoir des resultats qui contiennent obligatoirement les termes\\nSi aucun opérateur n'est utilisé, alors l'opérateur 'ou' sera utilisé\\nExemple de requête : iagos+mistral -Menorca"
+          }
     }
 </i18n>
 
 <template>
     <div data-aeris-keyword-search-criteria>
-        <div class="operator" :v-show="isShowOperators">
-            <label :for="typeIndex('or')"><input type="radio" :id="typeIndex('or')" value="or" v-model="operator" > {{$t('or')}}</label>
-            <label :for="typeIndex('and')"><input type="radio" :id="typeIndex('and')" value="and" v-model="operator"> {{$t('and')}}</label>
-        </div>
-        <aeris-catalog-ui-input name="keywords" :value="current" @input="current = $event.target.value" @keyup.enter="inputKeyword" autofocus></aeris-catalog-ui-input>
-        <aeris-cartouche edit="true" v-for="keyword in keywords" :key="keyword" :itemref="keyword">{{keyword}}
-        </aeris-cartouche>
+        <aeris-catalog-ui-input :title="$t('titleHelp')" icon ="fa fa-pencil" name="keywords" :value="current" @input="current = $event.target.value" @keyup.enter="inputKeyword" :placeholder="$t('keywords')"></aeris-catalog-ui-input>
     </div>
 </template>
 
@@ -47,7 +40,7 @@
             },
             isShowOperators(value) {
                 if (value) {
-                    this.operator = 'or'
+                    this.operator = '';
                 }
             }
         },
@@ -64,12 +57,12 @@
 
         created: function () {
 
-            this.$i18n.locale = this.lang
-            this.keywordDeletionListener = this.handleKeywordDeletion.bind(this)
+            this.$i18n.locale = this.lang;
+            this.keywordDeletionListener = this.handleKeywordDeletion.bind(this);
             document.addEventListener('aerisCartoucheItemDeleted', this.keywordDeletionListener);
-            this.catalogueSearchListener = this.handleCatalogueSearch.bind(this)
+            this.catalogueSearchListener = this.handleCatalogueSearch.bind(this);
             document.addEventListener('aerisCatalogueSearchEvent', this.catalogueSearchListener);
-            this.catalogueResetListener = this.handleCatalogueReset.bind(this)
+            this.catalogueResetListener = this.handleCatalogueReset.bind(this);
             document.addEventListener('aerisCatalogueResetEvent', this.catalogueResetListener);
         },
 
@@ -96,7 +89,6 @@
         methods: {
 
             handleKeywordDeletion: function (e) {
-                console.log(e.detail.itemref)
                 let itemref = e.detail.itemref;
                 let index = this.keywords.indexOf(itemref)
                 if (index > -1) {
@@ -111,28 +103,54 @@
             },
 
             handleCatalogueSearch: function (e) {
-                if (this.current.length > 0) {
-                    let aux = this.current;
-                    this.keywords.push(aux);
-                    this.current = ""
-                }
+                this.parseKeyword(this.current.trim());
                 e.detail.keywords = this.keywords;
-                e.detail.searchOperator = this.operator
+                e.detail.searchOperator = this.operator;
+            },
+
+            handleSearch: function() {
+                var e = new CustomEvent("aerisCatalogueSearchStartEvent", {
+                    detail: {
+                    range: {
+                        min: 0,
+                        max: 24
+                    }
+                    }
+                });
+                document.dispatchEvent(e);
             },
 
             inputKeyword: function (e) {
-                let withComma = this.current.trim();
-                if (withComma.length < 2) return;
-                let keyCode = e.keyCode ? e.keyCode : e.charCode;
-                if (withComma.endsWith(',') || keyCode === 13 || keyCode === 32) {
-                    let withoutComma = (withComma.endsWith(',')) ? withComma.substring(0, (withComma.length - 1)) : withComma;
-                    if (!this.keywords) this.keywords = [];
-                    this.keywords.push(withoutComma);
-                    this.current = '';
-                }
+                let inputValue = this.current.trim();
+                this.parseKeyword(inputValue);
+                this.handleSearch(e);
             },
+
             typeIndex: function (index) {
                 return `${this.name}-${index}`;
+            },
+
+            parseKeyword(value) {
+                let finalQuery="";
+                let keyword = value.split(' ');
+                let andKeyword =[];
+                keyword.forEach(element => {
+                    if (element.includes("+")){
+
+                        andKeyword = element.split("+");
+                        andKeyword.forEach(quotedword =>{
+                            if(quotedword !=""){
+                            quotedword = '"' + quotedword + '"';
+                            finalQuery =finalQuery+" "+quotedword;
+                           }
+                        })
+                    }else{
+                        finalQuery = finalQuery+" "+element;
+                    }
+                });
+                finalQuery = finalQuery.split(" ");
+                this.keywords= finalQuery.filter(Boolean);
+
             }
 
         }
@@ -155,4 +173,5 @@
     [data-aeris-keyword-search-criteria] input[value="and"] {
         margin-left: 30px;
     }
+    
 </style>

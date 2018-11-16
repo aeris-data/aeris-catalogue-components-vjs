@@ -1,19 +1,6 @@
-<i18n>
-    {
-    "en": {
-    "keywords": "Keywords",
-    "fulltextsearch": "Full text search"
-    },
-    "fr": {
-    "keywords": "Mots-clés",
-    "fulltextsearch": "Recherche text libre"
-    }
-    }
-</i18n>
-
 <template>
     <div data-aeris-keyword-search-criteria>
-        <aeris-catalog-search-box id="box" :title="$t('fulltextsearch')" header-icon-class="fa fa-terminal" :deployed="deployed">
+        <aeris-catalog-search-box header="false" :deployed="deployed">
             <aeris-keyword-search-criteria-content :isShowOperators="isShowOperators"></aeris-keyword-search-criteria-content>
         </aeris-catalog-search-box>
     </div>
@@ -31,7 +18,7 @@
             },
             deployed: {
                 type: Boolean,
-                default: false
+                default: true
             },
             isShowOperators: {
                 type: Boolean,
@@ -41,7 +28,7 @@
 
         watch: {
             lang(value) {
-                this.$i18n.locale = value
+                this.$i18n.locale = value;
             }
         },
 
@@ -49,7 +36,7 @@
         },
 
         created: function () {
-            this.$i18n.locale = this.lang
+            this.$i18n.locale = this.lang;
         },
 
         mounted: function () {
