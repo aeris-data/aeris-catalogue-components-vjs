@@ -30,9 +30,9 @@ export default {
     },
       getTheme(){
         if(this.drawModeSelected){
-            return "primary"
+            return "primary";
         }else{
-            return "disabled"
+            return "disabled";
         }
       }
   },
@@ -48,7 +48,7 @@ export default {
 
   methods: {
       handleClick(){
-          this.drawModeSelected = true
+          this.drawModeSelected = true;
           document.dispatchEvent(new CustomEvent('aerisSpatialExtentMapMode',{detail:true}));
       },
       aerisSpatialExtentMapModeHandle(e){

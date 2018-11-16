@@ -1,5 +1,7 @@
 import Vue from "vue";
 
+import EurochampMetadataComponents from "eurochamp-components";
+
 import AerisUiInput from "./components/aeris-catalog-ui/aeris-catalog-ui-input.vue";
 import AerisUiCheckbox from "./components/aeris-catalog-ui/aeris-catalog-ui-checkbox.vue";
 import AerisUiCheckboxList from "./components/aeris-catalog-ui/aeris-catalog-ui-checkbox-list.vue";
@@ -148,6 +150,7 @@ const VueCustomElementRecorder = {
         window.registredAerisElements.indexOf("aeris-commons-components-vjs") > -1 &&
         window.registredAerisElements.indexOf("aeris-metadata-components-vjs") > -1
       ) {
+        Vue.use(EurochampMetadataComponents);
         console.info("trying to register aeris catalogue components");
         console.info("Début registration des aeris catalogue components");
         console.info("Registred elements at this time: " + window.registredAerisElements);
