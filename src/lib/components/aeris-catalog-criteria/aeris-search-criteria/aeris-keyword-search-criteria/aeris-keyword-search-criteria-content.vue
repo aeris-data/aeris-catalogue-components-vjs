@@ -135,14 +135,17 @@
                 let keyword = value.split(' ');
                 let andKeyword =[];
                 keyword.forEach(element => {
+                    if (this.isUUID(element)){
+                        element = '"' + element +'"';
+                    }
                     if (element.includes("+")){
-
                         andKeyword = element.split("+");
                         andKeyword.forEach(quotedword =>{
                             if(quotedword !=""){
                             quotedword = '"' + quotedword + '"';
                             finalQuery =finalQuery+" "+quotedword;
                            }
+
                         })
                     }else{
                         finalQuery = finalQuery+" "+element;
@@ -151,6 +154,11 @@
                 finalQuery = finalQuery.split(" ");
                 this.keywords= finalQuery.filter(Boolean);
 
+            },
+
+            isUUID(value){
+              let regexUuid = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/gi;
+              return regexUuid.test(value);
             }
 
         }
