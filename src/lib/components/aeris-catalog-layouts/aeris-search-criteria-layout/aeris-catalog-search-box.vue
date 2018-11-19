@@ -7,7 +7,7 @@
       </div>
       <div class="box-title">
         <i :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
-        <h3 no-label-float>{{title}}</h3>
+        <h3 no-label-float>{{getTitle}}</h3>
       </div>
     </header>
     <div id="collapse" class="box-collapsable-part">
@@ -39,10 +39,14 @@ export default {
       type: String,
       default: 'fa fa-chevron-down'
     },
-    title: {
+      box_title: {
       type: String,
       default: ''
-    }
+    },
+      title: {
+          type: String,
+          default: ''
+      }
 
 
   },
@@ -67,7 +71,9 @@ export default {
   },
 
   computed: {
-
+    getTitle(){
+        return this.title || this.box_title;
+    }
   },
 
   data() {

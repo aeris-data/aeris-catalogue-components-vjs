@@ -1,7 +1,7 @@
 <template>
 <div data-aeris-catalog-ui-icon-button>
-  <button type="button" :class='[theme, type, "tooltip"]' :title="title" aria-hidden="true" @click="handleClick">
-    <i :class='["fa", icon]'></i>
+  <button type="button" :class='[theme, type, "tooltip"]' :title="title" aria-hidden="true" @click="handleClick" :key="key">
+    <i :class='["fa", icon, theme]'></i>
   </button>
 </div>
 </template>
@@ -24,7 +24,11 @@ export default {
     type: {
       type: String,
       default: "normal"
-    }
+    },
+      key :{
+        type:String,
+          default: "ui-icon"
+      }
   },
 
   data() {
@@ -80,7 +84,12 @@ export default {
 }
 
 [data-aeris-catalog-ui-icon-button] .primary {
-  color: #FAFAFA;
+  color: #FAFAFA !important;
+}
+
+[data-aeris-catalog-ui-icon-button] .disabled {
+  background-color: grey !important;
+  color: #FAFAFA !important;
 }
 
 [data-aeris-catalog-ui-icon-button] .accent {
