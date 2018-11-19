@@ -1,7 +1,7 @@
 <template>
 <div data-aeris-catalog-box data-layout="search-criteria" v-bind:class="{ showBody: isdeployed }">
   <div id="main" class="box noselect">
-    <header class="box-heading" v-on:click="isdeployed = !isdeployed">
+    <header class="box-heading" v-on:click="isdeployed = !isdeployed" v-if="header">
       <div class="box-heading-buttons">
         <i class="chevron" :class="openIconClass"></i>
       </div>
@@ -39,16 +39,18 @@ export default {
       type: String,
       default: 'fa fa-chevron-down'
     },
-      box_title: {
+    box_title: {
       type: String,
       default: ''
     },
-      title: {
-          type: String,
-          default: ''
-      }
-
-
+    header: {
+      type:Boolean,
+      default:true
+    },
+    title: {
+      type: String,
+      default: ''
+    }
   },
 
   watch: {},
@@ -63,6 +65,7 @@ export default {
     this.aerisThemeListener = this.handleTheme.bind(this)
     document.addEventListener('aerisTheme', this.aerisThemeListener);
     this.isdeployed = this.deployed
+    this.headerDisplay= this.header
   },
 
   mounted: function() {
@@ -97,6 +100,7 @@ export default {
 
     handleTheme: function(theme) {
       this.theme = theme.detail
+      if(this.header)
       this.ensureTheme()
     },
 
