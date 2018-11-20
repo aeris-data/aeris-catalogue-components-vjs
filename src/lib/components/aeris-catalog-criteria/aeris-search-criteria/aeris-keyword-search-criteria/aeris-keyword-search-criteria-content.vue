@@ -135,14 +135,17 @@
                 let keyword = value.split(' ');
                 let andKeyword =[];
                 keyword.forEach(element => {
+                    if (this.checkSpecialWord(element)){
+                        element = '"' + element +'"';
+                    }
                     if (element.includes("+")){
-
                         andKeyword = element.split("+");
                         andKeyword.forEach(quotedword =>{
                             if(quotedword !=""){
                             quotedword = '"' + quotedword + '"';
                             finalQuery =finalQuery+" "+quotedword;
                            }
+
                         })
                     }else{
                         finalQuery = finalQuery+" "+element;
@@ -151,8 +154,12 @@
                 finalQuery = finalQuery.split(" ");
                 this.keywords= finalQuery.filter(Boolean);
 
-            }
+            },
 
+            checkSpecialWord(value){
+              let specialWordRegex =/[a-zA-Z0-9]+([-._;():][a-zA-Z0-9]+)+/;
+              return specialWordRegex.test(value);
+            }
         }
     }
 </script>
