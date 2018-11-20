@@ -157,14 +157,9 @@
             },
 
             checkSpecialWord(value){
-              let regexUuid =/[a-zA-Z0-9]+([-._;():][a-zA-Z0-9]+)+/
-              return regexUuid.test(value);
-            },
-            checkDoi(value) {
-              //let regexDoi = new RegExp(/^10.\d{4,9}/[-._;()/:A-Z0-9]+$/i);
-              return regexDoi.test(value);
+              let specialWordRegex =/[a-zA-Z0-9]+([-._;():][a-zA-Z0-9]+)+/;
+              return specialWordRegex.test(value);
             }
-
         }
     }
 </script>
