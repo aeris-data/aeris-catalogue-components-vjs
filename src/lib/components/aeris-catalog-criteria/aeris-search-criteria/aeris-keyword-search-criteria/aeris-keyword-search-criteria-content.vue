@@ -135,7 +135,7 @@
                 let keyword = value.split(' ');
                 let andKeyword =[];
                 keyword.forEach(element => {
-                    if (this.checkConposedWord(element)){
+                    if (this.checkSpecialWord(element)){
                         element = '"' + element +'"';
                     }
                     if (element.includes("+")){
@@ -156,9 +156,13 @@
 
             },
 
-            checkConposedWord(value){
-              let regexUuid = /[a-zA-Z0-9]+([-][a-zA-Z0-9]+)+/
+            checkSpecialWord(value){
+              let regexUuid =/[a-zA-Z0-9]+([-._;():][a-zA-Z0-9]+)+/
               return regexUuid.test(value);
+            },
+            checkDoi(value) {
+              //let regexDoi = new RegExp(/^10.\d{4,9}/[-._;()/:A-Z0-9]+$/i);
+              return regexDoi.test(value);
             }
 
         }
