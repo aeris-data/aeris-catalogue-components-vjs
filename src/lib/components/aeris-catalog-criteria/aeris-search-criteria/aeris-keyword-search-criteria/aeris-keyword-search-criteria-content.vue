@@ -135,7 +135,7 @@
                 let keyword = value.split(' ');
                 let andKeyword =[];
                 keyword.forEach(element => {
-                    if (this.isUUID(element)){
+                    if (this.checkConposedWord(element)){
                         element = '"' + element +'"';
                     }
                     if (element.includes("+")){
@@ -156,8 +156,8 @@
 
             },
 
-            isUUID(value){
-              let regexUuid = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/gi;
+            checkConposedWord(value){
+              let regexUuid = /[a-zA-Z0-9]+([-][a-zA-Z0-9]+)+/
               return regexUuid.test(value);
             }
 
