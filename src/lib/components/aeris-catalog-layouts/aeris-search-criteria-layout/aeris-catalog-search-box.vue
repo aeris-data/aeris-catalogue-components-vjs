@@ -1,13 +1,13 @@
 <template>
 <div data-aeris-catalog-box data-layout="search-criteria" v-bind:class="{ showBody: isdeployed }">
   <div id="main" class="box noselect">
-    <header class="box-heading" v-on:click="isdeployed = !isdeployed">
+    <header class="box-heading" v-on:click="isdeployed = !isdeployed" v-if="header">
       <div class="box-heading-buttons">
         <i class="chevron" :class="openIconClass"></i>
       </div>
       <div class="box-title">
         <i :class="headerIconClass" id="icon" v-show="headerIconClass"></i>
-        <h3 no-label-float>{{title}}</h3>
+        <h3 no-label-float>{{getTitle}}</h3>
       </div>
     </header>
     <div id="collapse" class="box-collapsable-part">
@@ -39,12 +39,18 @@ export default {
       type: String,
       default: 'fa fa-chevron-down'
     },
+    box_title: {
+      type: String,
+      default: ''
+    },
+    header: {
+      type:Boolean,
+      default:true
+    },
     title: {
       type: String,
       default: ''
     }
-
-
   },
 
   watch: {},
@@ -59,6 +65,7 @@ export default {
     this.aerisThemeListener = this.handleTheme.bind(this)
     document.addEventListener('aerisTheme', this.aerisThemeListener);
     this.isdeployed = this.deployed
+    this.headerDisplay= this.header
   },
 
   mounted: function() {
@@ -67,7 +74,9 @@ export default {
   },
 
   computed: {
-
+    getTitle(){
+        return this.title || this.box_title;
+    }
   },
 
   data() {
@@ -91,6 +100,7 @@ export default {
 
     handleTheme: function(theme) {
       this.theme = theme.detail
+      if(this.header)
       this.ensureTheme()
     },
 

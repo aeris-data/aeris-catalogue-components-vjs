@@ -1,7 +1,7 @@
 <template>
 <div data-aeris-catalog-ui-input class="input-container">
   <i v-if="icon" :class="icon"></i>
-  <input type="text" :name="name" :aria-label="ariaLabel" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)" />
+  <input type="text" :name="name" :aria-label="ariaLabel" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)" autofocus/>
 </div>
 </template>
 

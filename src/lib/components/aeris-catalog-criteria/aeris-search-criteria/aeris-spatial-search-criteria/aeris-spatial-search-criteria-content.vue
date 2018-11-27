@@ -8,8 +8,11 @@
     "reset": "Reset",
     "map": "Map",
     "incorrect_values": "Incorrect values",
-    "coordinateSelection": "Coordinate Selection",
-    "close": "Close"
+    "coordinateSelection": "Coordinates selection",
+    "close": "Close",
+    "draw" : "Draw",
+    "select" : "Select",
+    "clear" :"Clear"
     },
     "fr": {
     "northAbbr": "N",
@@ -19,8 +22,11 @@
     "reset": "Réinitialiser",
     "map": "Carte",
     "incorrect_values": "Valeurs incorrectes",
-    "coordinateSelection": "Sélection de coordonnées",
-    "close": "Fermer"
+    "coordinateSelection": "Sélection des coordonnées",
+    "close": "Fermer",
+    "draw" : "Dessiner",
+    "select" : "Sélectionner",
+    "clear" :"Effacer"
     }
     }
 </i18n>
@@ -28,10 +34,10 @@
 <template>
     <div data-aeris-spatial-search-criteria-content>
         <div class="box-toolbar">
-            <button type="button" class="spatial-reset-button leftbutton" :title="$t('reset')" @click="handleReset"><i
-                    class="fa fa-times"></i></button>
             <button type="button" class="spatial-reset-button" v-bind:class="{showMap : showMap}" :title="$t('map')"
-                    @click="closeMapPopup"><i class="fa fa-map"></i></button>
+                    @click="closeMapPopup"><i class="fa fa-map"></i><i>{{$t('map')}}</i></button>
+            <button type="button" class="spatial-reset-button leftbutton" :title="$t('clear')" @click="handleReset"><i
+                    class="fa fa-trash"></i><i>{{$t('clear')}}</i></button>
         </div>
         <span class="aeris-spatial-search-criteria-content">
 <span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
@@ -70,7 +76,8 @@
 
             <div class="map-popup-content">
                 <aeris-catalog-map url="//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}" data-map>
-                    <aeris-catalogue-edit-button></aeris-catalogue-edit-button>
+                    <aeris-catalogue-draw-map-button slot="draw" :title="$t('draw')"></aeris-catalogue-draw-map-button>
+                    <aeris-catalogue-select-map-button slot="select" :title="$t('select')"></aeris-catalogue-select-map-button>
                 </aeris-catalog-map>
             </div>
         </div>
@@ -131,6 +138,7 @@
                 west: '',
                 errorMessage: '',
                 showMap: false,
+                isDrawMode: false,
                 aerisCatalogueStopEditListener: null,
                 aerisCatalogueStartEditListener: null,
                 aerisCatalogueSearchEventListener: null
@@ -141,7 +149,6 @@
         },
 
         methods: {
-
             isValidLatitude: function (latitude) {
                 let aux = parseFloat(latitude);
                 if (!Number.isNaN(aux)) {
@@ -334,7 +341,7 @@
         align-items: center;
         padding: 5px 10px;
         border-bottom: 1px solid #ccc;
-        background-color: # cfcfcf;
+        background-color: #cfcfcf;
     }
 
     [data-aeris-spatial-search-criteria-content] .map-popup {
@@ -395,5 +402,9 @@
         max-height: 300px;
         word-wrap: break-word;
         border-radius: 5px;
+    }
+
+    [data-aeris-spatial-search-criteria-content] .spatial-reset-button i{
+        margin-left: 5px;
     }
 </style>
