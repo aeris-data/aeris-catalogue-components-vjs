@@ -121,7 +121,7 @@ var components = [
 ];
 
 export default {
-  install: (Vue) => {
+  install: Vue => {
     for (var component in components) {
       if (components[component]) {
         Vue.component(components[component].name, components[component]);

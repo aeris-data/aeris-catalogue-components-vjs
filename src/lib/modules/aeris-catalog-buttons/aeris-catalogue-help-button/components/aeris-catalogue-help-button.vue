@@ -1,0 +1,50 @@
+<i18n>
+{
+  "en": {
+    "help": "Help"
+  },
+  "fr": {
+    "help": "Aide"
+  }
+}
+</i18n>
+
+<template>
+  <aeris-catalog-ui-icon-button
+    :title="$t('help')"
+    icon="fa-question"
+    theme="primary"
+    @click="handleHelp"
+  ></aeris-catalog-ui-icon-button>
+</template>
+
+<script>
+export default {
+  name: "aeris-catalogue-help-button",
+
+  props: {
+    lang: {
+      type: String,
+      default: "en"
+    }
+  },
+
+  watch: {
+    lang(value) {
+      this.$i18n.locale = value;
+    }
+  },
+
+  created: function() {
+    console.log("aeris-catalogue-help-button creation");
+    this.$i18n.locale = this.lang;
+  },
+
+  methods: {
+    handleHelp: function() {
+      var event = new CustomEvent("aerisAskForHelp", {});
+      document.dispatchEvent(event);
+    }
+  }
+};
+</script>

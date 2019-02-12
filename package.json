@@ -7,41 +7,59 @@
   "main": "dist/aeris-catalogue-components-vjs-simple.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf --progress",
-    "build": "node build/build.js"
+    "build": "node build/build.js && sudo cp dist/*.js dist/*.js.map /var/www/html/aeris",
+    "lint-staged": "lint-staged",
+    "format": "eslint --fix \"src/**/*.*(js|vue)\" && stylelint --fix \"src/**/*.vue\"",
+    "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
+    "e2e": "./node_modules/gherkin-testcafe/main.js --steps test/e2e/features/step_definitions/*.js --specs test/e2e/features/*.feature --browsers chrome",
+    "cucumber": "cucumber-js ."
   },
+  "lint-staged": {
+    "src/**/*.{vue,js}": "node_modules/.bin/eslint"
+  },
+  "pre-commit": "lint-staged",
+  "eslintIgnore": [
+    "*.min.js"
+  ],
   "dependencies": {
-    "aeris-mixins": "^0.1.1",
+    "aeris-mixins": "latest",
     "eurochamp-components": "git+https://git@github.com/aeris-data/eurochamp-components.git#1.28.0",
-    "marked": "0.3.9",
     "moment": "^2.22.1",
     "moment-range": "^4.0.1",
     "vue": "2.5.16",
-    "vue-custom-element": "1.2.1",
     "vue-i18n": "7.0.5",
-    "vue-resource": "1.3.4"
+    "vue-router": "^3.0.2",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@kazupon/vue-i18n-loader": "^0.1.1",
+    "@kazupon/vue-i18n-loader": "0.1.1",
     "babel-core": "^6.0.0",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^6.0.0",
     "babel-preset-env": "^1.5.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
     "clean-webpack-plugin": "^0.1.16",
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
+    "cucumber": "^5.0.3",
+    "eslint": "^5.6.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-testcafe": "^0.2.1",
+    "eslint-plugin-vue": "^4.7.1",
     "exports-loader": "^0.6.4",
     "file-loader": "^0.9.0",
-    "friendly-errors-webpack-plugin": "^1.6.1",
+    "gherkin-testcafe": "^1.3.0",
     "html-webpack-plugin": "^2.30.1",
+    "lint-staged": "^7.2.0",
     "ora": "^1.3.0",
+    "pre-commit": "^1.2.2",
     "style-loader": "^0.18.2",
-    "vuelayers": "0.10.3",
-    "vue-loader": "^14.2.0",
-    "vue-router": "^3.0.1",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^2.6.1",
-    "webpack-dev-server": "^2.4.5",
-    "webpack-merge": "^4.1.1"
+    "stylelint": "^9.9.0",
+    "testcafe": "^0.23.2",
+    "vue-loader": "^13.3.0",
+    "vue-template-compiler": "^2.5.2",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1",
+    "webpack-merge": "^4.1.0"
   }
 }
