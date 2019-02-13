@@ -1,13 +1,7 @@
 import Vue from "vue";
 
-import vueCustomElement from "vue-custom-element";
-Vue.use(vueCustomElement);
-
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
-
-import VueResource from "vue-resource";
-Vue.use(VueResource);
 
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -16,15 +10,13 @@ import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
 Vue.use(VueColorPlugin);
 Vue.use(VueAerisLanguagePlugin);
 
-import VueCustomElementRecorder from "../lib/vue-custom-element-recorder.js";
-VueCustomElementRecorder.run();
-
 import app from "./components/app.vue";
 import eurochamp from "./components/eurochamp.vue";
 import gmos from "./components/gmos.vue";
 import actris from "./components/actris.vue";
 import iagos from "./components/iagos.vue";
 import aeris from "./components/aeris.vue";
+import aerisCatalogueDrawMapButtonTest from "./components/aeris-catalogue-draw-map-button-test.vue";
 
 const router = new VueRouter({
   mode: "history",
@@ -48,6 +40,10 @@ const router = new VueRouter({
     {
       path: "/aeris",
       component: aeris
+    },
+    {
+      path: "/draw_map_button",
+      component: aerisCatalogueDrawMapButtonTest
     }
   ]
 });

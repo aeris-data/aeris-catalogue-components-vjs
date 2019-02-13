@@ -1,42 +1,56 @@
 <template>
-  <div :class="[getSelectedClass]">
-    <aeris-catalog-ui-icon-button
+  <div>
+    <aeris-ui-icon-button
       :theme="getTheme"
-      :key="draw - map - button"
+      :icon-theme="getThemeIcon"
       icon="fa-pencil-square-o"
+      type="icon-button"
       @click="handleClick"
-    ></aeris-catalog-ui-icon-button>
+    ></aeris-ui-icon-button>
   </div>
 </template>
 
 <script>
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-catalogue-draw-map-button",
 
-  destroyed: function() {
-    document.removeEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
-    this.aerisSpatialExtentMapModeListener = null;
-  },
+  components: { AerisUiIconButton },
 
-  created: function() {
-    console.log("aeris-catalogue-draw-map-button creation");
-    this.aerisSpatialExtentMapModeListener = this.aerisSpatialExtentMapModeHandle.bind(this);
-    document.addEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
+  props: {
+    theme: {
+      type: Object,
+      default: null
+    },
+    iconTheme: {
+      color: "green"
+    },
+    isActive: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {
-    getSelectedClass() {
-      if (this.drawModeSelected) {
-        return "selected";
+    getTheme() {
+      if (this.isActive) {
+        return {
+          emphasis: "#f39c12",
+          color: "grey"
+        };
       } else {
         return "";
       }
     },
-    getTheme() {
-      if (this.drawModeSelected) {
-        return "primary";
+    getThemeIcon() {
+      if (this.isActive) {
+        return {
+          color: "grey"
+        };
       } else {
-        return "disabled";
+        return {
+          color: "white"
+        };
       }
     }
   },
@@ -44,30 +58,24 @@ export default {
   data() {
     return {
       drawModeSelected: false,
-      aerisSpatialExtentMapModeListener: null
+      aerisSpatialExtentMapModeListener: null,
+      themevalue: null,
+      iconThemeValue: null
     };
   },
-
-  updated: function() {},
 
   methods: {
     handleClick() {
       this.drawModeSelected = true;
-      document.dispatchEvent(new CustomEvent("aerisSpatialExtentMapMode", { detail: true }));
-    },
-    aerisSpatialExtentMapModeHandle(e) {
-      this.drawModeSelected = e.detail;
+      this.$emit("drawModeSelected");
     }
   }
 };
 </script>
 
 <style scoped>
-div {
-  padding: 2px;
-}
 .selected {
-  border-radius: 50%;
   background-color: #fafafa;
+  color: white;
 }
 </style>
