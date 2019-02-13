@@ -3,7 +3,6 @@
     <aeris-catalogue-draw-map-button
       :theme="theme"
       :is-active="visible"
-      :icon-theme="iconTheme"
       @drawModeSelected="visible = !visible"
     ></aeris-catalogue-draw-map-button>
     <p v-if="visible">emit : draw mode actived</p>
@@ -20,9 +19,6 @@ export default {
       theme: {
         emphasis: "#f39c12",
         color: "#fff"
-      },
-      iconTheme: {
-        color: "green"
       },
       visible: false
     };

@@ -22,9 +22,7 @@ export default {
       type: Object,
       default: null
     },
-    iconTheme: {
-      color: "green"
-    },
+
     isActive: {
       type: Boolean,
       default: false
@@ -39,13 +37,13 @@ export default {
           color: "grey"
         };
       } else {
-        return "";
+        return {};
       }
     },
     getThemeIcon() {
       if (this.isActive) {
         return {
-          color: "grey"
+          color: "white"
         };
       } else {
         return {
