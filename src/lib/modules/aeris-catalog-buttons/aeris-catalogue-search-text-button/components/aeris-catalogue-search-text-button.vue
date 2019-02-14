@@ -12,23 +12,31 @@
 </i18n>
 
 <template>
-  <aeris-catalog-ui-button
+  <aeris-ui-icon-button
     :title="$t('search_tooltip')"
     :text="$t('search')"
     icon="fa-search"
-    theme="primary"
+    :theme="theme"
     @click="handleSearch"
-  ></aeris-catalog-ui-button>
+  ></aeris-ui-icon-button>
 </template>
-
 <script>
+import { AerisUiIconButton} from "aeris-commons-components-vjs"
+
 export default {
+
   name: "aeris-catalogue-search-text-button",
+
+  components:{ AerisUiIconButton},
 
   props: {
     lang: {
       type: String,
       default: "en"
+    },
+     theme: {
+      type: Object,
+      default: null
     }
   },
 
@@ -38,28 +46,13 @@ export default {
     }
   },
 
-  created: function() {
-    console.log("aeris-catalogue-search-button creation");
+  created() {
     this.$i18n.locale = this.lang;
   },
 
-  data() {
-    return {
-      progress: false
-    };
-  },
-
   methods: {
-    handleSearch: function() {
-      var e = new CustomEvent("aerisCatalogueSearchStartEvent", {
-        detail: {
-          range: {
-            min: 0,
-            max: 24
-          }
-        }
-      });
-      document.dispatchEvent(e);
+    handleSearch() {
+      this.$emit("CatalogueSearchStart",0,24)
     }
   }
 };
