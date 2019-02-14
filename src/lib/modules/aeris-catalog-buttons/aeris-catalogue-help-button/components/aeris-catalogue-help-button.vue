@@ -15,7 +15,6 @@
     :theme="theme"
     :icon-theme="getThemeIcon"
     icon="fa-question"
-    type="icon-button"
     @click="handleHelp"
   ></aeris-ui-icon-button>
 </template>
