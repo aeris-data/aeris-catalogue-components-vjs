@@ -10,40 +10,69 @@
 </i18n>
 
 <template>
-  <aeris-catalog-ui-icon-button
-    :title="$t('help')"
+  <aeris-ui-icon-button
+    :text="$t('help')"
+    :theme="theme"
+    :icon-theme="getThemeIcon"
     icon="fa-question"
-    theme="primary"
+    type="icon-button"
     @click="handleHelp"
-  ></aeris-catalog-ui-icon-button>
+  ></aeris-ui-icon-button>
 </template>
 
 <script>
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
+
 export default {
   name: "aeris-catalogue-help-button",
+  components: { AerisUiIconButton },
 
   props: {
     lang: {
       type: String,
       default: "en"
+    },
+    theme: {
+      type: Object,
+      default: null
     }
   },
-
+  computed: {
+    getTheme() {
+      if (this.isActive) {
+        return {
+          emphasis: "#f39c12",
+          color: "grey"
+        };
+      } else {
+        return {};
+      }
+    },
+    getThemeIcon() {
+      if (this.isActive) {
+        return {
+          color: "white"
+        };
+      } else {
+        return {
+          color: "white"
+        };
+      }
+    }
+  },
   watch: {
     lang(value) {
       this.$i18n.locale = value;
     }
   },
 
-  created: function() {
-    console.log("aeris-catalogue-help-button creation");
+  created() {
     this.$i18n.locale = this.lang;
   },
 
   methods: {
     handleHelp: function() {
-      var event = new CustomEvent("aerisAskForHelp", {});
-      document.dispatchEvent(event);
+      this.$emit("AskForHelp");
     }
   }
 };
