@@ -12,24 +12,35 @@
 </i18n>
 
 <template>
-  <aeris-catalog-ui-button
+  <aeris-ui-icon-button
     :title="$t('reset_tooltip')"
     :text="$t('reset')"
     icon="fa-trash"
-    theme="primary"
+    :theme="theme"
     @click="handleReset"
-  ></aeris-catalog-ui-button>
+  ></aeris-ui-icon-button>
 </template>
-
 <script>
+
+import {AerisUiIconButton} from "aeris-commons-components-vjs"
+
 export default {
+
   name: "aeris-catalogue-reset-text-button",
+
+  components:{AerisUiIconButton},
 
   props: {
     lang: {
       type: String,
       default: "en"
+    },
+
+     theme: {
+      type: Object,
+      default: null
     }
+    
   },
 
   watch: {
@@ -38,8 +49,7 @@ export default {
     }
   },
 
-  created: function() {
-    console.log("aeris-catalogue-reset-button creation");
+  created() {
     this.$i18n.locale = this.lang;
   },
 
@@ -50,8 +60,8 @@ export default {
   },
 
   methods: {
-    handleReset: function() {
-      document.dispatchEvent(new CustomEvent("aerisCatalogueResetEvent"));
+    handleReset() {
+      this.$emit("CatalogueReset");
     }
   }
 };
