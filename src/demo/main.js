@@ -1,13 +1,7 @@
 import Vue from "vue";
 
-import vueCustomElement from "vue-custom-element";
-Vue.use(vueCustomElement);
-
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
-
-import VueResource from "vue-resource";
-Vue.use(VueResource);
 
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -15,9 +9,6 @@ Vue.use(VueRouter);
 import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
 Vue.use(VueColorPlugin);
 Vue.use(VueAerisLanguagePlugin);
-
-import VueCustomElementRecorder from "../lib/vue-custom-element-recorder.js";
-VueCustomElementRecorder.run();
 
 import app from "./components/app.vue";
 import eurochamp from "./components/eurochamp.vue";
