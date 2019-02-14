@@ -10,22 +10,32 @@
 </i18n>
 
 <template>
-  <aeris-catalog-ui-icon-button
+  <aeris-ui-icon-button
     :title="$t('reset')"
     icon="fa-eraser"
-    theme="primary"
+    :theme="theme"
+    type="icon-button"
     @click="handleReset"
-  ></aeris-catalog-ui-icon-button>
+  ></aeris-ui-icon-button>
 </template>
 
 <script>
+
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
+
 export default {
   name: "aeris-catalogue-reset-button",
+
+  components: { AerisUiIconButton },
 
   props: {
     lang: {
       type: String,
       default: "en"
+    },
+    theme: {
+      type: Object,
+      default: null
     }
   },
 
@@ -36,7 +46,6 @@ export default {
   },
 
   created: function() {
-    console.log("aeris-catalogue-reset-button creation");
     this.$i18n.locale = this.lang;
   },
 
@@ -48,7 +57,7 @@ export default {
 
   methods: {
     handleReset: function() {
-      document.dispatchEvent(new CustomEvent("aerisCatalogueResetEvent"));
+      this.$emit("CatalogueReset");
     }
   }
 };
