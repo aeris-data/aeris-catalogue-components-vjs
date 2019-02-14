@@ -13,7 +13,6 @@
 
 <template>
   <div>
-
     <aeris-ui-icon-button
       v-if="maximize"
       :title="computeTitle"
@@ -29,7 +28,6 @@
       type="icon-button"
       @click="handleMaximize"
     ></aeris-ui-icon-button>
-
   </div>
 </template>
 
@@ -37,11 +35,10 @@
 import { AerisUiIconButton } from "aeris-commons-components-vjs";
 
 export default {
-  
   name: "aeris-catalogue-maximize-button",
-  
+
   components: { AerisUiIconButton },
-  
+
   props: {
     lang: {
       type: String,
