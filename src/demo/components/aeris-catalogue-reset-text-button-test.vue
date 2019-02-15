@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="padding:40px">
         <aeris-catalogue-reset-text-button :theme="theme" lang="en" @CatalogueReset="visible=!visible"></aeris-catalogue-reset-text-button>
         <p v-if="visible">emit : reset des criteres effectué </p>
     </div>
