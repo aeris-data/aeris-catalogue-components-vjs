@@ -40,20 +40,20 @@ export default {
   components: { AerisUiIconButton },
 
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     }
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
   created() {
-    this.$i18n.locale = this.lang;
+    this.$i18n.locale = this.language;
   },
 
   computed: {
