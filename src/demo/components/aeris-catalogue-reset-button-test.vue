@@ -1,12 +1,10 @@
 <template>
-<div style="padding:40px">
-    <aeris-catalogue-reset-button lang="en" :theme="theme" @CatalogueReset="visible= !visible"></aeris-catalogue-reset-button>
-    <p v-if="visible">emit : reset des criteres éffectué</p>
-</div>
+  <div style="padding:40px">
+      <aeris-catalogue-reset-button lang="en" :theme="theme" @CatalogueReset="visible= !visible"></aeris-catalogue-reset-button>
+      <p v-if="visible">emit : reset des criteres éffectué</p>
+  </div>
 </template>
-
 <script>
-
 import AerisCatalogueResetButton from "../../lib/modules/aeris-catalog-buttons/aeris-catalogue-reset-button/components/aeris-catalogue-reset-button.vue";
 
 export default {
