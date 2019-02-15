@@ -13,7 +13,6 @@
   <aeris-ui-icon-button
     :text="$t('help')"
     :theme="theme"
-    :icon-theme="getThemeIcon"
     icon="fa-question"
     @click="handleHelp"
   ></aeris-ui-icon-button>
@@ -27,7 +26,7 @@ export default {
   components: { AerisUiIconButton },
 
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -36,37 +35,15 @@ export default {
       default: null
     }
   },
-  computed: {
-    getTheme() {
-      if (this.isActive) {
-        return {
-          emphasis: "#f39c12",
-          color: "grey"
-        };
-      } else {
-        return {};
-      }
-    },
-    getThemeIcon() {
-      if (this.isActive) {
-        return {
-          color: "white"
-        };
-      } else {
-        return {
-          color: "white"
-        };
-      }
-    }
-  },
+
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
   created() {
-    this.$i18n.locale = this.lang;
+    this.$i18n.locale = this.language;
   },
 
   methods: {
