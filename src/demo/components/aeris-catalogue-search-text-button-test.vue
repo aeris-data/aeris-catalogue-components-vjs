@@ -1,6 +1,6 @@
 <template>
     <div style="padding:40px">
-        <aeris-catalogue-search-text-button :theme="theme" lang="en" @CatalogueSearchStart="getEmitParameter"></aeris-catalogue-search-text-button>
+        <aeris-catalogue-search-text-button :theme="theme" language="fr" @CatalogueSearchStart="getEmitParameter"></aeris-catalogue-search-text-button>
         <span v-if="max !== null && min !== null">parametre de la requete search start : min = {{min}}  et max={{max}}</span>
     </div>
 </template>
