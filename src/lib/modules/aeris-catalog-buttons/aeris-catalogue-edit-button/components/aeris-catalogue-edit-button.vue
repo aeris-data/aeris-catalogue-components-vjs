@@ -10,75 +10,87 @@
 </i18n>
 
 <template>
-  <aeris-catalog-ui-icon-button
+  <aeris-ui-icon-button
     icon="fa-pencil-square-o"
-    theme="primary"
+    :theme="getTheme"
+    :iconTheme="getThemeIcon"
+    type="icon-button"
     @click="handleClick"
-  ></aeris-catalog-ui-icon-button>
+    language="en"
+  ></aeris-ui-icon-button>
 </template>
 
 <script>
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-catalogue-edit-button",
 
+  components: { AerisUiIconButton },
+
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
-    }
+    },
+    theme: {
+      type: Object,
+      default: {}
+    },
+    
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditListener);
-    this.aerisCatalogueStartEditListener = null;
-    document.removeEventListener("aerisCatalogueStopEditEvent", this.aerisCatalogueStopEditListener);
-    this.aerisCatalogueStopEditListener = null;
+  computed: {
+    getTheme() {
+      if (this.editing) {
+        return {
+          emphasis: "#f39c12",
+          color: "grey"
+        };
+      } else {
+        return {};
+      }
+    },
+    getThemeIcon() {
+      if (this.editing) {
+        return {
+          color: "white"
+        };
+      } else {
+        return {
+          color: "white"
+        };
+      }
+    }
   },
-
-  created: function() {
-    console.log("aeris-catalogue-edit-button creation");
-    this.$i18n.locale = this.lang;
-    this.aerisCatalogueStopEditListener = this.handleStopEdit.bind(this);
-    document.addEventListener("aerisCatalogueStopEditEvent", this.aerisCatalogueStopEditListener);
-    this.aerisCatalogueStartEditListener = this.handleStartEdit.bind(this);
-    document.addEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditListener);
-  },
-
-  computed: {},
 
   data() {
     return {
-      progress: false,
       editing: false,
-      aerisCatalogueStopEditListener: null,
-      aerisCatalogueStartEditListener: null
     };
   },
 
-  updated: function() {},
-
   methods: {
-    handleStartEdit: function() {
+    handleStartEdit() {
       this.editing = true;
     },
 
-    handleStopEdit: function() {
+    handleStopEdit() {
       this.editing = false;
     },
 
-    handleClick: function() {
+    handleClick() {
       if (!this.editing) {
         this.handleStartEdit();
-        document.dispatchEvent(new CustomEvent("aerisCatalogueStartEditEvent"));
+        this.$emit("startEditEvent");
       } else {
         this.handleStopEdit();
-        document.dispatchEvent(new CustomEvent("aerisCatalogueStopEditEvent"));
+        this.$emit("stopEditEvent");
       }
     }
   }
