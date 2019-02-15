@@ -1,7 +1,7 @@
 <template>
-<div>
+<div style="padding:40px">
     <aeris-catalogue-reset-button lang="en" :theme="theme" @CatalogueReset="visible= !visible"></aeris-catalogue-reset-button>
-    <p v-if="visible">emit : draw mode actived</p>
+    <p v-if="visible">emit : reset des criteres éffectué</p>
 </div>
 </template>
 
