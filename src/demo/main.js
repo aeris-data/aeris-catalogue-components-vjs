@@ -16,6 +16,7 @@ import gmos from "./components/gmos.vue";
 import actris from "./components/actris.vue";
 import iagos from "./components/iagos.vue";
 import aeris from "./components/aeris.vue";
+import aerisCatalogueMapTest from "./components/aeris-catalogue-map-test.vue"
 
 const router = new VueRouter({
   mode: "history",
@@ -39,6 +40,10 @@ const router = new VueRouter({
     {
       path: "/aeris",
       component: aeris
+    },
+    {
+      path: "/catalogue_map",
+      component:aerisCatalogueMapTest
     }
   ]
 });
