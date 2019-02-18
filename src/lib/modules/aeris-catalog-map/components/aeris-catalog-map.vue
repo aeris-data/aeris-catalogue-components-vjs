@@ -1,5 +1,5 @@
 <template>
-  <div class="showmap" data-aeris-catalog-map>
+  <div  :class="hidemap ? hidemap : 'showmap'" data-aeris-catalog-map>
     <div class="map-container">
       <div id="mapMask" class="map-mask" />
       <div id="map" class="map" tabindex="0" />
@@ -13,27 +13,27 @@
 </template>
 
 <script>
-const FADEIN_DURATION = 1000;//ms
-
+const FADEIN_DURATION = 1000; //ms
 const DEFAULT_ZOOM = 2;
-import * as ol from 'ol'
-import extent from 'ol/extent/Corner'
-import {transform,transformExtent} from 'ol/proj';
-import Map from 'ol/Map.js';
-import View from 'ol/View.js';
-import {Draw, Modify, Snap} from 'ol/interaction.js';
-import {createStringXY} from 'ol/coordinate'
-import proj from 'ol/proj/Projection.js';
-import {defaults,MousePosition} from 'ol/control.js';
-import {Tile , Vector as VectorLayer } from 'ol/layer.js';
-import {Cluster,OSM, Vector as VectorSource} from 'ol/source.js';
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
-import Point from 'ol/geom/Point';
-import Polygon from 'ol/geom/Polygon';
-import XYZ from 'ol/source/XYZ';
+
+import Feature from "ol/Feature";
+import * as extent from "ol/extent";
+import Map from "ol/Map.js";
+import View from "ol/View.js";
+import Point from "ol/geom/Point";
+import Polygon from "ol/geom/Polygon";
+import XYZ from "ol/source/XYZ";
+import { transform, transformExtent } from "ol/proj";
+import { Draw, Modify, Snap } from "ol/interaction.js";
+import { createStringXY } from "ol/coordinate";
+import { defaults, MousePosition } from "ol/control.js";
+import { Tile, Vector as VectorLayer } from "ol/layer.js";
+import { Cluster, OSM, Vector as VectorSource } from "ol/source.js";
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
 
 export default {
   name: "aeris-catalog-map",
+
   props: {
     language: {
       type: String,
@@ -43,7 +43,6 @@ export default {
       type: Boolean,
       default: true
     },
-    // If true the map isn't displayed - this property isn't dynamic
     hidemap: {
       type: Boolean,
       default: false
@@ -53,6 +52,33 @@ export default {
       default:
         "https://api.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnJhbmNvaXNhbmRyZSIsImEiOiJjaXVlMGE5b3QwMDBoMm9tZGQ1M2xubzVhIn0.FK8gRVJb4ADNnrO6cNlWUw"
     }
+  },
+
+  data() {
+    return {
+      ol: null,
+      map: null,
+      mainSource: null,
+      mainClusteredSource: null,
+      clusterMainClusteredSource: null,
+      vector: null,
+      mainClusteredLayer: null,
+      previewSource: null,
+      previewClusteredSource: null,
+      clusterPreviewClusteredSource: null,
+      previewLayer: null,
+      previewClusteredLayer: null,
+      defaultCenter: null,
+      isDrawMode: false,
+      aerisCatalogueStartEditEventListener: null,
+      aerisCatalogueStopEditEventListener: null,
+      aerisCatalogueAddSelectionListener: null,
+      aerisCatalogueRemoveSelectionListener: null,
+      aerisSpatialExtentMapModeListener: null,
+      draw: null,
+      selectionBox: null,
+      area: null
+    };
   },
 
   watch: {
@@ -65,22 +91,7 @@ export default {
     }
   },
 
-  destroyed() {
-    document.removeEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditEventListener);
-    this.aerisCatalogueStartEditEventListener = null;
-    document.removeEventListener("aerisCatalogueStopEditEvent", this.aerisCatalogueStopEditEventListener);
-    this.aerisCatalogueStopEditEventListener = null;
-    document.removeEventListener("aerisCatalogueMapAddSelectionRequest", this.aerisCatalogueAddSelectionListener);
-    this.aerisCatalogueAddSelectionListener = null;
-    document.removeEventListener("aerisCatalogueMapClearSelectionRequest", this.aerisCatalogueRemoveSelectionListener);
-    this.aerisCatalogueRemoveSelectionListener = null;
-    document.removeEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
-    this.aerisSpatialExtentMapModeListener = null;
-  },
-
   created() {
-    console.log("Aeris catalog map created");
-    this.ol = ol;
     this.aerisCatalogueStartEditEventListener = this.handleStartEditEvent.bind(this);
     document.addEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditEventListener);
     this.aerisCatalogueStopEditEventListener = this.handleStopEditEvent.bind(this);
@@ -98,13 +109,11 @@ export default {
       return;
     }
 
-    var ol = this.ol;
     this.defaultCenter = transform([0, 0], "EPSG:4326", "EPSG:900913");
     /* Map background */
-    var raster = new Tile({
+    let raster = new Tile({
       source: new XYZ({
         url: this.url
-        // url: 'http://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnJhbmNvaXNhbmRyZSIsImEiOiJjaXVlMGE5b3QwMDBoMm9tZGQ1M2xubzVhIn0.FK8gRVJb4ADNnrO6cNlWUw'
       })
     });
 
@@ -137,25 +146,20 @@ export default {
     this.map.addLayer(this.previewClusteredLayer);
 
     /* Hide map and fade in when loaded */
-    var mapViewport = this.$el.querySelector(".ol-viewport");
+    let mapViewport = this.$el.querySelector(".ol-viewport");
     mapViewport.style.opacity = 0;
 
     raster.getSource().on("tileloadend", () => {
-      var mapZoom = mapViewport.querySelector(".ol-zoom");
+      let mapZoom = mapViewport.querySelector(".ol-zoom");
       mapZoom.style.top = "auto";
       mapZoom.style.bottom = "0.5em";
 
-      window.setTimeout(()=> {
+      window.setTimeout(() => {
         mapViewport.style.transition = FADEIN_DURATION / 1000 + "s";
         mapViewport.style.opacity = 1;
-        //
-        //            window.setTimeout(function() {
-        //            	this.$el.querySelector('#mapMask').style.display = 'none';
-        //            }, (FADEIN_DURATION + 100));
       }, 500);
     });
-    extent.getBottomRight(extent)
-    console.log("trace 1")
+
     //Ajout des coordonnees Lon/Lat du curseur en bas a droite
     this.map.addControl(
       new MousePosition({
@@ -166,106 +170,69 @@ export default {
         undefinedHTML: "&nbsp;"
       })
     );
-console.log("trace 2")
+
     this.draw = new Draw({
       source: this.mainSource,
       type: "LineString",
       geometryFunction: this.drawGeometryFunction,
       maxPoints: 2
     });
-console.log("trace 3")
-    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd.bind(this));
-console.log("trace 4")
-    if (this.area && this.area !== "") {
-      var unquotedJSON = this.area;
-      var fixedJSON = unquotedJSON.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
-      var areaObject = JSON.parse(fixedJSON);
 
-      var areaFeature = this._coordsToFeature(areaObject);
-console.log("trace 5")
-      var tempSource = new VectorSource({
+    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd.bind(this));
+    if (this.area && this.area !== "") {
+      let unquotedJSON = this.area;
+      let fixedJSON = unquotedJSON.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
+      let areaObject = JSON.parse(fixedJSON);
+
+      let areaFeature = this._coordsToFeature(areaObject);
+      let tempSource = new VectorSource({
         wrapX: false,
         noWrap: true
       });
 
-      var tempVector = new VectorLayer({
+      let tempVector = new VectorLayer({
         source: tempSource,
         style: this.featuresStyle
       });
 
       this._map.addLayer(tempVector);
-console.log("trace 5")
       tempSource.addFeature(areaFeature);
 
-      var _this = this;
+      let _this = this;
 
       window.setTimeout(() => {
         this.resizeMapToExtent(tempSource);
         this.map.removeLayer(tempVector);
       }, 500);
     }
-    console.log("trace 7")
-   // this.updateMapSize();
-  },
-
-  data() {
-    return {
-      ol: null,
-      map: null,
-      mainSource: null,
-      mainClusteredSource: null,
-      clusterMainClusteredSource: null,
-      vector: null,
-      mainClusteredLayer: null,
-      previewSource: null,
-      previewClusteredSource: null,
-      clusterPreviewClusteredSource: null,
-      previewLayer: null,
-      previewClusteredLayer: null,
-      defaultCenter: null,
-      isDrawMode: false,
-      aerisCatalogueStartEditEventListener: null,
-      aerisCatalogueStopEditEventListener: null,
-      aerisCatalogueAddSelectionListener: null,
-      aerisCatalogueRemoveSelectionListener: null,
-      aerisSpatialExtentMapModeListener: null,
-      draw: null,
-      selectionBox: null,
-      area: null
-    };
+     this.updateMapSize();
   },
 
   methods: {
     handleRemoveSelectionEvent(e) {
-      var id = "selectionBox";
+      let id = "selectionBox";
 
       this.removeFeature("selectionBox");
       this.selectionBox = null;
     },
 
     updateMapSize() {
-      console.log("trace 8")
-      var interval = window.setInterval(
-        () => {
-          console.log("trace 9",this.map)
-          this.map.updateSize();
-        },
-        10
-      );
+      let interval = window.setInterval(() => {
+        this.map.updateSize();
+      }, 10);
 
-      window.setTimeout(() =>{
+      window.setTimeout(() => {
         window.clearInterval(interval);
       }, 200);
-      console.log("trace 10")
     },
 
     handleAddSelectionEvent(e) {
-      var box = e.detail.box;
-      var id = e.detail.id || "selectionBox";
+      let box = e.detail.box;
+      let id = e.detail.id || "selectionBox";
 
       this.removeFeature("selectionBox");
 
-      var feature = this.coordsToFeature(box);
+      let feature = this.coordsToFeature(box);
 
       feature.setId(id);
 
@@ -276,8 +243,8 @@ console.log("trace 5")
     },
 
     coordsToFeature(coords) {
-      var obj;
-      var l = Object.keys(coords).length;
+      let obj;
+      let l = Object.keys(coords).length;
 
       if (l === 4) {
         if (coords.north > 85) coords.north = 85;
@@ -293,12 +260,10 @@ console.log("trace 5")
           ]
         ]).transform("EPSG:4326", "EPSG:900913");
       } else if (l === 2) {
-        obj = new Point(
-          transform([Number(coords.lon), Number(coords.lat)], "EPSG:4326", "EPSG:900913")
-        );
+        obj = new Point(transform([Number(coords.lon), Number(coords.lat)], "EPSG:4326", "EPSG:900913"));
       }
 
-      var feature = new Feature({
+      let feature = new Feature({
         geometry: obj
       });
 
@@ -322,19 +287,19 @@ console.log("trace 5")
       e.feature.setId("selectionBox");
       this.selectionBox = e.feature;
 
-      var clone = e.feature.clone();
-      var extent = clone.getGeometry().getExtent();
-      var bottomRight = transform(ol.extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
-      var topLeft = transform(ol.extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
+      let clone = e.feature.clone();
+      let extent = clone.getGeometry().getExtent();
+      let bottomRight = transform(extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
+      let topLeft = transform(extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
 
-      var selectionDrawEvent = {
+      let selectionDrawEvent = {
         east: bottomRight[0],
         south: bottomRight[1],
         west: topLeft[0],
         north: topLeft[1]
       };
 
-      var event = new CustomEvent("aerisCatalogueSelectionDrawEvent", {
+      let event = new CustomEvent("aerisCatalogueSelectionDrawEvent", {
         detail: selectionDrawEvent
       });
       document.dispatchEvent(event);
@@ -345,15 +310,15 @@ console.log("trace 5")
         geometry = new Polygon(null);
       }
 
-      var start = coordinates[0];
-      var end = coordinates[1];
+      let start = coordinates[0];
+      let end = coordinates[1];
       geometry.setCoordinates([[start, [start[0], end[1]], end, [end[0], start[1]], start]]);
       return geometry;
     },
 
     /* Remove feature with the specified ID */
     removeFeature(id) {
-      var feature = this.mainSource.getFeatureById(id);
+      let feature = this.mainSource.getFeatureById(id);
       if (feature) this.mainSource.removeFeature(feature);
 
       feature = this.mainClusteredSource.getFeatureById(id);
@@ -361,7 +326,6 @@ console.log("trace 5")
     },
 
     initialiseMainSource() {
-      var ol = this.ol;
       this.mainSource = new VectorSource({
         wrapX: false,
         noWrap: true
@@ -389,7 +353,6 @@ console.log("trace 5")
     },
 
     initialisePreviewSource() {
-      var ol = this.ol;
       this.previewSource = new VectorSource({
         wrapX: false,
         noWrap: true
@@ -400,7 +363,7 @@ console.log("trace 5")
         noWrap: true
       });
 
-      this.clusterPreviewClusteredSource =new Cluster({
+      this.clusterPreviewClusteredSource = new Cluster({
         distance: parseInt(30, 10),
         source: this.previewClusteredSource
       });
