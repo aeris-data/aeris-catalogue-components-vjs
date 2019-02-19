@@ -10,7 +10,7 @@ import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
 Vue.use(VueColorPlugin);
 Vue.use(VueAerisLanguagePlugin);
 
-import app from "./components/app.vue";
+import app from "./app.vue";
 import eurochamp from "./components/eurochamp.vue";
 import gmos from "./components/gmos.vue";
 import actris from "./components/actris.vue";
