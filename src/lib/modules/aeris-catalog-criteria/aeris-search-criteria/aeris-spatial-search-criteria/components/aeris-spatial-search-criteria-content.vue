@@ -132,19 +132,7 @@ export default {
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.catalogueResetListener = null;
-    document.removeEventListener("aerisCatalogueSelectionDrawEvent", this.catalogueSelectionDrawListener);
-    this.catalogueSelectionDrawListener = null;
-    document.removeEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditListener);
-    this.aerisCatalogueStartEditListener = null;
-    document.removeEventListener("aerisCatalogueStopEditEvent", this.aerisCatalogueStopEditListener);
-    this.aerisCatalogueStopEditListener = null;
-    document.removeEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
-    this.aerisCatalogueSearchEventListener = null;
-  },
-
+  
   created: function() {
     this.$i18n.locale = this.lang;
     this.catalogueResetListener = this.handleCatalogueReset.bind(this);

@@ -19,6 +19,9 @@
       <li>
         <router-link to="/catalogue_map">/catalogue map</router-link>
       </li>
+      <li>
+        <router-link to="/spatial_search_criteria">/spatial search criteria</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>

@@ -11,6 +11,7 @@
 
 <template>
   <div data-aeris-spatial-extents-search-criteria>
+    lol
     <aeris-catalog-search-box
       id="box"
       :box_title="$t('spatial-extents')"

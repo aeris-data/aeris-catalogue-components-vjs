@@ -17,6 +17,7 @@ import actris from "./components/actris.vue";
 import iagos from "./components/iagos.vue";
 import aeris from "./components/aeris.vue";
 import aerisCatalogueMapTest from "./components/aeris-catalogue-map-test.vue"
+import aerisSpatialSearchCriteriaTest from "./components/aeris-spatial-search-criteria-test.vue"
 
 const router = new VueRouter({
   mode: "history",
@@ -44,6 +45,10 @@ const router = new VueRouter({
     {
       path: "/catalogue_map",
       component:aerisCatalogueMapTest
+    },
+    {
+      path: "/spatial_search_criteria.vue",
+      component:aerisSpatialSearchCriteriaTest
     }
   ]
 });
