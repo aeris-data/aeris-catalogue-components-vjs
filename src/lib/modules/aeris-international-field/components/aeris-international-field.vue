@@ -30,7 +30,7 @@ export default {
   name: "aeris-international-field",
 
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -55,55 +55,50 @@ export default {
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
   computed: {
-    truncatedtext: function() {
+    truncatedtext() {
       return this.truncate(this.text);
     },
 
-    text: function() {
-      if (!this.value) {
+    text() {
+      console.log("value :", this.value)
+      if (!this.value && this.value== null) {
         return "";
       }
-      if (this.value == "null") {
-        return "";
-      }
-      if (!this.lang) {
+     
+      if (!this.language) {
         return this.value;
       }
+       console.log("value json :",JSON.parse(this.value))
       var json = JSON.parse(this.value);
       for (var key in json) {
         if (key === "DEFAULT_VALUE_KEY") {
-          /* If there's only a default language */
           return json["DEFAULT_VALUE_KEY"];
         }
-        //        else if (key.length > 2) {
-        //          /* key = String language in the object */
-        //          let newKey = key.substr(0, 2);
-        //          json[newKey] = json[key];
-        //          delete json[key];
-        //        }
+
       }
 
-      if (json[this.lang]) {
-        return json[this.lang];
+      if (json[this.language]) {
+        return json[this.language];
       }
       return "";
-    }
+    } 
   },
 
-  mounted: function() {
-    if (this.lang) {
-      this.$i18n.locale = this.lang;
+  mounted() {
+    if (this.language) {
+      this.$i18n.locale = this.language;
     }
   },
 
   methods: {
-    truncate: function(value) {
+    truncate(value) {
+      console.log(value)
       if (this.maxLength > 0) {
         if (value.length > this.maxLength) {
           this.isTruncated = true;
