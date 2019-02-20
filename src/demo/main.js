@@ -11,11 +11,11 @@ Vue.use(VueColorPlugin);
 Vue.use(VueAerisLanguagePlugin);
 
 import app from "./app.vue";
-import eurochamp from "./components/eurochamp.vue";
-import gmos from "./components/gmos.vue";
-import actris from "./components/actris.vue";
-import iagos from "./components/iagos.vue";
-import aeris from "./components/aeris.vue";
+import eurochamp from "./modules/eurochamp.vue";
+import gmos from "./modules/gmos.vue";
+import actris from "./modules/actris.vue";
+import iagos from "./modules/iagos.vue";
+import aeris from "./modules/aeris.vue";
 
 const router = new VueRouter({
   mode: "history",
