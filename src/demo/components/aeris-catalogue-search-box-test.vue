@@ -1,18 +1,8 @@
-<i18n>
-{
-  "en": {
-    "spatial-extents": "Spatial extents"
-  },
-  "fr": {
-    "spatial-extents": "Zones géographiques"
-  }
-}
-</i18n>
 
 <template>
   <div style="width:800px;height:800px; margin:0 auto" >
       <aeris-catalog-search-box
-      :box_title="$t('spatial-extents')"
+      box_title="Zones géographiques"
       :deployed="true"
       headerIconClass="fa fa-globe"
       :theme="theme"
