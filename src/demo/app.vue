@@ -20,6 +20,9 @@
         <router-link to="/platform-search-criteria">/platform-search-criteria</router-link>
       </li>
       <li>
+        <router-link to="/project-search-criteria">/project-search-criteria</router-link>
+      </li>
+      <li>
         <router-link to="/eurochamp">/eurochamp</router-link>
       </li>
       <li>
