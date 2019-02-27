@@ -1,7 +1,7 @@
 <template>
-  <div :class="{ showBody: isdeployed } " class="aeris-catalog-box"  :style="getTheme" >
-    <div  class="box">
-      <header v-if="header" class="box-heading" @click="isdeployed = !isdeployed">
+  <div :class="{ showBody: isDeployed } " class="aeris-catalog-box" :style="getTheme" >
+    <div class="box">
+      <header v-if="header" class="box-heading" @click="isDeployed = !isDeployed">
         <div class="box-heading-buttons">
           <i :class="openIconClass" :style="getIconTheme" class="chevron" />
         </div>
@@ -10,12 +10,12 @@
           <h3 :style="getTitleTheme" no-label-float>{{ getTitle }}</h3>
         </div>
       </header>
-      <div  class="box-collapsable-part">
-        <main class="box-body">
+      <div class="box-collapsable-part">
+        <section class="box-body">
           <div class="content">
             <slot />
           </div>
-        </main>
+        </section>
       </div>
     </div>
   </div>
@@ -52,9 +52,15 @@ export default {
     },
     theme: {
       type: Object,
-      default: {}
+      default: () => {}
     }
   },
+
+    data() {
+      return {
+        isDeployed: false
+      };
+    },
 
   computed: {
 
@@ -63,52 +69,22 @@ export default {
     },
 
     getTheme() {
-      if (this.theme) {
-        let primaryColor = this.theme.primaryColor;
-        let secondaryColor = this.theme.secondaryColor;
-        return {
-          color: secondaryColor,
-          background: primaryColor
-        };
-      } else {
-        return "";
-      }
+      return this.theme ? { color: this.theme.secondaryColor, background: this.theme.primaryColor } : "";
     },
 
     getTitleTheme() {
-      if (this.theme) {
-        let emphasis = this.theme.emphasis;
-        return {
-          color: emphasis
-        };
-      } else {
-        return "";
-      }
+      return this.theme ? {color: this.theme.emphasis}:"";
     },
 
     getIconTheme() {
-      if (this.theme) {
-        let iconColor = this.theme.iconColor;
-        return {
-          color: iconColor
-        };
-      } else {
-        return "";
-      }
+      return this.theme ? { color : this.theme.iconColor}: "";
     }
   },
 
-  data() {
-
-    return {
-      hasToolbar: false,
-      isdeployed: false
-    };
-  }
 };
 </script>
 
-<style>
+<style scoped>
 
 .aeris-catalog-box {
   font-size: 0.9rem;
@@ -154,7 +130,7 @@ export default {
   margin-right: 10px;
 }
 
-.box-title h4 {
+.box-title h3 {
   margin: 0;
 }
 
@@ -166,17 +142,8 @@ export default {
   padding: 10px;
 }
 
-.box-toolbar {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  padding: 5px 10px;
-  border-bottom: 1px solid #ccc;
-}
-
 .box-heading {
   display: flex;
-  /*justify-content: space-between;*/
   align-items: center;
   padding: 5px 5px;
   cursor: pointer;
@@ -191,22 +158,4 @@ export default {
   padding: 0 10px;
 }
 
-.box-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-}
-
-.expandButton {
-  padding: 6px 13px;
-  margin: 0 5px;
-  border: 1px solid;
-  outline: none;
-}
-
-.expandButton:hover {
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
 </style>

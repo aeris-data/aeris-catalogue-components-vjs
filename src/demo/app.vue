@@ -25,5 +25,3 @@
     </div>
   </div>
 </template>
-
-<style>
