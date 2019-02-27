@@ -14,6 +14,9 @@
         <router-link to="/instrument-search-criteria">/instrument-search-criteria</router-link>
       </li>
       <li>
+        <router-link to="/parameter-search-criteria">/parameter-search-criteria</router-link>
+      </li>
+      <li>
         <router-link to="/eurochamp">/eurochamp</router-link>
       </li>
       <li>
