@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import AerisCatalogSearchBox from "../../lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box.vue"
+import {AerisCatalogSearchBox} from "../../../../lib/modules/aeris-catalogue-components"
 export default {
     components:{AerisCatalogSearchBox},
     data(){
