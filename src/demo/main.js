@@ -24,6 +24,7 @@ import AerisThesaurusItemTreeCheckboxLayoutTest from "./modules/aeris-catalog-la
 import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test";
 import AerisInstrumentSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria-test";
 import AerisParameterSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria-test";
+import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria-test";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -58,6 +59,10 @@ const router = new VueRouter({
     {
       path: "/parameter-search-criteria",
       component: AerisParameterSearchCriteriaTest
+    },
+    {
+      path: "/platform-search-criteria",
+      component: AerisPlatformSearchCriteriaTest
     },
     {
       path: "/eurochamp",
