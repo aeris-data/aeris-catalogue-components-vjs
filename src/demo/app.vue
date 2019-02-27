@@ -16,6 +16,9 @@
       <li>
         <router-link to="/aeris">/aeris</router-link>
       </li>
+      <li>
+        <router-link to="/metadata_panel">/metadata_panel</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>

@@ -6,6 +6,11 @@ Vue.use(VueI18n);
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
+import axios from "axios";
+import VueAxios from "vue-axios";
+
+Vue.use(VueAxios, axios);
+
 import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
 Vue.use(VueColorPlugin);
 Vue.use(VueAerisLanguagePlugin);
@@ -16,6 +21,7 @@ import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
+import metadataPanelTest from "./modules/metadata-panel-test.vue"
 
 const router = new VueRouter({
   mode: "history",
@@ -39,6 +45,10 @@ const router = new VueRouter({
     {
       path: "/aeris",
       component: aeris
+    },
+    {
+      path: "/metadata_panel",
+      component: metadataPanelTest
     }
   ]
 });

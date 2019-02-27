@@ -75,6 +75,7 @@ export default {
       if (!this.lang) {
         return this.value;
       }
+      console.log("inter field : ",this.value)
       var json = JSON.parse(this.value);
       for (var key in json) {
         if (key === "DEFAULT_VALUE_KEY") {

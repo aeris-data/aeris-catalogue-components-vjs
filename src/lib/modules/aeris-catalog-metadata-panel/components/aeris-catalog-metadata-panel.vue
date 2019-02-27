@@ -22,75 +22,95 @@
 </i18n>
 
 <template>
-  <div data-aeris-catalog-metadata-panel>
+  <div class="data-aeris-catalog-metadata-panel">
     <header>
       <h2 class="metadata-panel-title">
         <aeris-international-field
           v-if="resourcetitle"
-          :lang="lang"
+          :language="language"
           :value="resourcetitle"
-          html="true"
+          :html="true"
         ></aeris-international-field>
         <div v-else>{{ $t("addTitle") }}</div>
       </h2>
-      <div data-aeris-metadata-panel-project-list>
-        <ul class="cartouche">
-          <li v-for="project in projectsList" :key="project.projectName">
-            <component
-              :is="project.aerisProjectUuid ? 'a' : 'span'"
-              :href="projectLandingPage(project.aerisProjectUuid) || ''"
-              target="_blank"
-              >{{ project.projectName }}</component
-            >
-          </li>
-        </ul>
+      <div class="data-aeris-metadata-panel-project-list">
+       
+          <div class="cartouche" :style="getCartoucheTheme" v-for="project in projectsList"  :key="project.projectName">
+            
+           <a :href="projectLandingPage(project.aerisProjectUuid)" target="_blank">
+            <span> {{ project.projectName }}</span></a>
+          </div>
+       
       </div>
-      <aside>
-        <aeris-catalog-ui-icon-button
+      <aside >
+        <aeris-ui-icon-button
           v-if="minimize"
           :title="$t('maximize')"
           icon="fa-expand"
           @click="switchmode"
-        ></aeris-catalog-ui-icon-button>
-        <aeris-catalog-ui-icon-button
+          type="icon-button"
+           :theme="theme"
+        ></aeris-ui-icon-button>
+        <aeris-ui-icon-button
           v-if="maximize"
           :title="$t('minimize')"
           icon="fa-compress"
           @click="switchmode"
-        ></aeris-catalog-ui-icon-button>
-        <aeris-catalog-ui-icon-button
+          type="icon-button"
+           :theme="theme"
+        ></aeris-ui-icon-button>
+        <aeris-ui-icon-button
           :title="$t('close')"
           icon="fa-times"
           @click="broadcastCloseEvent"
-        ></aeris-catalog-ui-icon-button>
-        <aeris-catalog-ui-icon-button
+          type="icon-button"
+           :theme="theme"
+        ></aeris-ui-icon-button>
+        <aeris-ui-icon-button
           v-show="!edit"
           :title="$t('json')"
           icon="fa-code"
           @click="showJson"
-        ></aeris-catalog-ui-icon-button>
-        <aeris-catalog-ui-icon-button
+          type="icon-button"
+           :theme="theme"
+        ></aeris-ui-icon-button>
+        <aeris-ui-icon-button
           v-show="edit"
           icon="fa-floppy-o"
-          theme="primary"
           @click="sendSaveEvent"
-        ></aeris-catalog-ui-icon-button>
-        <slot />
+          type="icon-button"
+           :theme="theme"
+        ></aeris-ui-icon-button>
+        <slot/>
       </aside>
     </header>
     <main>
-      <aeris-metadata v-if="!edit" :identifier="uuid" :service="idservice" lang="fr"></aeris-metadata>
-      <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate"></md-template-proxy>
-    </main>
+      <component  :is="AerisUiIconButton" ></component>
+ <aeris-metadata-services v-if="!edit" :identifier="uuid" :service="idservice" language="fr" @metadata ="updateMetadata"></aeris-metadata-services>
+  <component  :is="template" :metadata="metadataValue"></component>
+  
+  <!--  <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate" :metadata="metadataValue"></md-template-proxy>  -->
+   </main>
   </div>
 </template>
 
 <script>
+import {AerisUiIconButton} from "aeris-commons-components-vjs"
+import {AerisMetadataServices} from "aeris-metadata-components-vjs"
+import MdTemplateProxy from '../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-proxy.vue'
+import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field.vue"
+import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection"
 export default {
   name: "aeris-catalogue-metadata-panel",
 
+components:{AerisUiIconButton,
+            AerisMetadataServices,
+            MdTemplateProxy,
+            AerisInternationalField,
+            MdTemplateCollection},
+
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -129,11 +149,15 @@ export default {
     projects: {
       type: String,
       default: null
+    },
+    theme:{
+      type:Object,
+      default:()=>{}
     }
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     },
     uuid(value) {
@@ -151,16 +175,9 @@ export default {
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener("aerisTheme", this.aerisThemeListener);
-    this.aerisThemeListener = null;
-  },
 
   created() {
-    this.aerisThemeListener = this.handleTheme.bind(this);
-    document.addEventListener("aerisTheme", this.aerisThemeListener);
-
-    this.$nextTick(function() {
+    this.$nextTick(() => {
       document.dispatchEvent(
         new CustomEvent("aerisCatalogueInfoMetadata", {
           detail: {
@@ -172,54 +189,76 @@ export default {
     });
   },
 
-  mounted: function() {
-    var event = new CustomEvent("aerisThemeRequest", {});
-    document.dispatchEvent(event);
+  mounted() {
+  
 
-    if (this.lang) {
-      this.$i18n.locale = this.lang;
+    if (this.language) {
+      this.$i18n.locale = this.language;
     }
   },
 
-  updated: function() {
-    this.ensureTheme();
-  },
-
   computed: {
-    idservice: function() {
+    getCartoucheTheme(){
+      if (true) {
+      
+        return {
+          background: "blue"
+        };
+      } else {
+        return "";
+      }
+    },
+    idservice() {
       var result = this.metadataService;
-      if (this.metadataService.endsWith("/")) {
+      /* if (this.metadataService.endsWith("/")) {
         result = result + "id";
       } else {
         result = result + "/id";
-      }
+      } */
+      console.log("service url metadata",result)
       return result;
     },
 
-    minimize: function() {
+    minimize() {
       return !this.maximize;
     },
 
-    projectsList: function() {
-      return this.projects ? JSON.parse(this.projects) : "";
+      projectsList() {
+        console.log("this.project  :" , this.projects)
+      let toto=  this.projects ? JSON.parse(this.projects) : "";
+      console.log("toto", toto)
+      return toto
     }
   },
 
   data() {
     return {
-      theme: null,
-      maximize: false
+      template: MdTemplateCollection,
+      maximize: false,
+      metadataValue:null,
+      
     };
   },
 
   methods: {
-    showJson: function() {
+    updateTemplate(){
+      return MdTemplateCollection
+    },
+      updateMetadata(metadata) {
+        console.log ("update metadata : ", metadata)
+      this.metadataValue = metadata;
+    },
+    displayValue(value){
+      console.log("v-for :", value)
+    },
+    showJson() {
       var baseUrl = "http://jsoneditoronline.org/?url=";
-      var url = baseUrl + this.metadataService + "id/" + this.uuid;
+      var url = baseUrl + this.metadataService  + this.uuid;
+      console.log("url json : ", url)
       window.open(url, "_blank", "toolbar=no, status=no, scrollbars=no, menubar=no, width=1000, height=800");
     },
 
-    broadcastCloseEvent: function() {
+    broadcastCloseEvent() {
       this.forceNormalMode();
       console.log("aerisCatalogueHideMetadata event");
       var event = new CustomEvent("aerisCatalogueHideMetadata", {
@@ -228,7 +267,7 @@ export default {
       document.dispatchEvent(event);
     },
 
-    forceNormalMode: function() {
+    forceNormalMode() {
       this.maximize = false;
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -241,7 +280,7 @@ export default {
       }
     },
 
-    switchmode: function() {
+    switchmode() {
       if (this.minimize) {
         this.maximize = true;
         var elem = this.$el;
@@ -267,36 +306,25 @@ export default {
       );
     },
 
-    handleTheme: function(theme) {
-      this.theme = theme.detail;
-      this.ensureTheme();
-    },
-
-    ensureTheme: function() {
-      if (this.theme) {
-        let cartoucheList = document.querySelectorAll("[data-aeris-catalog-metadata-panel]>header .cartouche li");
-        cartoucheList.forEach(element => {
-          element.style.background = this.theme.primary;
-        });
-      }
-    },
+   
 
     projectLandingPage: function(projectId) {
+      console.log("projectId",projectId)
       return "https://www.aeris-data.fr/project/" + projectId;
     }
   }
 };
 </script>
 
-<style>
-[data-aeris-catalog-metadata-panel] {
+<style scoped>
+.data-aeris-catalog-metadata-panel {
   --gap: 12px;
   --heightHeader: 80px;
   height: 100%;
   background: #ddd;
 }
 
-[data-aeris-catalog-metadata-panel] > header {
+.data-aeris-catalog-metadata-panel > header {
   position: relative;
   display: flex;
   align-items: center;
@@ -307,63 +335,64 @@ export default {
   color: #333;
 }
 
-[data-aeris-catalog-metadata-panel] > header [data-aeris-metadata-panel-project-list] {
+.data-aeris-catalog-metadata-panel > header .data-aeris-metadata-panel-project-list {
   display: flex;
   flex-direction: row;
 }
 
-[data-aeris-catalog-metadata-panel] > header .cartouche li {
+.data-aeris-catalog-metadata-panel > header .cartouche  {
   display: inline-block;
   margin-bottom: 5px;
   padding: 4px 5px 3px;
   border-radius: 5px;
-  color: #fafafa;
+  color: red;
 }
-[data-aeris-catalog-metadata-panel] > header .cartouche li a {
+.data-aeris-catalog-metadata-panel > header .cartouche a {
   color: #fafafa;
 }
 
-[data-aeris-catalog-metadata-panel] > header .cartouche li + li {
+.data-aeris-catalog-metadata-panel > header .cartouche{
   margin-left: 5px;
 }
 
-[data-aeris-catalog-metadata-panel] > header h2 {
+.data-aeris-catalog-metadata-panel > header h2 {
   font-weight: 300;
 }
 
-[data-aeris-catalog-metadata-panel] > header > aside {
+.data-aeris-catalog-metadata-panel > header  aside {
   display: flex;
   flex-direction: row;
+  
 }
 
-[data-aeris-catalog-metadata-panel] > header > aside > * {
+ .data-aeris-catalog-metadata-panel  > header  aside *{
   margin: 5px;
 }
-
-[data-aeris-catalog-metadata-panel] > main {
+ 
+.data-aeris-catalog-metadata-panel > main {
   height: calc(100% - var(--heightHeader));
   overflow-y: auto;
 }
 
-[data-aeris-catalog-metadata-panel] [data-template^="metadata-panel"] {
+.data-aeris-catalog-metadata-panel [data-template^="metadata-panel"] {
   padding: var(--gap) var(--gap) 0 var(--gap);
 }
 
-[data-aeris-catalog-metadata-panel] [data-template^="metadata-panel"] [data-template^="metadata-block"] {
+.data-aeris-catalog-metadata-panel [data-template^="metadata-panel"] [data-template^="metadata-block"] {
   border-radius: 2px;
   margin-bottom: var(--gap);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   background: #fafafa;
 }
 
-[data-aeris-catalog-metadata-panel] [data-template="metadata-panel"] {
+.data-aeris-catalog-metadata-panel [data-template="metadata-panel"] {
   column-count: 2;
   column-gap: var(--gap);
   column-fill: balance;
   -moz-column-fill: balance;
 }
 
-[data-aeris-catalog-metadata-panel] [data-template="metadata-panel"] [data-template="metadata-block"] {
+.data-aeris-catalog-metadata-panel [data-template="metadata-panel"] [data-template="metadata-block"] {
   break-inside: avoid;
 }
 </style>

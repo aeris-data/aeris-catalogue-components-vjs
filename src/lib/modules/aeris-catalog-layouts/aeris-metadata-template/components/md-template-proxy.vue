@@ -1,11 +1,16 @@
 <template>
-  <component v-if="templateVueComponents.includes(elementName)" :is="elementName"></component>
-  <span v-else v-html="contenu" />
+  <component v-if="metadata"  :is="template" :metadata="metadata"></component>
+  
 </template>
 <script>
+import MdTemplateCollection from "./md-template-collection.vue";
+
 export default {
   name: "md-template-proxy",
 
+  components: {
+    MdTemplateCollection
+  },
   props: {
     value: {
       type: String,
@@ -21,12 +26,19 @@ export default {
     },
     clientTemplateName: {
       type: String,
-      default: ""
+      default: "COLLECTION"
+    },
+    metadata: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     }
   },
 
   data() {
     return {
+      template: MdTemplateCollection,
       templateVueComponents: [
         "md-template-chamber-measurement-metadata",
         "md-template-ir-spectrum-metadata",
@@ -34,20 +46,22 @@ export default {
       ]
     };
   },
-
-  watch: {},
-
-  destroyed: function() {},
-
-  mounted: function() {},
-
+  mounted() {
+    console.log("metadata proxy: ", this.metadata);
+  },
+  watch: {
+    metadata() {
+      console.log("watch proxy : ", this.metadata);
+      return this.metadata;
+    }
+  },
   computed: {
     elementName() {
       return this.type ? "md-template-" + this.type.toLowerCase().replace(/_/g, "-") : null;
     },
 
     contenu: function() {
-      if (!this.edit) {
+      /*   if (!this.edit) {
         var elementName = "";
         if (this.clientTemplateName) {
           elementName = this.clientTemplateName;
@@ -63,23 +77,18 @@ export default {
         } else {
           return "<md-template-collection></md-template-collection>";
         }
-      } else {
-        var elementName = "md-edit-template-" + this.type.toLowerCase();
-        var aux = elementName.replace(/_/g, "-");
-        if (window.registredAerisElements.indexOf(aux) >= 0) {
+      } else { */
+      //var elementName = "md-edit-template-" + this.type.toLowerCase();
+      return "<" + "md-template-" + this.type.toLowerCase() + "></" + "md-template-" + this.type.toLowerCase() + ">";
+      /*  if (window.registredAerisElements.indexOf(aux) >= 0) {
           return "<" + aux + "></" + aux + ">";
         } else {
           //We don't take in consideration the edit property in this case
           return "<md-template-collection></md-template-collection>";
-        }
-      }
+        } */
+      //}
     }
-  },
-
-  updated: function() {},
-
-  methods: {}
+  }
 };
 </script>
 
-<style></style>
