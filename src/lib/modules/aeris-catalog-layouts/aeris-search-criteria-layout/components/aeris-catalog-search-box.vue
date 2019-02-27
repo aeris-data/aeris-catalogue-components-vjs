@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ showBody: isDeployed } " class="aeris-catalog-box" :style="getTheme" >
+  <div :class="{ showBody: isDeployed }" :style="getTheme" class="aeris-catalog-box">
     <div class="box">
       <header v-if="header" class="box-heading" @click="isDeployed = !isDeployed">
         <div class="box-heading-buttons">
@@ -38,7 +38,7 @@ export default {
       type: String,
       default: "fa fa-chevron-down"
     },
-    box_title: {
+    boxTitle: {
       type: String,
       default: ""
     },
@@ -56,16 +56,15 @@ export default {
     }
   },
 
-    data() {
-      return {
-        isDeployed: false
-      };
-    },
+  data() {
+    return {
+      isDeployed: false
+    };
+  },
 
   computed: {
-
     getTitle() {
-      return this.title || this.box_title;
+      return this.title || this.boxTitle;
     },
 
     getTheme() {
@@ -73,19 +72,17 @@ export default {
     },
 
     getTitleTheme() {
-      return this.theme ? {color: this.theme.emphasis}:"";
+      return this.theme ? { color: this.theme.emphasis } : "";
     },
 
     getIconTheme() {
-      return this.theme ? { color : this.theme.iconColor}: "";
+      return this.theme ? { color: this.theme.iconColor } : "";
     }
-  },
-
+  }
 };
 </script>
 
 <style scoped>
-
 .aeris-catalog-box {
   font-size: 0.9rem;
   padding: 5px;
@@ -157,5 +154,4 @@ export default {
 .box-heading .box-heading-buttons .fa {
   padding: 0 10px;
 }
-
 </style>

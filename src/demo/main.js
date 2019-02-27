@@ -21,7 +21,9 @@ Vue.use(VueAerisLanguagePlugin);
 import app from "./app.vue";
 import AerisThesaurusItemCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-checkbox-layout-test";
 import AerisThesaurusItemTreeCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout-test";
-import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test.vue"
+import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test";
+import AerisInstrumentSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria-test";
+
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
@@ -47,6 +49,10 @@ const router = new VueRouter({
     {
       path: "/thesaurus-item-tree-checkbox-layout",
       component: AerisThesaurusItemTreeCheckboxLayoutTest
+    },
+    {
+      path: "/instrument-search-criteria",
+      component: AerisInstrumentSearchCriteriaTest
     },
     {
       path: "/eurochamp",

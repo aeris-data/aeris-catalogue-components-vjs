@@ -11,6 +11,9 @@
         <router-link to="/thesaurus-item-tree-checkbox-layout">/thesaurus-item-tree-checkbox-layout</router-link>
       </li>
       <li>
+        <router-link to="/instrument-search-criteria">/instrument-search-criteria</router-link>
+      </li>
+      <li>
         <router-link to="/eurochamp">/eurochamp</router-link>
       </li>
       <li>
