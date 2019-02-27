@@ -43,10 +43,6 @@ export default {
       type: Object,
       default: () => {}
     },
-    name: {
-      type: String,
-      default: ""
-    },
     type: {
       type: String,
       default: ""
@@ -82,14 +78,6 @@ export default {
   },
 
   methods: {
-    thesaurusItemsLength(item) {
-      if (item.thesaurusItems) {
-        return item.thesaurusItems.length;
-      } else {
-        return 0;
-      }
-    },
-
     loadThesaurusItem() {
       if (this.service) {
         this.loading = true;
@@ -106,7 +94,7 @@ export default {
               this.handleResponse(response, language);
             },
             response => {
-              this.handleError(response);
+              this.handleError();
             }
           );
       }
