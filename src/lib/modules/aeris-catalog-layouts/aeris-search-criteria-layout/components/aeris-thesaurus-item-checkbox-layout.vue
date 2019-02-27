@@ -59,7 +59,7 @@ export default {
 
   computed: {
     isVisible() {
-      return this.thesaurusItem && this.thesaurusItem.name && this.thesaurusType ? true : false;
+      return this.thesaurusItem && this.thesaurusItem.name && this.thesaurusType;
     },
     sublevelLength() {
       return this.thesaurusItem && this.thesaurusItem.thesaurusItems ? this.thesaurusItem.thesaurusItems.length : 0;
@@ -68,11 +68,15 @@ export default {
       return this.thesaurusItem;
     },
     getIsChecked() {
-      return this.isChecked;
+      return this.thesaurusItem.checked;
     },
     applyTheme() {
       return this.theme && this.theme.primaryColor
-        ? { "--primaryColor": this.theme.primaryColor, "--secondaryColor": this.theme.secondaryColor }
+        ? {
+            "--primaryColor": this.theme.primaryColor,
+            "--secondaryColor": this.theme.secondaryColor,
+            "--contentPrimaryColor": this.theme.contentPrimaryColor
+          }
         : "";
     }
   },
@@ -169,5 +173,9 @@ label,
 input,
 aside > i:hover {
   cursor: pointer;
+}
+label,
+.far {
+  color: var(--contentPrimaryColor);
 }
 </style>

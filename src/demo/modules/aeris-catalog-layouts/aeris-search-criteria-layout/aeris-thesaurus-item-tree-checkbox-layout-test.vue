@@ -19,7 +19,8 @@ export default {
     return {
       theme: {
         primaryColor: "#0b6bb3",
-        secondaryColor: "#fff"
+        secondaryColor: "#fff",
+        contentPrimaryColor: "grey"
       },
       selectedCriteria: [],
       service: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/projects/"

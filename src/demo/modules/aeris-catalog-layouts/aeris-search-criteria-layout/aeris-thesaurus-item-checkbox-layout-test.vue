@@ -228,7 +228,8 @@ export default {
       },
       theme: {
         primaryColor: "#0b6bb3",
-        secondaryColor: "#fff"
+        secondaryColor: "#fff",
+        contentPrimaryColor: "grey"
       }
     };
   }
