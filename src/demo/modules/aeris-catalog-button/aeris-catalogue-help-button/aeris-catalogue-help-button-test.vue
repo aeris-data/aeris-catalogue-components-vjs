@@ -5,7 +5,7 @@
     </div>
 </template>
 <script>
-import AerisCatalogueHelpButton from "../../lib/modules/aeris-catalog-buttons/aeris-catalogue-help-button/components/aeris-catalogue-help-button.vue";
+import AerisCatalogueHelpButton from "../../../../lib/modules/aeris-catalog-buttons/aeris-catalogue-help-button/components/aeris-catalogue-help-button";
 export default {
   components: { AerisCatalogueHelpButton },
 

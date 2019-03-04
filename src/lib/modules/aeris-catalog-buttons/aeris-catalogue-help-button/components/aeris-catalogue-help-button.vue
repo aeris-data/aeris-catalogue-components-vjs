@@ -47,7 +47,7 @@ export default {
   },
 
   methods: {
-    handleHelp: function() {
+    handleHelp() {
       this.$emit("AskForHelp");
     }
   }
