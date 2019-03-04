@@ -18,6 +18,7 @@
     @click="handleSearch"
   ></aeris-ui-icon-button>
 </template>
+
 <script>
 import {AerisUiIconButton} from "aeris-commons-components-vjs"
 
@@ -35,12 +36,13 @@ export default {
     theme: {
       type: Object,
       default: null
+    },
+    range :{
+      type:Object,
+      default:()=> {return {}}
     }
   },
-  data() {
-    return {
-    };
-  },
+
   watch: {
     language(value) {
       this.$i18n.locale = value;
@@ -59,8 +61,7 @@ export default {
 
   methods: {
     handleSearch() {
-      this.$emit("CatalogueSearchStart", 0,24);
-    
+      this.$emit("catalogueSearchStart", this.range);
     }
   }
 };

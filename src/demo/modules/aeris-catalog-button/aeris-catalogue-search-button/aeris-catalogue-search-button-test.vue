@@ -1,13 +1,13 @@
 <template>
     <div style="padding:40px">
-        <aeris-catalogue-search-button :theme="theme" language="fr" @CatalogueSearchStart="getEmitParameter"></aeris-catalogue-search-button>
+        <aeris-catalogue-search-button :range="{min:0,max:24}" :theme="theme" language="fr" @catalogueSearchStart="getEmitParameter"></aeris-catalogue-search-button>
          <span v-if="max !== null && min !== null">parametres de la requete search: min ={{min}} max ={{max}}</span>
     </div>
 </template>
 
 
 <script>
-import AerisCatalogueSearchButton from "../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button.vue"
+import AerisCatalogueSearchButton from "../../../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button"
 
 export default {
 
@@ -24,9 +24,9 @@ export default {
                 }
     },
     methods:{
-        getEmitParameter(emitParametermin,emitParametermax){
-            this.min = emitParametermin
-            this.max = emitParametermax
+        getEmitParameter(emitParameter){
+            this.min = emitParameter.min
+            this.max = emitParameter.max
         }
     }
 }

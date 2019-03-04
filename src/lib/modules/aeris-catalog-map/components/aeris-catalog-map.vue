@@ -103,7 +103,7 @@ export default {
     /* Create map sources */
     this.initialiseMainSource();
     this.initialisePreviewSource();
-    this.map = new ol.Map({
+    this.map = new Map({
       layers: [raster, this.vector, this.mainClusteredLayer],
       target: this.$el.querySelector("#map"),
       controls: ol.control.defaults({
