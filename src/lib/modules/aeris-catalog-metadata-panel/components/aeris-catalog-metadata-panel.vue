@@ -85,11 +85,14 @@
       </aside>
     </header>
     <main>
-      <component  :is="AerisUiIconButton" ></component>
+
  <aeris-metadata-services v-if="!edit" :identifier="uuid" :service="idservice" language="fr" @metadata ="updateMetadata"></aeris-metadata-services>
-  <component  :is="template" :metadata="metadataValue"></component>
-  
-  <!--  <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate" :metadata="metadataValue"></md-template-proxy>  -->
+ <!--  <component  :is="template" :metadata="metadataValue"></component>
+   <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate" :metadata="metadataValue"></md-template-proxy>  -->
+
+  <template >
+    <md-template-gmos-time-series-metadata></md-template-gmos-time-series-metadata>
+  </template>
    </main>
   </div>
 </template>
@@ -97,9 +100,11 @@
 <script>
 import {AerisUiIconButton} from "aeris-commons-components-vjs"
 import {AerisMetadataServices} from "aeris-metadata-components-vjs"
+import {MdTemplateGmosTimeSeriesMetadata} from "gmos-metadata-components-vjs"
 import MdTemplateProxy from '../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-proxy.vue'
 import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field.vue"
 import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection"
+
 export default {
   name: "aeris-catalogue-metadata-panel",
 
@@ -241,12 +246,11 @@ components:{AerisUiIconButton,
   },
 
   methods: {
-    updateTemplate(){
-      return MdTemplateCollection
-    },
+    
       updateMetadata(metadata) {
         console.log ("update metadata : ", metadata)
       this.metadataValue = metadata;
+      this.updateTemplate()
     },
     displayValue(value){
       console.log("v-for :", value)
@@ -305,7 +309,14 @@ components:{AerisUiIconButton,
         })
       );
     },
-
+    updateTemplate(){
+      if(this.metadataValue){
+        let templateName= "md-template-" + this.metadataValue.type.toLowerCase()
+       templateName = templateName.replace(/_/g, '-');
+        console.log("template name : ", "<"+templateName+"></"+templateName+">")
+        return "<"+templateName+"></"+templateName+">"
+      }
+    },
    
 
     projectLandingPage: function(projectId) {

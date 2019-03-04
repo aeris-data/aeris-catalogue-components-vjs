@@ -6,8 +6,8 @@
       :resourcetitle="'{&quot;en&quot;:&quot;IAGOS Climatologies&quot;,&quot;fr&quot;:&quot;Climatologies IAGOS&quot;}'"
       icon-class="aeris-icon aeris-icon-unknown"
       metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/"
-      uuid="95941ca3-7251-4bed-877a-d2a99fb719cc"
-      type="COLLECTION"
+      uuid="de8bd81e-5025-4153-b0d0-bbdd35771b99"
+      
       :metadata="currentMetadata"
       client-template=""
       :projects="project"
