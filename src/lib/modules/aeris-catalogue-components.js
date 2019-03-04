@@ -1,4 +1,5 @@
 import AerisThesaurusItemTreeCheckboxLayout from "../modules/aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-thesaurus-item-tree-checkbox-layout";
 import AerisThesaurusItemCheckboxLayout from "../modules/aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-thesaurus-item-checkbox-layout";
 import AerisCatalogSearchBox from "../modules/aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box"
-export {AerisThesaurusItemTreeCheckboxLayout, AerisThesaurusItemCheckboxLayout, AerisCatalogSearchBox};
+import AerisCatalogueResetTextButton from "../modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/components/aeris-catalogue-reset-text-button.vue"
+export {AerisThesaurusItemTreeCheckboxLayout, AerisThesaurusItemCheckboxLayout, AerisCatalogSearchBox,AerisCatalogueResetTextButton};
