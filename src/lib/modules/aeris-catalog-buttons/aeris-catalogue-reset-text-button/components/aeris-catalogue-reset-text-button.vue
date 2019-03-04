@@ -53,15 +53,9 @@ export default {
     this.$i18n.locale = this.language;
   },
 
-  data() {
-    return {
-      progress: false
-    };
-  },
-
   methods: {
     handleReset() {
-      this.$emit("CatalogueReset");
+      this.$emit("catalogueReset");
     }
   }
 };
