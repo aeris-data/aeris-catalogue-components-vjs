@@ -28,9 +28,6 @@
        <li>
         <router-link to="/search_button">/search button</router-link>
       </li>
-      <li>
-        <router-link to="//search_box">/search box</router-link>
-      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>
