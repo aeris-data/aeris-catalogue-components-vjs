@@ -3,7 +3,7 @@
     <aeris-ui-icon-button
       :theme="getTheme"
       :icon-theme="getThemeIcon"
-      icon="fa-pencil-square-o"
+      icon="fa-edit"
       type="icon-button"
       @click="handleClick"
     ></aeris-ui-icon-button>
@@ -31,34 +31,16 @@ export default {
 
   computed: {
     getTheme() {
-      if (this.isActive) {
-        return {
-          emphasis: "#f39c12",
-          color: "grey"
-        };
-      } else {
-        return {};
-      }
+      return this.isActive ? { emphasis: "#f39c12", color: "grey" } : {};
     },
     getThemeIcon() {
-      if (this.isActive) {
-        return {
-          color: "white"
-        };
-      } else {
-        return {
-          color: "white"
-        };
-      }
+      return {color: "white" };
     }
   },
 
   data() {
     return {
       drawModeSelected: false,
-      aerisSpatialExtentMapModeListener: null,
-      themevalue: null,
-      iconThemeValue: null
     };
   },
 

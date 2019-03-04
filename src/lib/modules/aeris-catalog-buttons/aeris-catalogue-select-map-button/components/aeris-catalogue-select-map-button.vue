@@ -2,7 +2,6 @@
   <div :class="[getSelectedClass]">
     <aeris-catalog-ui-icon-button
       :theme="getTheme"
-      :key="select - map - button"
       icon="fa-mouse-pointer"
       @click="handleClick"
     ></aeris-catalog-ui-icon-button>
@@ -13,16 +12,6 @@
 export default {
   name: "aeris-catalogue-select-map-button",
 
-  destroyed: function() {
-    document.removeEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
-    this.aerisSpatialExtentMapModeListener = null;
-  },
-
-  created: function() {
-    console.log("aeris-catalogue-select-map-button creation");
-    this.aerisSpatialExtentMapModeListener = this.aerisSpatialExtentMapModeHandle.bind(this);
-    document.addEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
-  },
 
   computed: {
     getSelectedClass() {
@@ -47,8 +36,6 @@ export default {
       aerisSpatialExtentMapModeListener: null
     };
   },
-
-  updated: function() {},
 
   methods: {
     handleClick() {

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AerisCatalogueDrawMapButton from "../../lib/modules/aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button.vue";
+import AerisCatalogueDrawMapButton from "../../../../lib/modules/aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button";
 export default {
   components: { AerisCatalogueDrawMapButton },
   data() {
