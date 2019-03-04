@@ -36,10 +36,17 @@ export default {
     },
      theme: {
       type: Object,
-      default: null
+     default:()=>{return {}}
+    },
+    range:{
+      type:Object,
+      default:()=>{return {}}
     }
   },
-
+  data(){
+    return {
+    }
+  },
   watch: {
     language(value) {
       this.$i18n.locale = value;
@@ -52,7 +59,7 @@ export default {
 
   methods: {
     handleSearch() {
-      this.$emit("CatalogueSearchStart",0,24)
+      this.$emit("CatalogueSearchStart",this.range)
     }
   }
 };

@@ -2,6 +2,12 @@
   <div data-app>
     <ul data-role="menu">
       <li>
+        <router-link to="/thesaurus-item-checkbox-layout">/thesaurus-item-checkbox-layout</router-link>
+      </li>
+      <li>
+        <router-link to="/thesaurus-item-tree-checkbox-layout">/thesaurus-item-tree-checkbox-layout</router-link>
+      </li>
+      <li>
         <router-link to="/eurochamp">/eurochamp</router-link>
       </li>
       <li>
@@ -25,5 +31,3 @@
     </div>
   </div>
 </template>
-
-<style>
