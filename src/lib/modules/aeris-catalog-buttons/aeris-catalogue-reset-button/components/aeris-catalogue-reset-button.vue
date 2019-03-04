@@ -45,7 +45,7 @@ export default {
     }
   },
 
-  created: function() {
+  created() {
     this.$i18n.locale = this.language;
   },
 
@@ -57,7 +57,7 @@ export default {
 
   methods: {
     handleReset: function() {
-      this.$emit("CatalogueReset");
+      this.$emit("catalogueReset");
     }
   }
 };
