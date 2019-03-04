@@ -1,5 +1,4 @@
 <template>
-  <div>
     <aeris-ui-icon-button
       :theme="getTheme"
       :icon-theme="getThemeIcon"
@@ -7,7 +6,6 @@
       type="icon-button"
       @click="handleClick"
     ></aeris-ui-icon-button>
-  </div>
 </template>
 
 <script>
@@ -28,37 +26,30 @@ export default {
     }
   },
 
+  data() {
+    return {
+      extendedMapMode: false,
+    };
+  },
+
   computed: {
     getTheme() {
       if (this.isActive) {
         return {
-          emphasis: "#f39c12",
-          color: "grey"
+          emphasis: this.theme.primaryColor,
+          color: this.theme.secondaryColor
         };
       } else {
         return {};
       }
     },
     getThemeIcon() {
-      if (this.isActive) {
         return {
           color: "white"
-        };
-      } else {
-        return {
-          color: "white"
-        };
+        }
       }
-    }
-  },
-
-  data() {
-    return {
-      extendedMapMode: false,
-      aerisSpatialExtentMapModeListener: null
-    };
-  },
-
+    },
+ 
   methods: {
     handleClick() {
       this.extendedMapMode = true;
@@ -67,10 +58,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.selected {
-  background-color: #fafafa;
-  color: white;
-}
-</style>
