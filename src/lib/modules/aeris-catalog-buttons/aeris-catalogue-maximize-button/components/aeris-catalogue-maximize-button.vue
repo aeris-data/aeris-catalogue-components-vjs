@@ -57,7 +57,7 @@ export default {
   },
 
   computed: {
-    computeTitle: function() {
+    computeTitle() {
       if (this.maximize) {
         return this.$i18n.t("maximize");
       } else {
@@ -76,10 +76,10 @@ export default {
     handleMaximize() {
       if (this.maximize) {
         this.maximize = false;
-        this.$emit("CatalogueMaximize");
+        this.$emit("catalogueMaximize");
       } else {
         this.maximize = true;
-        this.$emit("CatalogueMinimize");
+        this.$emit("catalogueMinimize");
       }
     }
   }
