@@ -1,6 +1,6 @@
 <template>
 <div style="padding:40px">
-    <aeris-catalogue-help-button :theme="theme" @AskForHelp="visible = !visible" lang="en"></aeris-catalogue-help-button>
+    <aeris-catalogue-help-button :theme="theme" @askForHelp="visible = !visible" lang="en"></aeris-catalogue-help-button>
     <p v-if="visible">emit : please help</p>
     </div>
 </template>
