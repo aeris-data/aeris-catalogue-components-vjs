@@ -68,7 +68,7 @@ export default {
     return {
       aerisThemeListener: null,
       isPopupOpen: false,
-      showAtStartVisible: true,
+      showAtStartVisible: true
     };
   },
 
