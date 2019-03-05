@@ -16,6 +16,7 @@ import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
+import aerisCatalogHelpContent from "./modules/aeris-catalog-help-content-test";
 
 const router = new VueRouter({
   mode: "history",
@@ -39,6 +40,10 @@ const router = new VueRouter({
     {
       path: "/aeris",
       component: aeris
+    },
+    {
+      path: "/help_content",
+      component: aerisCatalogHelpContent
     }
   ]
 });

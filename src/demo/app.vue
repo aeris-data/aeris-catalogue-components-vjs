@@ -16,6 +16,9 @@
       <li>
         <router-link to="/aeris">/aeris</router-link>
       </li>
+      <li>
+        <router-link to="/help_content">/help content</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>
