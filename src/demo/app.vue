@@ -26,10 +26,12 @@
         <router-link to="/aeris">/aeris</router-link>
       </li>
       <li>
-        <router-link to="/search_box">/search box</router-link>
-      </li>
-      <li>
         <router-link to="/maximize_button">/Maximize button</router-link>
+       <li>
+        <router-link to="/search_button">/search button</router-link>
+        </li>
+      <li>
+        <router-link to="/reset_text_button">/reset text button</router-link>
       </li>
     </ul>
     <div>
