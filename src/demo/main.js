@@ -71,6 +71,7 @@ const router = new VueRouter({
       component: aeris
     },
     {
+<<<<<<< HEAD
       path: "/search_text_button",
       component : AerisCatalogueSearchTextButtontest
     },
@@ -85,6 +86,15 @@ const router = new VueRouter({
     {
       path: "/search_box",
       component: AerisCatalogueSearchBoxTest
+=======
+   aeris-catalogue-search-text-button
+      path: "/search_text_button",
+      component : AerisCatalogueSearchTextButtontest
+
+      path: "/search_box",
+      component: AerisCatalogueSearchBoxTest
+  refactoring
+>>>>>>> f10419a906e39e1c9acd3811baa68ddc3c8707c1
     }
   ]
 });
