@@ -21,13 +21,15 @@ Vue.use(VueAerisLanguagePlugin);
 import app from "./app.vue";
 import AerisThesaurusItemCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-checkbox-layout-test";
 import AerisThesaurusItemTreeCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout-test";
-
+import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test.vue"
+import AerisCatalogueSearchButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-search-button/aeris-catalogue-search-button-test.vue"
+import AerisCatalogueResetTextButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/aeris-catalogue-reset-text-button-test.vue"
+import AerisCatalogueSearchTextButtontest from "../demo/modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/aeris-catalogue-search-text-button-test.vue"
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
-import AerisCatalogueSearchTextButtontest from "../demo/modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/aeris-catalogue-search-text-button-test.vue"
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 
 const store = new Vuex.Store({
@@ -71,6 +73,18 @@ const router = new VueRouter({
     {
       path: "/search_text_button",
       component : AerisCatalogueSearchTextButtontest
+    },
+    {
+      path: "/search_button",
+      component:AerisCatalogueSearchButtonTest
+    },
+    {
+      path: "/reset_text_button",
+      component:AerisCatalogueResetTextButtonTest
+    },
+    {
+      path: "/search_box",
+      component: AerisCatalogueSearchBoxTest
     }
   ]
 });

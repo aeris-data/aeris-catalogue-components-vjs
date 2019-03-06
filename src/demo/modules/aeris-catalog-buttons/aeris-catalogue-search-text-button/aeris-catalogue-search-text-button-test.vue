@@ -25,7 +25,6 @@ export default {
 
   methods: {
     getEmitParameter(emitParameter) {
-      console.log(emitParameter)
       this.min = emitParameter.min;
       this.max = emitParameter.max;
     }

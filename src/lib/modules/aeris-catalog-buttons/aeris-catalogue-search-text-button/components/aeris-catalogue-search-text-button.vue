@@ -43,10 +43,7 @@ export default {
       default:()=>{return {}}
     }
   },
-  data(){
-    return {
-    }
-  },
+
   watch: {
     language(value) {
       this.$i18n.locale = value;
@@ -59,7 +56,7 @@ export default {
 
   methods: {
     handleSearch() {
-      this.$emit("CatalogueSearchStart",this.range)
+      this.$emit("catalogueSearchStart",this.range)
     }
   }
 };
