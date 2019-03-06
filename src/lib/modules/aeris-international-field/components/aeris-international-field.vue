@@ -13,19 +13,25 @@
 <template>
   <div data-aeris-international-field>
     <span v-if="!isDeployed">
-      <span v-if="html" v-html="truncatedtext" />
+      <span v-if="html" v-html="truncatedtext"/>
       <span v-else>{{ truncatedtext }}</span>
     </span>
     <span v-else>
-      <span v-if="html" v-html="text" />
+      <span v-if="html" v-html="text"/>
       <span v-else>{{ text }}</span>
     </span>
-    <span v-if="isTruncated && !isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("more") }}]</span>
+    <span
+      v-if="isTruncated && !isDeployed"
+      class="more"
+      @click="isDeployed = !isDeployed"
+    >[{{ $t("more") }}]</span>
     <span v-if="isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("less") }}]</span>
   </div>
 </template>
 
 <script>
+import marked from "marked";
+
 export default {
   name: "aeris-international-field",
 
@@ -39,7 +45,7 @@ export default {
       default: false
     },
     value: {
-      type: String,
+      type: Object,
       default: ""
     },
     maxLength: {
@@ -66,28 +72,14 @@ export default {
     },
 
     text() {
-      console.log("value :", this.value)
-      if (!this.value && this.value== null) {
+      if (!this.value && this.value == null) {
         return "";
-      }
-     
-      if (!this.language) {
+      } else if (!this.language) {
         return this.value;
-      }
-       console.log("value json :",JSON.parse(this.value))
-      var json = JSON.parse(this.value);
-      for (var key in json) {
-        if (key === "DEFAULT_VALUE_KEY") {
-          return json["DEFAULT_VALUE_KEY"];
-        }
-
-      }
-
-      if (json[this.language]) {
-        return json[this.language];
-      }
-      return "";
-    } 
+      } else if (this.value[this.language]) {
+        return marked(this.value[this.language]);
+      } else return "";
+    }
   },
 
   mounted() {
@@ -98,15 +90,9 @@ export default {
 
   methods: {
     truncate(value) {
-      console.log(value)
-      if (this.maxLength > 0) {
-        if (value.length > this.maxLength) {
-          this.isTruncated = true;
-          return value.substring(0, this.maxLength);
-        } else {
-          this.isTruncated = false;
-          return value;
-        }
+      if (value.length > this.maxLength) {
+        this.isTruncated = true;
+        return value.substring(0, this.maxLength);
       } else {
         this.isTruncated = false;
         return value;
@@ -116,11 +102,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 [data-aeris-international-field] {
   display: block;
   hyphens: auto;
   word-wrap: break-word;
+  text-align: justify;
 }
 
 [data-aeris-international-field] .more {
