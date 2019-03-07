@@ -90,17 +90,18 @@
  <!--  <component  :is="template" :metadata="metadataValue"></component>
    <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate" :metadata="metadataValue"></md-template-proxy>  -->
 
-  <template >
+  
     <md-template-gmos-time-series-metadata></md-template-gmos-time-series-metadata>
-  </template>
+ 
    </main>
   </div>
 </template>
+  <script type="text/javascript" component="aeris-data/gmos-metadata-components-vjs@0.2.0" src="https://rawgit.com/aeris-data/aeris-component-loader/master/aerisComponentLoader.js"></script>
 
 <script>
 import {AerisUiIconButton} from "aeris-commons-components-vjs"
 import {AerisMetadataServices} from "aeris-metadata-components-vjs"
-import {EurochampComponents} from "gmos-metadata-components-vjs"
+/* /* import {MdTemplateGmosTimeSeriesMetadata} from "gmos-metadata-components-vjs" */
 import MdTemplateProxy from '../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-proxy.vue'
 import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field.vue"
 import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection"
