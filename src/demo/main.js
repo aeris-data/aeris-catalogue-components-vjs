@@ -87,15 +87,9 @@ const router = new VueRouter({
       component: AerisCatalogueSearchBoxTest
     },
     {
-
       path: "/search_text_button",
       component : AerisCatalogueSearchTextButtontest
     },
-    {
-      path: "/search_box",
-      component: AerisCatalogueSearchBoxTest
-  
-    }
   ]
 });
 

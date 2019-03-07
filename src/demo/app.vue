@@ -27,9 +27,10 @@
       </li>
       <li>
         <router-link to="/search_text_button">/search text button</router-link>
-       <li>
+      </li>
+      <li>
         <router-link to="/search_button">/search button</router-link>
-        </li>
+      </li>
       <li>
         <router-link to="/reset_text_button">/reset text button</router-link>
       </li>
