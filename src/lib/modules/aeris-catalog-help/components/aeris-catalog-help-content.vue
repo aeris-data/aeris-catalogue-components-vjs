@@ -54,19 +54,22 @@ export default {
   name: "aeris-catalog-help-content",
 
   props: {
+    helpCookie: {
+      type: String,
+      default: "help-popup"
+    },
     language: {
       type: String,
       default: "en"
     },
-    helpCookie: {
-      type: String,
-      default: "help-popup"
+    theme: {
+      type: Object,
+      default: () => {}
     }
   },
 
   data() {
     return {
-      aerisThemeListener: null,
       isPopupOpen: false,
       showAtStartVisible: true
     };
@@ -82,15 +85,14 @@ export default {
   watch: {
     language(value) {
       this.$i18n.locale = value;
+    },
+    "theme.primaryColor"() {
+      this.ensureTheme();
     }
   },
 
   created() {
     this.$i18n.locale = this.language;
-    this.aerisThemeListener = this.handleTheme.bind(this);
-    document.addEventListener("aerisTheme", this.aerisThemeListener);
-    this.askForHelpListener = this.showHelp.bind(this);
-    document.addEventListener("aerisAskForHelp", this.askForHelpListener);
     if (this.helpCookie == null || this.getCookie(this.helpCookie)) {
       this.isPopupOpen = false;
       this.showAtStartVisible = false;
@@ -98,19 +100,28 @@ export default {
       this.isPopupOpen = true;
     }
   },
-
+  mounted() {
+    this.ensureTheme();
+  },
   methods: {
-    handleTheme(theme) {
-      this.theme = theme.detail;
-      this.ensureTheme();
-    },
-
-    showHelp() {
-      this.isPopupOpen = true;
-    },
-
     closePopup() {
       this.togglePopup;
+    },
+    colorLuminance(hex, lum) {
+      hex = String(hex).replace(/[^0-9a-f]/gi, "");
+      if (hex.length < 6) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      }
+      lum = lum || 0;
+      let rgb = "#",
+        c,
+        i;
+      for (i = 0; i < 3; i++) {
+        c = parseInt(hex.substr(i * 2, 2), 16);
+        c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
+        rgb += ("00" + c).substr(c.length);
+      }
+      return rgb;
     },
 
     doNotShow() {
@@ -118,19 +129,30 @@ export default {
       this.closePopup();
     },
 
-    setCookie(cname, cvalue, exdays) {
-      var d = new Date();
-      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-      var expires = "expires=" + d.toUTCString();
-      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-      this.showAtStartVisible = false;
+    ensureTheme() {
+      let okButton = this.$el.querySelector(".ok-button");
+      let showAtStartButton = this.$el.querySelector(".show-at-startup-button");
+      if (this.theme) {
+        okButton.style.background = this.theme.primaryColor;
+        if (this.showAtStartVisible) {
+          showAtStartButton.style.borderColor = this.theme.primaryColor;
+        }
+        let primaryColor = this.theme.primaryColor;
+        let darker = this.colorLuminance(primaryColor, -0.3);
+        okButton.addEventListener("mouseover", () => {
+          okButton.style.background = darker;
+        });
+        okButton.addEventListener("mouseout", () => {
+          okButton.style.background = primaryColor;
+        });
+      }
     },
 
     getCookie(cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(";");
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+      let name = cname + "=";
+      let ca = document.cookie.split(";");
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) === " ") {
           c = c.substring(1);
         }
@@ -139,6 +161,23 @@ export default {
         }
       }
       return "";
+    },
+
+    handleTheme(theme) {
+      this.theme = theme.detail;
+      this.ensureTheme();
+    },
+
+    setCookie(cname, cvalue, exdays) {
+      let d = new Date();
+      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+      let expires = "expires=" + d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      this.showAtStartVisible = false;
+    },
+
+    showHelp() {
+      this.isPopupOpen = true;
     }
   }
 };
@@ -174,7 +213,7 @@ export default {
 }
 
 .ok-button {
-  background-color: #8cd4f5;
+  background-color: #a79baf;
   color: white;
   border: none;
 
