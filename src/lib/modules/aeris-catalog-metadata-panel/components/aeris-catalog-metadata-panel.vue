@@ -119,7 +119,7 @@ components:{AerisUiIconButton,
       required: true
     },
     resourcetitle: {
-      type: String,
+      type: Object,
       default: null
     },
     iconClass: {
@@ -146,8 +146,8 @@ components:{AerisUiIconButton,
       default: ""
     },
     projects: {
-      type: String,
-      default: null
+      type: Array,
+      default: ()=>[]
     },
     theme:{
       type:Object,
@@ -156,7 +156,7 @@ components:{AerisUiIconButton,
   },
 
   watch: {
-    
+
     language(value) {
       this.$i18n.locale = value;
     },
@@ -223,11 +223,8 @@ components:{AerisUiIconButton,
       return !this.maximize;
     },
 
-      projectsList() {
-        console.log("this.project  :" , this.projects)
-      let toto=  this.projects ? JSON.parse(this.projects) : "";
-      console.log("toto", toto)
-      return toto
+    projectsList() {
+      return this.projects ;
     }
   },
 
