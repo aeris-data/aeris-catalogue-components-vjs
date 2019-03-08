@@ -26,6 +26,9 @@
         <router-link to="/aeris">/aeris</router-link>
       </li>
       <li>
+        <router-link to="/draw_map_button">/draw map button</router-link>
+      </li>
+      <li>
         <router-link to="/international_field">/international field</router-link>
       </li>
       <li>
