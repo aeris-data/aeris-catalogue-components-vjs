@@ -10,11 +10,8 @@ export default {
   data() {
     return {
       theme: {
-        primaryColor: "#F5F5F5",
-        emphasis: "#0b6bb3",
-        secondaryColor: "#a7a7a7",
-        iconColor: "#818181",
-        contentPrimaryColor: "grey"
+        primaryColor: "#0b6bb3",
+        secondaryColor: "#fff"
       }
     };
   }

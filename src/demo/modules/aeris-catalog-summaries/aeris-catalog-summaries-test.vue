@@ -1,18 +1,22 @@
 <template>
-  <aeris-catalog-summaries
-    :theme="theme"
-    :item-ids-in-cart="itemIdsInCart"
-    @showMore="showMore"
-    @addItemCart="addItemCart"
-    @removeItemCart="removeItemCart"
-  ></aeris-catalog-summaries>
+  <div>
+    <aeris-catalog-summaries
+      :theme="theme"
+      :item-ids-in-cart="itemIdsInCart"
+      @showMore="showMore"
+      @addItemCart="addItemCart"
+      @removeItemCart="removeItemCart"
+    ></aeris-catalog-summaries>
+    <aeris-notifier></aeris-notifier>
+  </div>
 </template>
 
 <script>
 import { AerisCatalogSummaries } from "../../../lib/modules/aeris-catalogue-components";
+import { AerisNotifier } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-catalog-summaries-test",
-  components: { AerisCatalogSummaries },
+  components: { AerisCatalogSummaries, AerisNotifier },
   data() {
     return {
       criteria: {
@@ -23,8 +27,7 @@ export default {
       },
       theme: {
         primaryColor: "#0b6bb3",
-        secondaryColor: "#fff",
-        contentPrimaryColor: "grey"
+        secondaryColor: "#fff"
       },
       itemIdsInCart: [],
       service: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/request"

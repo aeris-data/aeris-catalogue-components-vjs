@@ -40,8 +40,8 @@
         :language="language"
         :value="title"
         :max-length="maxLength"
+        :html="true"
         class="title"
-        html="true"
       ></aeris-international-field>
     </article>
     <footer v-if="projectList">
@@ -53,8 +53,11 @@
 </template>
 
 <script>
+import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field";
 export default {
   name: "aeris-catalog-default-summary",
+
+  components: { AerisInternationalField },
 
   props: {
     language: {

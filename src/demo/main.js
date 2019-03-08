@@ -21,7 +21,11 @@ Vue.use(VueAerisLanguagePlugin);
 import app from "./app.vue";
 import AerisThesaurusItemCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-checkbox-layout-test";
 import AerisThesaurusItemTreeCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout-test";
+
 import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test";
+import AerisCatalogueSearchButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-search-button/aeris-catalogue-search-button-test.vue";
+import AerisCatalogueResetTextButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/aeris-catalogue-reset-text-button-test.vue";
+import aerisInternationalFieldTest from "./modules/aeris-international-field/aeris-international-field-test";
 import AerisInstrumentSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria-test";
 import AerisParameterSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria-test";
 import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria-test";
@@ -37,12 +41,14 @@ import aeris from "./modules/aeris.vue";
 
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
+import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
 
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
     searchCriteriaModule,
-    catalogSummariesModule
+    catalogSummariesModule,
+    notificationModule
   }
 });
 
@@ -100,6 +106,18 @@ const router = new VueRouter({
     {
       path: "/aeris",
       component: aeris
+    },
+    {
+      path: "/international_field",
+      component: aerisInternationalFieldTest
+    },
+    {
+      path: "/search_button",
+      component: AerisCatalogueSearchButtonTest
+    },
+    {
+      path: "/reset_text_button",
+      component: AerisCatalogueResetTextButtonTest
     },
     {
       path: "/search_box",

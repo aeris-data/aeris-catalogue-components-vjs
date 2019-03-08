@@ -1,13 +1,13 @@
 <template>
-  <div :class="{ showBody: isDeployed }" :style="getTheme" class="aeris-catalog-box">
+  <div :class="{ showBody: isDeployed }" class="aeris-catalog-box">
     <div class="box">
       <header v-if="header" class="box-heading" @click="isDeployed = !isDeployed">
         <div class="box-heading-buttons">
-          <i :class="openIconClass" :style="getIconTheme" class="chevron" />
+          <i :class="openIconClass" class="chevron" />
         </div>
         <div class="box-title">
-          <i v-show="headerIconClass" :style="getIconTheme" :class="headerIconClass" />
-          <h3 :style="getTitleTheme" no-label-float>{{ getTitle }}</h3>
+          <i v-show="headerIconClass" :class="headerIconClass" />
+          <h3 no-label-float>{{ getTitle }}</h3>
         </div>
       </header>
       <div class="box-collapsable-part">
@@ -65,18 +65,6 @@ export default {
   computed: {
     getTitle() {
       return this.title || this.boxTitle;
-    },
-
-    getTheme() {
-      return this.theme ? { color: this.theme.secondaryColor, background: this.theme.primaryColor } : "";
-    },
-
-    getTitleTheme() {
-      return this.theme ? { color: this.theme.emphasis } : "";
-    },
-
-    getIconTheme() {
-      return this.theme ? { color: this.theme.iconColor } : "";
     }
   }
 };
@@ -129,6 +117,19 @@ export default {
 
 .box-title h3 {
   margin: 0;
+  color: rgb(11, 107, 179);
+}
+
+.box-title h3:first-letter {
+  text-transform: uppercase;
+}
+
+.box-title i {
+  color: grey;
+}
+
+.box-heading-buttons i {
+  color: grey;
 }
 
 .box-body {

@@ -28,7 +28,9 @@
 </template>
 
 <script>
-import { AerisCatalogSearchBox, AerisThesaurusItemTreeCheckboxLayout } from "../../../../aeris-catalogue-components";
+import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box";
+import AerisThesaurusItemTreeCheckboxLayout from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-thesaurus-item-tree-checkbox-layout";
+
 export default {
   name: "aeris-instrument-search-criteria",
 
