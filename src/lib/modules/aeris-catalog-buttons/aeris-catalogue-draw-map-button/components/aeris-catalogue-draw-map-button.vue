@@ -34,13 +34,13 @@ export default {
       return this.isActive ? { emphasis: "#f39c12", color: "grey" } : {};
     },
     getThemeIcon() {
-      return {color: "white" };
+      return { color: "white" };
     }
   },
 
   data() {
     return {
-      drawModeSelected: false,
+      drawModeSelected: false
     };
   },
 
