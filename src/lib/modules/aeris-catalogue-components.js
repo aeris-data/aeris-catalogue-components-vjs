@@ -5,6 +5,8 @@ import AerisInstrumentSearchCriteria from "../modules/aeris-catalog-criteria/aer
 import AerisParameterSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria/components/aeris-parameter-search-criteria";
 import AerisPlatformSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria/components/aeris-platform-search-criteria";
 import AerisProjectSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria/components/aeris-project-search-criteria";
+import AerisCatalogDefaultSummary from "../modules/aeris-catalog-summaries/components/aeris-catalog-default-summary";
+import AerisCatalogSummaries from "../modules/aeris-catalog-summaries/components/aeris-catalog-summaries";
 
 export {
   AerisThesaurusItemTreeCheckboxLayout,
@@ -13,5 +15,7 @@ export {
   AerisInstrumentSearchCriteria,
   AerisParameterSearchCriteria,
   AerisPlatformSearchCriteria,
-  AerisProjectSearchCriteria
+  AerisProjectSearchCriteria,
+  AerisCatalogDefaultSummary,
+  AerisCatalogSummaries
 };

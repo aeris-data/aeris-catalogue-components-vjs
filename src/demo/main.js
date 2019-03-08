@@ -26,6 +26,8 @@ import AerisInstrumentSearchCriteriaTest from "./modules/aeris-catalog-criteria/
 import AerisParameterSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria-test";
 import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria-test";
 import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria-test";
+import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
+import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -34,11 +36,13 @@ import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
 
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
+import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
-    searchCriteriaModule
+    searchCriteriaModule,
+    catalogSummariesModule
   }
 });
 
@@ -68,6 +72,14 @@ const router = new VueRouter({
     {
       path: "/project-search-criteria",
       component: AerisProjectSearchCriteriaTest
+    },
+    {
+      path: "/default-summary",
+      component: AerisCatalogDefaultSummaryTest
+    },
+    {
+      path: "/summaries",
+      component: AerisCatalogSummariesTest
     },
     {
       path: "/eurochamp",
