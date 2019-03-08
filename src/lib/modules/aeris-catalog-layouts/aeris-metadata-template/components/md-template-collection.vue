@@ -6,7 +6,7 @@
    <!--    <aeris-metadata-spatial-extents :language="language" :spatial-extents="metadata.spatialExtents"></aeris-metadata-spatial-extents>    -->
     <aeris-metadata-temporal-extents :language="language" :temporal-extents="metadata.temporalExtents"></aeris-metadata-temporal-extents>
     <aeris-metadata-information-links :language="language" :links="metadata.links"></aeris-metadata-information-links>
-    <aeris-metadata-information :language="language" :items="metadata"></aeris-metadata-information>
+  <!--   <aeris-metadata-information :language="language" :items="metadata"></aeris-metadata-information> -->
     <aeris-metadata-datapolicy :language="language" :distributionInformation="metadata.distributionInformation"></aeris-metadata-datapolicy>
     <aeris-metadata-data-links :language="language" :links="metadata.links"></aeris-metadata-data-links>
     <aeris-metadata-citations :language="language" :identifiers="metadata.identifiers"></aeris-metadata-citations>

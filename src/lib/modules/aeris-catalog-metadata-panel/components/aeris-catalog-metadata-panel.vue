@@ -85,14 +85,8 @@
       </aside>
     </header>
     <main>
-
- <aeris-metadata-services v-if="!edit" :identifier="uuid" :service="idservice" language="fr" @metadata ="updateMetadata"></aeris-metadata-services>
- <!--  <component  :is="template" :metadata="metadataValue"></component>
-   <md-template-proxy :type="type" :edit="edit" :client-template-name="clientTemplate" :metadata="metadataValue"></md-template-proxy>  -->
-
-  
-    <md-template-gmos-time-series-metadata></md-template-gmos-time-series-metadata>
- 
+      <aeris-metadata-services v-if="!edit" :identifier="uuid" :service="idservice" language="fr" @metadata ="updateMetadata"></aeris-metadata-services>
+      <component v-if="metadataValue" :is="template" :metadata="metadataValue"></component>
    </main>
   </div>
 </template>
@@ -101,7 +95,6 @@
 <script>
 import {AerisUiIconButton} from "aeris-commons-components-vjs"
 import {AerisMetadataServices} from "aeris-metadata-components-vjs"
-/* /* import {MdTemplateGmosTimeSeriesMetadata} from "gmos-metadata-components-vjs" */
 import MdTemplateProxy from '../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-proxy.vue'
 import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field.vue"
 import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection"
@@ -163,6 +156,7 @@ components:{AerisUiIconButton,
   },
 
   watch: {
+    
     language(value) {
       this.$i18n.locale = value;
     },
@@ -251,7 +245,7 @@ components:{AerisUiIconButton,
       updateMetadata(metadata) {
         console.log ("update metadata : ", metadata)
       this.metadataValue = metadata;
-      this.updateTemplate()
+      //this.updateTemplate()
     },
     displayValue(value){
       console.log("v-for :", value)
