@@ -11,22 +11,18 @@
 }
 </i18n>
 <template>
-  <div data-aeris-international-field>
+  <section aeris-international-field>
     <span v-if="!isDeployed">
-      <span v-if="html" v-html="truncatedtext"/>
-      <span v-else>{{ truncatedtext }}</span>
+      <span v-if="html" v-html="truncatedText" />
+      <span v-else>{{ truncatedText }}</span>
     </span>
     <span v-else>
-      <span v-if="html" v-html="text"/>
+      <span v-if="html" v-html="text" />
       <span v-else>{{ text }}</span>
     </span>
-    <span
-      v-if="isTruncated && !isDeployed"
-      class="more"
-      @click="isDeployed = !isDeployed"
-    >[{{ $t("more") }}]</span>
+    <span v-if="isTruncated && !isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("more") }}]</span>
     <span v-if="isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("less") }}]</span>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -46,7 +42,9 @@ export default {
     },
     value: {
       type: Object,
-      default: ""
+      default: () => {
+        return {};
+      }
     },
     maxLength: {
       type: Number,
@@ -67,18 +65,18 @@ export default {
   },
 
   computed: {
-    truncatedtext() {
+    truncatedText() {
       return this.truncate(this.text);
     },
 
     text() {
-      if (!this.value && this.value == null) {
-        return "";
-      } else if (!this.language) {
-        return this.value;
-      } else if (this.value[this.language]) {
+      if (this.value && this.value[this.language]) {
         return marked(this.value[this.language]);
-      } else return "";
+      } else if (this.value && this.value["DEFAULT_VALUE_KEY"]) {
+        return marked(this.value["DEFAULT_VALUE_KEY"]);
+      } else {
+        return "";
+      }
     }
   },
 
@@ -103,14 +101,14 @@ export default {
 </script>
 
 <style scoped>
-[data-aeris-international-field] {
+[aeris-international-field] {
   display: block;
   hyphens: auto;
   word-wrap: break-word;
   text-align: justify;
 }
 
-[data-aeris-international-field] .more {
+[aeris-international-field] .more {
   cursor: pointer;
   font-size: smaller;
   color: #3395b9;

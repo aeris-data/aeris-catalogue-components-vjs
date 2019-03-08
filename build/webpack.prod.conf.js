@@ -27,7 +27,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
-      sourceMap: true
+      sourceMap: false
     })
   ]
 });
@@ -43,8 +43,8 @@ module.exports = [
     entry: path.resolve("./src/lib/aeris-catalogue-components.js"),
     output: {
       filename: "aeris-catalogue-components-vjs-simple.js",
-      libraryTarget: 'umd',
-      library: 'AerisCatalogueComponents',
+      libraryTarget: "umd",
+      library: "AerisCatalogueComponents"
     }
   })
 ];
