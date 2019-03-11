@@ -11,10 +11,10 @@
 }
 </i18n>
 <template>
-  <div data-aeris-international-field>
+  <section aeris-international-field>
     <span v-if="!isDeployed">
-      <span v-if="html" v-html="truncatedtext" />
-      <span v-else>{{ truncatedtext }}</span>
+      <span v-if="html" v-html="truncatedText" />
+      <span v-else>{{ truncatedText }}</span>
     </span>
     <span v-else>
       <span v-if="html" v-html="text" />
@@ -22,15 +22,17 @@
     </span>
     <span v-if="isTruncated && !isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("more") }}]</span>
     <span v-if="isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("less") }}]</span>
-  </div>
+  </section>
 </template>
 
 <script>
+import marked from "marked";
+
 export default {
   name: "aeris-international-field",
 
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -39,12 +41,14 @@ export default {
       default: false
     },
     value: {
-      type: String,
-      default: ""
+      type: Object,
+      default: () => {
+        return {};
+      }
     },
     maxLength: {
       type: Number,
-      default: 0
+      default: 100
     }
   },
   data() {
@@ -55,64 +59,38 @@ export default {
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
   computed: {
-    truncatedtext: function() {
+    truncatedText() {
       return this.truncate(this.text);
     },
 
-    text: function() {
-      if (!this.value) {
+    text() {
+      if (this.value && this.value[this.language]) {
+        return marked(this.value[this.language]);
+      } else if (this.value && this.value["DEFAULT_VALUE_KEY"]) {
+        return marked(this.value["DEFAULT_VALUE_KEY"]);
+      } else {
         return "";
       }
-      if (this.value == "null") {
-        return "";
-      }
-      if (!this.lang) {
-        return this.value;
-      }
-      console.log("inter field : ",this.value)
-      var json = JSON.parse(this.value);
-      for (var key in json) {
-        if (key === "DEFAULT_VALUE_KEY") {
-          /* If there's only a default language */
-          return json["DEFAULT_VALUE_KEY"];
-        }
-        //        else if (key.length > 2) {
-        //          /* key = String language in the object */
-        //          let newKey = key.substr(0, 2);
-        //          json[newKey] = json[key];
-        //          delete json[key];
-        //        }
-      }
-
-      if (json[this.lang]) {
-        return json[this.lang];
-      }
-      return "";
     }
   },
 
-  mounted: function() {
-    if (this.lang) {
-      this.$i18n.locale = this.lang;
+  mounted() {
+    if (this.language) {
+      this.$i18n.locale = this.language;
     }
   },
 
   methods: {
-    truncate: function(value) {
-      if (this.maxLength > 0) {
-        if (value.length > this.maxLength) {
-          this.isTruncated = true;
-          return value.substring(0, this.maxLength);
-        } else {
-          this.isTruncated = false;
-          return value;
-        }
+    truncate(value) {
+      if (value.length > this.maxLength) {
+        this.isTruncated = true;
+        return value.substring(0, this.maxLength);
       } else {
         this.isTruncated = false;
         return value;
@@ -122,14 +100,15 @@ export default {
 };
 </script>
 
-<style>
-[data-aeris-international-field] {
+<style scoped>
+[aeris-international-field] {
   display: block;
   hyphens: auto;
   word-wrap: break-word;
+  text-align: justify;
 }
 
-[data-aeris-international-field] .more {
+[aeris-international-field] .more {
   cursor: pointer;
   font-size: smaller;
   color: #3395b9;

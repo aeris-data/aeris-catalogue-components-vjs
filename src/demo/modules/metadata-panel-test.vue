@@ -14,8 +14,8 @@
       :edit="editMetadataPanel"
       icon-class="aeris-icon aeris-icon-unknown"
       metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/"
-      :uuid="this.currentUuid"
-      
+      :uuid="currentUuid"
+      :type="currentType"
       :metadata="currentMetadata"
       :client-template="this.currentTemplate"
       :projects="this.currentProjects"
@@ -26,7 +26,7 @@
 </div>
 <div class="info">
 
-<h3>  Response first item</h3>
+<h3>Summary first item (json)</h3>
 <ul v-if="result" >
 
   <li><span> Template : </span>{{result.clientTemplateName}}</li>
@@ -101,20 +101,21 @@ export default {
           )
           .then(
             response => {
-              console.log("sucess",response) //this.handleSuccess(response, range);
+              console.log("sucess",response)
              this.result= response.data.results[0]
              this.currentIconClass= null;
              this.currentUuid= this.result.id;
              this.currentType= this.result.plateformType;
              this.currentMetadata= null;
              this.currentTitle=this.result.title;
-             this.currentTemplate= result.clientTemplateName;
+             this.currentTemplate= this.result.clientTemplateName;
              this.currentProjects= this.result.projectList;
+             this.currentType = this.result.type
              this.currentdataProcessingLevel=this.result.dataProcessingLevel;
              
             },
             response => {
-             console.log("error",response) //this.handleError(response);
+             console.log("error",response) 
             }
           );
     },
@@ -131,6 +132,7 @@ export default {
 <style scoped>
 .container {
   display :flex;
+  justify-content: space-between;
   margin:50px;
  
 }
@@ -151,12 +153,13 @@ input[type="text"]{
   
 }
  .metadatapanel {
-   width:1000px;
-   height: 1000px;
-   margin: 0 30px;
+   width:1100px;
+   height:100%;
+   margin: 0 10px;
  } 
  .info{
-width:500px
+width:300px;
+font-size: 10px;
  }
  h3 {
    height:30px;

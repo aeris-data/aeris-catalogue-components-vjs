@@ -30,6 +30,7 @@
           :language="language"
           :value="resourcetitle"
           :html="true"
+          :maxLength="100"
         ></aeris-international-field>
         <div v-else>{{ $t("addTitle") }}</div>
       </h2>
@@ -86,27 +87,29 @@
     </header>
     <main>
       <aeris-metadata-services v-if="!edit" :identifier="uuid" :service="idservice" language="fr" @metadata ="updateMetadata"></aeris-metadata-services>
-      <component v-if="metadataValue" :is="template" :metadata="metadataValue"></component>
+      <component v-if="metadataValue" :is="getTemplate" :metadata="metadataValue"></component>
    </main>
   </div>
 </template>
   <script type="text/javascript" component="aeris-data/gmos-metadata-components-vjs@0.2.0" src="https://rawgit.com/aeris-data/aeris-component-loader/master/aerisComponentLoader.js"></script>
 
 <script>
-import {AerisUiIconButton} from "aeris-commons-components-vjs"
-import {AerisMetadataServices} from "aeris-metadata-components-vjs"
-import MdTemplateProxy from '../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-proxy.vue'
-import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field.vue"
-import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection"
+import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection";
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
+import { AerisMetadataServices } from "aeris-metadata-components-vjs";
+import MdTemplateProxy from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-proxy.vue";
+import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field.vue";
 
 export default {
   name: "aeris-catalogue-metadata-panel",
 
-components:{AerisUiIconButton,
-            AerisMetadataServices,
-            MdTemplateProxy,
-            AerisInternationalField,
-            MdTemplateCollection},
+  components: {
+    AerisUiIconButton,
+    AerisMetadataServices,
+    MdTemplateProxy,
+    AerisInternationalField,
+    MdTemplateCollection
+  },
 
   props: {
     language: {
@@ -147,16 +150,22 @@ components:{AerisUiIconButton,
     },
     projects: {
       type: Array,
-      default: ()=>[]
+      default: () => []
     },
-    theme:{
-      type:Object,
-      default:()=>{}
+    theme: {
+      type: Object,
+      default: () => {}
     }
   },
 
+  data() {
+    return {
+      template: null,
+      maximize: false,
+      metadataValue: null
+    };
+  },
   watch: {
-
     language(value) {
       this.$i18n.locale = value;
     },
@@ -175,7 +184,6 @@ components:{AerisUiIconButton,
     }
   },
 
-
   created() {
     this.$nextTick(() => {
       document.dispatchEvent(
@@ -190,17 +198,18 @@ components:{AerisUiIconButton,
   },
 
   mounted() {
-  
-
     if (this.language) {
       this.$i18n.locale = this.language;
     }
   },
 
   computed: {
-    getCartoucheTheme(){
+    getTemplate() {
+      console.log("getTemplate : ", this.template);
+      return this.template;
+    },
+    getCartoucheTheme() {
       if (true) {
-      
         return {
           background: "blue"
         };
@@ -210,12 +219,7 @@ components:{AerisUiIconButton,
     },
     idservice() {
       var result = this.metadataService;
-      /* if (this.metadataService.endsWith("/")) {
-        result = result + "id";
-      } else {
-        result = result + "/id";
-      } */
-      console.log("service url metadata",result)
+      console.log("service url metadata", result);
       return result;
     },
 
@@ -224,33 +228,23 @@ components:{AerisUiIconButton,
     },
 
     projectsList() {
-      return this.projects ;
+      return this.projects;
     }
   },
 
-  data() {
-    return {
-      template: MdTemplateCollection,
-      maximize: false,
-      metadataValue:null,
-      
-    };
-  },
-
   methods: {
-    
-      updateMetadata(metadata) {
-        console.log ("update metadata : ", metadata)
+    updateMetadata(metadata) {
+      this.updateTemplate();
+      console.log("update metadata : ", metadata);
       this.metadataValue = metadata;
-      //this.updateTemplate()
     },
-    displayValue(value){
-      console.log("v-for :", value)
+    displayValue(value) {
+      console.log("v-for :", value);
     },
     showJson() {
       var baseUrl = "http://jsoneditoronline.org/?url=";
-      var url = baseUrl + this.metadataService  + this.uuid;
-      console.log("url json : ", url)
+      var url = baseUrl + this.metadataService + this.uuid;
+      console.log("url json : ", url);
       window.open(url, "_blank", "toolbar=no, status=no, scrollbars=no, menubar=no, width=1000, height=800");
     },
 
@@ -301,18 +295,21 @@ components:{AerisUiIconButton,
         })
       );
     },
-    updateTemplate(){
-      if(this.metadataValue){
-        let templateName= "md-template-" + this.metadataValue.type.toLowerCase()
-       templateName = templateName.replace(/_/g, '-');
-        console.log("template name : ", "<"+templateName+"></"+templateName+">")
-        return "<"+templateName+"></"+templateName+">"
+    updateTemplate() {
+      if (this.type === "COLLECTION") {
+        let templateName = "Md-template-" + this.type.toLowerCase();
+        templateName = templateName.replace(/_/g, "-");
+        this.template = templateName.replace(/-([a-z])/g, function(g) {
+          return g[1].toUpperCase();
+        });
+        console.log("template name : ", this.template);
+      } else {
+        this.template = MdTemplateCollection;
       }
     },
-   
 
     projectLandingPage: function(projectId) {
-      console.log("projectId",projectId)
+      console.log("projectId", projectId);
       return "https://www.aeris-data.fr/project/" + projectId;
     }
   }
@@ -343,7 +340,7 @@ components:{AerisUiIconButton,
   flex-direction: row;
 }
 
-.data-aeris-catalog-metadata-panel > header .cartouche  {
+.data-aeris-catalog-metadata-panel > header .cartouche {
   display: inline-block;
   margin-bottom: 5px;
   padding: 4px 5px 3px;
@@ -354,7 +351,7 @@ components:{AerisUiIconButton,
   color: #fafafa;
 }
 
-.data-aeris-catalog-metadata-panel > header .cartouche{
+.data-aeris-catalog-metadata-panel > header .cartouche {
   margin-left: 5px;
 }
 
@@ -362,16 +359,15 @@ components:{AerisUiIconButton,
   font-weight: 300;
 }
 
-.data-aeris-catalog-metadata-panel > header  aside {
+.data-aeris-catalog-metadata-panel > header aside {
   display: flex;
   flex-direction: row;
-  
 }
 
- .data-aeris-catalog-metadata-panel  > header  aside *{
+.data-aeris-catalog-metadata-panel > header aside * {
   margin: 5px;
 }
- 
+
 .data-aeris-catalog-metadata-panel > main {
   height: calc(100% - var(--heightHeader));
   overflow-y: auto;

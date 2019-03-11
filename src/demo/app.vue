@@ -28,8 +28,14 @@
       <li>
         <router-link to="/metadata_panel">/metadata_panel</router-link>
        <li>
+        <router-link to="/draw_map_button">/draw map button</router-link>
+      </li>
+      <li>
+        <router-link to="/international_field">/international field</router-link>
+      </li>
+      <li>
         <router-link to="/search_button">/search button</router-link>
-        </li>
+      </li>
       <li>
         <router-link to="/reset_text_button">/reset text button</router-link>
       </li>
