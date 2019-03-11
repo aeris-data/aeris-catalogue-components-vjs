@@ -13,47 +13,51 @@
 
 <template>
   <div>
-    <aeris-catalog-ui-icon-button
+    <aeris-ui-icon-button
       v-if="maximize"
       :title="computeTitle"
       icon="fa-expand"
-      theme="primary"
+      type="icon-button"
       @click="handleMaximize"
-    ></aeris-catalog-ui-icon-button>
-    <aeris-catalog-ui-icon-button
+    ></aeris-ui-icon-button>
+
+    <aeris-ui-icon-button
       v-else
       :title="computeTitle"
       icon="fa-compress"
-      theme="primary"
+      type="icon-button"
       @click="handleMaximize"
-    ></aeris-catalog-ui-icon-button>
+    ></aeris-ui-icon-button>
   </div>
 </template>
 
 <script>
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
+
 export default {
   name: "aeris-catalogue-maximize-button",
 
+  components: { AerisUiIconButton },
+
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     }
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
-  created: function() {
-    console.log("aeris-catalogue-search-button creation");
-    this.$i18n.locale = this.lang;
+  created() {
+    this.$i18n.locale = this.language;
   },
 
   computed: {
-    computeTitle: function() {
+    computeTitle() {
       if (this.maximize) {
         return this.$i18n.t("maximize");
       } else {
@@ -69,19 +73,13 @@ export default {
   },
 
   methods: {
-    handleMaximize: function() {
+    handleMaximize() {
       if (this.maximize) {
         this.maximize = false;
-        var e = new CustomEvent("aerisCatalogueMaximizeEvent", {
-          detail: {}
-        });
-        document.dispatchEvent(e);
+        this.$emit("catalogueMaximize");
       } else {
         this.maximize = true;
-        var e = new CustomEvent("aerisCatalogueMinimizeEvent", {
-          detail: {}
-        });
-        document.dispatchEvent(e);
+        this.$emit("catalogueMinimize");
       }
     }
   }
