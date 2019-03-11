@@ -12,22 +12,21 @@
 <template>
   <aeris-ui-icon-button
     :title="$t('search')"
-    icon="fa-search"
     :theme="theme"
+    icon="fa-search"
     type="icon-button"
     @click="handleSearch"
   ></aeris-ui-icon-button>
 </template>
 
 <script>
-import {AerisUiIconButton} from "aeris-commons-components-vjs"
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
 
 export default {
-
   name: "aeris-catalogue-search-button",
-  
-  components :{AerisUiIconButton},
-  
+
+  components: { AerisUiIconButton },
+
   props: {
     language: {
       type: String,
@@ -37,9 +36,11 @@ export default {
       type: Object,
       default: null
     },
-    range :{
-      type:Object,
-      default:()=> {return {}}
+    range: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     }
   },
 

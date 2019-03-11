@@ -12,7 +12,6 @@
 export default {
   name: "aeris-catalogue-select-map-button",
 
-
   computed: {
     getSelectedClass() {
       if (!this.drawModeSelected) {

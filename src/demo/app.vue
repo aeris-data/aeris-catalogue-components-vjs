@@ -29,6 +29,21 @@
         <router-link to="/search_text_button">/search text button</router-link>
       </li>
       <li>
+        <router-link to="/reset_button">/reset button</router-link>
+      </li>
+      <li>
+        <router-link to="/maximize_button">/Maximize button</router-link>
+      </li>
+      <li>
+        <router-link to="/help_button">/help button</router-link>
+      </li>
+      <li>
+        <router-link to="/draw_map_button">/draw map button</router-link>
+      </li>
+      <li>
+        <router-link to="/international_field">/international field</router-link>
+      </li>
+      <li>
         <router-link to="/search_button">/search button</router-link>
       </li>
       <li>

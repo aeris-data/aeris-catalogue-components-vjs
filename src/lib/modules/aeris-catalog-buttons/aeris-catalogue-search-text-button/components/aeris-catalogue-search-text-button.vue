@@ -15,32 +15,35 @@
   <aeris-ui-icon-button
     :title="$t('search_tooltip')"
     :text="$t('search')"
-    icon="fa-search"
     :theme="theme"
+    icon="fa-search"
     @click="handleSearch"
   ></aeris-ui-icon-button>
 </template>
 <script>
-import { AerisUiIconButton} from "aeris-commons-components-vjs"
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
 
 export default {
-
   name: "aeris-catalogue-search-text-button",
 
-  components:{ AerisUiIconButton},
+  components: { AerisUiIconButton },
 
   props: {
     language: {
       type: String,
       default: "en"
     },
-     theme: {
+    theme: {
       type: Object,
-     default:()=>{return {}}
+      default: () => {
+        return {};
+      }
     },
-    range:{
-      type:Object,
-      default:()=>{return {}}
+    range: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     }
   },
 
@@ -56,7 +59,7 @@ export default {
 
   methods: {
     handleSearch() {
-      this.$emit("catalogueSearchStart",this.range)
+      this.$emit("catalogueSearchStart", this.range);
     }
   }
 };

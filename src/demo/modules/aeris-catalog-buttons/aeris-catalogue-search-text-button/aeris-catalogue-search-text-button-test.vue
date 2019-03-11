@@ -1,8 +1,15 @@
 <template>
-    <div style="padding:40px">
-        <aeris-catalogue-search-text-button :range="{min:0,max:24}":theme="theme" language="fr" @catalogueSearchStart="getEmitParameter"></aeris-catalogue-search-text-button>
-        <span v-if="max !== null && min !== null">parametre de la requete search start : min = {{min}}  et max={{max}}</span>
-    </div>
+  <div style="padding:40px">
+    <aeris-catalogue-search-text-button
+      :range="{ min: 0, max: 24 }"
+      :theme="theme"
+      language="fr"
+      @catalogueSearchStart="getEmitParameter"
+    ></aeris-catalogue-search-text-button>
+    <span v-if="max !== null && min !== null">
+      paramètre de la requête search start : min = {{ min }} et max={{ max }}
+    </span>
+  </div>
 </template>
 
 <script>
