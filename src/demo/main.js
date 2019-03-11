@@ -31,6 +31,7 @@ import AerisCatalogueHelpButtonTest from "./modules/aeris-catalog-buttons/aeris-
 import aerisCatalogueMaximizeButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-maximize-button/aeris-catalogue-maximize-button-test.vue";
 import AerisCatalogueResetButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-button/aeris-catalogue-reset-button-test.vue";
 import AerisCatalogueSearchTextButtontest from "../demo/modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/aeris-catalogue-search-text-button-test.vue";
+import AerisCatalogueSelectMapButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-select-map-button/aeris-catalogue-select-map-button-test.vue";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -112,6 +113,10 @@ const router = new VueRouter({
     {
       path: "/search_box",
       component: AerisCatalogueSearchBoxTest
+    },
+    {
+      path: "/select_map_button",
+      component: AerisCatalogueSelectMapButtonTest
     },
     {
       path: "/search_text_button",
