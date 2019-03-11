@@ -9,6 +9,7 @@ import AerisInternationalField from "../modules/aeris-international-field/compon
 import AerisCatalogueHelpButton from "../modules/aeris-catalog-buttons/aeris-catalogue-help-button/components/aeris-catalogue-help-button";
 import AersiCatalogMaximizeButton from "../modules/aeris-catalog-buttons/aeris-catalogue-maximize-button/components/aeris-catalogue-maximize-button.vue";
 import AerisCatalogResetButton from "../modules/aeris-catalog-buttons/aeris-catalogue-help-button/components/aeris-catalogue-help-button.vue";
+import AerisCatalogueSearchTextButton from "../modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/components/aeris-catalogue-search-text-button.vue";
 
 export {
   AerisThesaurusItemTreeCheckboxLayout,
@@ -20,5 +21,6 @@ export {
   AersiCatalogueDrawMapButton,
   AerisCatalogueHelpButton,
   AersiCatalogMaximizeButton,
-  AerisCatalogResetButton
+  AerisCatalogResetButton,
+  AerisCatalogueSearchTextButton
 };

@@ -30,13 +30,13 @@ import AerisCatalogueDrawMapButtonTest from "./modules/aeris-catalog-buttons/aer
 import AerisCatalogueHelpButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-help-button/aeris-catalogue-help-button-test.vue";
 import aerisCatalogueMaximizeButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-maximize-button/aeris-catalogue-maximize-button-test.vue";
 import AerisCatalogueResetButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-button/aeris-catalogue-reset-button-test.vue";
+import AerisCatalogueSearchTextButtontest from "../demo/modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/aeris-catalogue-search-text-button-test.vue";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
-
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 
 const store = new Vuex.Store({
@@ -78,6 +78,10 @@ const router = new VueRouter({
       component: aeris
     },
     {
+      path: "/search_text_button",
+      component: AerisCatalogueSearchTextButtontest
+    },
+    {
       path: "/reset_button",
       component: AerisCatalogueResetButtonTest
     },
@@ -108,6 +112,10 @@ const router = new VueRouter({
     {
       path: "/search_box",
       component: AerisCatalogueSearchBoxTest
+    },
+    {
+      path: "/search_text_button",
+      component: AerisCatalogueSearchTextButtontest
     }
   ]
 });
