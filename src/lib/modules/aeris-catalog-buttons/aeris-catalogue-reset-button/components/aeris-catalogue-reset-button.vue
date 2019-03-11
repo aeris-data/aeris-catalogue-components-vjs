@@ -12,15 +12,14 @@
 <template>
   <aeris-ui-icon-button
     :title="$t('reset')"
-    icon="fa-eraser"
     :theme="theme"
+    icon="fa-eraser"
     type="icon-button"
     @click="handleReset"
   ></aeris-ui-icon-button>
 </template>
 
 <script>
-
 import { AerisUiIconButton } from "aeris-commons-components-vjs";
 
 export default {
