@@ -34,7 +34,7 @@ export default {
 
   computed: {
     getTheme() {
-      return this.isActive ? { emphasis: this.theme.primaryColor, color: this.theme.secondaryColor } : "";
+      return this.isActive ? { emphasis: this.theme.primaryColor, color: this.theme.secondaryColor } : {};
     },
     getThemeIcon() {
       return {

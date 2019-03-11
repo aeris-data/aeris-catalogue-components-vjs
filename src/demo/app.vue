@@ -25,13 +25,31 @@
       <li>
         <router-link to="/aeris">/aeris</router-link>
       </li>
-       <li>
+      <li>
+        <router-link to="/search_text_button">/search text button</router-link>
+      </li>
+      <li>
+        <router-link to="/reset_button">/reset button</router-link>
+      </li>
+      <li>
+        <router-link to="/maximize_button">/Maximize button</router-link>
+      </li>
+      <li>
+        <router-link to="/help_button">/help button</router-link>
+      </li>
+      <li>
+        <router-link to="/draw_map_button">/draw map button</router-link>
+      </li>
+      <li>
+        <router-link to="/international_field">/international field</router-link>
+      </li>
+      <li>
         <router-link to="/search_button">/search button</router-link>
-        </li>
+      </li>
       <li>
         <router-link to="/reset_text_button">/reset text button</router-link>
       </li>
-       <li>
+      <li>
         <router-link to="/select_map_button">/select map button</router-link>
       </li>
     </ul>
