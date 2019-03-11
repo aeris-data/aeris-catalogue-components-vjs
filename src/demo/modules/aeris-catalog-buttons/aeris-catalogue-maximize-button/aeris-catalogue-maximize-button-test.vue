@@ -1,7 +1,7 @@
 <template>
   <div style="padding:40px">
     <aeris-catalogue-maximize-button
-      lang="en"
+      language="en"
       @catalogueMaximize="maximize = true"
       @catalogueMinimize="minimize = true"
     ></aeris-catalogue-maximize-button>

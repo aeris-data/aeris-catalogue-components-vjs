@@ -21,10 +21,15 @@ Vue.use(VueAerisLanguagePlugin);
 import app from "./app.vue";
 import AerisThesaurusItemCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-checkbox-layout-test";
 import AerisThesaurusItemTreeCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout-test";
-import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test.vue"
+
+import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test.vue";
+import AerisCatalogueSearchButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-search-button/aeris-catalogue-search-button-test.vue";
+import AerisCatalogueResetTextButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/aeris-catalogue-reset-text-button-test.vue";
+import aerisInternationalFieldTest from "./modules/aeris-international-field/aeris-international-field-test";
+import AerisCatalogueDrawMapButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-draw-map-button/aeris-catalogue-draw-map-button-test.vue";
+import AerisCatalogueHelpButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-help-button/aeris-catalogue-help-button-test.vue";
 import aerisCatalogueMaximizeButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-maximize-button/aeris-catalogue-maximize-button-test.vue";
-import AerisCatalogueSearchButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-search-button/aeris-catalogue-search-button-test.vue"
-import AerisCatalogueResetTextButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/aeris-catalogue-reset-text-button-test.vue"
+
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
@@ -72,17 +77,28 @@ const router = new VueRouter({
       component: aeris
     },
     {
-
       path: "/maximize_button",
       component: aerisCatalogueMaximizeButtonTest
     },
     {
+      path: "/help_button",
+      component: AerisCatalogueHelpButtonTest
+    },
+    {
+      path: "/draw_map_button",
+      component: AerisCatalogueDrawMapButtonTest
+    },
+    {
+      path: "/international_field",
+      component: aerisInternationalFieldTest
+    },
+    {
       path: "/search_button",
-      component:AerisCatalogueSearchButtonTest
+      component: AerisCatalogueSearchButtonTest
     },
     {
       path: "/reset_text_button",
-      component:AerisCatalogueResetTextButtonTest
+      component: AerisCatalogueResetTextButtonTest
     },
     {
       path: "/search_box",
