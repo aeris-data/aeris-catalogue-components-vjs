@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="changeTheme">change theme</button>
+    <button @click="changeTheme" class="changer">change theme</button>
     <aeris-catalog-help-content :theme="theme1" language="en" helpCookie="help-popup"></aeris-catalog-help-content>
   </div>
 </template>
@@ -25,5 +25,13 @@ export default {
   }
 };
 </script>
+
+<style>
+.changer {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+</style>
 
 

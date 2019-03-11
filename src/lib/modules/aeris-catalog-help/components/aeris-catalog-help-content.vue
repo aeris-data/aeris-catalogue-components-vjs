@@ -197,6 +197,7 @@ export default {
   border-radius: 5px;
   padding: 10px;
   width: 30%;
+  text-align: center;
 }
 
 .popup-title {
@@ -223,7 +224,7 @@ export default {
 
 .show-at-startup-button {
   align-self: flex-end;
-  margin: 10px 0 0 0;
+  margin: 15px 0 0 0;
   color: #333;
   background-color: transparent;
   outline: none;
