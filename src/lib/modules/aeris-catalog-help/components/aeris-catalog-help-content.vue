@@ -204,8 +204,6 @@ export default {
   justify-content: center;
 }
 
-.popup-content,
-.message-button,
 .ok-button {
   display: inline-block;
   text-align: center;
