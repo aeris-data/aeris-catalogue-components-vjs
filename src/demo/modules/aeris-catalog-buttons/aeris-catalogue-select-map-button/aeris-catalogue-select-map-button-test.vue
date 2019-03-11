@@ -2,7 +2,7 @@
   <div>
     <aeris-catalogue-select-map-button
       :theme="theme"
-      :isActive="visible"
+      :is-active="visible"
       @extendedMapMode="visible = !visible"
     ></aeris-catalogue-select-map-button>
     <p v-if="visible">emit : select mode actived</p>
@@ -17,9 +17,9 @@ export default {
   data() {
     return {
       theme: {
-          primaryColor: "#f39c12",
-          secondaryColor: "grey"
-        },
+        primaryColor: "#f39c12",
+        secondaryColor: "grey"
+      },
       visible: false
     };
   }

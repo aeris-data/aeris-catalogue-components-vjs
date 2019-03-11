@@ -1,11 +1,11 @@
 <template>
-    <aeris-ui-icon-button
-      :theme="getTheme"
-      :icon-theme="getThemeIcon"
-      icon="fa-mouse-pointer"
-      type="icon-button"
-      @click="handleClick"
-    ></aeris-ui-icon-button>
+  <aeris-ui-icon-button
+    :theme="getTheme"
+    :icon-theme="getThemeIcon"
+    icon="fa-mouse-pointer"
+    type="icon-button"
+    @click="handleClick"
+  ></aeris-ui-icon-button>
 </template>
 
 <script>
@@ -28,28 +28,21 @@ export default {
 
   data() {
     return {
-      extendedMapMode: false,
+      extendedMapMode: false
     };
   },
 
   computed: {
     getTheme() {
-      if (this.isActive) {
-        return {
-          emphasis: this.theme.primaryColor,
-          color: this.theme.secondaryColor
-        };
-      } else {
-        return {};
-      }
+      return this.isActive ? { emphasis: this.theme.primaryColor, color: this.theme.secondaryColor } : "";
     },
     getThemeIcon() {
-        return {
-          color: "white"
-        }
-      }
-    },
- 
+      return {
+        color: "white"
+      };
+    }
+  },
+
   methods: {
     handleClick() {
       this.extendedMapMode = true;
