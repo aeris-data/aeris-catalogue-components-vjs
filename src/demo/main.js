@@ -29,6 +29,7 @@ import aerisInternationalFieldTest from "./modules/aeris-international-field/aer
 import AerisCatalogueDrawMapButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-draw-map-button/aeris-catalogue-draw-map-button-test.vue";
 import AerisCatalogueHelpButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-help-button/aeris-catalogue-help-button-test.vue";
 import aerisCatalogueMaximizeButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-maximize-button/aeris-catalogue-maximize-button-test.vue";
+import AerisCatalogueResetButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-button/aeris-catalogue-reset-button-test.vue";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -75,6 +76,10 @@ const router = new VueRouter({
     {
       path: "/aeris",
       component: aeris
+    },
+    {
+      path: "/reset_button",
+      component: AerisCatalogueResetButtonTest
     },
     {
       path: "/maximize_button",

@@ -46,14 +46,10 @@ export default {
     }
   },
 
-  watch: {
-    language(value) {
-      this.$i18n.locale = value;
-    }
-  },
-
-  created() {
-    this.$i18n.locale = this.language;
+  data() {
+    return {
+      maximize: true
+    };
   },
 
   computed: {
@@ -66,10 +62,14 @@ export default {
     }
   },
 
-  data() {
-    return {
-      maximize: true
-    };
+  watch: {
+    language(value) {
+      this.$i18n.locale = value;
+    }
+  },
+
+  created() {
+    this.$i18n.locale = this.language;
   },
 
   methods: {

@@ -26,6 +26,9 @@
         <router-link to="/aeris">/aeris</router-link>
       </li>
       <li>
+        <router-link to="/reset_button">/reset button</router-link>
+      </li>
+      <li>
         <router-link to="/maximize_button">/Maximize button</router-link>
       </li>
       <li>
