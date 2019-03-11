@@ -193,7 +193,6 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 10px;
@@ -216,7 +215,6 @@ export default {
   background-color: #a79baf;
   color: white;
   border: none;
-
   font-size: 17px;
   font-weight: 500;
   -webkit-border-radius: 4px;
@@ -227,7 +225,7 @@ export default {
 
 .show-at-startup-button {
   align-self: flex-end;
-  margin: 10px 30px 0 0;
+  margin: 10px 0 0 0;
   color: #333;
   background-color: transparent;
   outline: none;

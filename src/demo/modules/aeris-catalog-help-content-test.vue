@@ -21,8 +21,9 @@ export default {
     changeTheme() {
       let randomColor = Math.floor(Math.random() * 16777215).toString(16);
       this.theme1.primaryColor = "#" + randomColor;
-      console.log("theme color change : ", this.theme1.primaryColor);
     }
   }
 };
 </script>
+
+
