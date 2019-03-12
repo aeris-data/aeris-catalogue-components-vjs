@@ -30,68 +30,67 @@
           :language="language"
           :value="resourcetitle"
           :html="true"
-          :maxLength="100"
+          :max-length="100"
         ></aeris-international-field>
         <div v-else>{{ $t("addTitle") }}</div>
       </h2>
       <div class="data-aeris-metadata-panel-project-list">
-       
-          <div class="cartouche" :style="getCartoucheTheme" v-for="project in projectsList"  :key="project.projectName">
-            
-           <a :href="projectLandingPage(project.aerisProjectUuid)" target="_blank">
-            <span> {{ project.projectName }}</span></a>
-          </div>
-       
+        <div v-for="project in projectsList" :style="getCartoucheTheme" :key="project.projectName" class="cartouche">
+          <a :href="projectLandingPage(project.aerisProjectUuid)" target="_blank">
+            <span> {{ project.projectName }}</span>
+          </a>
+        </div>
       </div>
-      <aside >
+      <aside>
         <aeris-ui-icon-button
           v-if="minimize"
           :title="$t('maximize')"
+          :theme="theme"
           icon="fa-expand"
-          @click="switchmode"
           type="icon-button"
-           :theme="theme"
+          @click="switchmode"
         ></aeris-ui-icon-button>
         <aeris-ui-icon-button
           v-if="maximize"
           :title="$t('minimize')"
+          :theme="theme"
           icon="fa-compress"
-          @click="switchmode"
           type="icon-button"
-           :theme="theme"
+          @click="switchmode"
         ></aeris-ui-icon-button>
         <aeris-ui-icon-button
           :title="$t('close')"
+          :theme="theme"
           icon="fa-times"
+          type="icon-button"
           @click="broadcastCloseEvent"
-          type="icon-button"
-           :theme="theme"
         ></aeris-ui-icon-button>
         <aeris-ui-icon-button
-          v-show="!edit"
           :title="$t('json')"
+          :theme="theme"
           icon="fa-code"
+          type="icon-button"
           @click="showJson"
-          type="icon-button"
-           :theme="theme"
         ></aeris-ui-icon-button>
-        <aeris-ui-icon-button
-          v-show="edit"
-          icon="fa-floppy-o"
-          @click="sendSaveEvent"
-          type="icon-button"
-           :theme="theme"
-        ></aeris-ui-icon-button>
-        <slot/>
+        <slot />
       </aside>
     </header>
     <main>
-      <aeris-metadata-services v-if="!edit" :identifier="uuid" :service="idservice" language="fr" @metadata ="updateMetadata"></aeris-metadata-services>
-      <component v-if="metadataValue" :is="getTemplate" :metadata="metadataValue"></component>
-   </main>
+      <aeris-metadata-services
+        :identifier="uuid"
+        :service="idservice"
+        language="fr"
+        @metadata="updateMetadata"
+      ></aeris-metadata-services>
+      <component v-if="metadataValue" :is="getTemplate" :metadata="metadataValue" :theme="theme"></component>
+    </main>
   </div>
 </template>
-  <script type="text/javascript" component="aeris-data/gmos-metadata-components-vjs@0.2.0" src="https://rawgit.com/aeris-data/aeris-component-loader/master/aerisComponentLoader.js"></script>
+<script
+  type="text/javascript"
+  component="aeris-data/gmos-metadata-components-vjs@0.2.0"
+  src="https://rawgit.com/aeris-data/aeris-component-loader/master/aerisComponentLoader.js"
+></script>
 
 <script>
 import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection";
@@ -115,11 +114,6 @@ export default {
     language: {
       type: String,
       default: "en"
-    },
-    edit: {
-      type: Boolean,
-      default: false,
-      required: true
     },
     resourcetitle: {
       type: Object,
@@ -171,30 +165,7 @@ export default {
     },
     uuid(value) {
       this.$el.scrollTop = 0;
-    },
-    edit(value) {
-      document.dispatchEvent(
-        new CustomEvent("aerisCatalogueInfoMetadata", {
-          detail: {
-            uuid: this.uuid,
-            edit: value ? value : false
-          }
-        })
-      );
     }
-  },
-
-  created() {
-    this.$nextTick(() => {
-      document.dispatchEvent(
-        new CustomEvent("aerisCatalogueInfoMetadata", {
-          detail: {
-            uuid: this.uuid,
-            edit: this.edit
-          }
-        })
-      );
-    });
   },
 
   mounted() {
@@ -205,7 +176,6 @@ export default {
 
   computed: {
     getTemplate() {
-      console.log("getTemplate : ", this.template);
       return this.template;
     },
     getCartoucheTheme() {
@@ -218,8 +188,7 @@ export default {
       }
     },
     idservice() {
-      var result = this.metadataService;
-      console.log("service url metadata", result);
+      let result = this.metadataService;
       return result;
     },
 
@@ -235,33 +204,21 @@ export default {
   methods: {
     updateMetadata(metadata) {
       this.updateTemplate();
-      console.log("update metadata : ", metadata);
       this.metadataValue = metadata;
     },
-    displayValue(value) {
-      console.log("v-for :", value);
-    },
     showJson() {
-      var baseUrl = "http://jsoneditoronline.org/?url=";
-      var url = baseUrl + this.metadataService + this.uuid;
-      console.log("url json : ", url);
+      let baseUrl = "http://jsoneditoronline.org/?url=";
+      let url = baseUrl + this.metadataService + this.uuid;
       window.open(url, "_blank", "toolbar=no, status=no, scrollbars=no, menubar=no, width=1000, height=800");
     },
 
     broadcastCloseEvent() {
       this.forceNormalMode();
-      console.log("aerisCatalogueHideMetadata event");
-      var event = new CustomEvent("aerisCatalogueHideMetadata", {
-        detail: {}
-      });
-      document.dispatchEvent(event);
     },
 
     forceNormalMode() {
       this.maximize = false;
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) {
+      if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
       } else if (document.webkitCancelFullScreen) {
         document.webkitCancelFullScreen();
@@ -273,7 +230,7 @@ export default {
     switchmode() {
       if (this.minimize) {
         this.maximize = true;
-        var elem = this.$el;
+        let elem = this.$el;
         if (elem.requestFullscreen) {
           elem.requestFullscreen();
         } else if (elem.mozRequestFullScreen) {
@@ -286,15 +243,6 @@ export default {
       }
     },
 
-    sendSaveEvent() {
-      document.dispatchEvent(
-        new CustomEvent("eurochampSaveEvent", {
-          detail: {
-            loadingMessage: this.$i18n.t("saving")
-          }
-        })
-      );
-    },
     updateTemplate() {
       if (this.type === "COLLECTION") {
         let templateName = "Md-template-" + this.type.toLowerCase();
@@ -302,14 +250,12 @@ export default {
         this.template = templateName.replace(/-([a-z])/g, function(g) {
           return g[1].toUpperCase();
         });
-        console.log("template name : ", this.template);
       } else {
         this.template = MdTemplateCollection;
       }
     },
 
     projectLandingPage: function(projectId) {
-      console.log("projectId", projectId);
       return "https://www.aeris-data.fr/project/" + projectId;
     }
   }

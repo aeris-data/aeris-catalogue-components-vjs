@@ -1,6 +1,5 @@
 <template>
-  <component v-if="metadata"  :is="template" :metadata="metadata"></component>
-  
+  <component v-if="metadata" :is="template" :metadata="metadata"></component>
 </template>
 <script>
 import MdTemplateCollection from "./md-template-collection.vue";
@@ -91,4 +90,3 @@ export default {
   }
 };
 </script>
-

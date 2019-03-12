@@ -5,8 +5,8 @@ Vue.use(VueI18n);
 
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
-import * as VueLayers from "vuelayers";
-Vue.use(VueLayers)
+import VueLayers from "vuelayers";
+Vue.use(VueLayers);
 import axios from "axios";
 import VueAxios from "vue-axios";
 
@@ -34,14 +34,16 @@ import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
-import metadataPanelTest from "./modules/metadata-panel-test.vue"
+import metadataPanelTest from "./modules/metadata-panel-test.vue";
 
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
+import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
 
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
-    searchCriteriaModule
+    searchCriteriaModule,
+    notificationModule
   }
 });
 

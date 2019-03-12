@@ -27,7 +27,8 @@
       </li>
       <li>
         <router-link to="/metadata_panel">/metadata_panel</router-link>
-       <li>
+      </li>
+      <li>
         <router-link to="/draw_map_button">/draw map button</router-link>
       </li>
       <li>

@@ -1,26 +1,70 @@
 <template>
-
   <div data-template="metadata-panel">
-  <aeris-metadata-description :markdown="true" :language="language" :show-title="false" :resource-abstract="metadata.resourceAbstract"></aeris-metadata-description>
-  <aeris-metadata-contacts :language="language" :contacts="metadata.contacts"></aeris-metadata-contacts>
-<aeris-metadata-spatial-extents :language="language" :spatial-extents="metadata.spatialExtents"></aeris-metadata-spatial-extents>   
-    <aeris-metadata-temporal-extents :language="language" :temporal-extents="metadata.temporalExtents"></aeris-metadata-temporal-extents>
-    <aeris-metadata-information-links :language="language" :links="metadata.links"></aeris-metadata-information-links>
-   <aeris-metadata-information :language="language" :items="metadata"></aeris-metadata-information> 
-    <aeris-metadata-datapolicy :language="language" :distributionInformation="metadata.distributionInformation"></aeris-metadata-datapolicy>
-    <aeris-metadata-data-links :language="language" :links="metadata.links"></aeris-metadata-data-links>
-    <aeris-metadata-citations :language="language" :identifiers="metadata.identifiers"></aeris-metadata-citations>
-    <aeris-metadata-platforms :language="language" :platforms="metadata.platforms"></aeris-metadata-platforms>
-    <aeris-metadata-instruments :language="language" :instrument="metadata.instruments"></aeris-metadata-instruments>
-    <aeris-metadata-formats :language="language" :formats="metadata.formats"></aeris-metadata-formats>
-    <aeris-metadata-parameters :language="language" :parameters="metadata.parameters"></aeris-metadata-parameters>
-    <aeris-metadata-publications :language="language" :publications="metadata.publications"></aeris-metadata-publications>
-    <aeris-metadata-quicklook-gallery :language="language" ></aeris-metadata-quicklook-gallery> 
+    <aeris-metadata-description
+      :markdown="true"
+      :language="language"
+      :show-title="false"
+      :theme="theme"
+      :resource-abstract="metadata.resourceAbstract"
+    ></aeris-metadata-description>
+    <aeris-metadata-contacts
+      :language="language"
+      :contacts="metadata.contacts"
+      :theme="theme"
+    ></aeris-metadata-contacts>
+    <aeris-metadata-spatial-extents
+      :language="language"
+      :spatial-extents="metadata.spatialExtents"
+      :theme="theme"
+    ></aeris-metadata-spatial-extents>
+    <aeris-metadata-temporal-extents
+      :language="language"
+      :temporal-extents="metadata.temporalExtents"
+      :theme="theme"
+    ></aeris-metadata-temporal-extents>
+    <aeris-metadata-information-links
+      :language="language"
+      :links="metadata.links"
+      :theme="theme"
+    ></aeris-metadata-information-links>
+    <aeris-metadata-information :language="language" :items="metadata" :theme="theme"></aeris-metadata-information>
+    <aeris-metadata-datapolicy
+      :language="language"
+      :distribution-information="metadata.distributionInformation"
+      :theme="theme"
+    ></aeris-metadata-datapolicy>
+    <aeris-metadata-data-links :language="language" :links="metadata.links" :theme="theme"></aeris-metadata-data-links>
+    <aeris-metadata-citations
+      :language="language"
+      :identifiers="metadata.identifiers"
+      :theme="theme"
+    ></aeris-metadata-citations>
+    <aeris-metadata-platforms
+      :language="language"
+      :platforms="metadata.platforms"
+      :theme="theme"
+    ></aeris-metadata-platforms>
+    <aeris-metadata-instruments
+      :language="language"
+      :instrument="metadata.instruments"
+      :theme="theme"
+    ></aeris-metadata-instruments>
+    <aeris-metadata-formats :language="language" :formats="metadata.formats" :theme="theme"></aeris-metadata-formats>
+    <aeris-metadata-parameters
+      :language="language"
+      :parameters="metadata.parameters"
+      :theme="theme"
+    ></aeris-metadata-parameters>
+    <aeris-metadata-publications
+      :language="language"
+      :publications="metadata.publications"
+      :theme="theme"
+    ></aeris-metadata-publications>
+    <aeris-metadata-quicklook-gallery :language="language" :theme="theme"></aeris-metadata-quicklook-gallery>
   </div>
 </template>
 
 <script>
-
 import {
   AerisMetadataCitations,
   AerisMetadataContacts,
@@ -40,10 +84,12 @@ import {
   AerisMetadataTemporalExtents,
   AerisMetadataServices
 } from "aeris-metadata-components-vjs";
+
 import { AerisNotifier, AerisTheme, Aerislanguage } from "aeris-commons-components-vjs";
+
 export default {
   name: "md-template-collection",
-components: {
+  components: {
     AerisMetadataCitations,
     AerisMetadataContacts,
     AerisMetadataDataLinks,
@@ -70,15 +116,16 @@ components: {
       type: String,
       default: "en"
     },
-    metadata:{
-      type:Object,
-      default: ()=>{ return {}}
+    metadata: {
+      type: Object,
+      default: () => {}
+    },
+    theme: {
+      type: Object,
+      default: () => {}
     }
   },
-  
 
-  
-  
   computed: {
     getOtherInformations() {
       if (this.metadata) {
@@ -91,6 +138,7 @@ components: {
       } else {
         return null;
       }
-    }}
+    }
+  }
 };
 </script>

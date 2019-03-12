@@ -1,84 +1,82 @@
 <template>
-<div class="container">
-  
-<div class="nav">
- <input type="text" placeholder="full text" v-model="keyword_request"/>
- <aeris-catalogue-search-button  @click="getParameter" :range="{min:0,max:24}" :theme="theme" language="fr" @catalogueSearchStart="getEmitParameter" ></aeris-catalogue-search-button>
-</div>
+  <div class="container">
+    <div class="nav">
+      <input v-model="keyword_request" type="text" placeholder="full text" />
+      <aeris-catalogue-search-button
+        :range="{ min: 0, max: 24 }"
+        :theme="theme"
+        language="fr"
+        @click="getParameter"
+        @catalogueSearchStart="getEmitParameter"
+      ></aeris-catalogue-search-button>
+    </div>
 
- <div v-if="result" class="core" >
-<div  class="metadatapanel">
-    <aeris-catalogue-metadata-panel
-      language="fr"
-      :resourcetitle="currentTitle"
-      :edit="editMetadataPanel"
-      icon-class="aeris-icon aeris-icon-unknown"
-      metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/"
-      :uuid="currentUuid"
-      :type="currentType"
-      :metadata="currentMetadata"
-      :client-template="this.currentTemplate"
-      :projects="this.currentProjects"
-     
-    >
-      <slot name="buttons-metadata" />
-    </aeris-catalogue-metadata-panel>
-</div>
-<div class="info">
-
-<h3>Summary first item (json)</h3>
-<ul v-if="result" >
-
-  <li><span> Template : </span>{{result.clientTemplateName}}</li>
-  <li v-if="result.dataProcessingLevel != null"><span>Niveau : </span>{{result.dataProcessingLevel}}</li>
-  <li v-if="result.description != null"><span>Description : </span>{{result.description.en}}</li>
-  <li v-if="result.downloadable != null"><span>Downloadable : </span>{{result.downloadable}}</li>
-  <li v-if="result.id != null"><span>Id : </span>{{result.id}}</li>
-  <li v-if="result.plateformType  != null"><span>Plateform Type : </span>{{result.plateformType}}
-  </li>
-  <li v-if="result.projectList != null"><span> Project List : </span>
-     <ul>
-      <li v-for="project in result.projectList" :key="'project'+project"> UUID = {{project.aerisProjectUuid}},<br> Project name = {{project.projectName}}</li>
-    </ul>
-  </li>
-  <li v-if="result.title != null"><span>Title :</span>{{result.title.en}}</li>
-  <li><span>Type :</span>{{result.type}}</li>
-</ul>
-</div>
-
-    
-</div> 
-</div>
-    </template>
- <script>
-     
+    <div v-if="result" class="core">
+      <div class="metadatapanel">
+        <aeris-catalogue-metadata-panel
+          :resourcetitle="currentTitle"
+          :uuid="currentUuid"
+          :type="currentType"
+          :metadata="currentMetadata"
+          :client-template="currentTemplate"
+          :projects="currentProjects"
+          language="fr"
+          icon-class="aeris-icon aeris-icon-unknown"
+          metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/"
+        >
+          <slot name="buttons-metadata" />
+        </aeris-catalogue-metadata-panel>
+      </div>
+      <div class="info">
+        <h3>Summary first item (json)</h3>
+        <ul v-if="result">
+          <li><span> Template : </span>{{ result.clientTemplateName }}</li>
+          <li v-if="result.dataProcessingLevel != null"><span>Niveau : </span>{{ result.dataProcessingLevel }}</li>
+          <li v-if="result.description != null"><span>Description : </span>{{ result.description.en }}</li>
+          <li v-if="result.downloadable != null"><span>Downloadable : </span>{{ result.downloadable }}</li>
+          <li v-if="result.id != null"><span>Id : </span>{{ result.id }}</li>
+          <li v-if="result.plateformType != null"><span>Plateform Type : </span>{{ result.plateformType }}</li>
+          <li v-if="result.projectList != null">
+            <span> Project List : </span>
+            <ul>
+              <li v-for="project in result.projectList" :key="'project' + project">
+                UUID = {{ project.aerisProjectUuid }},<br />
+                Project name = {{ project.projectName }}
+              </li>
+            </ul>
+          </li>
+          <li v-if="result.title != null"><span>Title :</span>{{ result.title.en }}</li>
+          <li><span>Type :</span>{{ result.type }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
 import AerisCatalogueMetadataPanel from "../../lib/modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel.vue";
-import AerisCatalogueSearchButton from "../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button"
+import AerisCatalogueSearchButton from "../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button";
 export default {
   components: {
     AerisCatalogueMetadataPanel,
     AerisCatalogueSearchButton
-    
   },
   data() {
     return {
-      keyword_request:null,
-      url:"https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/request",
+      keyword_request: null,
+      url: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/request",
       currentIconClass: null,
       currentUuid: null,
       currentType: null,
-      currentTitle:null,
+      currentTitle: null,
       currentMetadata: null,
       currentTemplate: null,
       currentProjects: null,
-      visibleMetadataPanel: false,
-      editMetadataPanel: false,
-      project:null,
-      range: ()=>{},
+      project: null,
+      range: () => {},
       theme: {
-                emphasis: "#F5F5F5",
-                color: "#0b6bb3",
-              },
+        emphasis: "#F5F5F5",
+        color: "#0b6bb3"
+      },
 
       result: {
         clientTemplateName: "",
@@ -89,84 +87,81 @@ export default {
         plateformType: "",
         projectList: null,
         title: "",
-        type:"",
-      },
+        type: ""
+      }
     };
   },
-  methods:{
+  methods: {
     getParameter(value) {
-      console.log("getparameter")
-      this.axios.post(
-            `${this.url}?range=${this.range.min}-${this.range.max}`,{"keywords":[value],"searchOperator":"","temporal":{"from":"","to":""},"userLanguage":"en"}
-          )
-          .then(
-            response => {
-              console.log("sucess",response)
-             this.result= response.data.results[0]
-             this.currentIconClass= null;
-             this.currentUuid= this.result.id;
-             this.currentType= this.result.plateformType;
-             this.currentMetadata= null;
-             this.currentTitle=this.result.title;
-             this.currentTemplate= this.result.clientTemplateName;
-             this.currentProjects= this.result.projectList;
-             this.currentType = this.result.type
-             this.currentdataProcessingLevel=this.result.dataProcessingLevel;
-             
-            },
-            response => {
-             console.log("error",response) 
-            }
-          );
+      console.log("getparameter");
+      this.axios
+        .post(`${this.url}?range=${this.range.min}-${this.range.max}`, {
+          keywords: [value],
+          searchOperator: "",
+          temporal: { from: "", to: "" },
+          userLanguage: "en"
+        })
+        .then(
+          response => {
+            console.log("sucess", response);
+            this.result = response.data.results[0];
+            this.currentIconClass = null;
+            this.currentUuid = this.result.id;
+            this.currentType = this.result.plateformType;
+            this.currentMetadata = null;
+            this.currentTitle = this.result.title;
+            this.currentTemplate = this.result.clientTemplateName;
+            this.currentProjects = this.result.projectList;
+            this.currentType = this.result.type;
+            this.currentdataProcessingLevel = this.result.dataProcessingLevel;
+          },
+          response => {
+            console.log("error", response);
+          }
+        );
     },
-    getEmitParameter(emitParameter){
-      console.log("emit")
-        this.range.min = emitParameter.min
-        this.range.max = emitParameter.max
-        this.getParameter(this.keyword_request)
-        }
+    getEmitParameter(emitParameter) {
+      this.range.min = emitParameter.min;
+      this.range.max = emitParameter.max;
+      this.getParameter(this.keyword_request);
+    }
   }
 };
 </script>
 
 <style scoped>
 .container {
-  display :flex;
+  display: flex;
   justify-content: space-between;
-  margin:50px;
- 
+  margin: 50px;
 }
 
 .nav {
-  display:flex;
+  display: flex;
   align-items: start;
 }
 
-input[type="text"]{
+input[type="text"] {
   margin-right: 20px;
-  
 }
 
-.core{
- display:flex;
- margin: 0 30px;
-  
+.core {
+  display: flex;
+  margin: 0 30px;
 }
- .metadatapanel {
-   width:1100px;
-   height:100%;
-   margin: 0 10px;
- } 
- .info{
-width:300px;
-font-size: 10px;
- }
- h3 {
-   height:30px;
- }
- span{
-   font-weight: bold
- }
+.metadatapanel {
+  width: 1100px;
+  height: 100%;
+  margin: 0 10px;
+}
+.info {
+  width: 300px;
+  font-size: 10px;
+}
+h3 {
+  height: 30px;
+}
+span {
+  font-weight: bold;
+}
 </style>
-
-
