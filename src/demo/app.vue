@@ -52,6 +52,9 @@
       <li>
         <router-link to="/select_map_button">/select map button</router-link>
       </li>
+      <li>
+        <router-link to="/catalog-cart">/catalog cart</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>
