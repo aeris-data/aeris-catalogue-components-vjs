@@ -74,8 +74,7 @@ export default {
       return this.theme && this.theme.primaryColor
         ? {
             "--primaryColor": this.theme.primaryColor,
-            "--secondaryColor": this.theme.secondaryColor,
-            "--contentPrimaryColor": this.theme.contentPrimaryColor
+            "--secondaryColor": this.theme.secondaryColor
           }
         : "";
     }
@@ -176,6 +175,6 @@ aside > i:hover {
 }
 label,
 .far {
-  color: var(--contentPrimaryColor);
+  color: grey;
 }
 </style>

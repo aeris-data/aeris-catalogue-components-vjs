@@ -3,7 +3,11 @@
     <aeris-catalog-search-box
       :deployed="true"
       :theme="theme"
+<<<<<<< HEAD
+      box-title="Zones géographiques"
+=======
       box_title="Zones géographiques"
+>>>>>>> refactoring
       header-icon-class="fa fa-globe"
     >
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer fermentum ac augue quis laoreet. Phasellus massa
