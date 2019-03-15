@@ -40,11 +40,13 @@ import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
+import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
 
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
-    searchCriteriaModule
+    searchCriteriaModule,
+    cartStoreModule
   }
 });
 

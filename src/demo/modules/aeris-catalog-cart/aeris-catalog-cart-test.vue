@@ -1,5 +1,7 @@
 <template>
-  <aeris-catalog-cart></aeris-catalog-cart>
+  <div>
+    <aeris-catalog-cart></aeris-catalog-cart>
+  </div>
 </template>
 
 <script>
