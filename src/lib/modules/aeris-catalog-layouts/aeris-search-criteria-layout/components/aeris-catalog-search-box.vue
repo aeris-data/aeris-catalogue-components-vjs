@@ -1,21 +1,21 @@
 <template>
-  <div :class="{ showBody: isdeployed }" data-aeris-catalog-box data-layout="search-criteria">
-    <div id="main" class="box noselect">
-      <header v-if="header" class="box-heading" @click="isdeployed = !isdeployed">
+  <div :class="{ showBody: isDeployed }" class="aeris-catalog-box">
+    <div class="box">
+      <header v-if="header" class="box-heading" @click="isDeployed = !isDeployed">
         <div class="box-heading-buttons">
           <i :class="openIconClass" class="chevron" />
         </div>
         <div class="box-title">
-          <i v-show="headerIconClass" id="icon" :class="headerIconClass" />
+          <i v-show="headerIconClass" :class="headerIconClass" />
           <h3 no-label-float>{{ getTitle }}</h3>
         </div>
       </header>
-      <div id="collapse" class="box-collapsable-part">
-        <main class="box-body">
+      <div class="box-collapsable-part">
+        <section class="box-body">
           <div class="content">
             <slot />
           </div>
-        </main>
+        </section>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@ export default {
       type: String,
       default: "fa fa-chevron-down"
     },
-    box_title: {
+    boxTitle: {
       type: String,
       default: ""
     },
@@ -49,186 +49,110 @@ export default {
     title: {
       type: String,
       default: ""
-    }
-  },
-
-  watch: {},
-
-  destroyed: function() {
-    document.removeEventListener("aerisTheme", this.aerisThemeListener);
-    this.aerisThemeListener = null;
-  },
-
-  created: function() {
-    console.log("aeris-keyword-search-criteria - Creating");
-    this.aerisThemeListener = this.handleTheme.bind(this);
-    document.addEventListener("aerisTheme", this.aerisThemeListener);
-    this.isdeployed = this.deployed;
-    this.headerDisplay = this.header;
-  },
-
-  mounted: function() {
-    var event = new CustomEvent("aerisThemeRequest", {});
-    document.dispatchEvent(event);
-  },
-
-  computed: {
-    getTitle() {
-      return this.title || this.box_title;
+    },
+    theme: {
+      type: Object,
+      default: () => {}
     }
   },
 
   data() {
     return {
-      theme: null,
-      aerisThemeListener: null,
-      hasToolbar: false,
-      isdeployed: null
+      isDeployed: false
     };
   },
 
-  updated: function() {
-    this.ensureTheme();
-  },
-
-  methods: {
-    handleChevronClick: function() {},
-
-    handleTheme: function(theme) {
-      this.theme = theme.detail;
-      if (this.header) this.ensureTheme();
-    },
-
-    ensureTheme: function() {
-      if (this.theme) {
-        if (this.$el) {
-          this.$el.querySelector("h3").style.color = this.theme.primary;
-        }
-      }
+  computed: {
+    getTitle() {
+      return this.title || this.boxTitle;
     }
   }
 };
 </script>
 
-<style>
-[data-aeris-catalog-box] {
+<style scoped>
+.aeris-catalog-box {
   font-size: 0.9rem;
   padding: 5px;
-}
-
-[data-aeris-catalog-box] .box-collapsable-part {
-  display: none;
-  transition: 0.3s;
-}
-
-[data-aeris-catalog-box].showBody .box-collapsable-part {
-  display: block;
-  transition: 0.3s;
-}
-
-[data-aeris-catalog-box].showBody .chevron {
-  transform: rotate(180deg);
-}
-
-[data-aeris-catalog-box] .chevron {
-  transition: 0.3s;
-}
-
-[data-aeris-catalog-box] {
   box-sizing: border-box;
   position: relative;
   display: block;
   transition: transform 4s ease-out;
 }
 
-[data-aeris-catalog-box] .box {
-  box-sizing: border-box;
-  width: 100%;
-  color: var(--catalog-box-color, #333);
-}
-
-[data-aeris-catalog-box] .box-title {
+.box-title {
   display: flex;
   font-size: 16px;
   line-height: 1.2;
   align-items: baseline;
 }
 
-[data-aeris-catalog-box] .box-title .plateform-icon,
-[data-aeris-catalog-box] .box-title .fa {
+.box-collapsable-part {
+  display: none;
+  transition: 0.3s;
+}
+
+.showBody .box-collapsable-part {
+  display: block;
+  transition: 0.3s;
+}
+
+.showBody .chevron {
+  transform: rotate(180deg);
+}
+
+.chevron {
+  transition: 0.3s;
+}
+
+.box {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.box-title .plateform-icon,
+.box-title .fa {
   margin-right: 10px;
 }
 
-[data-aeris-catalog-box] header {
-  color: #fff;
-}
-
-[data-aeris-catalog-box] .box-title h4 {
+.box-title h3 {
   margin: 0;
+  color: rgb(11, 107, 179);
 }
 
-[data-aeris-catalog-box] .box-body {
+.box-title h3:first-letter {
+  text-transform: uppercase;
+}
+
+.box-title i {
+  color: grey;
+}
+
+.box-heading-buttons i {
+  color: grey;
+}
+
+.box-body {
   word-wrap: break-word;
 }
 
-[data-aeris-catalog-box] .box-body .content {
+.box-body .content {
   padding: 10px;
 }
 
-[data-aeris-catalog-box] .box-toolbar {
+.box-heading {
   display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  padding: 5px 10px;
-  border-bottom: 1px solid #ccc;
-  border: var(--catalog-box-toolbar-border);
-  background-color: var(--catalog-box-toolbar-background-color, #fafafa);
-}
-
-[data-aeris-catalog-box] .box-heading {
-  display: flex;
-  /*justify-content: space-between;*/
   align-items: center;
   padding: 5px 5px;
-  border: var(--catalog-box-header-border, none);
   cursor: pointer;
 }
 
-[data-aeris-catalog-box] .box-heading .box-heading-buttons {
+.box-heading .box-heading-buttons {
   display: flex;
   flex-flow: row nowrap;
 }
 
-[data-aeris-catalog-box] .box-heading .box-heading-buttons .fa {
+.box-heading .box-heading-buttons .fa {
   padding: 0 10px;
-}
-
-[data-aeris-catalog-box] .box-collapsable-part {
-  border: var(--catalog-box-main-border, none);
-}
-
-[data-aeris-catalog-box] .box-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-}
-
-[data-aeris-catalog-box] .expandButton {
-  padding: 6px 13px;
-  margin: 0 5px;
-  color: var(--expand-button-text-color, #fff);
-  border: 1px solid;
-  background-color: var(--expand-button-main-color, #4765a0);
-  opacity: var(--expand-button-opacity, 1);
-  outline: none;
-}
-
-[data-aeris-catalog-box] .expandButton:hover {
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  color: var(--expand-button-hover-text-color, #fff);
-  background-color: var(--expand-button-secondary-color, #d35400);
-  opacity: var(--expand-button-hover-opacity, 1);
 }
 </style>

@@ -16,6 +16,7 @@
 const FADEIN_DURATION = 1000; //ms
 const DEFAULT_ZOOM = 2;
 
+import style from 'ol/ol.css' ;
 import Feature from "ol/Feature";
 import * as extent from "ol/extent";
 import Map from "ol/Map.js";
@@ -23,6 +24,7 @@ import View from "ol/View.js";
 import Point from "ol/geom/Point";
 import Polygon from "ol/geom/Polygon";
 import XYZ from "ol/source/XYZ";
+import { defaults as defaultControls, ZoomToExtent} from 'ol/control.js';
 import { transform, transformExtent } from "ol/proj";
 import { Draw, Modify, Snap } from "ol/interaction.js";
 import { createStringXY } from "ol/coordinate";
@@ -125,6 +127,7 @@ export default {
     this.initialiseMainSource();
     this.initialisePreviewSource();
     this.map = new Map({
+      
       layers: [raster, this.vector, this.mainClusteredLayer],
       target: this.$el.querySelector("#map"),
       controls: defaults({
@@ -150,7 +153,7 @@ export default {
     mapViewport.style.opacity = 0;
 
     raster.getSource().on("tileloadend", () => {
-      let mapZoom = mapViewport.querySelector(".ol-zoom");
+       let mapZoom = mapViewport.querySelector(".ol-zoom");
       mapZoom.style.top = "auto";
       mapZoom.style.bottom = "0.5em";
 
