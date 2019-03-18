@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="nav">
-      <input v-model="keyword_request" type="text" placeholder="full text" />
+      <input v-model="keyword_request" type="text" placeholder=" ECCAD " />
       <aeris-catalogue-search-button
         :range="{ min: 0, max: 24 }"
         :theme="theme"

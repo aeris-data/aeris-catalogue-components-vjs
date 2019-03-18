@@ -11,6 +11,24 @@
         <router-link to="/thesaurus-item-tree-checkbox-layout">/thesaurus-item-tree-checkbox-layout</router-link>
       </li>
       <li>
+        <router-link to="/instrument-search-criteria">/instrument-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/parameter-search-criteria">/parameter-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/platform-search-criteria">/platform-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/project-search-criteria">/project-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/default-summary">/default-summary</router-link>
+      </li>
+      <li>
+        <router-link to="/summaries">/summaries</router-link>
+      </li>
+      <li>
         <router-link to="/eurochamp">/eurochamp</router-link>
       </li>
       <li>
@@ -29,6 +47,18 @@
         <router-link to="/metadata_panel">/metadata_panel</router-link>
       </li>
       <li>
+        <router-link to="/search_text_button">/search text button</router-link>
+      </li>
+      <li>
+        <router-link to="/reset_button">/reset button</router-link>
+      </li>
+      <li>
+        <router-link to="/maximize_button">/Maximize button</router-link>
+      </li>
+      <li>
+        <router-link to="/help_button">/help button</router-link>
+      </li>
+      <li>
         <router-link to="/draw_map_button">/draw map button</router-link>
       </li>
       <li>
@@ -39,6 +69,9 @@
       </li>
       <li>
         <router-link to="/reset_text_button">/reset text button</router-link>
+      </li>
+      <li>
+        <router-link to="/select_map_button">/select map button</router-link>
       </li>
     </ul>
     <div>

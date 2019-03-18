@@ -28,6 +28,17 @@ import AerisCatalogueSearchButtonTest from "./modules/aeris-catalog-buttons/aeri
 import AerisCatalogueResetTextButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/aeris-catalogue-reset-text-button-test.vue";
 import aerisInternationalFieldTest from "./modules/aeris-international-field/aeris-international-field-test";
 import AerisCatalogueDrawMapButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-draw-map-button/aeris-catalogue-draw-map-button-test.vue";
+import AerisCatalogueHelpButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-help-button/aeris-catalogue-help-button-test.vue";
+import aerisCatalogueMaximizeButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-maximize-button/aeris-catalogue-maximize-button-test.vue";
+import AerisCatalogueResetButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-button/aeris-catalogue-reset-button-test.vue";
+import AerisCatalogueSearchTextButtontest from "../demo/modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/aeris-catalogue-search-text-button-test.vue";
+import AerisCatalogueSelectMapButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-select-map-button/aeris-catalogue-select-map-button-test.vue";
+import AerisInstrumentSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria-test";
+import AerisParameterSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria-test";
+import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria-test";
+import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria-test";
+import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
+import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -59,6 +70,30 @@ const router = new VueRouter({
       component: AerisThesaurusItemTreeCheckboxLayoutTest
     },
     {
+      path: "/instrument-search-criteria",
+      component: AerisInstrumentSearchCriteriaTest
+    },
+    {
+      path: "/parameter-search-criteria",
+      component: AerisParameterSearchCriteriaTest
+    },
+    {
+      path: "/platform-search-criteria",
+      component: AerisPlatformSearchCriteriaTest
+    },
+    {
+      path: "/project-search-criteria",
+      component: AerisProjectSearchCriteriaTest
+    },
+    {
+      path: "/default-summary",
+      component: AerisCatalogDefaultSummaryTest
+    },
+    {
+      path: "/summaries",
+      component: AerisCatalogSummariesTest
+    },
+    {
       path: "/eurochamp",
       component: eurochamp
     },
@@ -83,6 +118,22 @@ const router = new VueRouter({
       component: metadataPanelTest
     },
     {
+      path: "/search_text_button",
+      component: AerisCatalogueSearchTextButtontest
+    },
+    {
+      path: "/reset_button",
+      component: AerisCatalogueResetButtonTest
+    },
+    {
+      path: "/maximize_button",
+      component: aerisCatalogueMaximizeButtonTest
+    },
+    {
+      path: "/help_button",
+      component: AerisCatalogueHelpButtonTest
+    },
+    {
       path: "/draw_map_button",
       component: AerisCatalogueDrawMapButtonTest
     },
@@ -101,6 +152,14 @@ const router = new VueRouter({
     {
       path: "/search_box",
       component: AerisCatalogueSearchBoxTest
+    },
+    {
+      path: "/select_map_button",
+      component: AerisCatalogueSelectMapButtonTest
+    },
+    {
+      path: "/search_text_button",
+      component: AerisCatalogueSearchTextButtontest
     }
   ]
 });
