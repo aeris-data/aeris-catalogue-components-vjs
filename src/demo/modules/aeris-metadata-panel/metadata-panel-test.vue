@@ -54,8 +54,8 @@
   </div>
 </template>
 <script>
-import AerisCatalogueMetadataPanel from "../../lib/modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel.vue";
-import AerisCatalogueSearchButton from "../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button";
+import AerisCatalogueMetadataPanel from "../../../lib/modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel.vue";
+import AerisCatalogueSearchButton from "../../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button";
 export default {
   components: {
     AerisCatalogueMetadataPanel,

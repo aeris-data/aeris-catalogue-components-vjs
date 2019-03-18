@@ -39,13 +39,13 @@ import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/ae
 import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria-test";
 import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
 import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
+import AerisMetadataPanelTest from "./modules/aeris-metadata-panel/metadata-panel-test.vue";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
-import metadataPanelTest from "./modules/metadata-panel-test.vue";
 
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
@@ -115,7 +115,7 @@ const router = new VueRouter({
     },
     {
       path: "/metadata_panel",
-      component: metadataPanelTest
+      component: AerisMetadataPanelTest
     },
     {
       path: "/search_text_button",
