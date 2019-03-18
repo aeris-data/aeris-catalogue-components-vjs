@@ -86,17 +86,11 @@
     </main>
   </div>
 </template>
-<script
-  type="text/javascript"
-  component="aeris-data/gmos-metadata-components-vjs@0.2.0"
-  src="https://rawgit.com/aeris-data/aeris-component-loader/master/aerisComponentLoader.js"
-></script>
 
 <script>
 import MdTemplateCollection from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection";
 import { AerisUiIconButton } from "aeris-commons-components-vjs";
 import { AerisMetadataServices } from "aeris-metadata-components-vjs";
-import MdTemplateProxy from "../../aeris-catalog-layouts/aeris-metadata-template/components/md-template-proxy.vue";
 import AerisInternationalField from "../../aeris-international-field/components/aeris-international-field.vue";
 
 export default {
@@ -105,7 +99,6 @@ export default {
   components: {
     AerisUiIconButton,
     AerisMetadataServices,
-    MdTemplateProxy,
     AerisInternationalField,
     MdTemplateCollection
   },
@@ -181,7 +174,7 @@ export default {
     getCartoucheTheme() {
       if (true) {
         return {
-          background: "blue"
+          background: this.theme.primaryColor
         };
       } else {
         return "";
@@ -247,7 +240,7 @@ export default {
       if (this.type === "COLLECTION") {
         let templateName = "Md-template-" + this.type.toLowerCase();
         templateName = templateName.replace(/_/g, "-");
-        this.template = templateName.replace(/-([a-z])/g, function(g) {
+        this.template = templateName.replace(/-([a-z])/g,(g) => {
           return g[1].toUpperCase();
         });
       } else {
@@ -264,7 +257,7 @@ export default {
 
 <style scoped>
 .data-aeris-catalog-metadata-panel {
-  --gap: 12px;
+  --gap: 30px;
   --heightHeader: 80px;
   height: 100%;
   background: #ddd;

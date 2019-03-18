@@ -23,6 +23,7 @@
           language="fr"
           icon-class="aeris-icon aeris-icon-unknown"
           metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/"
+          :theme="theme"
         >
           <slot name="buttons-metadata" />
         </aeris-catalogue-metadata-panel>
@@ -73,9 +74,9 @@ export default {
       currentProjects: null,
       project: null,
       range: () => {},
-      theme: {
-        emphasis: "#F5F5F5",
-        color: "#0b6bb3"
+     theme: {
+        primaryColor: "#0b6bb3",
+        secondaryColor: "#f39c12"
       },
 
       result: {
@@ -93,10 +94,9 @@ export default {
   },
   methods: {
     getParameter(value) {
-      console.log("getparameter");
       this.axios
         .post(`${this.url}?range=${this.range.min}-${this.range.max}`, {
-          keywords: [value],
+          keywords: [this.keyword_request],
           searchOperator: "",
           temporal: { from: "", to: "" },
           userLanguage: "en"
@@ -151,8 +151,8 @@ input[type="text"] {
 }
 .metadatapanel {
   width: 1100px;
-  height: 100%;
-  margin: 0 10px;
+  height:2000px;
+ 
 }
 .info {
   width: 300px;
