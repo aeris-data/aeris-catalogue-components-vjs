@@ -68,6 +68,7 @@ export default {
       currentIconClass: null,
       currentUuid: null,
       currentType: null,
+      currentPlatformType: null,
       currentTitle: null,
       currentMetadata: null,
       currentTemplate: null,
@@ -107,7 +108,7 @@ export default {
             this.result = response.data.results[0];
             this.currentIconClass = null;
             this.currentUuid = this.result.id;
-            this.currentType = this.result.plateformType;
+            this.currentPlatformType = this.result.plateformType;
             this.currentMetadata = null;
             this.currentTitle = this.result.title;
             this.currentTemplate = this.result.clientTemplateName;
