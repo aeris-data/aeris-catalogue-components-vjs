@@ -1,6 +1,6 @@
 <template>
   <div data-aeris-catalog-criteria>
-    <slot />
+    <slot/>
   </div>
 </template>
 
@@ -13,29 +13,11 @@ export default {
       type: String,
       default: "en"
     },
-    visible: {
+    isVisible: {
       type: Boolean,
       default: true
     }
-  },
-
-  watch: {},
-
-  destroyed: function() {},
-
-  created: function() {},
-
-  mounted: function() {},
-
-  computed: {},
-
-  data() {
-    return {};
-  },
-
-  updated: function() {},
-
-  methods: {}
+  }
 };
 </script>
 
