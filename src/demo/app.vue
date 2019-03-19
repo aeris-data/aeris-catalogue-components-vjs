@@ -11,6 +11,24 @@
         <router-link to="/thesaurus-item-tree-checkbox-layout">/thesaurus-item-tree-checkbox-layout</router-link>
       </li>
       <li>
+        <router-link to="/instrument-search-criteria">/instrument-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/parameter-search-criteria">/parameter-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/platform-search-criteria">/platform-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/project-search-criteria">/project-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/default-summary">/default-summary</router-link>
+      </li>
+      <li>
+        <router-link to="/summaries">/summaries</router-link>
+      </li>
+      <li>
         <router-link to="/eurochamp">/eurochamp</router-link>
       </li>
       <li>

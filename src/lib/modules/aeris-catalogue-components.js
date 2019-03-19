@@ -5,6 +5,12 @@ import AersiCatalogueDrawMapButton from "../modules/aeris-catalog-buttons/aeris-
 import AerisCatalogSearchButton from "../modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button.vue";
 import AerisCatalogueResetTextButton from "../modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/components/aeris-catalogue-reset-text-button.vue";
 import AerisInternationalField from "../modules/aeris-international-field/components/aeris-international-field";
+import AerisInstrumentSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-instrument-search-criteria/components/aeris-instrument-search-criteria";
+import AerisParameterSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria/components/aeris-parameter-search-criteria";
+import AerisPlatformSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria/components/aeris-platform-search-criteria";
+import AerisProjectSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria/components/aeris-project-search-criteria";
+import AerisCatalogDefaultSummary from "../modules/aeris-catalog-summaries/components/aeris-catalog-default-summary";
+import AerisCatalogSummaries from "../modules/aeris-catalog-summaries/components/aeris-catalog-summaries";
 import AerisCatalogueHelpButton from "../modules/aeris-catalog-buttons/aeris-catalogue-help-button/components/aeris-catalogue-help-button";
 import AersiCatalogMaximizeButton from "../modules/aeris-catalog-buttons/aeris-catalogue-maximize-button/components/aeris-catalogue-maximize-button.vue";
 import AerisCatalogResetButton from "../modules/aeris-catalog-buttons/aeris-catalogue-help-button/components/aeris-catalogue-help-button.vue";
@@ -19,6 +25,12 @@ export {
   AerisCatalogueResetTextButton,
   AerisCatalogSearchButton,
   AerisInternationalField,
+  AerisInstrumentSearchCriteria,
+  AerisParameterSearchCriteria,
+  AerisPlatformSearchCriteria,
+  AerisProjectSearchCriteria,
+  AerisCatalogDefaultSummary,
+  AerisCatalogSummaries,
   AersiCatalogueDrawMapButton,
   AerisCatalogueHelpButton,
   AersiCatalogMaximizeButton,

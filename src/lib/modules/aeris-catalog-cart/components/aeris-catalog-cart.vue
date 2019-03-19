@@ -10,7 +10,6 @@
     "loading": "Loading",
     "downloadingFiles": "Downloading files...",
     "removeFromDownload": "Remove from download list",
-    "years": "Year(s):",
     "download": "Download",
     "copy": "Copy script to the clipboard",
     "files": "File(s)"
@@ -25,7 +24,6 @@
     "loading": "Chargement",
     "downloadingFiles": "Téléchargement en cours...",
     "removeFromDownload": "Supprimer de la liste de téléchargement",
-    "years": "Année(s):",
     "download": "Télécharger",
     "copy": "Copier le script dans le presse-papier",
     "files": "Fichier(s)"
@@ -49,9 +47,9 @@
         </header>
 
         <ul class="item-list">
-          <template v-for="item in cartContent" id="cartTemplate">
-            <li :key="item.id" class="cart-line">
-              <i :title="$t('removeFromDownload')" class="fa fa-times" @click="removeCartItem(item.collectionId)" />
+          <section v-for="item in cartContent" id="cartTemplate" :key="item.identifier">
+            <li class="cart-line">
+              <i :title="$t('removeFromDownload')" class="fa fa-times" @click="removeCartItem(item.identifier)" />
               <div>
                 <aeris-metadata-international-field
                   :content="item.collectionName"
@@ -68,10 +66,10 @@
                 </span>
               </div>
             </li>
-            <div v-if="item.filterDescription" :key="item.id" class="filter-description">
+            <div v-if="item.filterDescription" class="filter-description">
               {{ item.filterDescription }}
             </div>
-          </template>
+          </section>
         </ul>
 
         <footer class="cart-panel-footer">
@@ -118,6 +116,8 @@
 
 <script>
 import { AerisMetadataInternationalField } from "aeris-metadata-components-vjs";
+import { computeUuid } from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/utils/utils";
+
 export default {
   name: "aeris-catalog-cart",
 
@@ -146,7 +146,6 @@ export default {
 
   data() {
     return {
-      cartContent: [],
       cartName: "",
       downloadScript: null,
       isPopupOpen: false
@@ -176,19 +175,25 @@ export default {
     },
     applyTheme() {
       return this.theme && this.theme.primaryColor ? { "--primaryColor": this.theme.primaryColor } : {};
+    },
+    cartContent() {
+      return this.$store.getters.getCartContent;
     }
   },
 
   watch: {
     language(value) {
       this.$i18n.locale = value;
+    },
+    cartContent() {
+      this.saveCart();
     }
   },
 
   created() {
     this.$i18n.locale = this.language;
     this.cartToken ? (this.cartName = "AerisCatalogCart-" + this.cartToken) : (this.cartName = "AerisCatalogCart");
-    this.loadCart();
+    this.loadCartContentFromStorage();
   },
 
   methods: {
@@ -196,129 +201,37 @@ export default {
       this.isPopupOpen = !this.isPopupOpen;
       return this.isPopupOpen;
     },
-    contentRequestHandler() {
-      this.dispatchContent();
-    },
-    dispatchContent() {
-      const event = new CustomEvent("cartContentResponse", {
-        detail: {
-          cartContent: this.cartContent
-        }
-      });
-      document.dispatchEvent(event);
-    },
-    filterDescription(item) {
-      if (item.items) {
-        if (item.items.type.toLowerCase() == "yearfilter") {
-          const aux = item.items.elements;
-          aux.sort();
-          let result = this.$i18n.t("years") + " ";
-          for (let i = 0; i < aux.length; i++) {
-            result = result + aux[i];
-            if (i < aux.length - 1) {
-              result = result + ", ";
-            }
-          }
-          return result;
-        }
-      }
-      return null;
-    },
-    addItemToCart(ev) {
-      const item = ev.detail;
-      let alreadyAdded = false;
-
-      for (let j = 0; j < this.cartContent.length; j++) {
-        let collection = this.cartContent[j];
-        if (collection.collectionId === item.collectionId) {
-          for (let i = 0; i < item.elements.length; i++) {
-            const index = collection.items.elements.indexOf(item.elements[i]);
-            if (index < 0) {
-              collection.items.elements.push(item.elements[i]);
-            }
-            collection.fileNumber += item.fileNumber;
-            collection.fileSize += item.totalSize;
-          }
-          collection.filterDescription = this.filterDescription(collection);
-          this.$set(this.cartContent, j, collection);
-          alreadyAdded = true;
-        }
-      }
-
-      if (!alreadyAdded) {
-        let coll = {
-          collectionId: item.collectionId,
-          id: item.collectionId,
-          collectionName: item.collectionName,
-          url: item.url,
-          fileNumber: item.fileNumber,
-          fileSize: item.totalSize,
-          items: {
-            type: item.type,
-            elements: item.elements
-          }
-        };
-        coll.filterDescription = this.filterDescription(coll);
-        this.cartContent.push(coll);
-      }
-      this.saveCart();
-      this.dispatchContent();
-    },
 
     saveCart() {
       if (localStorage) {
-        localStorage.setItem(this.cartName, this.cartContent);
+        localStorage.setItem(this.cartName, JSON.stringify(this.cartContent));
       }
     },
 
-    loadCart() {
+    loadCartContentFromStorage() {
       if (localStorage) {
-        this.cartContent = localStorage.getItem(this.cartName) || [];
+        let cartContent = localStorage.getItem(this.cartName) || [];
+        this.$store.commit("addCartContent", JSON.parse(cartContent));
       }
     },
-    removeCartItemFromEvent(e) {
-      let result = [];
-      let item = e.detail;
-      for (let j = 0; j < this.cartContent.length; j++) {
-        let collection = this.cartContent[j];
-        if (collection.collectionId === item.collectionId) {
-          for (let i = 0; i < item.elements.length; i++) {
-            let index = collection.items.elements.indexOf(item.elements[i]);
-            if (index >= 0) {
-              collection.items.elements.splice(index, 1);
-            }
-            collection.filterDescription = this.filterDescription(collection);
-            collection.fileNumber -= item.fileNumber;
-            collection.fileSize -= item.totalSize;
-          }
-        }
-        if (collection.items.elements.length > 0) {
-          result.push(collection);
-        }
-      }
-      this.cartContent = result;
-      this.dispatchContent();
+
+    removeCartItem(identifier) {
+      this.$store.commit("removeItemFromCartContent", { identifier: identifier });
     },
-    removeCartItem(collectionId) {
-      let cartClone = this.cartContent;
-      cartClone.forEach((collection, ind) => {
-        if (collection.collectionId === collectionId) {
-          cartClone.splice(ind, 1);
-        }
-      });
-      this.saveCart();
-      this.dispatchContent();
-    },
+
     removeAll() {
-      this.cartContent = [];
-      this.saveCart();
-      this.dispatchContent();
+      this.$store.commit("clearCartContent");
     },
+
     handleSuccessScript(response) {
       this.downloadScript = response.data;
     },
-    handleErrorScript(response) {},
-    handleSuccessDownload(response) {
+
+    handleErrorScript(response, uuid) {
+      this.$store.dispatch("deleteNotification", uuid);
+    },
+
+    handleSuccessDownload(response, uuid) {
       const blob = new Blob([response.data], {
         type: "octet/stream"
       });
@@ -327,25 +240,15 @@ export default {
         .substring(1);
       const fileName = "download-" + randomId + ".zip";
       saveAs(blob, fileName);
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStopEvent", {
-          detail: {
-            message: this.$t("downloadingFiles")
-          }
-        })
-      );
+      this.$store.dispatch("deleteNotification", uuid);
       this.removeAll();
       this.togglePopup();
     },
-    handleErrorDownload(response) {
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStopEvent", {
-          detail: {
-            message: this.$t("downloadingFiles")
-          }
-        })
-      );
+
+    handleErrorDownload(response, uuid) {
+      this.$store.dispatch("deleteNotification", uuid);
     },
+
     computeFileSize(size) {
       if (size === 0) {
         return 0;
@@ -359,13 +262,12 @@ export default {
         [1024 * 1024 * 1024 * 1024, "To"]
       ];
       for (let i = 0; i < def.length; i++) {
-        try {
-          if (size < def[i][0]) {
-            return (size / def[i - 1][0]).toFixed(2) + def[i - 1][1];
-          }
-        } catch (e) {}
+        if (size < def[i][0]) {
+          return (size / def[i - 1][0]).toFixed(2) + def[i - 1][1];
+        }
       }
     },
+
     checkout() {
       this.togglePopup();
       const url = this.cartService + "/toscript";
@@ -373,19 +275,20 @@ export default {
         response => {
           this.handleSuccessScript(response);
         },
-        response => {
-          this.handleErrorScript(response);
+        error => {
+          this.handleErrorScript(error);
         }
       );
     },
+
     downloadFile() {
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStartEvent", {
-          detail: {
-            message: this.$t("downloadingFiles")
-          }
-        })
-      );
+      let uuid = computeUuid();
+      let notification = {
+        message: this.$t("downloadingFiles"),
+        type: "wait",
+        uuid: uuid
+      };
+      this.$store.dispatch("addNewNotification", notification);
       const url = this.cartService + "/download";
       this.$http
         .post(url, this.cartContent, {
@@ -395,16 +298,14 @@ export default {
           },
           responseType: "blob"
         })
-        .then(
-          response => {
-            this.handleSuccessDownload(response);
-          },
-          response => {
-            this.handleErrorDownload(response);
-          }
-        );
+        .then(response => {
+          this.handleSuccessDownload(response, uuid);
+        })
+        .catch(error => {
+          this.handleErrorDownload(error, uuid);
+        });
     },
-    handleError(response) {},
+
     copyToClipBoard() {
       const selection = window.getSelection();
       const copyTextarea = this.$el.querySelector(".text-to-copy");
@@ -412,10 +313,8 @@ export default {
       range.selectNodeContents(copyTextarea);
       selection.removeAllRanges();
       selection.addRange(range);
-      try {
-        const successful = document.execCommand("copy");
-        selection.removeAllRanges();
-      } catch (err) {}
+      document.execCommand("copy");
+      selection.removeAllRanges();
     }
   }
 };
@@ -655,7 +554,9 @@ export default {
 [aeris-catalog-cart] .cart-popup .catalog-round-button:hover {
   cursor: pointer;
   background-color: #4765a0;
+  color: var(--primaryColor, #f39c12);
 }
+
 [aeris-catalog-cart] .cart-popup .catalog-round-button :active {
   vertical-align: top;
   padding: 8px 8px 6px;

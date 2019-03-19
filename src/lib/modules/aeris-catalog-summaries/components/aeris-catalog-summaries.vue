@@ -16,48 +16,45 @@
 </i18n>
 
 <template>
-  <div :class="visibilityClass" data-aeris-catalog-summaries-bar class="always-visible">
-    <template v-if="summaries">
-      <template v-if="summaries.length > 0">
-        <div>{{ $t("resultsFound") }}{{ ": " + this.total }}</div>
-        <section>
-          <div v-for="summary in summaries" :key="summary.id">
+  <section :class="visibilityClass" aeris-catalog-summaries-bar class="always-visible">
+    <article v-if="getSummaries">
+      <section v-if="getSummaries.length > 0">
+        <div>{{ $t("resultsFound") }}{{ ": " + getTotal }}</div>
+        <article>
+          <div v-for="summary in getSummaries" :key="summary.id">
             <aeris-catalog-default-summary
-              v-if="isDefaultSummary(summary)"
-              :value="JSON.stringify(summary)"
+              :summary="summary"
               :max-length="summaryMaxLength"
-              deployed="true"
+              :theme="theme"
+              :is-in-cart="isInCart(summary.id)"
+              @displayMetadata="setSelectedSummaryId"
+              @addItemCart="addItemCart"
+              @removeItemCart="removeItemCart"
             ></aeris-catalog-default-summary>
-            <aeris-catalog-proxy-summary
-              v-else
-              :value="JSON.stringify(summary)"
-              :name="getCustomNodeName(summary)"
-            ></aeris-catalog-proxy-summary>
           </div>
-        </section>
-        <button v-if="summaries.length !== total" @click="showMore">
-          <i class="fa fa-arrow-down" />{{ $t("showMore") }}
-        </button>
-      </template>
+        </article>
+        <button v-if="hasMore" @click="showMore"><i class="fa fa-arrow-down" />{{ $t("showMore") }}</button>
+      </section>
       <p v-else>
         {{ $t("nometadata") }}
       </p>
-    </template>
+    </article>
     <p v-else>
       {{ message ? message : $t("message") }}
     </p>
     <slot />
-  </div>
+  </section>
 </template>
 
 <script>
-import Diacritics from "./diacritics.js";
-
+import AerisCatalogDefaultSummary from "./aeris-catalog-default-summary";
 export default {
   name: "aeris-catalog-summaries",
 
+  components: { AerisCatalogDefaultSummary },
+
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -69,122 +66,78 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    itemIdsInCart: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
+    theme: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     }
-  },
-
-  watch: {
-    lang(value) {
-      this.$i18n.locale = value;
-    }
-  },
-
-  destroyed: function() {
-    document.removeEventListener("aerisSummaries", this.aerisSummariesListener);
-    this.aerisSummariesListener = null;
-    document.removeEventListener("aerisCatalogueResetEvent", this.aerisCatalogueResetListener);
-    this.aerisCatalogueResetListener = null;
-  },
-
-  created: function() {
-    this.aerisSummariesListener = this.handleSummaries.bind(this);
-    document.addEventListener("aerisSummaries", this.aerisSummariesListener);
-    this.aerisCatalogueResetListener = this.handleReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.aerisCatalogueResetListener);
-  },
-
-  mounted: function() {
-    if (this.lang) {
-      this.$i18n.locale = this.lang;
-    }
-    var event = new CustomEvent("aerisThemeRequest", {});
-    document.dispatchEvent(event);
   },
 
   computed: {
-    visibilityClass: function() {
-      if (!this.summaries || this.summaries.length == 0) {
+    visibilityClass() {
+      if (!this.getSummaries || this.getSummaries.length == 0) {
         return "invisible";
       } else {
         return "visible";
       }
+    },
+    getSummaries() {
+      return this.$store.getters.getSummaries;
+    },
+    getTotal() {
+      return this.$store.getters.getTotal;
+    },
+    hasMore() {
+      return this.$store.getters.hasMore;
+    },
+    isInCart() {
+      return function(identifier) {
+        return this.itemIdsInCart.includes(identifier);
+      };
     }
   },
 
-  data() {
-    return {
-      aerisSummariesListener: null,
-      aerisCatalogueResetListener: null,
-      aerisCatalogueSearchEventListener: null,
-      summaries: null,
-      range: {
-        min: 0,
-        max: 24
-      },
-      step: 25,
-      total: 0
-    };
+  watch: {
+    language(value) {
+      this.$i18n.locale = value;
+    }
   },
 
-  updated: function() {},
+  mounted() {
+    if (this.language) {
+      this.$i18n.locale = this.language;
+    }
+  },
 
   methods: {
-    handleReset: function() {
-      this.range = {
-        min: 0,
-        max: 24
-      };
-      this.total = 0;
-      this.summaries = null;
-    },
-
-    handleSummaries: function(response) {
-      this.range = response.detail.range;
-      this.summaries =
-        this.range.min === 0 ? response.detail.search.results : [...this.summaries, ...response.detail.search.results];
-      this.total = response.detail.search.total;
-    },
-
-    isDefaultSummary: function(summary) {
-      if (window.registredAerisElements.indexOf(this.getCustomNodeName(summary)) < 0) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-
-    getCustomNodeName: function(summary) {
-      var result = summary.type.toLowerCase();
-      result = result.replace(/_/g, "-");
-      return result + "-summary";
-    },
-
-    removeDiacritics: function(str) {
-      for (var i = 0; i < Diacritics.length; i++) {
-        str = str.replace(Diacritics[i].letters, Diacritics[i].base);
-      }
-
-      return str;
-    },
-
     showMore() {
-      this.range = {
-        min: this.range.min + this.step,
-        max: this.range.max + this.step
-      };
-      document.dispatchEvent(
-        new CustomEvent("aerisCatalogueSearchStartEvent", {
-          detail: {
-            range: this.range
-          }
-        })
-      );
+      let range = this.$store.dispatch("getNextRange");
+      this.$emit("showMore", range);
+    },
+    setSelectedSummaryId(id) {
+      this.$store.commit("setSelectedSummaryId", id);
+    },
+    addItemCart(metadataDownload) {
+      this.$emit("addItemCart", metadataDownload);
+    },
+
+    removeItemCart(metadataDownload) {
+      this.$emit("removeItemCart", metadataDownload);
     }
   }
 };
 </script>
 
-<style>
-[data-aeris-catalog-summaries-bar] {
+<style scoped>
+[aeris-catalog-summaries-bar] {
   box-sizing: border-box;
   display: block;
   height: 100%;
@@ -192,16 +145,16 @@ export default {
   padding: 0 10px;
 }
 
-[data-aeris-catalog-summaries-bar] > div:first-child {
+[aeris-catalog-summaries-bar] > div:first-child {
   position: absolute;
   top: -25px;
 }
 
-[data-aeris-catalog-summaries-bar] > header input {
+[aeris-catalog-summaries-bar] > header input {
   color: #555;
 }
 
-[data-aeris-catalog-summaries-bar] > button {
+[aeris-catalog-summaries-bar] button {
   width: 100%;
   padding: 16px;
   border: none;
@@ -212,65 +165,12 @@ export default {
   background: #ccc;
 }
 
-[data-aeris-catalog-summaries-bar] > button:hover {
+[aeris-catalog-summaries-bar] button:hover {
   filter: brightness(80%);
 }
 
-[data-aeris-catalog-summaries-bar] > button i {
+[aeris-catalog-summaries-bar] button i {
   margin-right: 8px;
   color: #555;
-}
-
-[data-template="summary"] {
-  height: 100%;
-  width: 100%;
-  margin: 10px 0;
-  border-radius: 2px;
-  box-sizing: border-box;
-  padding: 10px;
-  background: #e1e1e1;
-  color: #333;
-}
-
-[data-template="summary"] > div > i:hover {
-  cursor: pointer;
-  filter: brightness(120%);
-}
-[data-template="summary"]:hover {
-  cursor: pointer;
-  filter: brightness(90%);
-}
-[data-template="summary"] header .cartouche {
-  display: inline-block;
-  padding: 3px 5px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #fafafa;
-}
-[data-template="summary"] header .cartouche .fa {
-  margin-right: 5px;
-}
-
-[data-template="summary"] footer {
-  margin-top: 5px;
-}
-[data-template="summary"] footer .cartouche {
-  display: inline-block;
-  padding: 3px 5px;
-  border-radius: 5px;
-  font-size: 0.55rem;
-  font-weight: 400;
-  color: #fafafa;
-  margin-left: 5px;
-  font-weight: bold;
-}
-
-[data-template="summary"] footer .cartouche .fa {
-  margin-right: 5px;
-}
-
-[data-template="summary"] main {
-  padding-left: 5px;
 }
 </style>
