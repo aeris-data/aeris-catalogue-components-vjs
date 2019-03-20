@@ -23,13 +23,15 @@
 </template>
 
 <script>
+import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box";
+import AerisTemporalSearchCriteriaContent from "./aeris-temporal-search-criteria-content";
 export default {
   name: "aeris-temporal-search-criteria",
-
+  components: { AerisCatalogSearchBox, AerisTemporalSearchCriteriaContent },
   props: {
     lang: {
       type: String,
-      default: "en"
+      default: "fr"
     },
     deployed: {
       type: Boolean,
@@ -41,26 +43,7 @@ export default {
     lang(value) {
       this.$i18n.locale = value;
     }
-  },
-
-  destroyed: function() {},
-
-  created: function() {
-    this.$i18n.locale = this.lang;
-  },
-
-  mounted: function() {},
-
-  computed: {},
-
-  data() {
-    return {};
-  },
-
-  updated: function() {},
-
-  methods: {}
+  }
 };
 </script>
 
-<style></style>

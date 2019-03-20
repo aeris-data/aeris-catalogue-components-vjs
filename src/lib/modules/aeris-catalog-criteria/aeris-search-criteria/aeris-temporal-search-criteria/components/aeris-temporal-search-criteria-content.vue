@@ -15,13 +15,13 @@
   <div data-aeris-temporal-search-criteria-content>
     <div class="aeris-input-group">
       <span class="right">{{ $t("from") }}</span>
-      <input id="from" v-model="from" />
+      <input id="from" v-model="from">
     </div>
     <aeris-datepicker for="input#from" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
 
     <div class="aeris-input-group">
       <span class="right">{{ $t("to") }}</span>
-      <input id="to" v-model="to" />
+      <input id="to" v-model="to">
     </div>
     <aeris-datepicker for="input#to" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
     <span v-if="errorMessage" class="error-message">{{ errorMessage }}</span>
@@ -29,41 +29,16 @@
 </template>
 
 <script>
+import { AerisDatepicker } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-temporal-search-criteria-content",
-
+  components: { AerisDatepicker },
   props: {
     lang: {
       type: String,
-      default: "en"
+      default: "fr"
     }
   },
-
-  watch: {
-    lang(value) {
-      this.$i18n.locale = value;
-    }
-  },
-
-  destroyed: function() {
-    document.removeEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.catalogueResetListener = null;
-    document.removeEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
-    this.aerisCatalogueSearchEventListener = null;
-  },
-
-  created: function() {
-    console.log("aeristemporal search criteria - created");
-    this.$i18n.locale = this.lang;
-    this.catalogueResetListener = this.handleCatalogueReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.aerisCatalogueSearchEventListener = this.handleSearch.bind(this);
-    document.addEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
-  },
-
-  mounted: function() {},
-
-  computed: {},
 
   data() {
     return {
@@ -76,24 +51,41 @@ export default {
     };
   },
 
-  updated: function() {},
+  watch: {
+    lang(value) {
+      this.$i18n.locale = value;
+    }
+  },
+  
+  created() {
+    console.log("aeristemporal search criteria - created");
+    this.$i18n.locale = this.lang;
+    this.catalogueResetListener = this.handleCatalogueReset.bind(this);
+    document.addEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
+    this.aerisCatalogueSearchEventListener = this.handleSearch.bind(this);
+    document.addEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
+  },
+
+  destroyed() {
+    document.removeEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
+    this.catalogueResetListener = null;
+    document.removeEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
+    this.aerisCatalogueSearchEventListener = null;
+  },
 
   methods: {
-    handleCatalogueReset: function() {
+    handleCatalogueReset() {
       this.from = "";
       this.to = "";
     },
 
-    handleSearch: function(e) {
+    handleSearch(e) {
       this.from = document.querySelector("#from").value;
       this.to = document.querySelector("#to").value;
-      //console.log('date avant format: ' + this.from);
 
-      var temporal = {};
-      var from = moment(this.from, this.dateFormat);
-      var to = moment(this.to, this.dateFormat);
-
-      //console.log('date apres format: ' + from);
+      let temporal = {};
+      let from = moment(this.from, this.dateFormat);
+      let to = moment(this.to, this.dateFormat);
 
       temporal.from = from.isValid() ? from.format("YYYY-MM-DDTHH:mm:ss") : "";
       temporal.to = from.isValid() ? to.format("YYYY-MM-DDTHH:mm:ss") : "";
