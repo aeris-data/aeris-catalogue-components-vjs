@@ -2,15 +2,18 @@
 <template>
 
 <div class="container">
+  <div class="coordinate">
+  <h3>Coordonnées</h3>
+ <span>Nord</span> <input type="text" v-model="map.coordinate.north"/>
+ <span>Sud </span> <input type="text" v-model="map.coordinate.south"/>
+ <span>Est </span> <input type="text" v-model="map.coordinate.east"/>
+ <span>Ouest</span> <input type="text"v-model="map.coordinate.west" />
 
-    <aeris-catalogue-map :hidemap="false">
-      <aeris-catalogue-draw-map-button :theme="theme"
-      :is-active="drawIsActive"
-      @drawModeSelected="drawMode" slot="draw" ></aeris-catalogue-draw-map-button>
-          <aeris-catalogue-select-map-button :theme="theme"
-      :is-active="selectMapIsActive"
-      @extendedMapMode="selectMap" slot="select"></aeris-catalogue-select-map-button>
-    </aeris-catalogue-map>
+  </div>
+  <div class="map">
+
+    <aeris-catalogue-map :hidemap="false" :theme="theme" @selectionDrawEvent="getSelection" v-bind="map"></aeris-catalogue-map>
+  </div>
 </div>
 </template>
 
@@ -27,12 +30,34 @@ export default {
         secondaryColor: "grey"
       },
       drawIsActive: false,
-      selectMapIsActive:true
-      
+      selectMapIsActive:true,
+      map: {
+        coordinate : {
+        north:61.43876749368283,
+        south:-24.527134822597787,
+        east:125.77148437500001,
+        west:-97.11914062499999
+        }
+        }
     };
   },
-  methods :{
+  created() {
+    this.$watch('name', function() {
+         console.log('Changed name.');
+      });
+  },
+  watch:{
     
+  },
+  methods :{
+    getSelection(selection){
+      console.log("selection get ", selection)
+      this.map.coordinate.north = selection.north
+      this.map.coordinate.south = selection.south
+      this.map.coordinate.east = selection.east
+      this.map.coordinate.west = selection.west
+      console.log("test" ,this.coordinate)
+    },
     drawMode(){
     this.drawIsActive=true,
     this.selectMapIsActive=false
@@ -47,9 +72,16 @@ export default {
 </script>
 <style scoped>
 .container {
-  height: 600px;
-  width: 1000px;
-  margin-right: auto;
-  margin-left: auto;
+  display:flex;
+  justify-content: space-around
+}
+.coordinate{
+  height: 100px;
+  display:flex;
+  flex-direction:column;
+justify-content: space-between
+}
+.map{
+   width: 1200px;
 }
 </style>
