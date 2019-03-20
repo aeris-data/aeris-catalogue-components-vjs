@@ -17,7 +17,7 @@
       :deployed="deployed"
       header-icon-class="fa fa-calendar"
     >
-      <aeris-temporal-search-criteria-content></aeris-temporal-search-criteria-content>
+      <aeris-temporal-search-criteria-content lang="fr"></aeris-temporal-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -46,4 +46,3 @@ export default {
   }
 };
 </script>
-

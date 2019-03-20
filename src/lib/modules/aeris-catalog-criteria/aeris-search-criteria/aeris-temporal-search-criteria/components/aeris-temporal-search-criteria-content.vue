@@ -13,17 +13,33 @@
 
 <template>
   <div data-aeris-temporal-search-criteria-content>
-    <div class="aeris-input-group">
-      <span class="right">{{ $t("from") }}</span>
-      <input id="from" v-model="from">
-    </div>
-    <aeris-datepicker for="input#from" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
+    <aeris-datepicker
+      :theme="{ emphasis: '#f39c12' }"
+      :label="{
+            key: 'from',
+            lang: {
+              en: { from: 'From' },
+              fr: { from: 'De' }
+            }
+          }"
+      language="fr"
+      format="DD/MM/YYYY HH:mm"
+      @date="setFromDate"
+    ></aeris-datepicker>
 
-    <div class="aeris-input-group">
-      <span class="right">{{ $t("to") }}</span>
-      <input id="to" v-model="to">
-    </div>
-    <aeris-datepicker for="input#to" format="DD/MM/YYYY HH:mm"></aeris-datepicker>
+    <aeris-datepicker
+      :theme="{ emphasis: '#f39c12' }"
+      :label="{
+            key: 'to',
+             lang: {
+              en: { to: 'To' },
+              fr: { to: 'À' }
+            }
+          }"
+      language="fr"
+      format="DD/MM/YYYY HH:mm"
+      @date="setToDate"
+    ></aeris-datepicker>
     <span v-if="errorMessage" class="error-message">{{ errorMessage }}</span>
   </div>
 </template>
@@ -42,12 +58,12 @@ export default {
 
   data() {
     return {
-      aerisCatalogueSearchEventListener: null,
-      catalogueResetListener: null,
       from: null,
       to: null,
       errorMessage: null,
-      dateFormat: "DD/MM/YYYY HH:mm:ss"
+      dateFormat: "DD/MM/YYYY HH:mm:ss",
+      fromDate: "",
+      toDate: ""
     };
   },
 
@@ -55,22 +71,6 @@ export default {
     lang(value) {
       this.$i18n.locale = value;
     }
-  },
-  
-  created() {
-    console.log("aeristemporal search criteria - created");
-    this.$i18n.locale = this.lang;
-    this.catalogueResetListener = this.handleCatalogueReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.aerisCatalogueSearchEventListener = this.handleSearch.bind(this);
-    document.addEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
-  },
-
-  destroyed() {
-    document.removeEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.catalogueResetListener = null;
-    document.removeEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
-    this.aerisCatalogueSearchEventListener = null;
   },
 
   methods: {
@@ -91,12 +91,18 @@ export default {
       temporal.to = from.isValid() ? to.format("YYYY-MM-DDTHH:mm:ss") : "";
 
       e.detail.temporal = temporal;
+    },
+        setFromDate(value) {
+      this.fromDate = value;
+    },
+    setToDate(value) {
+      this.toDate = value;
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
 [data-aeris-temporal-search-criteria-content] {
   display: block;
 }
