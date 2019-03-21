@@ -6,14 +6,17 @@
       <div id="mapCoordinates" class="map-coordinates" />
       <div class="button">
           <aeris-catalogue-select-map-button 
-      :is-active="selectMapIsActive"
-      @extendedMapMode="selectMap" :theme="theme"></aeris-catalogue-select-map-button>
-
-       <aeris-catalogue-draw-map-button 
-      :is-active="drawIsActive"
-      @drawModeSelected="drawMode" :theme="theme"></aeris-catalogue-draw-map-button>
+            :is-active="selectMapIsActive"
+            @extendedMapMode="selectMap" 
+            :theme="theme">
+          </aeris-catalogue-select-map-button>
+          <aeris-catalogue-draw-map-button 
+            :is-active="drawIsActive"
+            @drawModeSelected="drawMode" 
+            :theme="theme">
+          </aeris-catalogue-draw-map-button>
       </div>
-    </aeris-catalogue-map>
+   
     </div>
   </div>
 </template>
@@ -100,19 +103,27 @@ export default {
   watch: {
      coordinate:{
       handler(value){
+    let areaFeature = this.coordsToFeature(value);
+      let tempSource = new VectorSource({
+        wrapX: false,
+        noWrap: true
+      });
 
-      let geometry = new Polygon(value);
-      let start = coordinates[0];
-      let end = coordinates[1];
-      geometry.setCoordinates([[start, [start[0], end[1]], end, [end[0], start[1]], start]]);
-      return geometry;
-      console.log("coordinate", value)
-      this.draw = new Draw({
-      source: this.mainSource,
-      type: "LineString",
-      geometryFunction: this.drawGeometryFunction(value,geometry),
-      maxPoints: 2
-    }); },
+      let tempVector = new VectorLayer({
+        source: tempSource,
+        style: this.featuresStyle
+      });
+
+      this.map.addLayer(tempVector);
+      tempSource.addFeature(areaFeature);
+
+      
+
+      window.setTimeout(() => {
+        this.map.removeLayer(tempVector);
+      
+        
+      }, 500); },
     deep:true
     }, 
     isDrawMode(value) {
@@ -255,6 +266,7 @@ export default {
    
 
     coordsToFeature(coords) {
+      console.log("coord",coords)
       let obj;
       let l = Object.keys(coords).length;
 
