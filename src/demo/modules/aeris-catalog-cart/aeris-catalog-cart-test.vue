@@ -86,9 +86,6 @@ export default {
     };
   },
   computed: {
-    getSummariesFromStore() {
-      return this.$store.getters.getSummaries;
-    },
     getItemIdsInCart() {
       let itemIds = [];
       this.$store.getters.getCartContent.forEach(itemCart => {
@@ -104,7 +101,7 @@ export default {
     selectedItemCart() {
       return identifier => {
         let currentItem;
-        if (!this.getItemIdsInCart.includes(identifier)) {
+        if (this.getItemIdsInCart.includes(identifier)) {
           currentItem = {
             identifier: identifier,
             items: {
