@@ -78,6 +78,7 @@ export default {
           }
         ]
       },
+      yearlySelectedItem: {},
       theme: {
         primaryColor: "#0b6bb3",
         secondaryColor: "#fff"
@@ -86,9 +87,6 @@ export default {
     };
   },
   computed: {
-    getSummariesFromStore() {
-      return this.$store.getters.getSummaries;
-    },
     getItemIdsInCart() {
       let itemIds = [];
       this.$store.getters.getCartContent.forEach(itemCart => {
@@ -104,14 +102,11 @@ export default {
     selectedItemCart() {
       return identifier => {
         let currentItem;
-        if (!this.getItemIdsInCart.includes(identifier)) {
-          currentItem = {
-            identifier: identifier,
-            items: {
-              elements: []
-            }
-          };
-        }
+        this.$store.getters.getCartContent.forEach(itemCart => {
+          if (itemCart.idenfitier === identifier) {
+            currentItem = itemCart;
+          }
+        });
         return currentItem;
       };
     }
