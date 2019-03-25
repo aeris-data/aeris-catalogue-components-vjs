@@ -51,6 +51,7 @@ import aeris from "./modules/aeris.vue";
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
 import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
+import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 
 const store = new Vuex.Store({
   namespaced: true,
