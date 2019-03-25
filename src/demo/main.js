@@ -5,7 +5,8 @@ Vue.use(VueI18n);
 
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
-
+import VueLayers from "vuelayers";
+Vue.use(VueLayers);
 import axios from "axios";
 import VueAxios from "vue-axios";
 
@@ -39,6 +40,7 @@ import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aer
 import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
 import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
 import AerisCatalogCartTest from "./modules/aeris-catalog-cart/aeris-catalog-cart-test";
+import AerisMetadataPanelTest from "./modules/aeris-metadata-panel/metadata-panel-test.vue";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -47,7 +49,6 @@ import iagos from "./modules/iagos.vue";
 import aeris from "./modules/aeris.vue";
 
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
-import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
 import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
 
@@ -115,6 +116,10 @@ const router = new VueRouter({
     {
       path: "/aeris",
       component: aeris
+    },
+    {
+      path: "/metadata_panel",
+      component: AerisMetadataPanelTest
     },
     {
       path: "/search_text_button",

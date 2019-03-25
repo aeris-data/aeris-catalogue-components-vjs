@@ -17,6 +17,8 @@ import AerisCatalogResetButton from "../modules/aeris-catalog-buttons/aeris-cata
 import AerisCatalogueSearchTextButton from "../modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/components/aeris-catalogue-search-text-button.vue";
 import AerisCatalogSelectMapButton from "../modules/aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button.vue";
 import AerisCatalogCart from "../modules/aeris-catalog-cart/components/aeris-catalog-cart";
+import AerisCatalogMetadataPanel from "../modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel";
+import MdTemplateCollection from "../modules/aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection";
 
 export {
   AerisThesaurusItemTreeCheckboxLayout,
@@ -37,5 +39,7 @@ export {
   AerisCatalogResetButton,
   AerisCatalogueSearchTextButton,
   AerisCatalogSelectMapButton,
-  AerisCatalogCart
+  AerisCatalogCart,
+  AerisCatalogMetadataPanel,
+  MdTemplateCollection
 };
