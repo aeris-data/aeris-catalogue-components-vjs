@@ -25,24 +25,32 @@
       </div>
       <div class="info">
         <h3>Summary first item (json)</h3>
-        <ul v-if="result">
-          <li><span> Template : </span>{{ result.clientTemplateName }}</li>
-          <li v-if="result.dataProcessingLevel != null"><span>Niveau : </span>{{ result.dataProcessingLevel }}</li>
-          <li v-if="result.description != null"><span>Description : </span>{{ result.description.en }}</li>
-          <li v-if="result.downloadable != null"><span>Downloadable : </span>{{ result.downloadable }}</li>
-          <li v-if="result.id != null"><span>Id : </span>{{ result.id }}</li>
-          <li v-if="result.plateformType != null"><span>Plateform Type : </span>{{ result.plateformType }}</li>
-          <li v-if="result.projectList != null">
+        <ul v-if="currentSummary">
+          <li><span> Template : </span>{{ currentSummary.clientTemplateName }}</li>
+          <li v-if="currentSummary.dataProcessingLevel != null">
+            <span>Niveau : </span>{{ currentSummary.dataProcessingLevel }}
+          </li>
+          <li v-if="currentSummary.description != null">
+            <span>Description : </span>{{ currentSummary.description.en }}
+          </li>
+          <li v-if="currentSummary.downloadable != null">
+            <span>Downloadable : </span>{{ currentSummary.downloadable }}
+          </li>
+          <li v-if="currentSummary.id != null"><span>Id : </span>{{ currentSummary.id }}</li>
+          <li v-if="currentSummary.plateformType != null">
+            <span>Plateform Type : </span>{{ currentSummary.plateformType }}
+          </li>
+          <li v-if="currentSummary.projectList != null">
             <span> Project List : </span>
             <ul>
-              <li v-for="project in result.projectList" :key="'project' + project">
+              <li v-for="project in currentSummary.projectList" :key="'project' + project">
                 UUID = {{ project.aerisProjectUuid }},<br />
                 Project name = {{ project.projectName }}
               </li>
             </ul>
           </li>
-          <li v-if="result.title != null"><span>Title :</span>{{ result.title.en }}</li>
-          <li><span>Type :</span>{{ result.type }}</li>
+          <li v-if="currentSummary.title != null"><span>Title :</span>{{ currentSummary.title.en }}</li>
+          <li><span>Type :</span>{{ currentSummary.type }}</li>
         </ul>
       </div>
     </div>
@@ -52,7 +60,7 @@
 import AerisCatalogueMetadataPanel from "../../../lib/modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel.vue";
 import AerisCatalogueSearchButton from "../../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button";
 export default {
-  name:"metadata-panel-test",
+  name: "metadata-panel-test",
   components: {
     AerisCatalogueMetadataPanel,
     AerisCatalogueSearchButton
@@ -66,23 +74,11 @@ export default {
       theme: {
         primaryColor: "#0b6bb3",
         secondaryColor: "#f39c12"
-      },
-
-      result: {
-        clientTemplateName: "",
-        dataProcessingLevel: "",
-        description: "",
-        downloadable: "",
-        id: "",
-        plateformType: "",
-        projectList: null,
-        title: "",
-        type: ""
       }
     };
   },
   methods: {
-    getParameter(value) {
+    getParameter() {
       this.axios
         .post(`${this.url}?range=${this.range.min}-${this.range.max}`, {
           keywords: [this.keyword_request],
@@ -103,7 +99,7 @@ export default {
     getEmitParameter(emitParameter) {
       this.range.min = emitParameter.min;
       this.range.max = emitParameter.max;
-      this.getParameter(this.keyword_request);
+      this.getParameter();
     }
   }
 };

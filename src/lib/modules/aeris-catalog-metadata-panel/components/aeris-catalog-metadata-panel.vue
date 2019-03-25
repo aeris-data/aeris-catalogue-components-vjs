@@ -83,8 +83,8 @@
     <main>
       <aeris-metadata-services
         :identifier="summary.id"
-        :service="idservice"
-        language="fr"
+        :service="idService"
+        :language="language"
         @metadata="updateMetadata"
       ></aeris-metadata-services>
       <component v-if="metadataValue" :is="getTemplate" :metadata="metadataValue" :theme="theme"></component>
@@ -142,9 +142,6 @@ export default {
   watch: {
     language(value) {
       this.$i18n.locale = value;
-    },
-    uuid(value) {
-      this.$el.scrollTop = 0;
     }
   },
 
@@ -167,9 +164,8 @@ export default {
         return "";
       }
     },
-    idservice() {
-      let result = this.metadataService;
-      return result;
+    idService() {
+      return this.metadataService;
     },
 
     minimize() {
