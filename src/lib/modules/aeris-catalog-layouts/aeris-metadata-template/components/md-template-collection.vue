@@ -60,7 +60,11 @@
       :publications="metadata.publications"
       :theme="theme"
     ></aeris-metadata-publications>
-    <aeris-metadata-quicklook-gallery :language="language" :theme="theme" :quicklooks="metadata.quicklooks"></aeris-metadata-quicklook-gallery>
+    <aeris-metadata-quicklook-gallery
+      :language="language"
+      :theme="theme"
+      :quicklooks="metadata.quicklooks"
+    ></aeris-metadata-quicklook-gallery>
   </div>
 </template>
 
@@ -124,6 +128,6 @@ export default {
       type: Object,
       default: () => {}
     }
-  },
+  }
 };
 </script>

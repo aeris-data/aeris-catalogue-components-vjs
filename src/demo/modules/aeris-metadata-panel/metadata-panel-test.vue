@@ -11,18 +11,14 @@
       ></aeris-catalogue-search-button>
     </div>
 
-    <div v-if="result" class="core">
+    <div v-if="currentSummary" class="core">
       <div class="metadatapanel">
         <aeris-catalogue-metadata-panel
-          :resourcetitle="currentTitle"
-          :uuid="currentUuid"
-          :type="currentType"
-          :client-template="currentTemplate"
-          :projects="currentProjects"
+          :summary="currentSummary"
+          :theme="theme"
           language="fr"
           icon-class="aeris-icon aeris-icon-unknown"
           metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/"
-          :theme="theme"
         >
           <slot name="buttons-metadata" />
         </aeris-catalogue-metadata-panel>
@@ -56,6 +52,7 @@
 import AerisCatalogueMetadataPanel from "../../../lib/modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel.vue";
 import AerisCatalogueSearchButton from "../../../lib/modules/aeris-catalog-buttons/aeris-catalogue-search-button/components/aeris-catalogue-search-button";
 export default {
+  name:"metadata-panel-test",
   components: {
     AerisCatalogueMetadataPanel,
     AerisCatalogueSearchButton
@@ -64,13 +61,9 @@ export default {
     return {
       keyword_request: null,
       url: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/request",
-      currentUuid: null,
-      currentType: null,
-      currentTitle: null,
-      currentTemplate: null,
-      currentProjects: null,
+      currentSummary: null,
       range: () => {},
-     theme: {
+      theme: {
         primaryColor: "#0b6bb3",
         secondaryColor: "#f39c12"
       },
@@ -100,14 +93,7 @@ export default {
         .then(
           response => {
             console.log("sucess", response);
-            this.result = response.data.results[0];
-            this.currentUuid = this.result.id;
-            this.currentPlatformType = this.result.plateformType;
-            this.currentTitle = this.result.title;
-            this.currentTemplate = this.result.clientTemplateName;
-            this.currentProjects = this.result.projectList;
-            this.currentType = this.result.type;
-            this.currentdataProcessingLevel = this.result.dataProcessingLevel;
+            this.currentSummary = response.data.results[0];
           },
           response => {
             console.log("error", response);
@@ -145,8 +131,7 @@ input[type="text"] {
 }
 .metadatapanel {
   width: 1100px;
-  height:2000px;
- 
+  height: 2000px;
 }
 .info {
   width: 300px;

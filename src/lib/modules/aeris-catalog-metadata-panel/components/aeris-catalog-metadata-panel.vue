@@ -26,16 +26,21 @@
     <header>
       <h2 class="metadata-panel-title">
         <aeris-international-field
-          v-if="resourcetitle"
+          v-if="summary.title"
           :language="language"
-          :value="resourcetitle"
+          :value="summary.title"
           :html="true"
           :max-length="100"
         ></aeris-international-field>
         <div v-else>{{ $t("addTitle") }}</div>
       </h2>
       <div class="data-aeris-metadata-panel-project-list">
-        <div v-for="project in projectsList" :style="getCartoucheTheme" :key="project.projectName" class="cartouche">
+        <div
+          v-for="project in summary.projectList"
+          :style="getCartoucheTheme"
+          :key="project.projectName"
+          class="cartouche"
+        >
           <a :href="projectLandingPage(project.aerisProjectUuid)" target="_blank">
             <span> {{ project.projectName }}</span>
           </a>
@@ -77,7 +82,7 @@
     </header>
     <main>
       <aeris-metadata-services
-        :identifier="uuid"
+        :identifier="summary.id"
         :service="idservice"
         language="fr"
         @metadata="updateMetadata"
@@ -108,15 +113,11 @@ export default {
       type: String,
       default: "en"
     },
-    resourcetitle: {
+    summary: {
       type: Object,
-      default: null
+      default: () => {}
     },
     iconClass: {
-      type: String,
-      default: ""
-    },
-    uuid: {
       type: String,
       default: ""
     },
@@ -124,18 +125,7 @@ export default {
       type: String,
       default: ""
     },
-    type: {
-      type: String,
-      default: ""
-    },
-    clientTemplate: {
-      type: String,
-      default: ""
-    },
-    projects: {
-      type: Array,
-      default: () => []
-    },
+
     theme: {
       type: Object,
       default: () => {}
@@ -184,10 +174,6 @@ export default {
 
     minimize() {
       return !this.maximize;
-    },
-
-    projectsList() {
-      return this.projects;
     }
   },
 
@@ -198,7 +184,7 @@ export default {
     },
     showJson() {
       let baseUrl = "http://jsoneditoronline.org/?url=";
-      let url = baseUrl + this.metadataService + this.uuid;
+      let url = baseUrl + this.metadataService + this.summary.id;
       window.open(url, "_blank", "toolbar=no, status=no, scrollbars=no, menubar=no, width=1000, height=800");
     },
 
@@ -235,9 +221,9 @@ export default {
 
     updateTemplate() {
       if (this.type !== "COLLECTION") {
-        let templateName = "Md-template-" + this.type.toLowerCase();
+        let templateName = "Md-template-" + this.summary.type.toLowerCase();
         templateName = templateName.replace(/_/g, "-");
-        this.template = templateName.replace(/-([a-z])/g,(g) => {
+        this.template = templateName.replace(/-([a-z])/g, g => {
           return g[1].toUpperCase();
         });
       } else {
