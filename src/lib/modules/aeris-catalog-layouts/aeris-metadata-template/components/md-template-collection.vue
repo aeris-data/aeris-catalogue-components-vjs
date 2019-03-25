@@ -60,7 +60,7 @@
       :publications="metadata.publications"
       :theme="theme"
     ></aeris-metadata-publications>
-    <aeris-metadata-quicklook-gallery :language="language" :theme="theme"></aeris-metadata-quicklook-gallery>
+    <aeris-metadata-quicklook-gallery :language="language" :theme="theme" :quicklooks="metadata.quicklooks"></aeris-metadata-quicklook-gallery>
   </div>
 </template>
 
@@ -125,20 +125,5 @@ export default {
       default: () => {}
     }
   },
-
-  computed: {
-    getOtherInformations() {
-      if (this.metadata) {
-        return {
-          uuid: this.metadata.identifier,
-          lastModification: this.metadata.lastModification.value,
-          aerisDataCenter: this.metadata.aerisDataCenter,
-          dataLevel: this.metadata.dataLevel
-        };
-      } else {
-        return null;
-      }
-    }
-  }
 };
 </script>

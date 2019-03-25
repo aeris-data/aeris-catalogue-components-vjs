@@ -17,7 +17,6 @@
           :resourcetitle="currentTitle"
           :uuid="currentUuid"
           :type="currentType"
-          :metadata="currentMetadata"
           :client-template="currentTemplate"
           :projects="currentProjects"
           language="fr"
@@ -65,15 +64,11 @@ export default {
     return {
       keyword_request: null,
       url: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/request",
-      currentIconClass: null,
       currentUuid: null,
       currentType: null,
-      currentPlatformType: null,
       currentTitle: null,
-      currentMetadata: null,
       currentTemplate: null,
       currentProjects: null,
-      project: null,
       range: () => {},
      theme: {
         primaryColor: "#0b6bb3",
@@ -106,10 +101,8 @@ export default {
           response => {
             console.log("sucess", response);
             this.result = response.data.results[0];
-            this.currentIconClass = null;
             this.currentUuid = this.result.id;
             this.currentPlatformType = this.result.plateformType;
-            this.currentMetadata = null;
             this.currentTitle = this.result.title;
             this.currentTemplate = this.result.clientTemplateName;
             this.currentProjects = this.result.projectList;

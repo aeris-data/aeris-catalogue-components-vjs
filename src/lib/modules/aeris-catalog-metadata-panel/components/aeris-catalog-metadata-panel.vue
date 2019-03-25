@@ -128,9 +128,6 @@ export default {
       type: String,
       default: ""
     },
-    metadata: {
-      required: true
-    },
     clientTemplate: {
       type: String,
       default: ""
@@ -172,7 +169,7 @@ export default {
       return this.template;
     },
     getCartoucheTheme() {
-      if (true) {
+      if (this.theme) {
         return {
           background: this.theme.primaryColor
         };
@@ -237,7 +234,7 @@ export default {
     },
 
     updateTemplate() {
-      if (this.type === "COLLECTION") {
+      if (this.type !== "COLLECTION") {
         let templateName = "Md-template-" + this.type.toLowerCase();
         templateName = templateName.replace(/_/g, "-");
         this.template = templateName.replace(/-([a-z])/g,(g) => {
