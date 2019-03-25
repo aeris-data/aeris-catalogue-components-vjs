@@ -44,6 +44,9 @@
         <router-link to="/aeris">/aeris</router-link>
       </li>
       <li>
+        <router-link to="/metadata_panel">/metadata_panel</router-link>
+      </li>
+      <li>
         <router-link to="/search_text_button">/search text button</router-link>
       </li>
       <li>
