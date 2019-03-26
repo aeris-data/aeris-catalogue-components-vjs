@@ -129,15 +129,23 @@ export default {
     },
 
     addToCart() {
-      if (!this.isInCart) {
-        this.$emit("addItemCart", this.collectionId);
+      if (!this.isInCart && this.collectionId) {
+        this.$emit("addItemCart", this.getMetadataDownload());
       }
     },
 
     removeFromCart() {
       if (this.isInCart) {
-        this.$emit("removeItemCart", this.collectionId);
+        this.$emit("removeItemCart", this.getMetadataDownload());
       }
+    },
+
+    getMetadataDownload() {
+      return {
+        service: this.summary.downloadable,
+        collectionName: this.summary.title,
+        identifier: this.collectionId
+      };
     }
   }
 };

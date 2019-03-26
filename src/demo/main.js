@@ -39,6 +39,7 @@ import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/ae
 import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria-test";
 import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
 import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
+import AerisCatalogCartTest from "./modules/aeris-catalog-cart/aeris-catalog-cart-test";
 import AerisMetadataPanelTest from "./modules/aeris-metadata-panel/metadata-panel-test.vue";
 import AerisCatalogHelpContent from "./modules/aeris-catalog-help/aeris-catalog-help-content-test";
 
@@ -50,12 +51,16 @@ import aeris from "./modules/aeris.vue";
 
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
+import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
+import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
     searchCriteriaModule,
-    notificationModule
+    catalogSummariesModule,
+    notificationModule,
+    cartStoreModule
   }
 });
 
@@ -165,6 +170,10 @@ const router = new VueRouter({
     {
       path: "/help_content",
       component: AerisCatalogHelpContent
+    },
+    {
+      path: "/catalog-cart",
+      component: AerisCatalogCartTest
     }
   ]
 });
