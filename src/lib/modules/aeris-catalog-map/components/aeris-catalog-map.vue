@@ -5,11 +5,13 @@
       <div id="map" class="map" tabindex="0" />
       <div id="mapCoordinates" class="map-coordinates" />
       <div class="button">
+        <span style="margin-right:10px">
           <aeris-catalogue-select-map-button 
             :is-active="selectMapIsActive"
             @extendedMapMode="selectMap" 
             :theme="theme">
           </aeris-catalogue-select-map-button>
+        </span>
           <aeris-catalogue-draw-map-button 
             :is-active="drawIsActive"
             @drawModeSelected="drawMode" 
@@ -22,20 +24,20 @@
 </template>
 
 <script>
-import AerisCatalogueDrawMapButton from "../../aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button"
-import AerisCatalogueSelectMapButton from "../../aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button"
+import AerisCatalogueDrawMapButton from "../../aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button";
+import AerisCatalogueSelectMapButton from "../../aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button";
 const FADEIN_DURATION = 1000; //ms
 const DEFAULT_ZOOM = 2;
 
-import style from 'ol/ol.css' ;
+import style from "ol/ol.css";
 import Feature from "ol/Feature";
-import * as Extent from 'ol/extent.js';
+import * as Extent from "ol/extent.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 import Point from "ol/geom/Point";
 import Polygon from "ol/geom/Polygon";
 import XYZ from "ol/source/XYZ";
-import { defaults as defaultControls, ZoomToExtent} from 'ol/control.js';
+import { defaults as defaultControls, ZoomToExtent } from "ol/control.js";
 import { transform, transformExtent } from "ol/proj";
 import { Draw, Modify, Snap } from "ol/interaction.js";
 import { createStringXY } from "ol/coordinate";
@@ -46,7 +48,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
 
 export default {
   name: "aeris-catalog-map",
-  components: { AerisCatalogueDrawMapButton,AerisCatalogueSelectMapButton },
+  components: { AerisCatalogueDrawMapButton, AerisCatalogueSelectMapButton },
 
   props: {
     language: {
@@ -61,13 +63,13 @@ export default {
       type: Boolean,
       default: false
     },
-    theme:{
-      type:Object,
+    theme: {
+      type: Object,
       default: () => {}
     },
-    coordinate:{
-      type:Object,
-      default: () =>{}
+    coordinate: {
+      type: Object,
+      default: () => {}
     },
     url: {
       type: String,
@@ -92,8 +94,8 @@ export default {
       previewClusteredLayer: null,
       defaultCenter: null,
       isDrawMode: false,
-      drawIsActive:false,
-      selectMapIsActive:true, 
+      drawIsActive: false,
+      selectMapIsActive: true,
       draw: null,
       selectionBox: null,
       area: null
@@ -101,31 +103,12 @@ export default {
   },
 
   watch: {
-     coordinate:{
-      handler(value){
-    let areaFeature = this.coordsToFeature(value);
-      let tempSource = new VectorSource({
-        wrapX: false,
-        noWrap: true
-      });
-
-      let tempVector = new VectorLayer({
-        source: tempSource,
-        style: this.featuresStyle
-      });
-
-      this.map.addLayer(tempVector);
-      tempSource.addFeature(areaFeature);
-
-      
-
-      window.setTimeout(() => {
-        this.map.removeLayer(tempVector);
-      
-        
-      }, 500); },
-    deep:true
-    }, 
+    coordinate: {
+      handler(value) {
+        this.handleAddSelectionEvent(value);
+      },
+      deep: true
+    },
     isDrawMode(value) {
       if (value) {
         this.handleStartEditEvent();
@@ -134,7 +117,6 @@ export default {
       }
     }
   },
-
 
   mounted() {
     if (this.map) {
@@ -157,7 +139,6 @@ export default {
     this.initialiseMainSource();
     this.initialisePreviewSource();
     this.map = new Map({
-      
       layers: [raster, this.vector, this.mainClusteredLayer],
       target: this.$el.querySelector("#map"),
       controls: defaults({
@@ -183,7 +164,7 @@ export default {
     mapViewport.style.opacity = 0;
 
     raster.getSource().on("tileloadend", () => {
-       let mapZoom = mapViewport.querySelector(".ol-zoom");
+      let mapZoom = mapViewport.querySelector(".ol-zoom");
       mapZoom.style.top = "auto";
       mapZoom.style.bottom = "0.5em";
 
@@ -191,6 +172,7 @@ export default {
         mapViewport.style.transition = FADEIN_DURATION / 1000 + "s";
         mapViewport.style.opacity = 1;
       }, 500);
+      this.handleAddSelectionEvent(this.coordinate);
     });
 
     //Ajout des coordonnees Lon/Lat du curseur en bas a droite
@@ -211,65 +193,40 @@ export default {
       maxPoints: 2
     });
 
-    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd.bind(this));
-    if (this.area && this.area !== "") {
-      let unquotedJSON = this.area;
-      let fixedJSON = unquotedJSON.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
-      let areaObject = JSON.parse(fixedJSON);
-
-      let areaFeature = this._coordsToFeature(areaObject);
-      let tempSource = new VectorSource({
-        wrapX: false,
-        noWrap: true
-      });
-
-      let tempVector = new VectorLayer({
-        source: tempSource,
-        style: this.featuresStyle
-      });
-
-      this._map.addLayer(tempVector);
-      tempSource.addFeature(areaFeature);
-
-      let _this = this;
-
-      window.setTimeout(() => {
-        this.resizeMapToExtent(tempSource);
-        this.map.removeLayer(tempVector);
-      }, 500);
-    }
-     this.updateMapSize();
+    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd);
   },
 
   methods: {
-     drawMode(){
-    this.drawIsActive=true,
-    this.selectMapIsActive=false
-    this.handleStartEditEvent()
-  },
-   selectMap(){
-     this.drawIsActive=false,
-     this.selectMapIsActive=true
-    this.handleStopEditEvent()
-   },
-
+    drawMode() {
+      (this.drawIsActive = true), (this.selectMapIsActive = false);
+      this.handleStartEditEvent();
+    },
+    selectMap() {
+      (this.drawIsActive = false), (this.selectMapIsActive = true);
+      this.handleStopEditEvent();
+    },
     updateMapSize() {
       let interval = window.setInterval(() => {
         this.map.updateSize();
       }, 10);
-
       window.setTimeout(() => {
         window.clearInterval(interval);
       }, 200);
     },
 
-   
+    handleAddSelectionEvent(coord) {
+      this.removeFeature("selectionBox");
+      let feature = this.coordsToFeature(coord);
+      feature.setId("selectionBox");
+      this.mainSource.addFeature(feature);
+      this.selectionBox = feature;
+      this.map.updateSize();
+      this.updateMapSize();
+    },
 
     coordsToFeature(coords) {
-      console.log("coord",coords)
       let obj;
       let l = Object.keys(coords).length;
-
       if (l === 4) {
         if (coords.north > 85) coords.north = 85;
         if (coords.south < -85) coords.south = -85;
@@ -302,38 +259,43 @@ export default {
       this.map.removeInteraction(this.draw);
     },
 
-
     handleSelectionDrawEnd(e) {
-      console.log("Feature : ", e)
       this.removeFeature("selectionBox");
       e.feature.setId("selectionBox");
       this.selectionBox = e.feature;
-      console.log("e : ", e)
-      console.log("e.feature : ", e.feature)
       let clone = e.feature.clone();
-      console.log("clone.getGeometry()" , clone.getGeometry())
       let extent = clone.getGeometry().getExtent();
-     
-      console.log("extent : ", extent)
       let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
       let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
-
       let selectionDraw = {
         east: bottomRight[0],
         south: bottomRight[1],
         west: topLeft[0],
         north: topLeft[1]
       };
-        this.$emit("selectionDrawEvent",selectionDraw)
-      console.log("selection" , selectionDraw)
+      this.$emit("selectionDrawEvent", selectionDraw);
+    },
 
+    handleSelectionDrawEnd(e) {
+      this.removeFeature("selectionBox");
+      e.feature.setId("selectionBox");
+      this.selectionBox = e.feature;
+      let clone = e.feature.clone();
+      let extent = clone.getGeometry().getExtent();
+      let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
+      let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
+      
+      let selectionDraw = {
+        east: bottomRight[0],
+        south: bottomRight[1],
+        west: topLeft[0],
+        north: topLeft[1]
+      };
+      this.$emit("selectionDrawEvent", selectionDraw);
     },
 
     drawGeometryFunction(coordinates, geometry) {
-      console.log("coordinates : ", coordinates)
-      console.log("geometrie : ",geometry)
       if (!geometry) {
-        console.log("bonjours")
         geometry = new Polygon(coordinates);
       }
 
@@ -414,21 +376,19 @@ export default {
 </script>
 
 <style>
-
 [data-aeris-catalog-map] {
   position: relative;
   height: 100%;
   background-color: #fff;
 }
 
-[data-aeris-catalog-map] .button  {
+[data-aeris-catalog-map] .button {
   position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   top: 2%;
   left: 2%;
- 
 }
 
 [data-aeris-catalog-map].hidemap {
@@ -530,5 +490,8 @@ export default {
   font-size: 12px;
   color: #fff;
   text-align: center;
+}
+.button i[data-v-c5e6fe1a] {
+  margin-right: 0 !important;
 }
 </style>
