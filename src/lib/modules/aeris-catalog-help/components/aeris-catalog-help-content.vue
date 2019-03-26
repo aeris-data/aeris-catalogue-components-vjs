@@ -25,25 +25,22 @@
       <div class="message">{{ $t("helpMessage") }}</div>
       <div class="message-button">
         <div class="map-rounded-button aeris-catalog-button">
-          <i class="fa fa-search"/>
+          <i class="fa fa-search" />
         </div>
       </div>
 
       <div class="popup-buttons">
         <div class="ok-button" @click="closePopup">OK</div>
         <div>
-          <button
-            v-if="showAtStartVisible"
-            class="show-at-startup-button"
-            type="button"
-            @click.stop="doNotShow"
-          >{{ $t("doNotDisplay") }}</button>
+          <button v-if="showAtStartVisible" class="show-at-startup-button" type="button" @click.stop="doNotShow">
+            {{ $t("doNotDisplay") }}
+          </button>
         </div>
       </div>
-      <br>
+      <br />
       <div>
-        <i class="fa fa-warning fa-2x" style="padding-right: 10px;"/>
-        <span v-html="$t('warningMessage')"/>
+        <i class="fa fa-warning fa-2x" style="padding-right: 10px;" />
+        <span v-html="$t('warningMessage')" />
       </div>
     </div>
   </div>
@@ -75,13 +72,6 @@ export default {
     };
   },
 
-  computed: {
-    togglePopup() {
-      this.isPopupOpen = !this.isPopupOpen;
-      return this.isPopupOpen;
-    }
-  },
-
   watch: {
     language(value) {
       this.$i18n.locale = value;
@@ -105,7 +95,7 @@ export default {
   },
   methods: {
     closePopup() {
-      this.togglePopup;
+      this.isPopupOpen = false;
     },
     colorLuminance(hex, lum) {
       hex = String(hex).replace(/[^0-9a-f]/gi, "");
@@ -161,11 +151,6 @@ export default {
         }
       }
       return "";
-    },
-
-    handleTheme(theme) {
-      this.theme = theme.detail;
-      this.ensureTheme();
     },
 
     setCookie(cname, cvalue, exdays) {

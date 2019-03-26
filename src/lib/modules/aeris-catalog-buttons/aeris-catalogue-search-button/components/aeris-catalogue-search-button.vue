@@ -10,34 +10,48 @@
 </i18n>
 
 <template>
-  <aeris-catalog-ui-icon-button
+  <aeris-ui-icon-button
     :title="$t('search')"
+    :theme="theme"
     icon="fa-search"
-    theme="primary"
+    type="icon-button"
     @click="handleSearch"
-  ></aeris-catalog-ui-icon-button>
+  ></aeris-ui-icon-button>
 </template>
 
 <script>
+import { AerisUiIconButton } from "aeris-commons-components-vjs";
+
 export default {
   name: "aeris-catalogue-search-button",
 
+  components: { AerisUiIconButton },
+
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
+    },
+    theme: {
+      type: Object,
+      default: null
+    },
+    range: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     }
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
-  created: function() {
-    console.log("aeris-catalogue-search-button creation");
-    this.$i18n.locale = this.lang;
+  created() {
+    this.$i18n.locale = this.language;
   },
 
   data() {
@@ -47,16 +61,8 @@ export default {
   },
 
   methods: {
-    handleSearch: function() {
-      var e = new CustomEvent("aerisCatalogueSearchStartEvent", {
-        detail: {
-          range: {
-            min: 0,
-            max: 24
-          }
-        }
-      });
-      document.dispatchEvent(e);
+    handleSearch() {
+      this.$emit("catalogueSearchStart", this.range);
     }
   }
 };
