@@ -1,29 +1,55 @@
 <template>
-  <div :class="hidemap ? hidemap : showmap" data-aeris-catalog-map>
+  <div  :class="hidemap ? hidemap : 'showmap'" data-aeris-catalog-map>
     <div class="map-container">
       <div id="mapMask" class="map-mask" />
       <div id="map" class="map" tabindex="0" />
       <div id="mapCoordinates" class="map-coordinates" />
       <div class="button">
-        <slot name="select" />
-        <slot name="draw" />
+          <aeris-catalogue-select-map-button 
+            :is-active="selectMapIsActive"
+            @extendedMapMode="selectMap" 
+            :theme="theme">
+          </aeris-catalogue-select-map-button>
+          <aeris-catalogue-draw-map-button 
+            :is-active="drawIsActive"
+            @drawModeSelected="drawMode" 
+            :theme="theme">
+          </aeris-catalogue-draw-map-button>
       </div>
+   
     </div>
   </div>
 </template>
 
 <script>
-const FADEIN_DURATION = 1000;
-/* milliseconds */
+import AerisCatalogueDrawMapButton from "../../aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button";
+import AerisCatalogueSelectMapButton from "../../aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button";
+const FADEIN_DURATION = 1000; //ms
 const DEFAULT_ZOOM = 2;
-//const  /* [long, lat] */
-const EXTENTS_COLOR = "#e74c3c";
+
+import style from "ol/ol.css";
+import Feature from "ol/Feature";
+import * as Extent from "ol/extent.js";
+import Map from "ol/Map.js";
+import View from "ol/View.js";
+import Point from "ol/geom/Point";
+import Polygon from "ol/geom/Polygon";
+import XYZ from "ol/source/XYZ";
+import { defaults as defaultControls, ZoomToExtent } from "ol/control.js";
+import { transform, transformExtent } from "ol/proj";
+import { Draw, Modify, Snap } from "ol/interaction.js";
+import { createStringXY } from "ol/coordinate";
+import { defaults, MousePosition } from "ol/control.js";
+import { Tile, Vector as VectorLayer } from "ol/layer.js";
+import { Cluster, OSM, Vector as VectorSource } from "ol/source.js";
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
 
 export default {
   name: "aeris-catalog-map",
+  components: { AerisCatalogueDrawMapButton, AerisCatalogueSelectMapButton },
 
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -31,10 +57,17 @@ export default {
       type: Boolean,
       default: true
     },
-    // If true the map isn't displayed - this property isn't dynamic
     hidemap: {
       type: Boolean,
       default: false
+    },
+    theme: {
+      type: Object,
+      default: () => {}
+    },
+    coordinate: {
+      type: Object,
+      default: () => {}
     },
     url: {
       type: String,
@@ -42,159 +75,6 @@ export default {
         "https://api.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnJhbmNvaXNhbmRyZSIsImEiOiJjaXVlMGE5b3QwMDBoMm9tZGQ1M2xubzVhIn0.FK8gRVJb4ADNnrO6cNlWUw"
     }
   },
-
-  watch: {
-    isDrawMode(value) {
-      if (value) {
-        this.handleStartEditEvent();
-      } else {
-        this.handleStopEditEvent();
-      }
-    }
-  },
-
-  destroyed: function() {
-    document.removeEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditEventListener);
-    this.aerisCatalogueStartEditEventListener = null;
-    document.removeEventListener("aerisCatalogueStopEditEvent", this.aerisCatalogueStopEditEventListener);
-    this.aerisCatalogueStopEditEventListener = null;
-    document.removeEventListener("aerisCatalogueMapAddSelectionRequest", this.aerisCatalogueAddSelectionListener);
-    this.aerisCatalogueAddSelectionListener = null;
-    document.removeEventListener("aerisCatalogueMapClearSelectionRequest", this.aerisCatalogueRemoveSelectionListener);
-    this.aerisCatalogueRemoveSelectionListener = null;
-    document.removeEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
-    this.aerisSpatialExtentMapModeListener = null;
-  },
-
-  created: function() {
-    console.log("Aeris catalog map created");
-    this.ol = ol;
-    this.aerisCatalogueStartEditEventListener = this.handleStartEditEvent.bind(this);
-    document.addEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditEventListener);
-    this.aerisCatalogueStopEditEventListener = this.handleStopEditEvent.bind(this);
-    document.addEventListener("aerisCatalogueStopEditEvent", this.aerisCatalogueStopEditEventListener);
-    this.aerisCatalogueAddSelectionListener = this.handleAddSelectionEvent.bind(this);
-    document.addEventListener("aerisCatalogueMapAddSelectionRequest", this.aerisCatalogueAddSelectionListener);
-    this.aerisCatalogueRemoveSelectionListener = this.handleRemoveSelectionEvent.bind(this);
-    document.addEventListener("aerisCatalogueMapClearSelectionRequest", this.aerisCatalogueRemoveSelectionListener);
-    this.aerisSpatialExtentMapModeListener = this.aerisSpatialExtentMapModeHandle.bind(this);
-    document.addEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
-  },
-
-  mounted: function() {
-    if (this.map) {
-      return;
-    }
-
-    var ol = this.ol;
-    this.defaultCenter = ol.proj.transform([0, 0], "EPSG:4326", "EPSG:900913");
-    /* Map background */
-    var raster = new ol.layer.Tile({
-      source: new ol.source.XYZ({
-        url: this.url
-        // url: 'http://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnJhbmNvaXNhbmRyZSIsImEiOiJjaXVlMGE5b3QwMDBoMm9tZGQ1M2xubzVhIn0.FK8gRVJb4ADNnrO6cNlWUw'
-      })
-    });
-
-    if (this.hidemap) {
-      return;
-    }
-
-    /* Create map sources */
-    this.initialiseMainSource();
-    this.initialisePreviewSource();
-    this.map = new Map({
-      layers: [raster, this.vector, this.mainClusteredLayer],
-      target: this.$el.querySelector("#map"),
-      controls: ol.control.defaults({
-        attribution: false
-      }),
-      view: new ol.View({
-        center: this.defaultCenter,
-        zoom: DEFAULT_ZOOM,
-        maxZoom: 18,
-        minZoom: 0
-      })
-    });
-
-    let extent = ol.proj.transformExtent([-150, 70, 150, -50], "EPSG:4326", "EPSG:900913");
-    this.map.getView().fit(extent, this.map.getSize());
-
-    /* Add layers */
-    this.map.addLayer(this.previewLayer);
-    this.map.addLayer(this.previewClusteredLayer);
-
-    /* Hide map and fade in when loaded */
-    var mapViewport = this.$el.querySelector(".ol-viewport");
-    mapViewport.style.opacity = 0;
-
-    raster.getSource().on("tileloadend", function() {
-      var mapZoom = mapViewport.querySelector(".ol-zoom");
-      mapZoom.style.top = "auto";
-      mapZoom.style.bottom = "0.5em";
-
-      window.setTimeout(function() {
-        mapViewport.style.transition = FADEIN_DURATION / 1000 + "s";
-        mapViewport.style.opacity = 1;
-        //
-        //            window.setTimeout(function() {
-        //            	this.$el.querySelector('#mapMask').style.display = 'none';
-        //            }, (FADEIN_DURATION + 100));
-      }, 500);
-    });
-
-    //Ajout des coordonnees Lon/Lat du curseur en bas a droite
-    this.map.addControl(
-      new ol.control.MousePosition({
-        projection: "EPSG:4326",
-        coordinateFormat: ol.coordinate.createStringXY(3),
-        className: "custom-mouse-position map-component",
-        target: document.getElementById("mapCoordinates"),
-        undefinedHTML: "&nbsp;"
-      })
-    );
-
-    this.draw = new ol.interaction.Draw({
-      source: this.mainSource,
-      type: "LineString",
-      geometryFunction: this.drawGeometryFunction,
-      maxPoints: 2
-    });
-
-    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd.bind(this));
-
-    if (this.area && this.area !== "") {
-      var unquotedJSON = this.area;
-      var fixedJSON = unquotedJSON.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
-      var areaObject = JSON.parse(fixedJSON);
-
-      var areaFeature = this._coordsToFeature(areaObject);
-
-      var tempSource = new ol.source.Vector({
-        wrapX: false,
-        noWrap: true
-      });
-
-      var tempVector = new ol.layer.Vector({
-        source: tempSource,
-        style: this.featuresStyle
-      });
-
-      this._map.addLayer(tempVector);
-
-      tempSource.addFeature(areaFeature);
-
-      var _this = this;
-
-      window.setTimeout(function() {
-        _this.resizeMapToExtent(tempSource);
-        _this.map.removeLayer(tempVector);
-      }, 500);
-    }
-    this.updateMapSize();
-  },
-
-  computed: {},
 
   data() {
     return {
@@ -212,67 +92,144 @@ export default {
       previewClusteredLayer: null,
       defaultCenter: null,
       isDrawMode: false,
-      aerisCatalogueStartEditEventListener: null,
-      aerisCatalogueStopEditEventListener: null,
-      aerisCatalogueAddSelectionListener: null,
-      aerisCatalogueRemoveSelectionListener: null,
-      aerisSpatialExtentMapModeListener: null,
+      drawIsActive: false,
+      selectMapIsActive: true,
       draw: null,
       selectionBox: null,
       area: null
     };
   },
 
-  updated: function() {},
+  watch: {
+    coordinate: {
+      handler(value) {
+        this.handleAddSelectionEvent(value);
+      },
+      deep: true
+    },
+    isDrawMode(value) {
+      if (value) {
+        this.handleStartEditEvent();
+      } else {
+        this.handleStopEditEvent();
+      }
+    }
+  },
+
+  mounted() {
+    if (this.map) {
+      return;
+    }
+
+    this.defaultCenter = transform([0, 0], "EPSG:4326", "EPSG:900913");
+    /* Map background */
+    let raster = new Tile({
+      source: new XYZ({
+        url: this.url
+      })
+    });
+
+    if (this.hidemap) {
+      return;
+    }
+
+    /* Create map sources */
+    this.initialiseMainSource();
+    this.initialisePreviewSource();
+    this.map = new Map({
+      layers: [raster, this.vector, this.mainClusteredLayer],
+      target: this.$el.querySelector("#map"),
+      controls: defaults({
+        attribution: false
+      }),
+      view: new View({
+        center: this.defaultCenter,
+        zoom: DEFAULT_ZOOM,
+        maxZoom: 18,
+        minZoom: 0
+      })
+    });
+
+    let extent = transformExtent([-150, 70, 150, -50], "EPSG:4326", "EPSG:900913");
+    this.map.getView().fit(extent, this.map.getSize());
+
+    /* Add layers */
+    this.map.addLayer(this.previewLayer);
+    this.map.addLayer(this.previewClusteredLayer);
+
+    /* Hide map and fade in when loaded */
+    let mapViewport = this.$el.querySelector(".ol-viewport");
+    mapViewport.style.opacity = 0;
+
+    raster.getSource().on("tileloadend", () => {
+      let mapZoom = mapViewport.querySelector(".ol-zoom");
+      mapZoom.style.top = "auto";
+      mapZoom.style.bottom = "0.5em";
+
+      window.setTimeout(() => {
+        mapViewport.style.transition = FADEIN_DURATION / 1000 + "s";
+        mapViewport.style.opacity = 1;
+      }, 500);
+      this.handleAddSelectionEvent(this.coordinate);
+    });
+
+    //Ajout des coordonnees Lon/Lat du curseur en bas a droite
+    this.map.addControl(
+      new MousePosition({
+        projection: "EPSG:4326",
+        coordinateFormat: createStringXY(3),
+        className: "custom-mouse-position map-component",
+        target: document.getElementById("mapCoordinates"),
+        undefinedHTML: "&nbsp;"
+      })
+    );
+
+    this.draw = new Draw({
+      source: this.mainSource,
+      type: "LineString",
+      geometryFunction: this.drawGeometryFunction,
+      maxPoints: 2
+    });
+
+    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd);
+  },
 
   methods: {
-    handleRemoveSelectionEvent: function(e) {
-      var id = "selectionBox";
-
-      this.removeFeature("selectionBox");
-      this.selectionBox = null;
+    drawMode() {
+      (this.drawIsActive = true), (this.selectMapIsActive = false);
+      this.handleStartEditEvent();
     },
-
-    updateMapSize: function() {
-      var interval = window.setInterval(
-        function() {
-          this.map.updateSize();
-        }.bind(this),
-        10
-      );
-
-      window.setTimeout(function() {
+    selectMap() {
+      (this.drawIsActive = false), (this.selectMapIsActive = true);
+      this.handleStopEditEvent();
+    },
+    updateMapSize() {
+      let interval = window.setInterval(() => {
+        this.map.updateSize();
+      }, 10);
+      window.setTimeout(() => {
         window.clearInterval(interval);
       }, 200);
     },
 
-    handleAddSelectionEvent: function(e) {
-      var box = e.detail.box;
-      var id = e.detail.id || "selectionBox";
-
+    handleAddSelectionEvent(coord) {
       this.removeFeature("selectionBox");
-
-      var feature = this.coordsToFeature(box);
-
-      feature.setId(id);
-
+      let feature = this.coordsToFeature(coord);
+      feature.setId("selectionBox");
       this.mainSource.addFeature(feature);
       this.selectionBox = feature;
       this.map.updateSize();
       this.updateMapSize();
-
-      //this._resizeMapToExtent(this._mainSource);
     },
 
-    coordsToFeature: function(coords) {
-      var obj;
-      var l = Object.keys(coords).length;
-
+    coordsToFeature(coords) {
+      let obj;
+      let l = Object.keys(coords).length;
       if (l === 4) {
         if (coords.north > 85) coords.north = 85;
         if (coords.south < -85) coords.south = -85;
 
-        obj = new ol.geom.Polygon([
+        obj = new Polygon([
           [
             [Number(coords.west), Number(coords.north)],
             [Number(coords.east), Number(coords.north)],
@@ -282,124 +239,128 @@ export default {
           ]
         ]).transform("EPSG:4326", "EPSG:900913");
       } else if (l === 2) {
-        obj = new ol.geom.Point(
-          ol.proj.transform([Number(coords.lon), Number(coords.lat)], "EPSG:4326", "EPSG:900913")
-        );
+        obj = new Point(transform([Number(coords.lon), Number(coords.lat)], "EPSG:4326", "EPSG:900913"));
       }
 
-      var feature = new ol.Feature({
+      let feature = new Feature({
         geometry: obj
       });
 
       return feature;
     },
 
-    handleStartEditEvent: function() {
+    handleStartEditEvent() {
       this.map.addInteraction(this.draw);
     },
 
-    handleStopEditEvent: function() {
+    handleStopEditEvent() {
       this.map.removeInteraction(this.draw);
     },
 
-    handleSearchBarSearchEvent: function(e) {
-      e.detail.box = this.asBox();
-    },
-
-    handleSelectionDrawEnd: function(e) {
+    handleSelectionDrawEnd(e) {
       this.removeFeature("selectionBox");
       e.feature.setId("selectionBox");
       this.selectionBox = e.feature;
-
-      var clone = e.feature.clone();
-      var extent = clone.getGeometry().getExtent();
-      var bottomRight = ol.proj.transform(ol.extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
-      var topLeft = ol.proj.transform(ol.extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
-
-      var selectionDrawEvent = {
+      let clone = e.feature.clone();
+      let extent = clone.getGeometry().getExtent();
+      let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
+      let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
+      let selectionDraw = {
         east: bottomRight[0],
         south: bottomRight[1],
         west: topLeft[0],
         north: topLeft[1]
       };
-
-      var event = new CustomEvent("aerisCatalogueSelectionDrawEvent", {
-        detail: selectionDrawEvent
-      });
-      document.dispatchEvent(event);
+      this.$emit("selectionDrawEvent", selectionDraw);
     },
 
-    drawGeometryFunction: function(coordinates, geometry) {
+    handleSelectionDrawEnd(e) {
+      this.removeFeature("selectionBox");
+      e.feature.setId("selectionBox");
+      this.selectionBox = e.feature;
+      let clone = e.feature.clone();
+      let extent = clone.getGeometry().getExtent();
+      let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
+      let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
+      
+      let selectionDraw = {
+        east: bottomRight[0],
+        south: bottomRight[1],
+        west: topLeft[0],
+        north: topLeft[1]
+      };
+      this.$emit("selectionDrawEvent", selectionDraw);
+    },
+
+    drawGeometryFunction(coordinates, geometry) {
       if (!geometry) {
-        geometry = new ol.geom.Polygon(null);
+        geometry = new Polygon(coordinates);
       }
 
-      var start = coordinates[0];
-      var end = coordinates[1];
+      let start = coordinates[0];
+      let end = coordinates[1];
       geometry.setCoordinates([[start, [start[0], end[1]], end, [end[0], start[1]], start]]);
       return geometry;
     },
 
     /* Remove feature with the specified ID */
-    removeFeature: function(id) {
-      var feature = this.mainSource.getFeatureById(id);
+    removeFeature(id) {
+      let feature = this.mainSource.getFeatureById(id);
       if (feature) this.mainSource.removeFeature(feature);
 
       feature = this.mainClusteredSource.getFeatureById(id);
       if (feature) this.mainSource.removeFeature(feature);
     },
 
-    initialiseMainSource: function() {
-      var ol = this.ol;
-      this.mainSource = new ol.source.Vector({
+    initialiseMainSource() {
+      this.mainSource = new VectorSource({
         wrapX: false,
         noWrap: true
       });
 
-      this.mainClusteredSource = new ol.source.Vector({
+      this.mainClusteredSource = new VectorSource({
         wrapX: false,
         noWrap: true
       });
 
-      this.clusterMainClusteredSource = new ol.source.Cluster({
+      this.clusterMainClusteredSource = new Cluster({
         distance: parseInt(30, 10),
         source: this.mainClusteredSource
       });
 
-      this.vector = new ol.layer.Vector({
+      this.vector = new VectorLayer({
         source: this.mainSource,
         style: this.featuresStyle
       });
 
-      this.mainClusteredLayer = new ol.layer.Vector({
+      this.mainClusteredLayer = new VectorLayer({
         source: this.clusterMainClusteredSource,
         style: this.featuresStyle
       });
     },
 
-    initialisePreviewSource: function() {
-      var ol = this.ol;
-      this.previewSource = new ol.source.Vector({
+    initialisePreviewSource() {
+      this.previewSource = new VectorSource({
         wrapX: false,
         noWrap: true
       });
 
-      this.previewClusteredSource = new ol.source.Vector({
+      this.previewClusteredSource = new VectorSource({
         wrapX: false,
         noWrap: true
       });
 
-      this.clusterPreviewClusteredSource = new ol.source.Cluster({
+      this.clusterPreviewClusteredSource = new Cluster({
         distance: parseInt(30, 10),
         source: this.previewClusteredSource
       });
 
-      this.previewLayer = new ol.layer.Vector({
+      this.previewLayer = new VectorLayer({
         source: this.previewSource,
         style: this.featuresStyle
       });
 
-      this.previewClusteredLayer = new ol.layer.Vector({
+      this.previewClusteredLayer = new VectorLayer({
         source: this.clusterPreviewClusteredSource,
         style: this.featuresStyle
       });
@@ -527,5 +488,8 @@ export default {
   font-size: 12px;
   color: #fff;
   text-align: center;
+}
+.button > *:last-child {
+  margin-left: 10px;
 }
 </style>

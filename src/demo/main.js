@@ -39,6 +39,7 @@ import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/ae
 import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria-test";
 import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
 import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
+import AerisCatalogueMapTest from "./modules/aeris-catalogue-map/aeris-catalogue-map-test";
 import AerisMetadataPanelTest from "./modules/aeris-metadata-panel/metadata-panel-test.vue";
 import AerisCatalogHelpContent from "./modules/aeris-catalog-help/aeris-catalog-help-content-test";
 
@@ -161,6 +162,10 @@ const router = new VueRouter({
     {
       path: "/search_text_button",
       component: AerisCatalogueSearchTextButtontest
+    },
+    {
+      path: "/catalogue_map",
+      component: AerisCatalogueMapTest
     },
     {
       path: "/help_content",
