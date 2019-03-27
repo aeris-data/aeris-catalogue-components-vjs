@@ -31,7 +31,8 @@ export default {
     },
 
     downloadable: {
-      type: String
+      type: String,
+      default: ""
     },
 
     inclusion: {
