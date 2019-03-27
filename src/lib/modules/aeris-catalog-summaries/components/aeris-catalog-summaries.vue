@@ -99,8 +99,8 @@ export default {
       return this.$store.getters.hasMore;
     },
     isInCart() {
-      return function(collectionId) {
-        return this.itemIdsInCart.includes(collectionId);
+      return function(identifier) {
+        return this.itemIdsInCart.includes(identifier);
       };
     }
   },
@@ -125,12 +125,12 @@ export default {
     setSelectedSummaryId(id) {
       this.$store.commit("setSelectedSummaryId", id);
     },
-    addItemCart(collectionId) {
-      this.$emit("addItemCart", collectionId);
+    addItemCart(metadataDownload) {
+      this.$emit("addItemCart", metadataDownload);
     },
 
-    removeItemCart(collectionId) {
-      this.$emit("removeItemCart", collectionId);
+    removeItemCart(metadataDownload) {
+      this.$emit("removeItemCart", metadataDownload);
     }
   }
 };

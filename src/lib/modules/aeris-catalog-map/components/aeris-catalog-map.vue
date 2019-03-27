@@ -1,22 +1,15 @@
 <template>
-  <div  :class="hidemap ? hidemap : 'showmap'" data-aeris-catalog-map>
+  <div :class="hidemap ? hidemap : 'showmap'" data-aeris-catalog-map>
     <div class="map-container">
       <div id="mapMask" class="map-mask" />
       <div id="map" class="map" tabindex="0" />
       <div id="mapCoordinates" class="map-coordinates" />
       <div class="button">
-          <aeris-catalogue-select-map-button 
-            :is-active="selectMapIsActive"
-            @extendedMapMode="selectMap" 
-            :theme="theme">
-          </aeris-catalogue-select-map-button>
-          <aeris-catalogue-draw-map-button 
-            :is-active="drawIsActive"
-            @drawModeSelected="drawMode" 
-            :theme="theme">
-          </aeris-catalogue-draw-map-button>
+        <aeris-catalogue-select-map-button :is-active="selectMapIsActive" :theme="theme" @extendedMapMode="selectMap">
+        </aeris-catalogue-select-map-button>
+        <aeris-catalogue-draw-map-button :is-active="drawIsActive" :theme="theme" @drawModeSelected="drawMode">
+        </aeris-catalogue-draw-map-button>
       </div>
-   
     </div>
   </div>
 </template>
@@ -27,7 +20,6 @@ import AerisCatalogueSelectMapButton from "../../aeris-catalog-buttons/aeris-cat
 const FADEIN_DURATION = 1000; //ms
 const DEFAULT_ZOOM = 2;
 
-import style from "ol/ol.css";
 import Feature from "ol/Feature";
 import * as Extent from "ol/extent.js";
 import Map from "ol/Map.js";
@@ -35,14 +27,12 @@ import View from "ol/View.js";
 import Point from "ol/geom/Point";
 import Polygon from "ol/geom/Polygon";
 import XYZ from "ol/source/XYZ";
-import { defaults as defaultControls, ZoomToExtent } from "ol/control.js";
 import { transform, transformExtent } from "ol/proj";
-import { Draw, Modify, Snap } from "ol/interaction.js";
+import { Draw } from "ol/interaction.js";
 import { createStringXY } from "ol/coordinate";
 import { defaults, MousePosition } from "ol/control.js";
 import { Tile, Vector as VectorLayer } from "ol/layer.js";
-import { Cluster, OSM, Vector as VectorSource } from "ol/source.js";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
+import { Cluster, Vector as VectorSource } from "ol/source.js";
 
 export default {
   name: "aeris-catalog-map",
@@ -265,24 +255,6 @@ export default {
       let extent = clone.getGeometry().getExtent();
       let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
       let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
-      let selectionDraw = {
-        east: bottomRight[0],
-        south: bottomRight[1],
-        west: topLeft[0],
-        north: topLeft[1]
-      };
-      this.$emit("selectionDrawEvent", selectionDraw);
-    },
-
-    handleSelectionDrawEnd(e) {
-      this.removeFeature("selectionBox");
-      e.feature.setId("selectionBox");
-      this.selectionBox = e.feature;
-      let clone = e.feature.clone();
-      let extent = clone.getGeometry().getExtent();
-      let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
-      let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
-      
       let selectionDraw = {
         east: bottomRight[0],
         south: bottomRight[1],

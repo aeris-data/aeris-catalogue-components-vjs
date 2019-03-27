@@ -1,18 +1,21 @@
-
 <template>
-
-<div class="container">
-  <div class="coordinate">
-  <h3>Coordonnées</h3>
-  <span>Nord</span> <input type="text" v-model="map.coordinate.north"/>
-  <span>Sud </span> <input type="text" v-model="map.coordinate.south"/>
-  <span>Est </span> <input type="text" v-model="map.coordinate.east"/>
-  <span>Ouest</span> <input type="text" v-model="map.coordinate.west" />
+  <div class="container">
+    <div class="coordinate">
+      <h3>Coordonnées</h3>
+      <span>Nord</span> <input v-model="map.coordinate.north" type="text" /> <span>Sud </span>
+      <input v-model="map.coordinate.south" type="text" /> <span>Est </span>
+      <input v-model="map.coordinate.east" type="text" /> <span>Ouest</span>
+      <input v-model="map.coordinate.west" type="text" />
+    </div>
+    <div class="map">
+      <aeris-catalogue-map
+        :hidemap="false"
+        :theme="theme"
+        v-bind="map"
+        @selectionDrawEvent="getSelection"
+      ></aeris-catalogue-map>
+    </div>
   </div>
-  <div class="map">
-    <aeris-catalogue-map :hidemap="false" :theme="theme" @selectionDrawEvent="getSelection" v-bind="map"></aeris-catalogue-map>
-  </div>
-</div>
 </template>
 
 <script>

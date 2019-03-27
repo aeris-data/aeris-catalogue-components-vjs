@@ -3,7 +3,7 @@
     <aeris-catalog-search-box
       :deployed="true"
       :theme="theme"
-      box_title="Zones géographiques"
+      box-title="Zones géographiques"
       header-icon-class="fa fa-globe"
     >
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer fermentum ac augue quis laoreet. Phasellus massa

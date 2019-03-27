@@ -1,5 +1,6 @@
 import axios from "axios";
 import { computeUuid } from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/utils/utils";
+import i18n from "../language/aeris-catalog-summaries-i18n";
 
 export default {
   state: {
@@ -10,7 +11,8 @@ export default {
       max: 24
     },
     step: 25,
-    total: 0
+    total: 0,
+    language: "en"
   },
 
   getters: {
@@ -24,6 +26,12 @@ export default {
   },
 
   mutations: {
+    setLanguage: (state, language) => {
+      if (language) {
+        state.language = language;
+        i18n.locale = language;
+      }
+    },
     setSummaries(state, summaries) {
       if (state.summaries) {
         state.summaries = state.range.min === 0 ? summaries : [...state.summaries, ...summaries];
@@ -60,7 +68,7 @@ export default {
     getSummaries({ commit, dispatch }, data) {
       let uuid = computeUuid();
       let notification = {
-        message: "searching",
+        message: i18n.t("searching"),
         type: "wait",
         uuid: uuid
       };
