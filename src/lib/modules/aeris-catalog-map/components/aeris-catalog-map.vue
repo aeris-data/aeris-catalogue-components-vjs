@@ -5,13 +5,11 @@
       <div id="map" class="map" tabindex="0" />
       <div id="mapCoordinates" class="map-coordinates" />
       <div class="button">
-        <span style="margin-right:10px">
           <aeris-catalogue-select-map-button 
             :is-active="selectMapIsActive"
             @extendedMapMode="selectMap" 
             :theme="theme">
           </aeris-catalogue-select-map-button>
-        </span>
           <aeris-catalogue-draw-map-button 
             :is-active="drawIsActive"
             @drawModeSelected="drawMode" 
@@ -491,7 +489,7 @@ export default {
   color: #fff;
   text-align: center;
 }
-.button i[data-v-c5e6fe1a] {
-  margin-right: 0 !important;
+.button > *:last-child {
+  margin-left: 10px;
 }
 </style>
