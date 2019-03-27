@@ -11,14 +11,14 @@
 
 <template>
   <div data-aeris-spatial-extents-search-criteria>
-    lol
     <aeris-catalog-search-box
+    
       id="box"
       :box_title="$t('spatial-extents')"
       :deployed="deployed"
       header-icon-class="fa fa-globe"
     >
-      <aeris-spatial-search-criteria-content></aeris-spatial-search-criteria-content>
+      <aeris-spatial-search-criteria-content lang="fr" :theme="theme"></aeris-spatial-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -40,6 +40,10 @@ export default {
     deployed: {
       type: Boolean,
       default: false
+    },
+    theme:{
+      type:Object,
+      default:()=>{}
     }
   },
 

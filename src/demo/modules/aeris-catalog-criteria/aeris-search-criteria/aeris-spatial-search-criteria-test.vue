@@ -1,5 +1,5 @@
 <template>
-<aeris-spatial-search-criteria></aeris-spatial-search-criteria>
+<aeris-spatial-search-criteria kang="fr" :theme="theme"></aeris-spatial-search-criteria>
 </template>
 
 <script>
@@ -10,7 +10,10 @@ export default {
     },
     data() {
         return {
-
+theme: {
+        primaryColor: "#f39c12",
+        secondaryColor: "grey"
+      },
         }
     }
 }

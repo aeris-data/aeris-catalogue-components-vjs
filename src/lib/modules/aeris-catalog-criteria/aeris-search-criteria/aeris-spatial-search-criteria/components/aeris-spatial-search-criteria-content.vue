@@ -53,10 +53,9 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("northAbbr") }}</span
         ><input
-          v-model="north"
+          v-model="map.coordinate.north "
           class="spatial-search-criteria"
           name="north"
-          @change="handleChange"
           @input="checkValidity"
         />
       </div>
@@ -64,10 +63,9 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("eastAbbr") }}</span
         ><input
-          v-model="east"
+          v-model="map.coordinate.east"
           class="spatial-search-criteria"
           name="east"
-          @change="handleChange"
           @input="checkValidity"
         />
       </div>
@@ -75,10 +73,9 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("southAbbr") }}</span
         ><input
-          v-model="south"
+          v-model="map.coordinate.south"
           class="spatial-search-criteria"
           name="south"
-          @change="handleChange"
           @input="checkValidity"
         />
       </div>
@@ -86,31 +83,24 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("westAbbr") }}</span
         ><input
-          v-model="west"
+          v-model="map.coordinate.west"
           class="spatial-search-criteria"
           name="west"
-          @change="handleChange"
           @input="checkValidity"
         />
       </div>
     </span>
-    <div v-if="showMap" class="map-modal" @click="closeMapPopup">
+    <div v-if="showMap" class="map-modal" >
     <div  class="map-popup">
       <div class="map-popup-title">
         <h3>{{ $t("coordinateSelection") }}</h3>
-        <div @click.stop="closeMapPopup">
+        <div @click="closeMapPopup">
           <i :title="$t('close')" class="fa fa-times" />
         </div>
       </div>
 
       <div class="map-popup-content">
-        <aeris-catalog-map
-          url="//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
-          data-map
-        >
-          <aeris-catalogue-draw-map-button slot="draw" :title="$t('draw')"></aeris-catalogue-draw-map-button>
-          <aeris-catalogue-select-map-button slot="select" :title="$t('select')"></aeris-catalogue-select-map-button>
-        </aeris-catalog-map>
+         <aeris-catalogue-map url="//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}" :hidemap="false" :theme="theme" @selectionDrawEvent="getSelection" v-bind="map"></aeris-catalogue-map>
       </div>
     </div>
     </div>
@@ -118,21 +108,21 @@
 </template>
 
 <script>
-import AerisCatalogueDrawMapButton from "../../../../aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button";
-import AerisCatalogueSelectMapButton  from "../../../../aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button";
-import AerisCatalogMap  from "../../../../aeris-catalog-map/components/aeris-catalog-map";
+
+import AerisCatalogueMap  from "../../../../aeris-catalog-map/components/aeris-catalog-map";
 export default {
   name: "aeris-spatial-search-criteria-content",
-  components: {
-AerisCatalogMap,
-AerisCatalogueDrawMapButton,
-AerisCatalogueSelectMapButton
-  },
+  components: {AerisCatalogueMap},
   props: {
     lang: {
       type: String,
       default: "en"
-    }
+    },
+    theme: {
+      type:Object,
+      default:() => {}
+    },
+
   },
 
   watch: {
@@ -142,19 +132,10 @@ AerisCatalogueSelectMapButton
   },
 
   
-  created: function() {
+  created() {
     this.$i18n.locale = this.lang;
-    this.catalogueResetListener = this.handleCatalogueReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.catalogueSelectionDrawListener = this.handleSelectionDraw.bind(this);
-    document.addEventListener("aerisCatalogueSelectionDrawEvent", this.catalogueSelectionDrawListener);
-    this.aerisCatalogueSearchEventListener = this.handleSearch.bind(this);
-    document.addEventListener("aerisCatalogueSearchEvent", this.aerisCatalogueSearchEventListener);
   },
 
-  mounted: function() {},
-
-  computed: {},
 
   data() {
     return {
@@ -167,14 +148,27 @@ AerisCatalogueSelectMapButton
       isDrawMode: false,
       aerisCatalogueStopEditListener: null,
       aerisCatalogueStartEditListener: null,
-      aerisCatalogueSearchEventListener: null
+      aerisCatalogueSearchEventListener: null,
+      map: {
+        coordinate: {
+          north: 0,
+          south: 0,
+          east: 0,
+          west: 0
+                  }
+      }
     };
   },
 
-  updated: function() {},
-
   methods: {
-    isValidLatitude: function(latitude) {
+
+    getSelection(selection) {
+      this.map.coordinate.north = selection.north.toFixed(4);
+      this.map.coordinate.south = selection.south.toFixed(4);
+      this.map.coordinate.east = selection.east.toFixed(4);
+      this.map.coordinate.west = selection.west.toFixed(4);
+    },
+    isValidLatitude(latitude) {
       let aux = parseFloat(latitude);
       if (!Number.isNaN(aux)) {
         return aux >= -90 && aux <= 90 ? true : false;
@@ -183,7 +177,7 @@ AerisCatalogueSelectMapButton
       return false;
     },
 
-    isValidLongitude: function(longitude) {
+    isValidLongitude(longitude) {
       let aux = parseFloat(longitude);
       if (!Number.isNaN(aux)) {
         return aux >= -180 && aux <= 180 ? true : false;
@@ -192,7 +186,7 @@ AerisCatalogueSelectMapButton
       return false;
     },
 
-    isValidBox: function() {
+    isValidBox() {
       if (!this.isValidLatitude(this.north)) return false;
       if (!this.isValidLatitude(this.south)) return false;
       if (!this.isValidLongitude(this.east)) return false;
@@ -202,7 +196,7 @@ AerisCatalogueSelectMapButton
       return true;
     },
 
-    checkValidity: function(e) {
+    checkValidity(e) {
       this.correctCommas();
       var el = e.target;
       var validCoords;
@@ -222,44 +216,25 @@ AerisCatalogueSelectMapButton
       }
     },
 
-    closeMapPopup: function() {
+    closeMapPopup() {
       this.showMap = !this.showMap;
-      var current = this;
-      if (this.showMap) {
-        this.$nextTick(() => {
-          current.handleChange();
-        });
-      }
     },
 
-    handleSelectionDraw: function(e) {
-      this.north = e.detail.north.toFixed(4);
-      this.south = e.detail.south.toFixed(4);
-      this.east = e.detail.east.toFixed(4);
-      this.west = e.detail.west.toFixed(4);
-      this.handleChange();
+    handleReset() {
+      this.map.coordinate.north = "";
+      this.map.coordinate.south = "";
+      this.map.coordinate.east = "";
+      this.map.coordinate.west = "";
     },
 
-    handleCatalogueReset: function() {
-      this.handleReset();
-    },
-
-    handleReset: function() {
-      this.north = "";
-      this.south = "";
-      this.east = "";
-      this.west = "";
-      this.handleChange();
-    },
-
-    correctCommas: function() {
+    correctCommas() {
       this.north = this.north.replace(/,/g, ".");
       this.south = this.south.replace(/,/g, ".");
       this.east = this.east.replace(/,/g, ".");
       this.west = this.west.replace(/,/g, ".");
     },
 
-    asBox: function() {
+    asBox() {
       return {
         north: this.north,
         south: this.south,
@@ -268,24 +243,7 @@ AerisCatalogueSelectMapButton
       };
     },
 
-    handleChange: function() {
-      this.correctCommas();
-      if (this.isValidBox()) {
-        var selectionEvent = {
-          box: this.asBox()
-        };
-
-        var event = new CustomEvent("aerisCatalogueMapAddSelectionRequest", {
-          detail: selectionEvent
-        });
-        document.dispatchEvent(event);
-      } else {
-        var event = new CustomEvent("aerisCatalogueMapClearSelectionRequest");
-        document.dispatchEvent(event);
-      }
-    },
-
-    handleSearch: function(e) {
+    handleSearch(e) {
       if (this.isValidBox()) {
         e.detail.box = this.asBox();
       }
@@ -441,5 +399,17 @@ AerisCatalogueSelectMapButton
 
 [data-aeris-spatial-search-criteria-content] .spatial-reset-button i {
   margin-left: 5px;
+}
+button {
+    margin-left:5px;
+    padding:5px;
+    border: 0;
+    border-radius: 5px;
+    background: #e6f5fa;
+    -webkit-appearance: none;
+}
+button:hover{
+  background: black;
+  color:white
 }
 </style>

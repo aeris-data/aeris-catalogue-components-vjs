@@ -19,6 +19,7 @@ import AerisCatalogSelectMapButton from "../modules/aeris-catalog-buttons/aeris-
 import AerisCatalogMetadataPanel from "../modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel";
 import MdTemplateCollection from "../modules/aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection";
 import AerisCatalogHelpContent from "../modules/aeris-catalog-help/components/aeris-catalog-help-content";
+import AerisCatalogMap from "../modules/aeris-catalog-map/components/aeris-catalog-map";
 
 export {
   AerisThesaurusItemTreeCheckboxLayout,
@@ -41,5 +42,6 @@ export {
   AerisCatalogSelectMapButton,
   AerisCatalogMetadataPanel,
   MdTemplateCollection,
-  AerisCatalogHelpContent
+  AerisCatalogHelpContent,
+  AerisCatalogMap
 };

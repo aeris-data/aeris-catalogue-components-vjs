@@ -5,24 +5,37 @@
       <div id="map" class="map" tabindex="0" />
       <div id="mapCoordinates" class="map-coordinates" />
       <div class="button">
-        <slot name="select" />
-        <slot name="draw" />
+          <aeris-catalogue-select-map-button 
+            :is-active="selectMapIsActive"
+            @extendedMapMode="selectMap" 
+            :theme="theme">
+          </aeris-catalogue-select-map-button>
+          <aeris-catalogue-draw-map-button 
+            :is-active="drawIsActive"
+            @drawModeSelected="drawMode" 
+            :theme="theme">
+          </aeris-catalogue-draw-map-button>
       </div>
+   
     </div>
   </div>
 </template>
 
 <script>
+import AerisCatalogueDrawMapButton from "../../aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button";
+import AerisCatalogueSelectMapButton from "../../aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button";
 const FADEIN_DURATION = 1000; //ms
 const DEFAULT_ZOOM = 2;
 
+import style from "ol/ol.css";
 import Feature from "ol/Feature";
-import * as extent from "ol/extent";
+import * as Extent from "ol/extent.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 import Point from "ol/geom/Point";
 import Polygon from "ol/geom/Polygon";
 import XYZ from "ol/source/XYZ";
+import { defaults as defaultControls, ZoomToExtent } from "ol/control.js";
 import { transform, transformExtent } from "ol/proj";
 import { Draw, Modify, Snap } from "ol/interaction.js";
 import { createStringXY } from "ol/coordinate";
@@ -33,6 +46,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
 
 export default {
   name: "aeris-catalog-map",
+  components: { AerisCatalogueDrawMapButton, AerisCatalogueSelectMapButton },
 
   props: {
     language: {
@@ -46,6 +60,14 @@ export default {
     hidemap: {
       type: Boolean,
       default: false
+    },
+    theme: {
+      type: Object,
+      default: () => {}
+    },
+    coordinate: {
+      type: Object,
+      default: () => {}
     },
     url: {
       type: String,
@@ -70,11 +92,8 @@ export default {
       previewClusteredLayer: null,
       defaultCenter: null,
       isDrawMode: false,
-      aerisCatalogueStartEditEventListener: null,
-      aerisCatalogueStopEditEventListener: null,
-      aerisCatalogueAddSelectionListener: null,
-      aerisCatalogueRemoveSelectionListener: null,
-      aerisSpatialExtentMapModeListener: null,
+      drawIsActive: false,
+      selectMapIsActive: true,
       draw: null,
       selectionBox: null,
       area: null
@@ -82,6 +101,12 @@ export default {
   },
 
   watch: {
+    coordinate: {
+      handler(value) {
+        this.handleAddSelectionEvent(value);
+      },
+      deep: true
+    },
     isDrawMode(value) {
       if (value) {
         this.handleStartEditEvent();
@@ -89,19 +114,6 @@ export default {
         this.handleStopEditEvent();
       }
     }
-  },
-
-  created() {
-    this.aerisCatalogueStartEditEventListener = this.handleStartEditEvent.bind(this);
-    document.addEventListener("aerisCatalogueStartEditEvent", this.aerisCatalogueStartEditEventListener);
-    this.aerisCatalogueStopEditEventListener = this.handleStopEditEvent.bind(this);
-    document.addEventListener("aerisCatalogueStopEditEvent", this.aerisCatalogueStopEditEventListener);
-    this.aerisCatalogueAddSelectionListener = this.handleAddSelectionEvent.bind(this);
-    document.addEventListener("aerisCatalogueMapAddSelectionRequest", this.aerisCatalogueAddSelectionListener);
-    this.aerisCatalogueRemoveSelectionListener = this.handleRemoveSelectionEvent.bind(this);
-    document.addEventListener("aerisCatalogueMapClearSelectionRequest", this.aerisCatalogueRemoveSelectionListener);
-    this.aerisSpatialExtentMapModeListener = this.aerisSpatialExtentMapModeHandle.bind(this);
-    document.addEventListener("aerisSpatialExtentMapMode", this.aerisSpatialExtentMapModeListener);
   },
 
   mounted() {
@@ -158,6 +170,7 @@ export default {
         mapViewport.style.transition = FADEIN_DURATION / 1000 + "s";
         mapViewport.style.opacity = 1;
       }, 500);
+      this.handleAddSelectionEvent(this.coordinate);
     });
 
     //Ajout des coordonnees Lon/Lat du curseur en bas a droite
@@ -178,64 +191,31 @@ export default {
       maxPoints: 2
     });
 
-    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd.bind(this));
-    if (this.area && this.area !== "") {
-      let unquotedJSON = this.area;
-      let fixedJSON = unquotedJSON.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
-      let areaObject = JSON.parse(fixedJSON);
-
-      let areaFeature = this._coordsToFeature(areaObject);
-      let tempSource = new VectorSource({
-        wrapX: false,
-        noWrap: true
-      });
-
-      let tempVector = new VectorLayer({
-        source: tempSource,
-        style: this.featuresStyle
-      });
-
-      this._map.addLayer(tempVector);
-      tempSource.addFeature(areaFeature);
-
-      let _this = this;
-
-      window.setTimeout(() => {
-        this.resizeMapToExtent(tempSource);
-        this.map.removeLayer(tempVector);
-      }, 500);
-    }
-     this.updateMapSize();
+    this.draw.addEventListener("drawend", this.handleSelectionDrawEnd);
   },
 
   methods: {
-    handleRemoveSelectionEvent(e) {
-      let id = "selectionBox";
-
-      this.removeFeature("selectionBox");
-      this.selectionBox = null;
+    drawMode() {
+      (this.drawIsActive = true), (this.selectMapIsActive = false);
+      this.handleStartEditEvent();
     },
-
+    selectMap() {
+      (this.drawIsActive = false), (this.selectMapIsActive = true);
+      this.handleStopEditEvent();
+    },
     updateMapSize() {
       let interval = window.setInterval(() => {
         this.map.updateSize();
       }, 10);
-
       window.setTimeout(() => {
         window.clearInterval(interval);
       }, 200);
     },
 
-    handleAddSelectionEvent(e) {
-      let box = e.detail.box;
-      let id = e.detail.id || "selectionBox";
-
+    handleAddSelectionEvent(coord) {
       this.removeFeature("selectionBox");
-
-      let feature = this.coordsToFeature(box);
-
-      feature.setId(id);
-
+      let feature = this.coordsToFeature(coord);
+      feature.setId("selectionBox");
       this.mainSource.addFeature(feature);
       this.selectionBox = feature;
       this.map.updateSize();
@@ -245,7 +225,6 @@ export default {
     coordsToFeature(coords) {
       let obj;
       let l = Object.keys(coords).length;
-
       if (l === 4) {
         if (coords.north > 85) coords.north = 85;
         if (coords.south < -85) coords.south = -85;
@@ -278,36 +257,44 @@ export default {
       this.map.removeInteraction(this.draw);
     },
 
-    handleSearchBarSearchEvent(e) {
-      e.detail.box = this.asBox();
+    handleSelectionDrawEnd(e) {
+      this.removeFeature("selectionBox");
+      e.feature.setId("selectionBox");
+      this.selectionBox = e.feature;
+      let clone = e.feature.clone();
+      let extent = clone.getGeometry().getExtent();
+      let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
+      let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
+      let selectionDraw = {
+        east: bottomRight[0],
+        south: bottomRight[1],
+        west: topLeft[0],
+        north: topLeft[1]
+      };
+      this.$emit("selectionDrawEvent", selectionDraw);
     },
 
     handleSelectionDrawEnd(e) {
       this.removeFeature("selectionBox");
       e.feature.setId("selectionBox");
       this.selectionBox = e.feature;
-
       let clone = e.feature.clone();
       let extent = clone.getGeometry().getExtent();
-      let bottomRight = transform(extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
-      let topLeft = transform(extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
-
-      let selectionDrawEvent = {
+      let bottomRight = transform(Extent.getBottomRight(extent), "EPSG:3857", "EPSG:4326");
+      let topLeft = transform(Extent.getTopLeft(extent), "EPSG:3857", "EPSG:4326");
+      
+      let selectionDraw = {
         east: bottomRight[0],
         south: bottomRight[1],
         west: topLeft[0],
         north: topLeft[1]
       };
-
-      let event = new CustomEvent("aerisCatalogueSelectionDrawEvent", {
-        detail: selectionDrawEvent
-      });
-      document.dispatchEvent(event);
+      this.$emit("selectionDrawEvent", selectionDraw);
     },
 
     drawGeometryFunction(coordinates, geometry) {
       if (!geometry) {
-        geometry = new Polygon(null);
+        geometry = new Polygon(coordinates);
       }
 
       let start = coordinates[0];
@@ -501,5 +488,8 @@ export default {
   font-size: 12px;
   color: #fff;
   text-align: center;
+}
+.button > *:last-child {
+  margin-left: 10px;
 }
 </style>
