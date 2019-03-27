@@ -210,8 +210,8 @@ export default {
 
     loadCartContentFromStorage() {
       if (localStorage) {
-        let cartContent = localStorage.getItem(this.cartName) || [];
-        this.$store.commit("addCartContent", JSON.parse(cartContent));
+        let cartContent = JSON.parse(localStorage.getItem(this.cartName)) || [];
+        this.$store.commit("addCartContent", cartContent);
       }
     },
 

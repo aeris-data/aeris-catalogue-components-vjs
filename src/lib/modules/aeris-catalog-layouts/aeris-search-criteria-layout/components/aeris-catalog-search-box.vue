@@ -68,7 +68,7 @@ export default {
     },
 
     getTheme() {
-      return this.theme ? { color: this.theme.secondaryColor, background: this.theme.primaryColor } : "";
+      return this.theme ? { color: this.theme.secondaryColor } : "";
     },
 
     getTitleTheme() {
