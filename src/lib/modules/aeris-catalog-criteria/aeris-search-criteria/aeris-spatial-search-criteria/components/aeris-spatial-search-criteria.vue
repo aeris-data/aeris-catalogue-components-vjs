@@ -24,9 +24,14 @@
 </template>
 
 <script>
+import AerisSpatialSearchCriteriaContent from "./aeris-spatial-search-criteria-content"
+import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box"
 export default {
   name: "aeris-spatial-search-criteria",
-
+  components:{
+    AerisCatalogSearchBox,
+    AerisSpatialSearchCriteriaContent
+  },
   props: {
     lang: {
       type: String,

@@ -94,10 +94,11 @@
         />
       </div>
     </span>
-    <div v-if="showMap" class="map-popup">
+    <div v-if="showMap" class="map-modal" @click="closeMapPopup">
+    <div  class="map-popup">
       <div class="map-popup-title">
         <h3>{{ $t("coordinateSelection") }}</h3>
-        <div @click="closeMapPopup">
+        <div @click.stop="closeMapPopup">
           <i :title="$t('close')" class="fa fa-times" />
         </div>
       </div>
@@ -112,13 +113,21 @@
         </aeris-catalog-map>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
 <script>
+import AerisCatalogueDrawMapButton from "../../../../aeris-catalog-buttons/aeris-catalogue-draw-map-button/components/aeris-catalogue-draw-map-button";
+import AerisCatalogueSelectMapButton  from "../../../../aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button";
+import AerisCatalogMap  from "../../../../aeris-catalog-map/components/aeris-catalog-map";
 export default {
   name: "aeris-spatial-search-criteria-content",
-
+  components: {
+AerisCatalogMap,
+AerisCatalogueDrawMapButton,
+AerisCatalogueSelectMapButton
+  },
   props: {
     lang: {
       type: String,
@@ -356,7 +365,16 @@ export default {
   border-bottom: 1px solid #ccc;
   background-color: #cfcfcf;
 }
-
+.map-modal{
+  
+  background-color :rgba(0,0,0,0.5);
+  position: fixed;
+  z-index:9990;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%
+}
 [data-aeris-spatial-search-criteria-content] .map-popup {
   display: inline-block;
   position: fixed;
@@ -369,12 +387,14 @@ export default {
   border-radius: 5px;
   padding: 10px;
   width: 50%;
+  
 }
 
 [data-aeris-spatial-search-criteria-content] .map-popup-content {
   display: inline-block;
   text-align: center;
   width: 100%;
+   
 }
 
 [data-aeris-spatial-search-criteria-content] .map-popup .map-popup-title,
@@ -382,6 +402,7 @@ export default {
   width: 100%;
   text-align: center;
   margin-top: 4px;
+ 
 }
 
 [data-aeris-spatial-search-criteria-content] .map-popup .map-popup-title {

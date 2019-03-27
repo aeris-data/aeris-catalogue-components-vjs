@@ -1,0 +1,87 @@
+<template>
+  <div data-app>
+    <ul data-role="menu">
+      <li>
+        <router-link to="/search_box">/search box</router-link>
+      </li>
+      <li>
+        <router-link to="/thesaurus-item-checkbox-layout">/thesaurus-item-checkbox-layout</router-link>
+      </li>
+      <li>
+        <router-link to="/thesaurus-item-tree-checkbox-layout">/thesaurus-item-tree-checkbox-layout</router-link>
+      </li>
+      <li>
+        <router-link to="/instrument-search-criteria">/instrument-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/parameter-search-criteria">/parameter-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/platform-search-criteria">/platform-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/project-search-criteria">/project-search-criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/default-summary">/default-summary</router-link>
+      </li>
+      <li>
+        <router-link to="/summaries">/summaries</router-link>
+      </li>
+      <li>
+        <router-link to="/eurochamp">/eurochamp</router-link>
+      </li>
+      <li>
+        <router-link to="/gmos">/gmos</router-link>
+      </li>
+      <li>
+        <router-link to="/actris">/actris</router-link>
+      </li>
+      <li>
+        <router-link to="/iagos">/iagos</router-link>
+      </li>
+      <li>
+        <router-link to="/aeris">/aeris</router-link>
+      </li>
+      <li>
+        <router-link to="/metadata_panel">/metadata_panel</router-link>
+      </li>
+      <li>
+        <router-link to="/search_text_button">/search text button</router-link>
+      </li>
+      <li>
+        <router-link to="/reset_button">/reset button</router-link>
+      </li>
+      <li>
+        <router-link to="/maximize_button">/Maximize button</router-link>
+      </li>
+      <li>
+        <router-link to="/help_button">/help button</router-link>
+      </li>
+      <li>
+        <router-link to="/draw_map_button">/draw map button</router-link>
+      </li>
+      <li>
+        <router-link to="/international_field">/international field</router-link>
+      </li>
+      <li>
+        <router-link to="/search_button">/search button</router-link>
+      </li>
+      <li>
+        <router-link to="/reset_text_button">/reset text button</router-link>
+      </li>
+      <li>
+        <router-link to="/select_map_button">/select map button</router-link>
+      </li>
+      <li>
+        <router-link to="/help_content">/help content</router-link>
+      </li>
+      <li>
+        <router-link to="/spatial_criteria">/spatial criteria</router-link>
+      </li>
+    </ul>
+    <div>
+      <router-view class="view"></router-view>
+    </div>
+  </div>
+</template>

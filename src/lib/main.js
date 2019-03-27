@@ -5,4 +5,8 @@ Vue.use(VueI18n);
 
 import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
 Vue.use(VueColorPlugin);
+<<<<<<< HEAD
+=======
+
+>>>>>>> refactoring
 Vue.use(VueAerisLanguagePlugin);
