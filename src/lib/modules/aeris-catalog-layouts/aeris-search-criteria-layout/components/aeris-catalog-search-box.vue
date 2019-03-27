@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ showBody: isDeployed }" class="aeris-catalog-box">
+  <div :class="{ showBody: isDeployed }" :style="getTheme" class="aeris-catalog-box">
     <div class="box">
       <header v-if="header" class="box-heading" @click="isDeployed = !isDeployed">
         <div class="box-heading-buttons">
@@ -64,7 +64,19 @@ export default {
 
   computed: {
     getTitle() {
-      return this.title || this.boxTitle;
+      return this.title || this.box_title;
+    },
+
+    getTheme() {
+      return this.theme ? { color: this.theme.secondaryColor, background: this.theme.primaryColor } : "";
+    },
+
+    getTitleTheme() {
+      return this.theme ? { color: this.theme.emphasis } : "";
+    },
+
+    getIconTheme() {
+      return this.theme ? { color: this.theme.iconColor } : "";
     }
   }
 };
