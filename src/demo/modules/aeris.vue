@@ -141,7 +141,8 @@ export default {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-[data-template="metadata-block"] i {
+[data-template="metadata-block"] i,
+.data-aeris-metadata-list li h5 {
   --primary: rgb(11, 107, 179);
 }
 
