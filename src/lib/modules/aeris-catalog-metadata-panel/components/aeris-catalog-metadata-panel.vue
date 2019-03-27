@@ -247,7 +247,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 12px;
+  padding: 0 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
   background: #fafafa;
   color: #333;

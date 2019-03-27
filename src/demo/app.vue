@@ -77,6 +77,9 @@
         <router-link to="/catalog-cart">/catalog cart</router-link>
       </li>
       <li>
+        <router-link to="/catalogue_map">/catalogue map</router-link>
+      </li>
+      <li>
         <router-link to="/help_content">/help content</router-link>
       </li>
     </ul>
@@ -85,3 +88,13 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+ul {
+  columns: 6;
+  -webkit-columns: 6;
+  -moz-columns: 6;
+  list-style-type: none;
+  margin-bottom: 50px;
+}
+</style>
