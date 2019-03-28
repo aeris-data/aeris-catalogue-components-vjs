@@ -2,7 +2,7 @@
 {
   "en": {
     "help": "Help",
-    "helpMessage": "To search for data, select criterias in the column at the left of your screen, then click on the search button:",
+    "helpMessage": "To search for data, select criterias in the column at the left of your screen, then click on the search button :",
     "warningMessage": "This catalogue is still in development: we are working on improving both its features and its content. If you detect some bugs or if you have ideas for evolutions, please contact us with this <a href='https://en.aeris-data.fr/contact/' target='_blank'>form</a>.",
     "doNotDisplay": "Do not display this message again"
   },
@@ -38,7 +38,10 @@
         </div>
       </div>
       <br />
-      <div><i class="fa fa-warning fa-2x" style="padding-right: 10px;" /><span v-html="$t('warningMessage')" /></div>
+      <div>
+        <i class="fa fa-warning fa-2x" style="padding-right: 10px;" />
+        <span v-html="$t('warningMessage')" />
+      </div>
     </div>
   </div>
 </template>
@@ -48,106 +51,59 @@ export default {
   name: "aeris-catalog-help-content",
 
   props: {
-    lang: {
+    helpCookie: {
+      type: String,
+      default: "help-popup"
+    },
+    language: {
       type: String,
       default: "en"
     },
-    helpcookie: {
-      type: String,
-      default: "help-popup"
+    theme: {
+      type: Object,
+      default: () => {}
     }
+  },
+
+  data() {
+    return {
+      isPopupOpen: false,
+      showAtStartVisible: true
+    };
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
+    },
+    "theme.primaryColor"() {
+      this.ensureTheme();
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener("aerisTheme", this.aerisThemeListener);
-    this.aerisThemeListener = null;
-    document.removeEventListener("askForHelp", this.askForHelpListener);
-    this.askForHelpListener = null;
-  },
-
-  created: function() {
-    console.log("aeris-catalog-help-content creation");
-    this.$i18n.locale = this.lang;
-    this.aerisThemeListener = this.handleTheme.bind(this);
-    document.addEventListener("aerisTheme", this.aerisThemeListener);
-    // listen calls for help
-    this.askForHelpListener = this.showHelp.bind(this);
-    document.addEventListener("aerisAskForHelp", this.askForHelpListener);
-    if (this.helpcookie == null || this.getCookie(this.helpcookie)) {
+  created() {
+    this.$i18n.locale = this.language;
+    if (this.helpCookie == null || this.getCookie(this.helpCookie)) {
       this.isPopupOpen = false;
       this.showAtStartVisible = false;
     } else {
       this.isPopupOpen = true;
     }
   },
-
-  mounted: function() {
-    var event = new CustomEvent("aerisThemeRequest", {});
-    document.dispatchEvent(event);
+  mounted() {
+    this.ensureTheme();
   },
-
-  computed: {
-    togglePopup: function() {
-      this.isPopupOpen = !this.isPopupOpen;
-      return this.isPopupOpen;
-    }
-  },
-
-  data() {
-    return {
-      aerisThemeListener: null,
-      isPopupOpen: false,
-      showAtStartVisible: true
-    };
-  },
-
-  updated: function() {},
-
   methods: {
-    handleTheme: function(theme) {
-      this.theme = theme.detail;
-      this.ensureTheme();
+    closePopup() {
+      this.isPopupOpen = false;
     },
-
-    ensureTheme: function() {
-      if (this.isPopupOpen) {
-        var okButton = this.$el.querySelector(".ok-button");
-        var showAtStartButton = this.$el.querySelector(".show-at-startup-button");
-        if (this.theme) {
-          okButton.style.background = this.theme.primary;
-          if (this.showAtStartVisible) {
-            showAtStartButton.style.borderColor = this.theme.primary;
-          }
-        }
-        var primary = this.theme.primary;
-        var darker = this.colorLuminance(primary, -0.3);
-
-        okButton.addEventListener("mouseover", function() {
-          okButton.style.background = darker;
-        });
-        okButton.addEventListener("mouseout", function() {
-          okButton.style.background = primary;
-        });
-      }
-    },
-
-    colorLuminance: function(hex, lum) {
-      //from https://www.sitepoint.com/javascript-generate-lighter-darker-color/
-      // validate hex string
+    colorLuminance(hex, lum) {
       hex = String(hex).replace(/[^0-9a-f]/gi, "");
       if (hex.length < 6) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
       }
       lum = lum || 0;
-
-      // convert to decimal and change luminosity
-      var rgb = "#",
+      let rgb = "#",
         c,
         i;
       for (i = 0; i < 3; i++) {
@@ -155,37 +111,38 @@ export default {
         c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
         rgb += ("00" + c).substr(c.length);
       }
-
       return rgb;
     },
 
-    showHelp: function() {
-      this.isPopupOpen = true;
-      this.ensureTheme();
-    },
-
-    closePopup: function() {
-      this.togglePopup;
-    },
-
-    doNotShow: function() {
-      this.setCookie(this.helpcookie, 1, 365);
+    doNotShow() {
+      this.setCookie(this.helpCookie, 1, 365);
       this.closePopup();
     },
 
-    setCookie: function(cname, cvalue, exdays) {
-      var d = new Date();
-      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-      var expires = "expires=" + d.toUTCString();
-      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-      this.showAtStartVisible = false;
+    ensureTheme() {
+      let okButton = this.$el.querySelector(".ok-button");
+      let showAtStartButton = this.$el.querySelector(".show-at-startup-button");
+      if (this.theme) {
+        okButton.style.background = this.theme.primaryColor;
+        if (this.showAtStartVisible) {
+          showAtStartButton.style.borderColor = this.theme.primaryColor;
+        }
+        let primaryColor = this.theme.primaryColor;
+        let darker = this.colorLuminance(primaryColor, -0.3);
+        okButton.addEventListener("mouseover", () => {
+          okButton.style.background = darker;
+        });
+        okButton.addEventListener("mouseout", () => {
+          okButton.style.background = primaryColor;
+        });
+      }
     },
 
-    getCookie: function(cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(";");
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    getCookie(cname) {
+      let name = cname + "=";
+      let ca = document.cookie.split(";");
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) === " ") {
           c = c.substring(1);
         }
@@ -194,12 +151,24 @@ export default {
         }
       }
       return "";
+    },
+
+    setCookie(cname, cvalue, exdays) {
+      let d = new Date();
+      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+      let expires = "expires=" + d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      this.showAtStartVisible = false;
+    },
+
+    showHelp() {
+      this.isPopupOpen = true;
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
 .help-popup {
   display: inline-flex;
   flex-direction: column;
@@ -209,11 +178,11 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 10px;
   width: 30%;
+  text-align: center;
 }
 
 .popup-title {
@@ -221,18 +190,15 @@ export default {
   justify-content: center;
 }
 
-.popup-content,
-.message-button,
 .ok-button {
   display: inline-block;
   text-align: center;
 }
 
 .ok-button {
-  background-color: #8cd4f5;
+  background-color: #a79baf;
   color: white;
   border: none;
-
   font-size: 17px;
   font-weight: 500;
   -webkit-border-radius: 4px;
@@ -243,7 +209,7 @@ export default {
 
 .show-at-startup-button {
   align-self: flex-end;
-  margin: 10px 30px 0 0;
+  margin: 15px 0 0 0;
   color: #333;
   background-color: transparent;
   outline: none;

@@ -16,6 +16,14 @@ import AersiCatalogMaximizeButton from "../modules/aeris-catalog-buttons/aeris-c
 import AerisCatalogResetButton from "../modules/aeris-catalog-buttons/aeris-catalogue-help-button/components/aeris-catalogue-help-button.vue";
 import AerisCatalogueSearchTextButton from "../modules/aeris-catalog-buttons/aeris-catalogue-search-text-button/components/aeris-catalogue-search-text-button.vue";
 import AerisCatalogSelectMapButton from "../modules/aeris-catalog-buttons/aeris-catalogue-select-map-button/components/aeris-catalogue-select-map-button.vue";
+import AerisCatalogCart from "../modules/aeris-catalog-cart/components/aeris-catalog-cart";
+import AerisCatalogMetadataPanel from "../modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel";
+import MdTemplateCollection from "../modules/aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection";
+import AerisCatalogHelpContent from "../modules/aeris-catalog-help/components/aeris-catalog-help-content";
+import AerisCatalogMap from "../modules/aeris-catalog-map/components/aeris-catalog-map";
+import AerisKeywordSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/components/aeris-keyword-search-criteria";
+import AerisTemporalSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/components/aeris-temporal-search-criteria";
+import AerisSpatialSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/components/aeris-spatial-search-criteria";
 
 export {
   AerisThesaurusItemTreeCheckboxLayout,
@@ -35,5 +43,13 @@ export {
   AersiCatalogMaximizeButton,
   AerisCatalogResetButton,
   AerisCatalogueSearchTextButton,
-  AerisCatalogSelectMapButton
+  AerisCatalogSelectMapButton,
+  AerisCatalogCart,
+  AerisCatalogMetadataPanel,
+  MdTemplateCollection,
+  AerisCatalogHelpContent,
+  AerisCatalogMap,
+  AerisKeywordSearchCriteria,
+  AerisTemporalSearchCriteria,
+  AerisSpatialSearchCriteria
 };

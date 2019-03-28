@@ -1,5 +1,5 @@
 <template>
-  <div style="width:1000px;heigth:800px; margin:0 auto">
+  <div style="width:1000px;height:800px; margin:0 auto">
     <aeris-international-field
       :value="value"
       :max-length="200"
