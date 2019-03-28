@@ -13,17 +13,15 @@
 </i18n>
 
 <template>
-  <div data-aeris-keyword-search-criteria>
+  
     <aeris-ui-input
       :title="$t('titleHelp')"
-      :value="current"
       :placeholder="$t('keywords')"
-      icon="fa fa-pencil"
+      icon="fas fa-pencil-alt"
       name="keywords"
-      @input="current = $event.target.value"
-      @keyup.enter="inputKeyword"
+      @input="inputKeyword"
     ></aeris-ui-input>
-  </div>
+ 
 </template>
 
 <script>
@@ -36,10 +34,7 @@ export default {
       type: String,
       default: "en"
     },
-    isShowOperators: {
-      type: Boolean,
-      default: true
-    }
+ 
   },
 
   watch: {
@@ -57,43 +52,31 @@ export default {
     return {
       keywords: [],
       current: "",
-      keywordDeletionListener: null,
-      catalogueResetListener: null,
-      catalogueSearchListener: null,
-      operator: ""
     };
   },
 
   methods: {
+  
     handleKeywordDeletion(e) {
       let itemref = e.detail.itemref;
       let index = this.keywords.indexOf(itemref);
       if (index > -1) {
         this.keywords.splice(index, 1);
       }
-      e.stopPropagation();
+    
     },
 
-    handleCatalogueReset() {
+      keywordsReset() {
       this.keywords.splice(0, this.keywords.length);
       this.current = "";
-    },
-
-    handleCatalogueSearch(e) {
-      this.parseKeyword(this.current.trim());
-      e.detail.keywords = this.keywords;
-      e.detail.searchOperator = this.operator;
     },
 
     inputKeyword(e) {
       let inputValue = this.current.trim();
       this.parseKeyword(inputValue);
-      this.handleSearch(e);
     },
 
-    typeIndex(index) {
-      return `${this.name}-${index}`;
-    },
+
 
     parseKeyword(value) {
       let finalQuery = "";
@@ -128,19 +111,5 @@ export default {
 </script>
 
 <style>
-[data-aeris-keyword-search-criteria] aeris-cartouche .aeris-cartouche-container {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  margin-top: 8px;
-}
 
-[data-aeris-keyword-search-criteria] .operator {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-[data-aeris-keyword-search-criteria] input[value="and"] {
-  margin-left: 30px;
-}
 </style>
