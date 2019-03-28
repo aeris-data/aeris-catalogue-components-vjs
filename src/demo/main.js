@@ -43,7 +43,7 @@ import AerisCatalogCartTest from "./modules/aeris-catalog-cart/aeris-catalog-car
 import AerisCatalogueMapTest from "./modules/aeris-catalogue-map/aeris-catalogue-map-test";
 import AerisMetadataPanelTest from "./modules/aeris-metadata-panel/metadata-panel-test.vue";
 import AerisCatalogHelpContent from "./modules/aeris-catalog-help/aeris-catalog-help-content-test";
-import AerisKeywordSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria-test.vue"
+import AerisKeywordSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria-test.vue";
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
@@ -54,6 +54,7 @@ import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/ae
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
 import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
 import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
+import catalogKeywordModule from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/store/aeris-keyword-search-criteria";
 
 const store = new Vuex.Store({
   namespaced: true,
@@ -61,7 +62,8 @@ const store = new Vuex.Store({
     searchCriteriaModule,
     catalogSummariesModule,
     notificationModule,
-    cartStoreModule
+    cartStoreModule,
+    catalogKeywordModule
   }
 });
 

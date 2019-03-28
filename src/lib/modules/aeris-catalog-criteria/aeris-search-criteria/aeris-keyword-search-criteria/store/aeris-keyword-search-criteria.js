@@ -1,15 +1,18 @@
 export default {
   state: {
-    keywords
+    keywords: []
   },
 
   getters: {
-    getKeywordse: state => state.keywords
+    getKeywords: state => state.keywords
   },
 
   mutations: {
     setKeywords(state, keywords) {
       state.keywords = keywords;
+    },
+    resetKeywords(state) {
+      state.keywords = [];
     }
   }
 };

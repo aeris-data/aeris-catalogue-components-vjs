@@ -13,28 +13,25 @@
 </i18n>
 
 <template>
-  
-    <aeris-ui-input
-      :title="$t('titleHelp')"
-      :placeholder="$t('keywords')"
-      icon="fas fa-pencil-alt"
-      name="keywords"
-      @input="inputKeyword"
-    ></aeris-ui-input>
- 
+  <aeris-ui-input
+    :title="$t('titleHelp')"
+    :placeholder="$t('keywords')"
+    icon="fas fa-pencil-alt"
+    name="keywords"
+    @input="inputKeyword"
+  ></aeris-ui-input>
 </template>
 
 <script>
 import { AerisUiInput } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-keyword-search-criteria-content",
-  components:{AerisUiInput},
+  components: { AerisUiInput },
   props: {
     language: {
       type: String,
       default: "en"
-    },
- 
+    }
   },
 
   watch: {
@@ -50,33 +47,20 @@ export default {
 
   data() {
     return {
-      keywords: [],
-      current: "",
+      keywords: []
     };
   },
 
   methods: {
-  
-    handleKeywordDeletion(e) {
-      let itemref = e.detail.itemref;
-      let index = this.keywords.indexOf(itemref);
-      if (index > -1) {
-        this.keywords.splice(index, 1);
-      }
-    
-    },
-
-      keywordsReset() {
-      this.keywords.splice(0, this.keywords.length);
-      this.current = "";
+    keywordsReset() {
+      this.keywords = [];
+      this.$store.commit("resetKeywords");
     },
 
     inputKeyword(e) {
-      let inputValue = this.current.trim();
+      let inputValue = e.trim();
       this.parseKeyword(inputValue);
     },
-
-
 
     parseKeyword(value) {
       let finalQuery = "";
@@ -100,6 +84,7 @@ export default {
       });
       finalQuery = finalQuery.split(" ");
       this.keywords = finalQuery.filter(Boolean);
+      this.$store.commit("setKeywords", this.keywords);
     },
 
     checkSpecialWord(value) {
@@ -109,7 +94,3 @@ export default {
   }
 };
 </script>
-
-<style>
-
-</style>
