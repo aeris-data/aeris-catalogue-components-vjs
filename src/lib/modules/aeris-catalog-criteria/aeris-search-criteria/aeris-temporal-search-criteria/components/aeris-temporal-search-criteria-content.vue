@@ -1,29 +1,31 @@
 <template>
-  <div data-aeris-temporal-search-criteria-content>
+  <div aeris-temporal-search-criteria-content>
     <aeris-datepicker
+      ref="fromDatePicker"
       :theme="{ emphasis: '#f39c12' }"
       :label="{
-            key: 'from',
-            lang: {
-              en: { from: 'From' },
-              fr: { from: 'De' }
-            }
-          }"
-      language="en"
+        key: 'from',
+        lang: {
+          en: { from: 'From' },
+          fr: { from: 'De' }
+        }
+      }"
+      :language="language"
       format="DD/MM/YYYY HH:mm"
       @date="setFromDate"
     ></aeris-datepicker>
 
     <aeris-datepicker
+      ref="toDatePicker"
       :theme="{ emphasis: '#f39c12' }"
       :label="{
-            key: 'to',
-             lang: {
-              en: { to: 'To' },
-              fr: { to: 'À' }
-            }
-          }"
-      language="en"
+        key: 'to',
+        lang: {
+          en: { to: 'To' },
+          fr: { to: 'À' }
+        }
+      }"
+      :language="language"
       format="DD/MM/YYYY HH:mm"
       @date="setToDate"
     ></aeris-datepicker>
@@ -34,19 +36,14 @@
 import { AerisDatepicker } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-temporal-search-criteria-content",
+
   components: { AerisDatepicker },
+
   props: {
     language: {
       type: String,
       default: "en"
     }
-  },
-
-  data() {
-    return {
-      fromDate: "",
-      toDate: ""
-    };
   },
 
   watch: {
@@ -57,31 +54,22 @@ export default {
 
   methods: {
     setFromDate(value) {
-      this.fromDate = value;
+      this.$store.commit("setFromDate", value);
     },
     setToDate(value) {
-      this.toDate = value;
+      this.$store.commit("setToDate", value);
+    },
+    resetDate() {
+      this.$store.commit("resetDate");
+      this.$refs.toDatePicker().resetDate();
+      this.$refs.fromDatePicker().resetDate();
     }
   }
 };
 </script>
 
 <style scoped>
-[data-aeris-temporal-search-criteria-content] {
+[aeris-temporal-search-criteria-content] {
   display: block;
 }
-
-/* [data-aeris-temporal-search-criteria-content] .right {
-  min-width: 40px;
-  border-right: 1px solid #fff;
-  box-sizing: border-box;
-  display: block;
-  height: 100%;
-  text-align: center;
-}
-
-[data-aeris-temporal-search-criteria-content] .error-message {
-  font-size: 12px;
-  color: red;
-} */
 </style>

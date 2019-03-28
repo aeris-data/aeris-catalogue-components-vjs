@@ -38,7 +38,7 @@ import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/ae
 import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria-test";
 import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
 import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
-import AerisTemporalSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria-test"
+import AerisTemporalSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria-test";
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -48,13 +48,15 @@ import aeris from "./modules/aeris.vue";
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
+import temporalModule from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/store/aeris-temporal-search-criteria";
 
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
     searchCriteriaModule,
     catalogSummariesModule,
-    notificationModule
+    notificationModule,
+    temporalModule
   }
 });
 

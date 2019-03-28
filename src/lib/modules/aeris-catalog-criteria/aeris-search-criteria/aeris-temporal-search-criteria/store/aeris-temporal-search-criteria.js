@@ -1,6 +1,6 @@
 export default {
   state: {
-    date: "1970-01-01"
+    date: { from: "", to: "" }
   },
   getters: {
     getDate: state => state.date
@@ -8,6 +8,15 @@ export default {
   mutations: {
     setDate(state, date) {
       state.date = date;
+    },
+    setFromDate(state, fromDate) {
+      state.date.from = fromDate;
+    },
+    setToDate(state, toDate) {
+      state.date.to = toDate;
+    },
+    resetDate(state) {
+      state.date = { from: "", to: "" };
     }
   }
 };
