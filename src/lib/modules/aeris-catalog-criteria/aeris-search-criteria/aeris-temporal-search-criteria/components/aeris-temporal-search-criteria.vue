@@ -17,7 +17,7 @@
       :deployed="deployed"
       header-icon-class="fa fa-calendar"
     >
-      <aeris-temporal-search-criteria-content lang="fr"></aeris-temporal-search-criteria-content>
+      <aeris-temporal-search-criteria-content language="en"></aeris-temporal-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -29,9 +29,9 @@ export default {
   name: "aeris-temporal-search-criteria",
   components: { AerisCatalogSearchBox, AerisTemporalSearchCriteriaContent },
   props: {
-    lang: {
+    language: {
       type: String,
-      default: "fr"
+      default: "en"
     },
     deployed: {
       type: Boolean,
@@ -40,7 +40,7 @@ export default {
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   }

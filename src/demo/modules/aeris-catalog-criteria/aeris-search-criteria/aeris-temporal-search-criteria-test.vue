@@ -1,5 +1,5 @@
 <template>
-  <aeris-temporal-search-criteria lang="en"></aeris-temporal-search-criteria>
+  <aeris-temporal-search-criteria language="en"></aeris-temporal-search-criteria>
 </template>
 
 <script>
