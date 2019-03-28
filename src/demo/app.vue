@@ -82,6 +82,9 @@
       <li>
         <router-link to="/help_content">/help content</router-link>
       </li>
+      <li>
+        <router-link to="/keyword">/keyword</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>

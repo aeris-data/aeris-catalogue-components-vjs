@@ -14,7 +14,7 @@
 
 <template>
   <div data-aeris-keyword-search-criteria>
-    <aeris-catalog-ui-input
+    <aeris-ui-input
       :title="$t('titleHelp')"
       :value="current"
       :placeholder="$t('keywords')"
@@ -22,16 +22,17 @@
       name="keywords"
       @input="current = $event.target.value"
       @keyup.enter="inputKeyword"
-    ></aeris-catalog-ui-input>
+    ></aeris-ui-input>
   </div>
 </template>
 
 <script>
+import { AerisUiInput } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-keyword-search-criteria-content",
-
+  components:{AerisUiInput},
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -42,7 +43,7 @@ export default {
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     },
     isShowOperators(value) {
@@ -51,31 +52,6 @@ export default {
       }
     }
   },
-
-  destroyed: function() {
-    document.removeEventListener("aerisCartoucheItemDeleted", this.keywordDeletionListener);
-    this.keywordDeletionListener = null;
-    document.removeEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.catalogueResetListener = null;
-    document.removeEventListener("aerisCatalogueSearchEvent", this.catalogueSearchListener);
-    this.catalogueSearchListener = null;
-  },
-
-  created: function() {
-    this.$i18n.locale = this.lang;
-    this.keywordDeletionListener = this.handleKeywordDeletion.bind(this);
-    document.addEventListener("aerisCartoucheItemDeleted", this.keywordDeletionListener);
-    this.catalogueSearchListener = this.handleCatalogueSearch.bind(this);
-    document.addEventListener("aerisCatalogueSearchEvent", this.catalogueSearchListener);
-    this.catalogueResetListener = this.handleCatalogueReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-  },
-
-  mounted: function() {
-    console.log("Aeris keywords search criteria content - mounted");
-  },
-
-  computed: {},
 
   data() {
     return {
@@ -88,10 +64,8 @@ export default {
     };
   },
 
-  updated: function() {},
-
   methods: {
-    handleKeywordDeletion: function(e) {
+    handleKeywordDeletion(e) {
       let itemref = e.detail.itemref;
       let index = this.keywords.indexOf(itemref);
       if (index > -1) {
@@ -100,36 +74,24 @@ export default {
       e.stopPropagation();
     },
 
-    handleCatalogueReset: function() {
+    handleCatalogueReset() {
       this.keywords.splice(0, this.keywords.length);
       this.current = "";
     },
 
-    handleCatalogueSearch: function(e) {
+    handleCatalogueSearch(e) {
       this.parseKeyword(this.current.trim());
       e.detail.keywords = this.keywords;
       e.detail.searchOperator = this.operator;
     },
 
-    handleSearch: function() {
-      var e = new CustomEvent("aerisCatalogueSearchStartEvent", {
-        detail: {
-          range: {
-            min: 0,
-            max: 24
-          }
-        }
-      });
-      document.dispatchEvent(e);
-    },
-
-    inputKeyword: function(e) {
+    inputKeyword(e) {
       let inputValue = this.current.trim();
       this.parseKeyword(inputValue);
       this.handleSearch(e);
     },
 
-    typeIndex: function(index) {
+    typeIndex(index) {
       return `${this.name}-${index}`;
     },
 

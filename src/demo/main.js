@@ -43,7 +43,7 @@ import AerisCatalogCartTest from "./modules/aeris-catalog-cart/aeris-catalog-car
 import AerisCatalogueMapTest from "./modules/aeris-catalogue-map/aeris-catalogue-map-test";
 import AerisMetadataPanelTest from "./modules/aeris-metadata-panel/metadata-panel-test.vue";
 import AerisCatalogHelpContent from "./modules/aeris-catalog-help/aeris-catalog-help-content-test";
-
+import AerisKeywordSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria-test.vue"
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
@@ -179,6 +179,10 @@ const router = new VueRouter({
     {
       path: "/help_content",
       component: AerisCatalogHelpContent
+    },
+    {
+      path: "/keyword",
+      component: AerisKeywordSearchCriteriaTest
     }
   ]
 });
