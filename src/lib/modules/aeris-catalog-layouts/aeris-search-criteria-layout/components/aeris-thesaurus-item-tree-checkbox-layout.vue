@@ -22,6 +22,7 @@
         :thesaurus-item="thesaurusItem"
         :theme="theme"
         :thesaurus-type="type"
+        :ref="'thesaurusItemTreeCheckbox' + type"
       ></aeris-thesaurus-item-checkbox-layout>
     </div>
   </section>
@@ -89,14 +90,12 @@ export default {
               Accept: "application/json"
             }
           })
-          .then(
-            response => {
-              this.handleResponse(response, language);
-            },
-            response => {
-              this.handleError();
-            }
-          );
+          .then(response => {
+            this.handleResponse(response, language);
+          })
+          .catch(() => {
+            this.handleError();
+          });
       }
     },
 
@@ -139,6 +138,11 @@ export default {
           });
       }
       return thesaurusItemTmp;
+    },
+    resetChecked() {
+      this.$refs["thesaurusItemTreeCheckbox" + this.type].forEach(thesaurusItem => {
+        thesaurusItem.resetChecked();
+      });
     }
   }
 };

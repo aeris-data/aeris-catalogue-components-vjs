@@ -28,6 +28,13 @@ export default {
       state.cartContent.forEach(itemCart => {
         return itemCart.identifier === collection.identifier;
       });
+    },
+    getItemIdsInCart: state => {
+      let itemIds = [];
+      state.cartContent.forEach(itemCart => {
+        itemIds.push(itemCart.identifier);
+      });
+      return itemIds;
     }
   },
   mutations: {

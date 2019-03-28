@@ -18,6 +18,7 @@
       header-icon-class="fa fa-calculator"
     >
       <aeris-thesaurus-item-tree-checkbox-layout
+        ref="instrumentSearchCriteria"
         :theme="theme"
         :service="service"
         :language="language"
@@ -63,6 +64,12 @@ export default {
 
   created() {
     this.$i18n.locale = this.language;
+  },
+
+  methods: {
+    resetSelection() {
+      this.$refs.instrumentSearchCriteria.resetChecked();
+    }
   }
 };
 </script>

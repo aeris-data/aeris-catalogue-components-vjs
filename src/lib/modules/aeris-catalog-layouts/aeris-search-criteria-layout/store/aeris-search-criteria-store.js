@@ -29,9 +29,10 @@ export default {
         state.selectedCriteria[type] = [];
         state.selectedCriteria[type].push(selectedCriteria.thesaurusItem.search);
       }
+    },
+
+    clearSelectedCriteria(state) {
+      state.selectedCriteria = {};
     }
-  },
-  clearSelectedCriteria(state) {
-    state.selectedCriteria = {};
   }
 };

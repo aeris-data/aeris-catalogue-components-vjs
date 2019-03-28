@@ -154,27 +154,7 @@ export default {
       return selectedSummary;
     },
     getItemIdsInCart() {
-      let itemIds = [];
-      this.$store.getters.getCartContent.forEach(itemCart => {
-        itemIds.push(itemCart.identifier);
-      });
-      return itemIds;
-    },
-    isInCart() {
-      return idenfitier => {
-        return this.getItemIdsInCart.includes(idenfitier);
-      };
-    },
-    selectedItemCart() {
-      return identifier => {
-        let currentItem;
-        this.$store.getters.getCartContent.forEach(itemCart => {
-          if (itemCart.idenfitier === identifier) {
-            currentItem = itemCart;
-          }
-        });
-        return currentItem;
-      };
+      return this.$store.getters.getItemIdsInCart;
     }
   },
 
@@ -186,169 +166,9 @@ export default {
 
   created() {
     this.$i18n.locale = this.language;
-
-    this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this);
-    document.addEventListener("aerisCatalogueDisplayMetadata", this.aerisCatalogueDisplayMetadataEventListener);
-
-    this.aerisCatalogueHideMetadataEventListener = this.handleHideMetadata.bind(this);
-    document.addEventListener("aerisCatalogueHideMetadata", this.aerisCatalogueHideMetadataEventListener);
-
-    this.aerisCatalogueResetEventListener = this.handleReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.aerisCatalogueResetEventListener);
   },
 
   methods: {
-    handleReset(e) {
-      this.hideMetadataPanel();
-    },
-
-    handleDisplayMetadata(e) {
-      this.hideMetadataPanel();
-      if (e.detail.uuid) {
-        this.currentUuid = e.detail.uuid;
-      } else {
-        this.currentUuid = "";
-      }
-      if (e.detail.title) {
-        this.currentTitle = e.detail.title;
-      } else {
-        this.currentTitle = "";
-      }
-      if (e.detail.iconClass) {
-        this.currentIconClass = e.detail.iconClass;
-      } else {
-        this.currentIconClass = "";
-      }
-      if (e.detail.type) {
-        this.currentType = e.detail.type;
-      } else {
-        this.currentType = "";
-      }
-      if (e.detail.clientTemplateName) {
-        this.currentTemplate = e.detail.clientTemplateName;
-      } else {
-        this.currentTemplate = "";
-      }
-      if (e.detail.projects) {
-        this.currentProjects = e.detail.projects;
-      } else {
-        this.currentProjects = "";
-      }
-      this.visibleMetadataPanel = true;
-    },
-
-    handleHideMetadata() {
-      this.hideMetadataPanel();
-    },
-
-    handleCatalogueSearchStart(event) {
-      this.hideMetadataPanel();
-
-      var e = new CustomEvent("aerisCatalogueSearchEvent", {
-        detail: {}
-      });
-      document.dispatchEvent(e);
-
-      if (!this.metadataService) {
-        console.error("AerisCatalogueSearcEvent detected but metadataService not provided in props...");
-        return;
-      }
-
-      var url = this.metadataService + "/request";
-      if (this.metadataService.endsWith("/")) {
-        url = this.metadataService + "request";
-      }
-
-      if (this.program) {
-        url = url + "?program=" + this.program;
-      }
-
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStartEvent", {
-          detail: {
-            message: this.$t("searching")
-          }
-        })
-      );
-      // do not search if there's no criteria
-      e.detail.userLanguage = this.language;
-      if (
-        !this.program &&
-        ((!e.detail.collections || e.detail.collections.length < 1) &&
-          (!e.detail.keywords || e.detail.keywords.length < 1) &&
-          (!e.detail.box || e.detail.box.north == "") &&
-          (!e.detail.temporal || e.detail.temporal.from == "") &&
-          !e.detail.platforms &&
-          !e.detail.sublevels &&
-          !e.detail.instruments &&
-          !e.detail.parameters &&
-          !e.detail.projects)
-      ) {
-        document.dispatchEvent(
-          new CustomEvent("aerisLongActionStopEvent", {
-            detail: {
-              message: this.$t("searching")
-            }
-          })
-        );
-        // tell the user
-        document.dispatchEvent(
-          new CustomEvent("aerisErrorNotificationMessageEvent", { detail: { message: this.$t("nocriteria") } })
-        );
-      } else {
-        let range = event.detail.range;
-        this.$http
-          .post(
-            this.program ? `${url}&range=${range.min}-${range.max}` : `${url}?range=${range.min}-${range.max}`,
-            e.detail
-          )
-          .then(
-            response => {
-              this.handleSuccess(response, range);
-            },
-            response => {
-              this.handleError(response);
-            }
-          );
-      }
-    },
-
-    handleSuccess(response, range) {
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStopEvent", {
-          detail: {
-            message: this.$t("searching")
-          }
-        })
-      );
-
-      var search = response.body;
-
-      if (search.total === 0) {
-        document.dispatchEvent(
-          new CustomEvent("aerisNotificationMessageEvent", {
-            detail: {
-              message: this.$t("noresult")
-            }
-          })
-        );
-      }
-      // do not display project on specific catalogue
-      if (this.program != null) {
-        search.results.map(summary => {
-          summary.projectList = null;
-        });
-      }
-      document.dispatchEvent(
-        new CustomEvent("aerisSummaries", {
-          detail: {
-            search: search,
-            range: range
-          }
-        })
-      );
-    },
-
     startSearch() {
       let criteria = {
         keywords: [],
@@ -359,7 +179,10 @@ export default {
       this.getSummaries({ ...criteria, ...this.getSelectedThesaurusCriteria });
     },
 
-    resetSearch() {},
+    resetSearch() {
+      this.$store.commit("clearSelectedCriteria");
+      this.$store.commit("resetSummariesToDefaultValues");
+    },
 
     showMore() {
       this.getSummaries(this.getSelectedThesaurusCriteria);

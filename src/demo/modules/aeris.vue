@@ -20,10 +20,26 @@
       cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart"
     >
       <div slot="criteria">
-        <aeris-project-search-criteria :theme="theme" :language="language"></aeris-project-search-criteria>
-        <aeris-parameter-search-criteria :theme="theme" :language="language"></aeris-parameter-search-criteria>
-        <aeris-platform-search-criteria :theme="theme" :language="language"></aeris-platform-search-criteria>
-        <aeris-instrument-search-criteria :theme="theme" :language="language"></aeris-instrument-search-criteria>
+        <aeris-project-search-criteria
+          ref="projectSearchCriteria"
+          :theme="theme"
+          :language="language"
+        ></aeris-project-search-criteria>
+        <aeris-parameter-search-criteria
+          ref="parameterSearchCriteria"
+          :theme="theme"
+          :language="language"
+        ></aeris-parameter-search-criteria>
+        <aeris-platform-search-criteria
+          ref="platformSearchCriteria"
+          :theme="theme"
+          :language="language"
+        ></aeris-platform-search-criteria>
+        <aeris-instrument-search-criteria
+          ref="instrumentSearchCriteria"
+          :theme="theme"
+          :language="language"
+        ></aeris-instrument-search-criteria>
       </div>
       <div slot="buttons-criteria">
         <aeris-catalogue-reset-text-button
@@ -81,7 +97,12 @@ export default {
   methods: {
     catalogueReset() {
       this.$refs.aeriscatalog.resetSearch();
+      this.$refs.projectSearchCriteria.resetSelection();
+      this.$refs.parameterSearchCriteria.resetSelection();
+      this.$refs.platformSearchCriteria.resetSelection();
+      this.$refs.instrumentSearchCriteria.resetSelection();
     },
+
     catalogueSearchStart() {
       this.$refs.aeriscatalog.startSearch();
     }
