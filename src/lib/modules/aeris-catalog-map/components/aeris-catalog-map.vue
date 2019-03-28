@@ -261,6 +261,7 @@ export default {
         west: topLeft[0],
         north: topLeft[1]
       };
+      this.$store.commit("setCoordinate", selectionDraw)
       this.$emit("selectionDrawEvent", selectionDraw);
     },
 

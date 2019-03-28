@@ -12,9 +12,9 @@
 <template>
   <div data-aeris-spatial-extents-search-criteria>
     <aeris-catalog-search-box
-    
+      :theme="theme"
       id="box"
-      :box_title="$t('spatial-extents')"
+      :title="$t('spatial-extents')"
       :deployed="deployed"
       header-icon-class="fa fa-globe"
     >
@@ -53,23 +53,14 @@ export default {
     }
   },
 
-  destroyed: function() {},
-
-  created: function() {
+  created() {
     this.$i18n.locale = this.lang;
   },
-
-  mounted: function() {},
-
-  computed: {},
 
   data() {
     return {};
   },
 
-  updated: function() {},
-
-  methods: {}
 };
 </script>
 

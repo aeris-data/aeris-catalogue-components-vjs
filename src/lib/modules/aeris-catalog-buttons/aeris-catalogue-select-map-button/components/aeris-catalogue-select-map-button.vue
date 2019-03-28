@@ -34,6 +34,7 @@ export default {
 
   computed: {
     getTheme() {
+      console.log(this.theme)
       return this.isActive ? { emphasis: this.theme.primaryColor, color: this.theme.secondaryColor } : {};
     },
     getThemeIcon() {

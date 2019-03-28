@@ -43,7 +43,7 @@
       >
         <i class="fa fa-map" /><i>{{ $t("map") }}</i>
       </button>
-      <button :title="$t('clear')" type="button" class="spatial-reset-button leftbutton" @click="handleReset">
+      <button :title="$t('clear')" type="button" class="spatial-reset-button leftbutton" @click="resetCoordinate">
         <i class="fa fa-trash" /><i>{{ $t("clear") }}</i>
       </button>
     </div>
@@ -53,6 +53,7 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("northAbbr") }}</span
         ><input
+          ref="north"
           v-model="map.coordinate.north "
           class="spatial-search-criteria"
           name="north"
@@ -63,6 +64,7 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("eastAbbr") }}</span
         ><input
+          ref="east"
           v-model="map.coordinate.east"
           class="spatial-search-criteria"
           name="east"
@@ -73,6 +75,7 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("southAbbr") }}</span
         ><input
+          ref="south"
           v-model="map.coordinate.south"
           class="spatial-search-criteria"
           name="south"
@@ -83,6 +86,7 @@
       <div class="aeris-input-group">
         <span class="right">{{ $t("westAbbr") }}</span
         ><input
+          ref="west"
           v-model="map.coordinate.west"
           class="spatial-search-criteria"
           name="west"
@@ -151,22 +155,23 @@ export default {
       aerisCatalogueSearchEventListener: null,
       map: {
         coordinate: {
-          north: 0,
-          south: 0,
-          east: 0,
-          west: 0
+          north: "",
+          south: "",
+          east: "",
+          west: ""
                   }
       }
     };
   },
 
   methods: {
-
+    
     getSelection(selection) {
       this.map.coordinate.north = selection.north.toFixed(4);
       this.map.coordinate.south = selection.south.toFixed(4);
       this.map.coordinate.east = selection.east.toFixed(4);
       this.map.coordinate.west = selection.west.toFixed(4);
+      this.$store.commit("setCoordinate", this.map.coordinate)
     },
     isValidLatitude(latitude) {
       let aux = parseFloat(latitude);
@@ -220,7 +225,7 @@ export default {
       this.showMap = !this.showMap;
     },
 
-    handleReset() {
+    resetCoordinate() {
       this.map.coordinate.north = "";
       this.map.coordinate.south = "";
       this.map.coordinate.east = "";

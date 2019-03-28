@@ -10,10 +10,12 @@ export default {
     },
     data() {
         return {
-theme: {
+
+       theme: {
         primaryColor: "#f39c12",
-        secondaryColor: "grey"
-      },
+        secondaryColor: "grey",
+       
+      } 
         }
     }
 }
