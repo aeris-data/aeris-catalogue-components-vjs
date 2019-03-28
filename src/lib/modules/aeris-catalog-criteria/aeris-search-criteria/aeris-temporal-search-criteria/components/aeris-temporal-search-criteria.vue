@@ -17,17 +17,19 @@
       :deployed="deployed"
       header-icon-class="fa fa-calendar"
     >
-      <aeris-temporal-search-criteria-content></aeris-temporal-search-criteria-content>
+      <aeris-temporal-search-criteria-content language="en"></aeris-temporal-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
 </template>
 
 <script>
+import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box";
+import AerisTemporalSearchCriteriaContent from "./aeris-temporal-search-criteria-content";
 export default {
   name: "aeris-temporal-search-criteria",
-
+  components: { AerisCatalogSearchBox, AerisTemporalSearchCriteriaContent },
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -38,29 +40,9 @@ export default {
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
-  },
-
-  destroyed: function() {},
-
-  created: function() {
-    this.$i18n.locale = this.lang;
-  },
-
-  mounted: function() {},
-
-  computed: {},
-
-  data() {
-    return {};
-  },
-
-  updated: function() {},
-
-  methods: {}
+  }
 };
 </script>
-
-<style></style>
