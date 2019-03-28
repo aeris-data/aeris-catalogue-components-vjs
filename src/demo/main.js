@@ -54,6 +54,7 @@ import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/ae
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
 import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
 import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
+import spatialcriteria from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/store/aeris-spatial-criteria-store"
 
 const store = new Vuex.Store({
   namespaced: true,
@@ -61,7 +62,8 @@ const store = new Vuex.Store({
     searchCriteriaModule,
     catalogSummariesModule,
     notificationModule,
-    cartStoreModule
+    cartStoreModule,
+    spatialcriteria
   }
 });
 

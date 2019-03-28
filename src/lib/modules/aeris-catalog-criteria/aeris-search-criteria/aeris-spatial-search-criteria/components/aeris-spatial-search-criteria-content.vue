@@ -118,7 +118,7 @@ export default {
   name: "aeris-spatial-search-criteria-content",
   components: {AerisCatalogueMap},
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -130,14 +130,14 @@ export default {
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
   
   created() {
-    this.$i18n.locale = this.lang;
+    this.$i18n.locale = this.language;
   },
 
 

@@ -18,7 +18,7 @@
       :deployed="deployed"
       header-icon-class="fa fa-globe"
     >
-      <aeris-spatial-search-criteria-content lang="fr" :theme="theme"></aeris-spatial-search-criteria-content>
+      <aeris-spatial-search-criteria-content language="fr" :theme="theme"></aeris-spatial-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
     AerisSpatialSearchCriteriaContent
   },
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
@@ -48,13 +48,13 @@ export default {
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
   created() {
-    this.$i18n.locale = this.lang;
+    this.$i18n.locale = this.language;
   },
 
   data() {
