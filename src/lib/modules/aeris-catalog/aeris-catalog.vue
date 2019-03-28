@@ -582,9 +582,4 @@ export default {
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .badge {
   color: var(--criteriaBackgroundColor, #21242b);
 }
-
-aeris-datepicker span.aeris-datepicker-host {
-  position: relative;
-  width: 60%;
-}
 </style>

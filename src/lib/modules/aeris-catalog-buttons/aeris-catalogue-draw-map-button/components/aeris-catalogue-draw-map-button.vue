@@ -31,7 +31,7 @@ export default {
 
   computed: {
     getTheme() {
-      return this.isActive ? { emphasis: "#f39c12", color: "grey" } : {};
+      return this.isActive ? { emphasis: this.theme.primaryColor, color: this.theme.secondaryColor } : {};
     },
     getThemeIcon() {
       return { color: "white" };

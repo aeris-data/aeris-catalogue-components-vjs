@@ -22,7 +22,7 @@ Vue.use(VueAerisLanguagePlugin);
 import app from "./app.vue";
 import AerisThesaurusItemCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-checkbox-layout-test";
 import AerisThesaurusItemTreeCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-thesaurus-item-tree-checkbox-layout-test";
-
+import AerisSpatialSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria-test.vue";
 import AerisCatalogueSearchBoxTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-catalogue-search-box-test.vue";
 import AerisCatalogueSearchButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-search-button/aeris-catalogue-search-button-test.vue";
 import AerisCatalogueResetTextButtonTest from "./modules/aeris-catalog-buttons/aeris-catalogue-reset-text-button/aeris-catalogue-reset-text-button-test.vue";
@@ -55,6 +55,7 @@ import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aer
 import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
 import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 import catalogKeywordModule from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/store/aeris-keyword-search-criteria";
+import spatialcriteria from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/store/aeris-spatial-criteria-store";
 
 const store = new Vuex.Store({
   namespaced: true,
@@ -63,7 +64,8 @@ const store = new Vuex.Store({
     catalogSummariesModule,
     notificationModule,
     cartStoreModule,
-    catalogKeywordModule
+    catalogKeywordModule,
+    spatialcriteria
   }
 });
 
@@ -185,6 +187,10 @@ const router = new VueRouter({
     {
       path: "/keyword",
       component: AerisKeywordSearchCriteriaTest
+    },
+    {
+      path: "/spatial_criteria",
+      component: AerisSpatialSearchCriteriaTest
     }
   ]
 });

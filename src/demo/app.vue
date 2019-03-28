@@ -85,6 +85,9 @@
       <li>
         <router-link to="/keyword">/keyword</router-link>
       </li>
+      <li>
+        <router-link to="/spatial_criteria">/spatial criteria</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>
