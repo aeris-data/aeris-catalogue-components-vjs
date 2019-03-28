@@ -12,26 +12,31 @@
 <template>
   <div data-aeris-spatial-extents-search-criteria>
     <aeris-catalog-search-box
-      :theme="theme"
       id="box"
+      :theme="theme"
       :title="$t('spatial-extents')"
       :deployed="deployed"
       header-icon-class="fa fa-globe"
     >
-      <aeris-spatial-search-criteria-content language="fr" :theme="theme"></aeris-spatial-search-criteria-content>
+      <aeris-spatial-search-criteria-content
+        :language="language"
+        :theme="theme"
+      ></aeris-spatial-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
 </template>
 
 <script>
-import AerisSpatialSearchCriteriaContent from "./aeris-spatial-search-criteria-content"
-import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box"
+import AerisSpatialSearchCriteriaContent from "./aeris-spatial-search-criteria-content";
+import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box";
 export default {
   name: "aeris-spatial-search-criteria",
-  components:{
+
+  components: {
     AerisCatalogSearchBox,
     AerisSpatialSearchCriteriaContent
   },
+
   props: {
     language: {
       type: String,
@@ -41,9 +46,9 @@ export default {
       type: Boolean,
       default: false
     },
-    theme:{
-      type:Object,
-      default:()=>{}
+    theme: {
+      type: Object,
+      default: () => {}
     }
   },
 
@@ -55,13 +60,6 @@ export default {
 
   created() {
     this.$i18n.locale = this.language;
-  },
-
-  data() {
-    return {};
-  },
-
+  }
 };
 </script>
-
-<style></style>

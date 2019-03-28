@@ -5,7 +5,7 @@ export default {
       south: "",
       east: "",
       west: ""
-              }
+    }
   },
 
   getters: {
@@ -15,6 +15,14 @@ export default {
   mutations: {
     setCoordinate(state, coordinate) {
       state.coordinate = coordinate;
+    },
+    resetCoordinate(state) {
+      state.coordinate = {
+        north: "",
+        south: "",
+        east: "",
+        west: ""
+      };
     }
   }
 };

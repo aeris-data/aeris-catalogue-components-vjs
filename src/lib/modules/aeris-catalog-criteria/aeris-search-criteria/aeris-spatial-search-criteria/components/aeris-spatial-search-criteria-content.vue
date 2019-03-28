@@ -32,7 +32,7 @@
 </i18n>
 
 <template>
-  <div data-aeris-spatial-search-criteria-content>
+  <div aeris-spatial-search-criteria-content>
     <div class="box-toolbar">
       <button
         :class="{ showMap: showMap }"
@@ -54,10 +54,10 @@
         <span class="right">{{ $t("northAbbr") }}</span
         ><input
           ref="north"
-          v-model="map.coordinate.north "
+          v-model="map.coordinate.north"
           class="spatial-search-criteria"
           name="north"
-          @input="checkValidity"
+          @change="checkValidity"
         />
       </div>
 
@@ -68,7 +68,7 @@
           v-model="map.coordinate.east"
           class="spatial-search-criteria"
           name="east"
-          @input="checkValidity"
+          @change="checkValidity"
         />
       </div>
 
@@ -79,7 +79,7 @@
           v-model="map.coordinate.south"
           class="spatial-search-criteria"
           name="south"
-          @input="checkValidity"
+          @change="checkValidity"
         />
       </div>
 
@@ -90,43 +90,47 @@
           v-model="map.coordinate.west"
           class="spatial-search-criteria"
           name="west"
-          @input="checkValidity"
+          @change="checkValidity"
         />
       </div>
     </span>
-    <div v-if="showMap" class="map-modal" >
-    <div  class="map-popup">
-      <div class="map-popup-title">
-        <h3>{{ $t("coordinateSelection") }}</h3>
-        <div @click="closeMapPopup">
-          <i :title="$t('close')" class="fa fa-times" />
+    <div v-if="showMap" class="map-modal">
+      <div class="map-popup">
+        <div class="map-popup-title">
+          <h3>{{ $t("coordinateSelection") }}</h3>
+          <div @click="closeMapPopup">
+            <i :title="$t('close')" class="fa fa-times" />
+          </div>
+        </div>
+
+        <div class="map-popup-content">
+          <aeris-catalogue-map
+            :hidemap="false"
+            :theme="theme"
+            v-bind="map"
+            url="//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+            @selectionDrawEvent="getSelection"
+          ></aeris-catalogue-map>
         </div>
       </div>
-
-      <div class="map-popup-content">
-         <aeris-catalogue-map url="//server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}" :hidemap="false" :theme="theme" @selectionDrawEvent="getSelection" v-bind="map"></aeris-catalogue-map>
-      </div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
-
-import AerisCatalogueMap  from "../../../../aeris-catalog-map/components/aeris-catalog-map";
+import AerisCatalogueMap from "../../../../aeris-catalog-map/components/aeris-catalog-map";
 export default {
   name: "aeris-spatial-search-criteria-content",
-  components: {AerisCatalogueMap},
+  components: { AerisCatalogueMap },
   props: {
     language: {
       type: String,
       default: "en"
     },
     theme: {
-      type:Object,
-      default:() => {}
-    },
-
+      type: Object,
+      default: () => {}
+    }
   },
 
   watch: {
@@ -135,11 +139,9 @@ export default {
     }
   },
 
-  
   created() {
     this.$i18n.locale = this.language;
   },
-
 
   data() {
     return {
@@ -159,19 +161,18 @@ export default {
           south: "",
           east: "",
           west: ""
-                  }
+        }
       }
     };
   },
 
   methods: {
-    
     getSelection(selection) {
       this.map.coordinate.north = selection.north.toFixed(4);
       this.map.coordinate.south = selection.south.toFixed(4);
       this.map.coordinate.east = selection.east.toFixed(4);
       this.map.coordinate.west = selection.west.toFixed(4);
-      this.$store.commit("setCoordinate", this.map.coordinate)
+      this.$store.commit("setCoordinate", this.map.coordinate);
     },
     isValidLatitude(latitude) {
       let aux = parseFloat(latitude);
@@ -219,6 +220,15 @@ export default {
         el.classList.remove("incorrect-input");
         this.errorMessage = "";
       }
+
+      if (this.isValidBox()) {
+        this.$store.commit("setCoordinate", {
+          north: this.north,
+          south: this.south,
+          east: this.east,
+          west: this.west
+        });
+      }
     },
 
     closeMapPopup() {
@@ -230,6 +240,7 @@ export default {
       this.map.coordinate.south = "";
       this.map.coordinate.east = "";
       this.map.coordinate.west = "";
+      this.$store.commit("resetCoordinate");
     },
 
     correctCommas() {
@@ -237,45 +248,30 @@ export default {
       this.south = this.south.replace(/,/g, ".");
       this.east = this.east.replace(/,/g, ".");
       this.west = this.west.replace(/,/g, ".");
-    },
-
-    asBox() {
-      return {
-        north: this.north,
-        south: this.south,
-        east: this.east,
-        west: this.west
-      };
-    },
-
-    handleSearch(e) {
-      if (this.isValidBox()) {
-        e.detail.box = this.asBox();
-      }
     }
   }
 };
 </script>
 
-<style>
-[data-aeris-spatial-search-criteria-content] {
+<style scoped>
+[aeris-spatial-search-criteria-content] {
   display: block;
 }
 
-[data-aeris-spatial-search-criteria-content] .aeris-catalog-box {
+[aeris-spatial-search-criteria-content] .aeris-catalog-box {
   word-wrap: break-word;
 }
 
-[data-aeris-spatial-search-criteria-content] .aeris-input-group {
+[aeris-spatial-search-criteria-content] .aeris-input-group {
   border: none;
   background-color: rgba(172, 220, 238, 0.3);
 }
 
-[data-aeris-spatial-search-criteria-content] .leftbutton {
+[aeris-spatial-search-criteria-content] .leftbutton {
   margin-right: 3px;
 }
 
-[data-aeris-spatial-search-criteria-content] .aeris-input-group {
+[aeris-spatial-search-criteria-content] .aeris-input-group {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -286,15 +282,15 @@ export default {
   overflow: hidden;
 }
 
-[data-aeris-spatial-search-criteria-content] input.incorrect-input {
+[aeris-spatial-search-criteria-content] input.incorrect-input {
   border: 2px solid red !important;
 }
 
-[data-aeris-spatial-search-criteria-content] .showMap {
+[aeris-spatial-search-criteria-content] .showMap {
   color: #f0ad4e;
 }
 
-[data-aeris-spatial-search-criteria-content] .right {
+[aeris-spatial-search-criteria-content] .right {
   min-width: 40px;
   border-right: 1px solid #fff;
   box-sizing: border-box;
@@ -303,15 +299,15 @@ export default {
   text-align: center;
 }
 
-[data-aeris-spatial-search-criteria-content] .error-message {
+[aeris-spatial-search-criteria-content] .error-message {
   color: red;
 }
 
-[data-aeris-spatial-search-criteria-content] button {
+[aeris-spatial-search-criteria-content] button {
   cursor: pointer;
 }
 
-[data-aeris-spatial-search-criteria-content] .aeris-input-group input.spatial-search-criteria {
+[aeris-spatial-search-criteria-content] .aeris-input-group input.spatial-search-criteria {
   background-color: transparent;
   box-sizing: border-box;
   height: 100%;
@@ -320,7 +316,7 @@ export default {
   outline: none;
 }
 
-[data-aeris-spatial-search-criteria-content] .box-toolbar {
+[aeris-spatial-search-criteria-content] .box-toolbar {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -328,17 +324,16 @@ export default {
   border-bottom: 1px solid #ccc;
   background-color: #cfcfcf;
 }
-.map-modal{
-  
-  background-color :rgba(0,0,0,0.5);
+.map-modal {
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
-  z-index:9990;
+  z-index: 9990;
   top: 0;
   left: 0;
-  width:100%;
-  height:100%
+  width: 100%;
+  height: 100%;
 }
-[data-aeris-spatial-search-criteria-content] .map-popup {
+[aeris-spatial-search-criteria-content] .map-popup {
   display: inline-block;
   position: fixed;
   z-index: 9999;
@@ -350,47 +345,43 @@ export default {
   border-radius: 5px;
   padding: 10px;
   width: 50%;
-  
 }
 
-[data-aeris-spatial-search-criteria-content] .map-popup-content {
+[aeris-spatial-search-criteria-content] .map-popup-content {
   display: inline-block;
   text-align: center;
   width: 100%;
-   
 }
 
-[data-aeris-spatial-search-criteria-content] .map-popup .map-popup-title,
-[data-aeris-spatial-search-criteria-content] .map-popup > .map-popup-title > h3 {
+[aeris-spatial-search-criteria-content] .map-popup .map-popup-title,
+[aeris-spatial-search-criteria-content] .map-popup > .map-popup-title > h3 {
   width: 100%;
   text-align: center;
   margin-top: 4px;
- 
 }
 
-[data-aeris-spatial-search-criteria-content] .map-popup .map-popup-title {
+[aeris-spatial-search-criteria-content] .map-popup .map-popup-title {
   display: flex;
-  flex: space-between;
 }
 
-[data-aeris-spatial-search-criteria-content] .map-popup .map-popup-title i {
+[aeris-spatial-search-criteria-content] .map-popup .map-popup-title i {
   cursor: pointer;
   color: #888;
   opacity: 0.5;
 }
 
-[data-aeris-spatial-search-criteria-content] .map-popup .map-popup-title i:hover {
+[aeris-spatial-search-criteria-content] .map-popup .map-popup-title i:hover {
   opacity: 1;
 }
 
-[data-aeris-spatial-search-criteria-content] .map-popup .popup-content {
+[aeris-spatial-search-criteria-content] .map-popup .popup-content {
   margin: 0;
   padding: 0;
   width: 100%;
   display: flex;
 }
 
-[data-aeris-spatial-search-criteria-content] .map-popup pre {
+[aeris-spatial-search-criteria-content] .map-popup pre {
   margin: 20px 10px;
   padding: 5px;
   resize: none;
@@ -402,19 +393,19 @@ export default {
   border-radius: 5px;
 }
 
-[data-aeris-spatial-search-criteria-content] .spatial-reset-button i {
+[aeris-spatial-search-criteria-content] .spatial-reset-button i {
   margin-left: 5px;
 }
 button {
-    margin-left:5px;
-    padding:5px;
-    border: 0;
-    border-radius: 5px;
-    background: #e6f5fa;
-    -webkit-appearance: none;
+  margin-left: 5px;
+  padding: 5px;
+  border: 0;
+  border-radius: 5px;
+  background: #e6f5fa;
+  -webkit-appearance: none;
 }
-button:hover{
+button:hover {
   background: black;
-  color:white
+  color: white;
 }
 </style>

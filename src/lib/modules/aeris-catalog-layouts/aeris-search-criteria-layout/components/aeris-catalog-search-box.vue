@@ -1,12 +1,12 @@
 <template>
-  <div :class="{ showBody: isDeployed }"  class="aeris-catalog-box">
+  <div :class="{ showBody: isDeployed }" class="aeris-catalog-box">
     <div class="box">
-      <header v-if="header" class="box-heading" @click="isDeployed = !isDeployed" :style="getTitleTheme">
+      <header v-if="header" :style="getTitleTheme" class="box-heading" @click="isDeployed = !isDeployed">
         <div class="box-heading-buttons">
           <i :class="openIconClass" class="chevron" />
         </div>
         <div class="box-title">
-          <i v-show="headerIconClass" :class="headerIconClass"  :style="getIconTheme"/>
+          <i v-show="headerIconClass" :class="headerIconClass" :style="getIconTheme" />
           <h3 no-label-float>{{ getTitle }}</h3>
         </div>
       </header>
