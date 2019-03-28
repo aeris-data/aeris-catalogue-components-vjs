@@ -13,36 +13,29 @@
 </i18n>
 
 <template>
-  <div data-aeris-keyword-search-criteria>
-    <aeris-catalog-ui-input
-      :title="$t('titleHelp')"
-      :value="current"
-      :placeholder="$t('keywords')"
-      icon="fa fa-pencil"
-      name="keywords"
-      @input="current = $event.target.value"
-      @keyup.enter="inputKeyword"
-    ></aeris-catalog-ui-input>
-  </div>
+  <aeris-ui-input
+    :title="$t('titleHelp')"
+    :placeholder="$t('keywords')"
+    icon="fas fa-pencil-alt"
+    name="keywords"
+    @input="inputKeyword"
+  ></aeris-ui-input>
 </template>
 
 <script>
+import { AerisUiInput } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-keyword-search-criteria-content",
-
+  components: { AerisUiInput },
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
-    },
-    isShowOperators: {
-      type: Boolean,
-      default: true
     }
   },
 
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     },
     isShowOperators(value) {
@@ -52,85 +45,21 @@ export default {
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener("aerisCartoucheItemDeleted", this.keywordDeletionListener);
-    this.keywordDeletionListener = null;
-    document.removeEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-    this.catalogueResetListener = null;
-    document.removeEventListener("aerisCatalogueSearchEvent", this.catalogueSearchListener);
-    this.catalogueSearchListener = null;
-  },
-
-  created: function() {
-    this.$i18n.locale = this.lang;
-    this.keywordDeletionListener = this.handleKeywordDeletion.bind(this);
-    document.addEventListener("aerisCartoucheItemDeleted", this.keywordDeletionListener);
-    this.catalogueSearchListener = this.handleCatalogueSearch.bind(this);
-    document.addEventListener("aerisCatalogueSearchEvent", this.catalogueSearchListener);
-    this.catalogueResetListener = this.handleCatalogueReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.catalogueResetListener);
-  },
-
-  mounted: function() {
-    console.log("Aeris keywords search criteria content - mounted");
-  },
-
-  computed: {},
-
   data() {
     return {
-      keywords: [],
-      current: "",
-      keywordDeletionListener: null,
-      catalogueResetListener: null,
-      catalogueSearchListener: null,
-      operator: ""
+      keywords: []
     };
   },
 
-  updated: function() {},
-
   methods: {
-    handleKeywordDeletion: function(e) {
-      let itemref = e.detail.itemref;
-      let index = this.keywords.indexOf(itemref);
-      if (index > -1) {
-        this.keywords.splice(index, 1);
-      }
-      e.stopPropagation();
+    keywordsReset() {
+      this.keywords = [];
+      this.$store.commit("resetKeywords");
     },
 
-    handleCatalogueReset: function() {
-      this.keywords.splice(0, this.keywords.length);
-      this.current = "";
-    },
-
-    handleCatalogueSearch: function(e) {
-      this.parseKeyword(this.current.trim());
-      e.detail.keywords = this.keywords;
-      e.detail.searchOperator = this.operator;
-    },
-
-    handleSearch: function() {
-      var e = new CustomEvent("aerisCatalogueSearchStartEvent", {
-        detail: {
-          range: {
-            min: 0,
-            max: 24
-          }
-        }
-      });
-      document.dispatchEvent(e);
-    },
-
-    inputKeyword: function(e) {
-      let inputValue = this.current.trim();
+    inputKeyword(e) {
+      let inputValue = e.trim();
       this.parseKeyword(inputValue);
-      this.handleSearch(e);
-    },
-
-    typeIndex: function(index) {
-      return `${this.name}-${index}`;
     },
 
     parseKeyword(value) {
@@ -155,6 +84,7 @@ export default {
       });
       finalQuery = finalQuery.split(" ");
       this.keywords = finalQuery.filter(Boolean);
+      this.$store.commit("setKeywords", this.keywords);
     },
 
     checkSpecialWord(value) {
@@ -164,21 +94,3 @@ export default {
   }
 };
 </script>
-
-<style>
-[data-aeris-keyword-search-criteria] aeris-cartouche .aeris-cartouche-container {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  margin-top: 8px;
-}
-
-[data-aeris-keyword-search-criteria] .operator {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-[data-aeris-keyword-search-criteria] input[value="and"] {
-  margin-left: 30px;
-}
-</style>

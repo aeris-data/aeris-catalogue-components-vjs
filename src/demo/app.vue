@@ -77,10 +77,22 @@
         <router-link to="/help_content">/help content</router-link>
       </li>
       <li>
+        <router-link to="/temporal_search_criteria">/temporal search criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/catalog-cart">/catalog cart</router-link>
+      </li>
+      <li>
         <router-link to="/catalog-cart">/catalog cart</router-link>
       </li>
       <li>
         <router-link to="/catalogue_map">/catalogue map</router-link>
+      </li>
+      <li>
+        <router-link to="/keyword">/keyword</router-link>
+      </li>
+      <li>
+        <router-link to="/spatial_criteria">/spatial criteria</router-link>
       </li>
     </ul>
     <div>

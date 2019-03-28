@@ -170,10 +170,12 @@ export default {
 
   methods: {
     startSearch() {
+      let keywords = this.$store.getters.getKeywords;
+      let temporal = this.$store.getters.getDate;
       let criteria = {
-        keywords: [],
+        keywords: keywords,
         searchOperator: "",
-        temporal: { from: "", to: "" },
+        temporal: temporal,
         userLanguage: this.language
       };
       this.getSummaries({ ...criteria, ...this.getSelectedThesaurusCriteria });
@@ -182,6 +184,8 @@ export default {
     resetSearch() {
       this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetSummariesToDefaultValues");
+      this.$store.commit("resetCoordinate");
+      this.$store.commit("resetKeywords");
     },
 
     showMore() {

@@ -20,6 +20,13 @@
       cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart"
     >
       <div slot="criteria">
+        <aeris-keyword-search-criteria></aeris-keyword-search-criteria>
+        <aeris-temporal-search-criteria ref="temporalSearch" :language="language"></aeris-temporal-search-criteria>
+        <aeris-spatial-search-criteria
+          ref="spatialExtentsSearch"
+          :theme="theme"
+          :language="language"
+        ></aeris-spatial-search-criteria>
         <aeris-project-search-criteria
           ref="projectSearchCriteria"
           :theme="theme"
@@ -71,12 +78,16 @@ import {
   AerisInstrumentSearchCriteria,
   AerisCatalogueResetTextButton,
   AerisCatalogueSearchTextButton,
-  AerisCatalogHelpContent
+  AerisCatalogHelpContent,
+  AerisKeywordSearchCriteria,
+  AerisTemporalSearchCriteria,
+  AerisSpatialSearchCriteria
 } from "../../../src/lib/modules/aeris-catalogue-components";
 export default {
   name: "aeris",
 
   components: {
+    AerisKeywordSearchCriteria,
     AerisCatalog,
     AerisProjectSearchCriteria,
     AerisParameterSearchCriteria,
@@ -84,7 +95,9 @@ export default {
     AerisInstrumentSearchCriteria,
     AerisCatalogueResetTextButton,
     AerisCatalogueSearchTextButton,
-    AerisCatalogHelpContent
+    AerisCatalogHelpContent,
+    AerisTemporalSearchCriteria,
+    AerisSpatialSearchCriteria
   },
 
   data() {
@@ -101,6 +114,8 @@ export default {
       this.$refs.parameterSearchCriteria.resetSelection();
       this.$refs.platformSearchCriteria.resetSelection();
       this.$refs.instrumentSearchCriteria.resetSelection();
+      this.$refs.temporalSearch.resetDate();
+      this.$refs.spatialExtentsSearch.resetCoordinate();
     },
 
     catalogueSearchStart() {

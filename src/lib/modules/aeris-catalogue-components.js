@@ -23,6 +23,9 @@ import AerisCatalogHelpContent from "../modules/aeris-catalog-help/components/ae
 import AerisCatalogCriteria from "../modules/aeris-catalog-criteria/aeris-catalog-criteria";
 import AerisCatalog from "../modules/aeris-catalog/aeris-catalog";
 import AerisCatalogMap from "../modules/aeris-catalog-map/components/aeris-catalog-map";
+import AerisKeywordSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/components/aeris-keyword-search-criteria";
+import AerisTemporalSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/components/aeris-temporal-search-criteria";
+import AerisSpatialSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/components/aeris-spatial-search-criteria";
 
 export {
   AerisThesaurusItemTreeCheckboxLayout,
@@ -49,5 +52,8 @@ export {
   AerisCatalogHelpContent,
   AerisCatalogCriteria,
   AerisCatalog,
-  AerisCatalogMap
+  AerisCatalogMap,
+  AerisKeywordSearchCriteria,
+  AerisTemporalSearchCriteria,
+  AerisSpatialSearchCriteria
 };

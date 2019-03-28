@@ -17,6 +17,7 @@ Vue.use(Vuex);
 
 import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
 Vue.use(VueColorPlugin);
+
 Vue.use(VueAerisLanguagePlugin);
 
 import AerisCatalogue from "../demo/modules/aeris.vue";

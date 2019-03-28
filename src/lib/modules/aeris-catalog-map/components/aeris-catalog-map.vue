@@ -261,6 +261,7 @@ export default {
         west: topLeft[0],
         north: topLeft[1]
       };
+      this.$store.commit("setCoordinate", selectionDraw);
       this.$emit("selectionDrawEvent", selectionDraw);
     },
 
@@ -336,16 +337,12 @@ export default {
         source: this.clusterPreviewClusteredSource,
         style: this.featuresStyle
       });
-    },
-
-    aerisSpatialExtentMapModeHandle(e) {
-      this.isDrawMode = e.detail;
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
 [data-aeris-catalog-map] {
   position: relative;
   height: 100%;
@@ -408,14 +405,6 @@ export default {
 
 [data-aeris-catalog-map] .map.reduced ~ .map-coordinates {
   right: 305px;
-}
-
-[data-aeris-catalog-map] aeris-spinner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  --spinner-main-color: #333;
 }
 
 [data-aeris-catalog-map] .feature-info-tooltip {
