@@ -25,6 +25,7 @@
         :thesaurus-item="thesaurusItemChild"
         :is-checked="getThesaurusItem.checked"
         :thesaurus-type="thesaurusType"
+        :ref="thesaurusItemChild.search"
       ></aeris-thesaurus-item-checkbox-layout>
     </article>
   </article>
@@ -121,6 +122,14 @@ export default {
     resetChecked() {
       this.thesaurusItem.checked = false;
       this.thesaurusItem.deployed = this.thesaurusItem.checked;
+      this.resetThesaurusItemChilds();
+    },
+    resetThesaurusItemChilds() {
+      Object.keys(this.$refs).forEach(key => {
+        this.$refs[key].forEach(child => {
+          child.resetChecked();
+        });
+      });
     }
   }
 };
