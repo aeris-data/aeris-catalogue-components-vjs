@@ -142,11 +142,9 @@ export default {
 [data-criteria="buttons"] > div {
   display: flex;
   flex-flow: wrap;
-  justify-content: center;
   align-items: center;
   padding: 5px;
 }
-
 [data-criteria="buttons"] > div > button > i {
   color: #fff;
 }

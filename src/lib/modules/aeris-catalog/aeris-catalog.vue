@@ -239,6 +239,7 @@ export default {
 
 [aeris-catalog] [data-criteria="content"] {
   overflow-y: auto;
+  height:100%
 }
 
 [aeris-catalog] [data-criteria="buttons"] {
@@ -248,9 +249,11 @@ export default {
 [aeris-catalog] [data-criteria="buttons"] > div {
   display: flex;
   flex-flow: wrap;
-  justify-content: flex-start;
+
   align-items: center;
+  padding: 5px;
 }
+
 [aeris-catalog] [data-criteria="buttons"] > div > * {
   margin: 5px;
 }
