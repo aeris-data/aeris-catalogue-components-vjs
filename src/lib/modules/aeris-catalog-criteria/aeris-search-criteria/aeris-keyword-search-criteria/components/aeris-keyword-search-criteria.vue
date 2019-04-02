@@ -16,7 +16,7 @@ export default {
 
   components: { AerisCatalogSearchBox, AerisKeywordSearchCriteriaContent },
 
-    props: {
+  props: {
     language: {
       type: String,
       default: "en"
@@ -31,16 +31,6 @@ export default {
     }
   },
 
-  watch: {
-    language(value) {
-      this.$i18n.locale = value;
-    }
-  },
-
-  created() {
-    this.$i18n.locale = this.language;
-  },
-
   methods: {
     resetEmptyValue() {
       this.$refs.keywordSearchCriteria.resetEmptyValue();
@@ -51,3 +41,9 @@ export default {
   }
 };
 </script>
+
+<style>
+[data-aeris-keyword-search-criteria] {
+  margin: 10px 20px;
+}
+</style>
