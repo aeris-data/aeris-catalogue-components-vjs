@@ -1,31 +1,26 @@
 import Vue from "vue";
-
+import VueCustomElement from "vue-custom-element";
+import Vuex from "vuex";
 import VueI18n from "vue-i18n";
-Vue.use(VueI18n);
-
-import VueRouter from "vue-router";
-Vue.use(VueRouter);
-import VueLayers from "vuelayers";
-Vue.use(VueLayers);
 import axios from "axios";
 import VueAxios from "vue-axios";
+import VueLayers from "vuelayers";
 
-Vue.use(VueAxios, axios);
-
-import Vuex from "vuex";
+Vue.use(VueCustomElement);
 Vue.use(Vuex);
+Vue.use(VueI18n);
+Vue.use(VueAxios, axios);
+Vue.use(VueLayers);
 
-import { VueColorPlugin, VueAerisLanguagePlugin } from "aeris-mixins";
-Vue.use(VueColorPlugin);
+import AerisCatalogue from "../demo/modules/aeris-catalogue.vue";
 
-Vue.use(VueAerisLanguagePlugin);
-
-import AerisCatalogue from "../demo/modules/aeris.vue";
-
-import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
+import searchCriteriaModule from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";
-import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
-import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
+import temporalModule from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/store/aeris-temporal-search-criteria";
+import cartStoreModule from "./modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
+import catalogSummariesModule from "./modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
+import catalogKeywordModule from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/store/aeris-keyword-search-criteria";
+import spatialcriteria from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/store/aeris-spatial-criteria-store";
 
 const store = new Vuex.Store({
   namespaced: true,
@@ -33,15 +28,13 @@ const store = new Vuex.Store({
     searchCriteriaModule,
     catalogSummariesModule,
     notificationModule,
-    cartStoreModule
+    temporalModule,
+    cartStoreModule,
+    catalogKeywordModule,
+    spatialcriteria
   }
 });
 
-new Vue({
-  el: "#app",
-  store,
-  template: "<app/>",
-  components: {
-    AerisCatalogue
-  }
-}).$mount("#app");
+AerisCatalogue.store = store;
+
+Vue.customElement("aeris-catalogue", AerisCatalogue);

@@ -14,6 +14,7 @@
 
 <template>
   <aeris-ui-input
+    ref="uiInput"
     :title="$t('titleHelp')"
     :placeholder="$t('keywords')"
     icon="fas fa-pencil-alt"
@@ -26,11 +27,19 @@
 import { AerisUiInput } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-keyword-search-criteria-content",
+
   components: { AerisUiInput },
+
   props: {
     language: {
       type: String,
       default: "en"
+    }
+  },
+
+  computed: {
+    keywords() {
+      return this.$store.getters.getKeywords;
     }
   },
 
@@ -45,24 +54,21 @@ export default {
     }
   },
 
-  data() {
-    return {
-      keywords: []
-    };
+  mounted() {
+    this.$i18n.locale = this.language;
   },
 
   methods: {
     keywordsReset() {
-      this.keywords = [];
       this.$store.commit("resetKeywords");
     },
 
-    inputKeyword(e) {
-      let inputValue = e.trim();
-      this.parseKeyword(inputValue);
+    inputKeyword(event) {
+      this.parseKeyword(event);
     },
 
-    parseKeyword(value) {
+    parseKeyword(event) {
+      let value = event.value.trim();
       let finalQuery = "";
       let keyword = value.split(" ");
       let andKeyword = [];
@@ -83,13 +89,20 @@ export default {
         }
       });
       finalQuery = finalQuery.split(" ");
-      this.keywords = finalQuery.filter(Boolean);
-      this.$store.commit("setKeywords", this.keywords);
+      let keywords = finalQuery.filter(Boolean);
+      this.$store.commit("setKeywords", keywords);
+      if (event.isEnter) {
+        this.$emit("startSearch");
+      }
     },
 
     checkSpecialWord(value) {
       let specialWordRegex = /[a-zA-Z0-9]+([-._;():][a-zA-Z0-9]+)+/;
       return specialWordRegex.test(value);
+    },
+
+    resetEmptyValue() {
+      this.$refs.uiInput.resetValue();
     }
   }
 };

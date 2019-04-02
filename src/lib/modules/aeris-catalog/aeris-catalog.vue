@@ -129,7 +129,8 @@ export default {
 
   data() {
     return {
-      visibleMetadataPanel: false
+      visibleMetadataPanel: false,
+      selectedCriteria: {}
     };
   },
 
@@ -178,7 +179,8 @@ export default {
         temporal: temporal,
         userLanguage: this.language
       };
-      this.getSummaries({ ...criteria, ...this.getSelectedThesaurusCriteria });
+      this.selectedCriteria = { ...criteria, ...this.getSelectedThesaurusCriteria };
+      this.getSummaries(this.selectedCriteria);
     },
 
     resetSearch() {
@@ -189,7 +191,7 @@ export default {
     },
 
     showMore() {
-      this.getSummaries(this.getSelectedThesaurusCriteria);
+      this.getSummaries(this.selectedCriteria);
     },
     getSummaries(criteria) {
       let url = this.metadataService.endsWith("/")
@@ -239,6 +241,7 @@ export default {
 
 [aeris-catalog] [data-criteria="content"] {
   overflow-y: auto;
+  height: 100%;
 }
 
 [aeris-catalog] [data-criteria="buttons"] {
@@ -248,9 +251,11 @@ export default {
 [aeris-catalog] [data-criteria="buttons"] > div {
   display: flex;
   flex-flow: wrap;
-  justify-content: flex-start;
+
   align-items: center;
+  padding: 5px;
 }
+
 [aeris-catalog] [data-criteria="buttons"] > div > * {
   margin: 5px;
 }

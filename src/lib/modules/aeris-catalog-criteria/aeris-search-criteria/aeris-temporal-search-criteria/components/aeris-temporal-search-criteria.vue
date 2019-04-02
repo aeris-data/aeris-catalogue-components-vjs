@@ -19,7 +19,7 @@
     >
       <aeris-temporal-search-criteria-content
         ref="temporalSearchCriteria"
-        language="en"
+        :language="language"
       ></aeris-temporal-search-criteria-content>
     </aeris-catalog-search-box>
   </div>

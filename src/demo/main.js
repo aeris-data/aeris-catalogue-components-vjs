@@ -50,7 +50,7 @@ import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
 import iagos from "./modules/iagos.vue";
-import aeris from "./modules/aeris.vue";
+import aeris from "./modules/aeris-catalogue.vue";
 
 import searchCriteriaModule from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/aeris-search-criteria-store";
 import notificationModule from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/store/aeris-notification-store";

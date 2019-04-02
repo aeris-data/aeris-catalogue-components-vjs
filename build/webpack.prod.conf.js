@@ -22,12 +22,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     new CleanWebpackPlugin(["dist/*.*"], {
       root: path.resolve(__dirname, "../")
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      sourceMap: false
     })
   ]
 });
@@ -36,15 +30,7 @@ module.exports = [
   merge(webpackConfig, {
     entry: path.resolve("./src/lib/main.js"),
     output: {
-      filename: "aeris-catalogue-components-vjs_" + buildVersion + ".js"
-    }
-  }),
-  merge(webpackConfig, {
-    entry: path.resolve("./src/lib/aeris-catalogue-components.js"),
-    output: {
-      filename: "aeris-catalogue-components-vjs-simple.js",
-      libraryTarget: "umd",
-      library: "AerisCatalogueComponents"
+      filename: "aeris-catalogue_" + buildVersion + ".js"
     }
   })
 ];

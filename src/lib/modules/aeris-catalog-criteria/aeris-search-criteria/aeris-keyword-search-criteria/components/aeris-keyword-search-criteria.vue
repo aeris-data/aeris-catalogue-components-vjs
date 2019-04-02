@@ -1,6 +1,10 @@
 <template>
   <div data-aeris-keyword-search-criteria>
-    <aeris-keyword-search-criteria-content :language="language"></aeris-keyword-search-criteria-content>
+    <aeris-keyword-search-criteria-content
+      ref="keywordSearchCriteria"
+      :language="language"
+      @startSearch="startSearch"
+    ></aeris-keyword-search-criteria-content>
   </div>
 </template>
 
@@ -9,8 +13,10 @@ import AerisCatalogSearchBox from "../../../../../../lib/modules/aeris-catalog-l
 import AerisKeywordSearchCriteriaContent from "./aeris-keyword-search-criteria-content";
 export default {
   name: "aeris-keyword-search-criteria",
+
   components: { AerisCatalogSearchBox, AerisKeywordSearchCriteriaContent },
-  props: {
+
+    props: {
     language: {
       type: String,
       default: "en"
@@ -22,6 +28,25 @@ export default {
     isShowOperators: {
       type: Boolean,
       default: true
+    }
+  },
+
+  watch: {
+    language(value) {
+      this.$i18n.locale = value;
+    }
+  },
+
+  created() {
+    this.$i18n.locale = this.language;
+  },
+
+  methods: {
+    resetEmptyValue() {
+      this.$refs.keywordSearchCriteria.resetEmptyValue();
+    },
+    startSearch() {
+      this.$emit("startSearch");
     }
   }
 };
