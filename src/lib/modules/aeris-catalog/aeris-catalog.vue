@@ -135,9 +135,6 @@ export default {
   },
 
   computed: {
-    getSelectedThesaurusCriteria() {
-      return this.$store.getters.getSelectedCriteria;
-    },
     getSelectedSummaryId() {
       return this.$store.getters.getSelectedSummaryId;
     },
@@ -170,24 +167,13 @@ export default {
   },
 
   methods: {
-    startSearch() {
-      let keywords = this.$store.getters.getKeywords;
-      let temporal = this.$store.getters.getDate;
-      let criteria = {
-        keywords: keywords,
-        searchOperator: "",
-        temporal: temporal,
-        userLanguage: this.language
-      };
-      this.selectedCriteria = { ...criteria, ...this.getSelectedThesaurusCriteria };
+    startSearch(criteria) {
+      this.selectedCriteria = criteria;
       this.getSummaries(this.selectedCriteria);
     },
 
     resetSearch() {
-      this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetSummariesToDefaultValues");
-      this.$store.commit("resetCoordinate");
-      this.$store.commit("resetKeywords");
     },
 
     showMore() {

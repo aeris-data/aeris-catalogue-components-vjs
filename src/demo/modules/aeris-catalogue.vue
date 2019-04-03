@@ -106,6 +106,12 @@ export default {
     };
   },
 
+  computed: {
+    getSelectedThesaurusCriteria() {
+      return this.$store.getters.getSelectedCriteria;
+    }
+  },
+
   methods: {
     catalogueReset() {
       this.$refs.aeriscatalog.resetSearch();
@@ -116,10 +122,28 @@ export default {
       this.$refs.temporalSearch.resetDate();
       this.$refs.spatialExtentsSearch.resetCoordinate();
       this.$refs.keywordSearchCriteria.resetEmptyValue();
+      this.$store.commit("clearSelectedCriteria");
+      this.$store.commit("resetCoordinate");
+      this.$store.commit("resetKeywords");
     },
 
     catalogueSearchStart() {
-      this.$refs.aeriscatalog.startSearch();
+      let keywords = this.$store.getters.getKeywords;
+      let temporal = this.$store.getters.getDate;
+      let criteria = {
+        keywords: keywords,
+        searchOperator: "",
+        temporal: temporal,
+        userLanguage: this.language
+      };
+
+      let box = this.$store.getters.getCoordinate;
+      if (box.north && box.south && box.east && box.west) {
+        criteria = { ...criteria, box };
+      }
+
+      criteria = { ...criteria, ...this.getSelectedThesaurusCriteria };
+      this.$refs.aeriscatalog.startSearch(criteria);
     }
   }
 };
