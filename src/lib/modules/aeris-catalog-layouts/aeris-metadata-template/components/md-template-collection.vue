@@ -22,6 +22,22 @@
       :temporal-extents="metadata.temporalExtents"
       :theme="theme"
     ></aeris-metadata-temporal-extents>
+    <aeris-metadata-single-file-download
+      v-if="getDownloadType"
+      :metadata="metadata"
+      :is-in-cart="isInCart(metadata.identifier)"
+      :theme="theme"
+      @addItemCart="addItemCart"
+    >
+    </aeris-metadata-single-file-download>
+    <aeris-metadata-year-select-download
+      v-else-if="getDownloadType.downloadType === 'yearfilter'"
+      :theme="theme"
+      :metadata="metadata"
+      :selected-item-cart="selectedItemCart(metadata.identifier)"
+      @addItemCart="addItemCart"
+      @removeItemCart="removeItemCart"
+    ></aeris-metadata-year-select-download>
     <aeris-metadata-information-links
       :language="language"
       :links="metadata.links"
@@ -86,6 +102,8 @@ import {
   AerisMetadataQuicklookGallery,
   AerisMetadataSpatialExtents,
   AerisMetadataTemporalExtents,
+  AerisMetadataSingleFileDownload,
+  AerisMetadataYearSelectDownload,
   AerisMetadataServices
 } from "aeris-metadata-components-vjs";
 
@@ -109,6 +127,8 @@ export default {
     AerisMetadataPublications,
     AerisMetadataQuicklookGallery,
     AerisMetadataSpatialExtents,
+    AerisMetadataSingleFileDownload,
+    AerisMetadataYearSelectDownload,
     AerisMetadataTemporalExtents,
     AerisMetadataServices,
     AerisNotifier,
@@ -127,6 +147,40 @@ export default {
     theme: {
       type: Object,
       default: () => {}
+    }
+  },
+  computed: {
+    getDownloadType() {
+      let links = this.metadata ? this.metadata.links : "";
+      let link = links.filter(link => link.type == "OPENSEARCH_LINK");
+      return link;
+    },
+    isInCart() {
+      return idenfitier => {
+        return this.getItemIdsInCart.includes(idenfitier);
+      };
+    },
+    selectedItemCart() {
+      return identifier => {
+        let currentItem;
+        this.$store.getters.getCartContent.forEach(itemCart => {
+          if (itemCart.idenfitier === identifier) {
+            currentItem = itemCart;
+          }
+        });
+        return currentItem;
+      };
+    },
+    getItemIdsInCart() {
+      return this.$store.getters.getItemIdsInCart;
+    }
+  },
+  methods: {
+    addItemCart(metadataDownload) {
+      this.$store.dispatch("addCollectionToCart", metadataDownload);
+    },
+    removeItemCart(metadataDownload) {
+      this.$store.commit("removeItemFromCartContent", metadataDownload);
     }
   }
 };

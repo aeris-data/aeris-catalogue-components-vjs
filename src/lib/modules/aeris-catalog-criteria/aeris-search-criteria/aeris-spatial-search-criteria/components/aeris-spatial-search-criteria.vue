@@ -19,6 +19,7 @@
       header-icon-class="fa fa-globe"
     >
       <aeris-spatial-search-criteria-content
+        ref="spatialExtentsSearch"
         :language="language"
         :theme="theme"
       ></aeris-spatial-search-criteria-content>
@@ -60,6 +61,12 @@ export default {
 
   created() {
     this.$i18n.locale = this.language;
+  },
+
+  methods: {
+    resetCoordinate() {
+      this.$refs.spatialExtentsSearch.resetCoordinate();
+    }
   }
 };
 </script>

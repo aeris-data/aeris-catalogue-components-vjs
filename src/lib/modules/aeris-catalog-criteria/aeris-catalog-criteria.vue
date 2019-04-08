@@ -6,40 +6,11 @@
 
 <script>
 export default {
-  name: "aeris-catalog-criteria",
-
-  props: {
-    lang: {
-      type: String,
-      default: "en"
-    },
-    visible: {
-      type: Boolean,
-      default: true
-    }
-  },
-
-  watch: {},
-
-  destroyed: function() {},
-
-  created: function() {},
-
-  mounted: function() {},
-
-  computed: {},
-
-  data() {
-    return {};
-  },
-
-  updated: function() {},
-
-  methods: {}
+  name: "aeris-catalog-criteria"
 };
 </script>
 
-<style>
+<style scoped>
 [data-aeris-catalog-criteria] {
   box-sizing: border-box;
   display: flex;

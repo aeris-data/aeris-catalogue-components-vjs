@@ -20,6 +20,8 @@ import AerisCatalogCart from "../modules/aeris-catalog-cart/components/aeris-cat
 import AerisCatalogMetadataPanel from "../modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel";
 import MdTemplateCollection from "../modules/aeris-catalog-layouts/aeris-metadata-template/components/md-template-collection";
 import AerisCatalogHelpContent from "../modules/aeris-catalog-help/components/aeris-catalog-help-content";
+import AerisCatalogCriteria from "../modules/aeris-catalog-criteria/aeris-catalog-criteria";
+import AerisCatalog from "../modules/aeris-catalog/aeris-catalog";
 import AerisCatalogMap from "../modules/aeris-catalog-map/components/aeris-catalog-map";
 import AerisKeywordSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/components/aeris-keyword-search-criteria";
 import AerisTemporalSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/components/aeris-temporal-search-criteria";
@@ -48,6 +50,8 @@ export {
   AerisCatalogMetadataPanel,
   MdTemplateCollection,
   AerisCatalogHelpContent,
+  AerisCatalogCriteria,
+  AerisCatalog,
   AerisCatalogMap,
   AerisKeywordSearchCriteria,
   AerisTemporalSearchCriteria,

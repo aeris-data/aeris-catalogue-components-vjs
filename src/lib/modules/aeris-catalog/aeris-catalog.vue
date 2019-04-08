@@ -19,21 +19,10 @@
 }
 </i18n>
 <template>
-  <div data-aeris-catalog>
+  <div aeris-catalog>
     <aeris-notifier></aeris-notifier>
 
-    <aeris-catalog-criteria
-      :lang="lang"
-      :style="{
-        '--criteriaBackgroundColor': criteriaBackgroundColor,
-        '--criteriaContentPrimaryColor': criteriaContentPrimaryColor,
-        '--criteriaContentSecondaryColor': criteriaContentSecondaryColor,
-        '--criteriaHeaderBackgroundColor': criteriaHeaderBackgroundColor,
-        '--criteriaContentBackgroundColor': criteriaContentBackgroundColor,
-        '--criteriaHeaderIconColor': criteriaHeaderIconColor
-      }"
-      data-criteria="container"
-    >
+    <aeris-catalog-criteria data-criteria="container">
       <section data-criteria="buttons">
         <slot name="buttons-criteria" />
       </section>
@@ -42,28 +31,39 @@
       </section>
     </aeris-catalog-criteria>
 
-    <aeris-catalog-summaries :message="messageSummaries" data-summaries> </aeris-catalog-summaries>
+    <aeris-catalog-summaries
+      :theme="theme"
+      :language="language"
+      :message="messageSummaries"
+      :item-ids-in-cart="getItemIdsInCart"
+      data-summaries
+      @showMore="showMore"
+      @addItemCart="addItemCart"
+      @removeItemCart="removeItemCart"
+    >
+    </aeris-catalog-summaries>
 
     <section data-cart>
       <div>{{ $t("shoppingCart") }}</div>
-      <aeris-catalog-cart :cart-service="cartService" :cart-token="cartToken"></aeris-catalog-cart>
+      <aeris-catalog-cart
+        :theme="theme"
+        :language="language"
+        :cart-service="cartService"
+        :cart-token="cartToken"
+      ></aeris-catalog-cart>
     </section>
 
-    <aeris-catalogue-metadata-panel
-      v-if="visibleMetadataPanel"
-      :edit="editMetadataPanel"
-      :resourcetitle="currentTitle"
-      :icon-class="currentIconClass"
-      :metadata-service="metadataService"
-      :uuid="currentUuid"
-      :type="currentType"
-      :metadata="currentMetadata"
-      :client-template="currentTemplate"
-      :projects="currentProjects"
+    <aeris-catalog-metadata-panel
+      v-if="getSelectedSummary"
+      :summary="getSelectedSummary"
+      :theme="theme"
+      :language="language"
+      :metadata-service="metadataService + 'id/'"
+      icon-class="aeris-icon aeris-icon-unknown"
       data-sheet="content"
     >
       <slot name="buttons-metadata" />
-    </aeris-catalogue-metadata-panel>
+    </aeris-catalog-metadata-panel>
 
     <section v-else data-sheet="placeholder">
       <p>{{ $t(message) }}</p>
@@ -73,13 +73,32 @@
 </template>
 
 <script>
+import AerisCatalogMetadataPanel from "../../../lib/modules/aeris-catalog-metadata-panel/components/aeris-catalog-metadata-panel";
+import AerisCatalogCriteria from "../../../lib/modules/aeris-catalog-criteria/aeris-catalog-criteria";
+import AerisCatalogCart from "../../../lib/modules/aeris-catalog-cart/components/aeris-catalog-cart";
+import AerisCatalogSummaries from "../../../lib/modules/aeris-catalog-summaries/components/aeris-catalog-summaries";
+import { AerisNotifier } from "aeris-commons-components-vjs";
 export default {
   name: "aeris-catalog",
 
+  components: {
+    AerisCatalogMetadataPanel,
+    AerisCatalogCart,
+    AerisCatalogSummaries,
+    AerisCatalogCriteria,
+    AerisNotifier
+  },
+
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
+    },
+    theme: {
+      type: Object,
+      default: () => {
+        return {};
+      }
     },
     metadataService: {
       type: String,
@@ -97,33 +116,6 @@ export default {
       type: String,
       default: null
     },
-    edit: {
-      type: Boolean,
-      default: false
-    },
-    customSearch: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    criteriaBackgroundColor: {
-      required: false
-    },
-    criteriaHeaderBackgroundColor: {
-      required: false
-    },
-    criteriaHeaderIconColor: {
-      required: false
-    },
-    criteriaContentBackgroundColor: {
-      required: false
-    },
-    criteriaContentPrimaryColor: {
-      required: false
-    },
-    criteriaContentSecondaryColor: {
-      required: false
-    },
     message: {
       type: String,
       default: "nometadata"
@@ -135,343 +127,86 @@ export default {
     }
   },
 
+  data() {
+    return {
+      visibleMetadataPanel: false,
+      selectedCriteria: {}
+    };
+  },
+
+  computed: {
+    getSelectedSummaryId() {
+      return this.$store.getters.getSelectedSummaryId;
+    },
+    getSelectedSummary() {
+      let selectedSummary;
+      let selectedSummaryId = this.$store.getters.getSelectedSummaryId;
+      let summaries = this.$store.getters.getSummaries;
+      if (selectedSummaryId && summaries) {
+        summaries.forEach(summary => {
+          if (summary.id === selectedSummaryId) {
+            selectedSummary = summary;
+          }
+        });
+      }
+      return selectedSummary;
+    },
+    getItemIdsInCart() {
+      return this.$store.getters.getItemIdsInCart;
+    }
+  },
+
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
-  destroyed: function() {
-    document.removeEventListener("aerisCatalogueMaximizeEvent", this.aerisCatalogueMaximizeEventListener);
-    this.aerisCatalogueMaximizetEventListener = null;
-
-    document.removeEventListener("aerisCatalogueMinimizeEvent", this.aerisCatalogueMinimizeEventListener);
-    this.aerisCatalogueMinimizetEventListener = null;
-
-    if (!this.customSearch) {
-      document.removeEventListener("aerisCatalogueSearchStartEvent", this.aerisCatalogueSearchStartEventListener);
-      this.aerisCatalogueSearchStartEventListener = null;
-    }
-
-    document.removeEventListener("aerisCatalogueSearchStartEvent", this.aerisCatalogueSearchStartEventListener);
-    this.aerisCatalogueSearchStartEventListener = null;
-
-    document.removeEventListener("aerisCatalogueDisplayMetadata", this.aerisCatalogueDisplayMetadataEventListener);
-    this.aerisCatalogueDisplayMetadataEventListener = null;
-
-    document.removeEventListener("aerisCatalogueHideMetadata", this.aerisCatalogueHideMetadataEventListener);
-    this.aerisCatalogueHideMetadataEventListener = null;
-
-    document.removeEventListener("aerisCatalogueEditMetadata", this.aerisCatalogueEditMetadataEventListener);
-    this.aerisCatalogueEditMetadataEventListener = null;
-
-    document.removeEventListener("aerisCatalogueResetEvent", this.aerisCatalogueResetEventListener);
-    this.aerisCatalogueResetEventListener = null;
-
-    document.removeEventListener("currentEditedMetadataRequest", this.aerisCurrentEditedMetadataRequestListener);
-    this.aerisCurrentEditedMetadataRequestListener = null;
+  created() {
+    this.$i18n.locale = this.language;
   },
-
-  created: function() {
-    console.log("Aeris aeris-catalog creation");
-
-    if (!this.customSearch) {
-      this.aerisCatalogueSearchStartEventListener = this.handleCatalogueSearchStart.bind(this);
-      document.addEventListener("aerisCatalogueSearchStartEvent", this.aerisCatalogueSearchStartEventListener);
-    }
-
-    this.aerisCatalogueMinimizeEventListener = this.handleMinimize.bind(this);
-    document.addEventListener("aerisCatalogueMinimizeEvent", this.aerisCatalogueMinimizeEventListener);
-
-    this.aerisCatalogueMaximizeEventListener = this.handleMaximize.bind(this);
-    document.addEventListener("aerisCatalogueMaximizeEvent", this.aerisCatalogueMaximizeEventListener);
-
-    this.aerisCatalogueDisplayMetadataEventListener = this.handleDisplayMetadata.bind(this);
-    document.addEventListener("aerisCatalogueDisplayMetadata", this.aerisCatalogueDisplayMetadataEventListener);
-
-    this.aerisCatalogueHideMetadataEventListener = this.handleHideMetadata.bind(this);
-    document.addEventListener("aerisCatalogueHideMetadata", this.aerisCatalogueHideMetadataEventListener);
-
-    this.aerisCatalogueEditMetadataEventListener = this.handleEditMetadata.bind(this);
-    document.addEventListener("aerisCatalogueEditMetadata", this.aerisCatalogueEditMetadataEventListener);
-
-    this.aerisCatalogueResetEventListener = this.handleReset.bind(this);
-    document.addEventListener("aerisCatalogueResetEvent", this.aerisCatalogueResetEventListener);
-
-    this.aerisCurrentEditedMetadataRequestListener = this.handleCurrentEditedMetadataRequest.bind(this);
-    document.addEventListener("currentEditedMetadataRequest", this.aerisCurrentEditedMetadataRequestListener);
-
-    document.dispatchEvent(
-      new CustomEvent("aerisCatalogueProgram", {
-        detail: this.program
-      })
-    );
-  },
-
-  mounted: function() {
-    if (this.lang) {
-      this.$i18n.locale = this.lang;
-    }
-  },
-
-  computed: {},
-
-  data() {
-    return {
-      aerisCatalogueSearchStartEventListener: null,
-      aerisCatalogueDisplayMetadataEventListener: null,
-      aerisCatalogueEditMetadataEventListener: null,
-      aerisCatalogueHideMetadataEventListener: null,
-      aerisCatalogueResetEventListener: null,
-      aerisCatalogueMaximizeEventListener: null,
-      aerisCatalogueMinimizeEventListener: null,
-      currentEditedMetadata: null,
-      currentTitle: null,
-      currentIconClass: null,
-      currentUuid: null,
-      currentType: null,
-      currentMetadata: null,
-      currentTemplate: null,
-      currentProjects: null,
-      visibleMetadataPanel: false,
-      editMetadataPanel: false
-    };
-  },
-
-  updated: function() {},
 
   methods: {
-    handleReset: function(e) {
-      this.hideMetadataPanel();
+    startSearch(criteria) {
+      this.selectedCriteria = criteria;
+      this.getSummaries(this.selectedCriteria);
     },
 
-    handleDisplayMetadata: function(e) {
-      this.hideMetadataPanel();
-      if (e.detail.uuid) {
-        this.currentUuid = e.detail.uuid;
-      } else {
-        this.currentUuid = "";
-      }
-      if (e.detail.title) {
-        this.currentTitle = e.detail.title;
-      } else {
-        this.currentTitle = "";
-      }
-      if (e.detail.iconClass) {
-        this.currentIconClass = e.detail.iconClass;
-      } else {
-        this.currentIconClass = "";
-      }
-      if (e.detail.type) {
-        this.currentType = e.detail.type;
-      } else {
-        this.currentType = "";
-      }
-      if (e.detail.clientTemplateName) {
-        this.currentTemplate = e.detail.clientTemplateName;
-      } else {
-        this.currentTemplate = "";
-      }
-      if (e.detail.projects) {
-        this.currentProjects = e.detail.projects;
-      } else {
-        this.currentProjects = "";
-      }
-      this.visibleMetadataPanel = true;
+    resetSearch() {
+      this.$store.commit("resetSummariesToDefaultValues");
     },
 
-    handleHideMetadata: function() {
-      this.hideMetadataPanel();
+    showMore() {
+      this.getSummaries(this.selectedCriteria);
     },
-
-    handleEditMetadata: function(e) {
-      this.hideMetadataPanel();
-      this.currentEditedMetadata = e.detail;
-      if (e.detail.type) {
-        this.currentType = e.detail.type;
-      } else {
-        this.currentType = "";
-      }
-      this.currentTitle = e.detail.metadata.resourceTitle ? JSON.stringify(e.detail.metadata.resourceTitle) : null;
-      this.currentMetadata = e.detail.metadata ? e.detail.metadata : null;
-      this.currentUuid = e.detail.metadata ? e.detail.metadata.uuid : null;
-      this.visibleMetadataPanel = true;
-      this.editMetadataPanel = true;
-    },
-
-    hideMetadataPanel: function() {
-      this.visibleMetadataPanel = false;
-      this.editMetadataPanel = false;
-      this.currentMetadata = null;
-      this.currentTitle = "";
-      this.currentUuid = "";
-      this.currentType = "";
-      this.currentIconClass = "";
-      this.currentEditedMetadata = null;
-    },
-
-    handleCatalogueSearchStart: function(event) {
-      this.hideMetadataPanel();
-
-      var e = new CustomEvent("aerisCatalogueSearchEvent", {
-        detail: {}
-      });
-      document.dispatchEvent(e);
-
-      if (!this.metadataService) {
-        console.error("AerisCatalogueSearcEvent detected but metadataService not provided in props...");
-        return;
-      }
-
-      var url = this.metadataService + "/request";
-      if (this.metadataService.endsWith("/")) {
-        url = this.metadataService + "request";
-      }
-
+    getSummaries(criteria) {
+      let url = this.metadataService.endsWith("/")
+        ? this.metadataService + "request"
+        : this.metadataService + "/request";
       if (this.program) {
         url = url + "?program=" + this.program;
       }
-
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStartEvent", {
-          detail: {
-            message: this.$t("searching")
-          }
-        })
-      );
-      // do not search if there's no criteria
-      e.detail.userLanguage = this.lang;
-      if (
-        !this.program &&
-        ((!e.detail.collections || e.detail.collections.length < 1) &&
-          (!e.detail.keywords || e.detail.keywords.length < 1) &&
-          (!e.detail.box || e.detail.box.north == "") &&
-          (!e.detail.temporal || e.detail.temporal.from == "") &&
-          !e.detail.platforms &&
-          !e.detail.sublevels &&
-          !e.detail.instruments &&
-          !e.detail.parameters &&
-          !e.detail.projects)
-      ) {
-        document.dispatchEvent(
-          new CustomEvent("aerisLongActionStopEvent", {
-            detail: {
-              message: this.$t("searching")
-            }
-          })
-        );
-        // tell the user
-        document.dispatchEvent(
-          new CustomEvent("aerisErrorNotificationMessageEvent", { detail: { message: this.$t("nocriteria") } })
-        );
-      } else {
-        let range = event.detail.range;
-        this.$http
-          .post(
-            this.program ? `${url}&range=${range.min}-${range.max}` : `${url}?range=${range.min}-${range.max}`,
-            e.detail
-          )
-          .then(
-            response => {
-              this.handleSuccess(response, range);
-            },
-            response => {
-              this.handleError(response);
-            }
-          );
+      let range = this.$store.getters.getRange;
+      if (range) {
+        let data = {
+          url: this.program ? `${url}&range=${range.min}-${range.max}` : `${url}?range=${range.min}-${range.max}`,
+          criteria: criteria
+        };
+        this.$store.dispatch("getSummaries", data);
       }
     },
-
-    handleMaximize: function() {
-      var elem = this.$el;
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      }
+    addItemCart(metadataDownload) {
+      this.$store.dispatch("addCollectionToCart", metadataDownload);
     },
-
-    handleMinimize: function() {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-    },
-
-    handleCurrentEditedMetadataRequest: function() {
-      document.dispatchEvent(
-        new CustomEvent("currentEditedMetadataResponse", {
-          detail: this.currentEditedMetadata
-        })
-      );
-    },
-
-    handleSuccess: function(response, range) {
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStopEvent", {
-          detail: {
-            message: this.$t("searching")
-          }
-        })
-      );
-
-      var search = response.body;
-
-      if (search.total === 0) {
-        document.dispatchEvent(
-          new CustomEvent("aerisNotificationMessageEvent", {
-            detail: {
-              message: this.$t("noresult")
-            }
-          })
-        );
-      }
-      // do not display project on specific catalogue
-      if (this.program != null) {
-        search.results.map(summary => {
-          summary.projectList = null;
-        });
-      }
-      document.dispatchEvent(
-        new CustomEvent("aerisSummaries", {
-          detail: {
-            search: search,
-            range: range
-          }
-        })
-      );
-    },
-
-    handleError: function(response) {
-      document.dispatchEvent(
-        new CustomEvent("aerisLongActionStopEvent", {
-          detail: {
-            message: this.$t("searching")
-          }
-        })
-      );
-
-      document.dispatchEvent(
-        new CustomEvent("aerisSummaries", {
-          detail: {
-            summaries: []
-          }
-        })
-      );
+    removeItemCart(metadataDownload) {
+      this.$store.commit("removeItemFromCartContent", metadataDownload);
     }
   }
 };
 </script>
 
-<style>
-[data-aeris-catalog] {
+<style scoped>
+[aeris-catalog] {
   display: grid;
   grid-template-columns: 20% 20% 60%;
   grid-template-rows: 60px 1fr 1fr;
@@ -485,35 +220,38 @@ export default {
   position: relative;
 }
 
-[data-aeris-catalog] [data-criteria="container"] {
+[aeris-catalog] [data-criteria="container"] {
   grid-area: criteria;
   position: relative;
 }
 
-[data-aeris-catalog] [data-criteria="content"] {
+[aeris-catalog] [data-criteria="content"] {
   overflow-y: auto;
+  height: 100%;
 }
 
-[data-aeris-catalog] [data-criteria="buttons"] {
+[aeris-catalog] [data-criteria="buttons"] {
   grid-area: buttons-criteria;
 }
 
-[data-aeris-catalog] [data-criteria="buttons"] > div {
+[aeris-catalog] [data-criteria="buttons"] > div {
   display: flex;
   flex-flow: wrap;
-  justify-content: flex-start;
+
   align-items: center;
+  padding: 5px;
 }
-[data-aeris-catalog] [data-criteria="buttons"] > div > * {
+
+[aeris-catalog] [data-criteria="buttons"] > div > * {
   margin: 5px;
 }
 
-[data-aeris-catalog] [data-summaries] {
+[aeris-catalog] [data-summaries] {
   grid-area: summaries;
   position: relative;
 }
 
-[data-aeris-catalog] [data-cart] {
+[aeris-catalog] [data-cart] {
   grid-area: cart;
   position: relative;
   display: flex;
@@ -521,14 +259,14 @@ export default {
   align-items: center;
 }
 
-[data-aeris-catalog] [data-sheet="content"] {
+[aeris-catalog] [data-sheet="content"] {
   grid-area: sheet;
   width: 100%;
   position: relative;
   overflow: hidden;
 }
 
-[data-aeris-catalog] [data-sheet="placeholder"] {
+[aeris-catalog] [data-sheet="placeholder"] {
   grid-area: sheet;
   background: #ddd;
   display: flex;
@@ -540,7 +278,7 @@ export default {
   font-weight: 300;
 }
 
-[data-aeris-catalog] [data-sheet="placeholder"] > div {
+[aeris-catalog] [data-sheet="placeholder"] > div {
   padding: 20px 0;
 }
 
@@ -549,36 +287,29 @@ export default {
 [data-aeris-catalog] [data-criteria] {
   background: var(--criteriaBackgroundColor, #21242b);
 }
-
 [data-aeris-catalog] [data-layout="search-criteria"] .box-heading {
   background: var(--criteriaHeaderBackgroundColor, transparent);
 }
-
 [data-aeris-catalog] [data-layout="search-criteria"] .box-heading h3,
 [data-aeris-catalog] [data-layout="search-criteria"] .box-heading i {
   color: var(--criteriaHeaderIconColor, #fafafa);
 }
-
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content {
   background: var(--criteriaContentBackgroundColor, transparent);
 }
-
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container,
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content i,
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content input,
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content label {
   color: var(--criteriaContentPrimaryColor, #fafafa);
 }
-
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .input-container,
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content ::placeholder {
   color: var(--criteriaContentSecondaryColor, #888);
 }
-
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .aeris-cartouche-container {
   background: transparent;
 }
-
 [data-aeris-catalog] [data-layout="search-criteria"] .box-body .content .badge {
   color: var(--criteriaBackgroundColor, #21242b);
 }

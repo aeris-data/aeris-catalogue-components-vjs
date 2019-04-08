@@ -17,7 +17,10 @@
       :deployed="deployed"
       header-icon-class="fa fa-calendar"
     >
-      <aeris-temporal-search-criteria-content language="en"></aeris-temporal-search-criteria-content>
+      <aeris-temporal-search-criteria-content
+        ref="temporalSearchCriteria"
+        :language="language"
+      ></aeris-temporal-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -42,6 +45,11 @@ export default {
   watch: {
     language(value) {
       this.$i18n.locale = value;
+    }
+  },
+  methods: {
+    resetDate() {
+      this.$refs.temporalSearchCriteria.resetDate();
     }
   }
 };

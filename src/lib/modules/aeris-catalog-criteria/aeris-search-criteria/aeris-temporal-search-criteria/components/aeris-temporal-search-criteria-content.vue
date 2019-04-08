@@ -61,8 +61,8 @@ export default {
     },
     resetDate() {
       this.$store.commit("resetDate");
-      this.$refs.toDatePicker().resetDate();
-      this.$refs.fromDatePicker().resetDate();
+      this.$refs.toDatePicker.resetDate();
+      this.$refs.fromDatePicker.resetDate();
     }
   }
 };

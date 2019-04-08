@@ -1,6 +1,10 @@
 <template>
   <div data-aeris-keyword-search-criteria>
-    <aeris-keyword-search-criteria-content :language="language"></aeris-keyword-search-criteria-content>
+    <aeris-keyword-search-criteria-content
+      ref="keywordSearchCriteria"
+      :language="language"
+      @startSearch="startSearch"
+    ></aeris-keyword-search-criteria-content>
   </div>
 </template>
 
@@ -9,7 +13,9 @@ import AerisCatalogSearchBox from "../../../../../../lib/modules/aeris-catalog-l
 import AerisKeywordSearchCriteriaContent from "./aeris-keyword-search-criteria-content";
 export default {
   name: "aeris-keyword-search-criteria",
+
   components: { AerisCatalogSearchBox, AerisKeywordSearchCriteriaContent },
+
   props: {
     language: {
       type: String,
@@ -23,6 +29,21 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+
+  methods: {
+    resetEmptyValue() {
+      this.$refs.keywordSearchCriteria.resetEmptyValue();
+    },
+    startSearch() {
+      this.$emit("startSearch");
+    }
   }
 };
 </script>
+
+<style>
+[data-aeris-keyword-search-criteria] {
+  margin: 10px 20px;
+}
+</style>

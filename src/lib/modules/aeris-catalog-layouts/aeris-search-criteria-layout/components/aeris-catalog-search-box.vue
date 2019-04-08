@@ -68,7 +68,7 @@ export default {
     },
 
     getTheme() {
-      return this.theme ? { color: this.theme.secondaryColor, background: this.theme.primaryColor } : "";
+      return this.theme ? { color: this.theme.secondaryColor } : "";
     },
 
     getTitleTheme() {
@@ -90,6 +90,7 @@ export default {
   position: relative;
   display: block;
   transition: transform 4s ease-out;
+  margin: 20px 0;
 }
 
 .box-title {

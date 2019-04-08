@@ -51,7 +51,7 @@ export default {
     setStep(state, step) {
       state.step = step;
     },
-    resetToDefaultValues(state) {
+    resetSummariesToDefaultValues(state) {
       state.summaries = null;
       state.selectedSummaryId = null;
       state.range = {
@@ -66,24 +66,48 @@ export default {
   },
   actions: {
     getSummaries({ commit, dispatch }, data) {
-      let uuid = computeUuid();
-      let notification = {
-        message: i18n.t("searching"),
-        type: "wait",
-        uuid: uuid
-      };
-      dispatch("addNewNotification", notification);
-      axios
-        .post(data.url, data.criteria)
-        .then(response => {
-          commit("setSummaries", response.data.results);
-          commit("setTotal", response.data.total);
-          dispatch("deleteNotification", uuid);
-        })
-        .catch(() => {
-          commit("resetToDefaultValues");
-          dispatch("deleteNotification", uuid);
+      let criteria = data.criteria;
+      if (
+        criteria &&
+        ((criteria["keywords"] && criteria["keywords"].length > 0) ||
+          (criteria["instruments"] && criteria["instruments"].length > 0) ||
+          (criteria["parameters"] && criteria["parameters"].length > 0) ||
+          (criteria["projects"] && criteria["projects"].length > 0) ||
+          (criteria["platforms"] && criteria["platforms"].length > 0) ||
+          criteria["box"] ||
+          criteria["temporal"].from)
+      ) {
+        let uuid = computeUuid();
+        let notification = {
+          message: i18n.t("searching"),
+          type: "wait",
+          uuid: uuid
+        };
+        dispatch("addNewNotification", notification);
+        axios
+          .post(data.url, criteria)
+          .then(response => {
+            commit("setSummaries", response.data.results);
+            commit("setTotal", response.data.total);
+            dispatch("deleteNotification", uuid);
+
+            if (response.data.total < 1) {
+              dispatch("addNewNotification", {
+                message: i18n.t("noresult"),
+                type: "notification"
+              });
+            }
+          })
+          .catch(() => {
+            commit("resetToDefaultValues");
+            dispatch("deleteNotification", uuid);
+          });
+      } else {
+        dispatch("addNewNotification", {
+          message: i18n.t("nocriteria"),
+          type: "error"
         });
+      }
     },
     getNextRange({ state }) {
       let max = state.range.max + state.step;

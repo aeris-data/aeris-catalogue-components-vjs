@@ -7,7 +7,7 @@
   "main": "src/lib/modules/aeris-catalogue-components.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.dev.conf --progress",
-    "build": "node build/build.js && sudo cp dist/*.js dist/*.js.map /var/www/html/aeris",
+    "build": "node build/build.js",
     "lint-staged": "lint-staged",
     "format": "eslint --fix \"src/**/*.*(js|vue)\" && stylelint --fix \"src/**/*.vue\"",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
@@ -36,6 +36,7 @@
     "rxjs": "^6.4.0",
     "vue": "2.6.6",
     "vue-axios": "^2.1.4",
+    "vue-custom-element": "^1.2.1",
     "vue-i18n": "7.0.0",
     "vue-router": "^3.0.2",
     "vue-rx": "^6.1.0",

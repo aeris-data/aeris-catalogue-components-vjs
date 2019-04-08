@@ -185,7 +185,7 @@ export default {
     },
 
     broadcastCloseEvent() {
-      this.forceNormalMode();
+      this.$store.commit("setSelectedSummaryId", null);
     },
 
     forceNormalMode() {
@@ -216,15 +216,20 @@ export default {
     },
 
     updateTemplate() {
+      let templateName;
       if (this.type !== "COLLECTION") {
-        let templateName = "Md-template-" + this.summary.type.toLowerCase();
+        templateName = "Md-template-" + this.summary.type.toLowerCase();
         templateName = templateName.replace(/_/g, "-");
-        this.template = templateName.replace(/-([a-z])/g, g => {
+        templateName = templateName.replace(/-([a-z])/g, g => {
           return g[1].toUpperCase();
         });
-      } else {
-        this.template = MdTemplateCollection;
       }
+
+      if (!this.$options.components[templateName]) {
+        templateName = MdTemplateCollection;
+      }
+
+      this.template = templateName;
     },
 
     projectLandingPage: function(projectId) {
