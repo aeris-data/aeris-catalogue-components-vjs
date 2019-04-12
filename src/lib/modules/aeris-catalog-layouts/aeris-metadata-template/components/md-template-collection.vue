@@ -62,7 +62,7 @@
     ></aeris-metadata-platforms>
     <aeris-metadata-instruments
       :language="language"
-      :instrument="metadata.instruments"
+      :instruments="metadata.instruments"
       :theme="theme"
     ></aeris-metadata-instruments>
     <aeris-metadata-formats :language="language" :formats="metadata.formats" :theme="theme"></aeris-metadata-formats>
@@ -148,6 +148,9 @@ export default {
       type: Object,
       default: () => {}
     }
+  },
+  mounted(){
+    console.log("metata collection : ",this.metadata)
   },
   computed: {
     getDownloadType() {
