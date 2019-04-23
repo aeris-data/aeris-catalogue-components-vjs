@@ -51,8 +51,8 @@
           :theme="theme"
           :language="language"
         ></aeris-instrument-search-criteria>
-        <aeris-site-search-criteria 
-          ref="siteSearchCriteria" 
+        <aeris-site-search-criteria
+          ref="siteSearchCriteria"
           :theme="theme"
           :language="language"
         ></aeris-site-search-criteria>
@@ -68,7 +68,6 @@
           :language="language"
           @catalogueSearchStart="catalogueSearchStart"
         ></aeris-catalogue-search-text-button>
-
       </div>
     </aeris-catalog>
   </div>
@@ -130,7 +129,7 @@ export default {
       this.$refs.temporalSearch.resetDate();
       this.$refs.spatialExtentsSearch.resetCoordinate();
       this.$refs.keywordSearchCriteria.resetEmptyValue();
-      this.$refs.siteSearchCriteria.sitesReset()
+      this.$refs.siteSearchCriteria.sitesReset();
       this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetCoordinate");
       this.$store.commit("resetKeywords");

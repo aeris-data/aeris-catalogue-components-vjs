@@ -12,16 +12,17 @@
 </i18n>
 
 <template>
-  <div >
+  <div>
     <aeris-catalog-search-box
       :title="$t('sites')"
       :deployed="deployed"
       :theme="theme"
       header-icon-class="fa fas fa-map-marker-alt"
     >
-   <input type="checkbox" v-model="selectedAll" /> <label>{{$t("allsites")}}</label>
-    <div v-for="site in values" :key="site.name" aeris-thesaurus-item-checkbox-layout>
-    <input class="siteItems" type="checkbox" :id="site.name" :value="site.name" v-model="selected" /> <label :for="site.name">{{site.name}}</label>
+      <input v-model="selectedAll" type="checkbox" /> <label>{{ $t("allsites") }}</label>
+      <div v-for="site in values" :key="site.name" aeris-thesaurus-item-checkbox-layout>
+        <input :id="site.name" :value="site.name" v-model="selected" class="siteItems" type="checkbox" />
+        <label :for="site.name">{{ site.name }}</label>
       </div>
     </aeris-catalog-search-box>
   </div>
@@ -55,8 +56,8 @@ export default {
   },
   data() {
     return {
-      selected:[],
-      selectedAll:null,
+      selected: [],
+      selectedAll: null,
       values: null
     };
   },
@@ -64,26 +65,24 @@ export default {
     language(value) {
       this.$i18n.locale = value;
     },
-     selected(value){
+    selected(value) {
       this.$store.commit("setSites", value);
-     
     },
-    selectedAll(value){
-      if (value){
-      this.values.forEach((element,index) =>{
-        this.selected[index]=element.name
-      })
-      }else{
-        this.selected = []
+    selectedAll(value) {
+      if (value) {
+        this.values.forEach((element, index) => {
+          this.selected[index] = element.name;
+        });
+      } else {
+        this.selected = [];
       }
-       this.$store.commit("setSites", this.selected)
+      this.$store.commit("setSites", this.selected);
     }
   },
   computed: {
     sites() {
       return this.$store.getters.getSites;
     }
-   
   },
   created() {
     this.$i18n.locale = this.language;
@@ -93,13 +92,13 @@ export default {
   methods: {
     sitesReset() {
       this.$store.commit("resetSites");
-      this.selectedAll=false
-      this.selected=[]
+      this.selectedAll = false;
+      this.selected = [];
     },
-    checkAll(){
-      this.values.forEach((element,index) =>{
-        this.selected[index]=element.name
-      })
+    checkAll() {
+      this.values.forEach((element, index) => {
+        this.selected[index] = element.name;
+      });
     },
     loadSites() {
       if (this.service) {
@@ -127,7 +126,7 @@ input {
   margin-bottom: 10px;
 }
 
-label{
+label {
   overflow-wrap: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
@@ -135,8 +134,8 @@ label{
   hyphens: auto;
 }
 
-.siteItems{
-margin-left:20px;
+.siteItems {
+  margin-left: 20px;
 }
 
 label,

@@ -9,4 +9,3 @@ export default {
   components: { AerisTemporalSearchCriteria }
 };
 </script>
-
