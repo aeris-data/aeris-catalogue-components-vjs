@@ -51,6 +51,11 @@
           :theme="theme"
           :language="language"
         ></aeris-instrument-search-criteria>
+        <aeris-site-search-criteria 
+          ref="siteSearchCriteria" 
+          :theme="theme"
+          :language="language"
+        ></aeris-site-search-criteria>
       </div>
       <div slot="buttons-criteria">
         <aeris-catalogue-reset-text-button
@@ -63,6 +68,7 @@
           :language="language"
           @catalogueSearchStart="catalogueSearchStart"
         ></aeris-catalogue-search-text-button>
+
       </div>
     </aeris-catalog>
   </div>
@@ -80,7 +86,8 @@ import {
   AerisCatalogHelpContent,
   AerisKeywordSearchCriteria,
   AerisTemporalSearchCriteria,
-  AerisSpatialSearchCriteria
+  AerisSpatialSearchCriteria,
+  AerisSiteSearchCriteria
 } from "../../../src/lib/modules/aeris-catalogue-components";
 export default {
   name: "aeris-catalogue",
@@ -96,7 +103,8 @@ export default {
     AerisCatalogueSearchTextButton,
     AerisCatalogHelpContent,
     AerisTemporalSearchCriteria,
-    AerisSpatialSearchCriteria
+    AerisSpatialSearchCriteria,
+    AerisSiteSearchCriteria
   },
 
   data() {
@@ -122,19 +130,23 @@ export default {
       this.$refs.temporalSearch.resetDate();
       this.$refs.spatialExtentsSearch.resetCoordinate();
       this.$refs.keywordSearchCriteria.resetEmptyValue();
+      this.$refs.siteSearchCriteria.sitesReset()
       this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetCoordinate");
       this.$store.commit("resetKeywords");
+      this.$store.commit("resetSites");
     },
 
     catalogueSearchStart() {
+      let sites = this.$store.getters.getSites;
       let keywords = this.$store.getters.getKeywords;
       let temporal = this.$store.getters.getDate;
       let criteria = {
         keywords: keywords,
         searchOperator: "",
         temporal: temporal,
-        userLanguage: this.language
+        userLanguage: this.language,
+        sites: sites
       };
 
       let box = this.$store.getters.getCoordinate;
