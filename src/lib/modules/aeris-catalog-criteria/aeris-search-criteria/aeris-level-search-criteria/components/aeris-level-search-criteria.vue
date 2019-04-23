@@ -40,7 +40,7 @@
       :title="$t('levels')"
       :deployed="deployed"
       :theme="theme"
-      header-icon-class="fa fa-calculator"
+      header-icon-class="fa fas fa-cogs"
     >
       <aeris-thesaurus-item-tree-checkbox-layout
         ref="levelsSearchCriteria"
