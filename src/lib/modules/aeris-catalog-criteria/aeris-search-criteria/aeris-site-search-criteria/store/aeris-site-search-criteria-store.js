@@ -12,7 +12,6 @@ export default {
       state.sites = sites;
     },
     resetSites(state) {
-      console.log("resetSites : ", state.sites);
       state.sites = [];
     }
   }

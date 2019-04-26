@@ -1,4 +1,6 @@
+
 <i18n>
+
 {
 	  "en": {
 		  "L0": "Level 0",
@@ -31,7 +33,6 @@
       "levels" : "Niveaux"
 	  }
 }
-
 </i18n>
 
 <template>
@@ -43,7 +44,7 @@
       header-icon-class="fa fas fa-cogs"
     >
       <aeris-thesaurus-item-tree-checkbox-layout
-        ref="levelsSearchCriteria"
+        ref="levelSearchCriteria"
         :theme="theme"
         :service="service"
         :language="language"
@@ -77,7 +78,7 @@ export default {
     },
     service: {
       type: String,
-      default: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/instruments/"
+      default: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/levels/?program=GMOS"
     }
   },
 
@@ -93,7 +94,7 @@ export default {
 
   methods: {
     resetSelection() {
-      this.$refs.levelsSearchCriteria.resetChecked();
+      this.$refs.levelSearchCriteria.resetChecked();
     }
   }
 };
