@@ -149,18 +149,18 @@ export default {
       default: () => {}
     }
   },
-  mounted(){
-    console.log("metata collection : ",this.metadata)
+  mounted() {
+    console.log("metata collection : ", this.metadata);
   },
   computed: {
     getDownloadType() {
-      console.log("link", this.metadata)
+      console.log("link", this.metadata);
       let links = this.metadata ? this.metadata.links : "";
-      if (links){
-      let link = links.filter(link => link.type == "OPENSEARCH_LINK");
-      return link;
-      }else{
-        return ""
+      if (links) {
+        let link = links.filter(link => link.type == "OPENSEARCH_LINK");
+        return link;
+      } else {
+        return "";
       }
     },
     isInCart() {
