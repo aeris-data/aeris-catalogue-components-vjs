@@ -43,14 +43,16 @@ export default {
 
   props: {
     name: {
-      type: String
+      type: String,
+      default: null
     },
     type: {
       type: String,
       default: null
     },
     nameSubitems: {
-      type: String
+      type: String,
+      default: null
     },
     elements: {
       type: Array,
@@ -63,7 +65,6 @@ export default {
   },
   computed: {
     applyTheme() {
-      console.log(this.theme);
       return this.theme && this.theme.primaryColor
         ? {
             "--primaryColor": this.theme.primaryColor,
@@ -79,7 +80,6 @@ export default {
     },
     items(value) {
       if (value) {
-        console.log(value);
         this.$store.commit("setSelectedCheckBoxCriteria", { type: this.type, value: value });
       }
     }
