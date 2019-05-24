@@ -152,8 +152,12 @@ export default {
   computed: {
     getDownloadType() {
       let links = this.metadata ? this.metadata.links : "";
-      let link = links.filter(link => link.type == "OPENSEARCH_LINK");
-      return link;
+      if (links) {
+        let link = links.filter(link => link.type == "OPENSEARCH_LINK");
+        return link;
+      } else {
+        return "";
+      }
     },
     isInCart() {
       return idenfitier => {
