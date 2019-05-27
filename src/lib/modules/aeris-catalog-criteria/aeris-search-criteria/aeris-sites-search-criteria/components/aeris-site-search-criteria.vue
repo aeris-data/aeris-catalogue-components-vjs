@@ -19,22 +19,19 @@
       :theme="theme"
       header-icon-class="fa fas fa-map-marker-alt"
     >
-      <input v-model="selectedAll" type="checkbox" /> <label>{{ $t("allsites") }}</label>
-      <div v-for="site in values" :key="site.name" aeris-thesaurus-item-checkbox-layout>
-        <input :id="site.name" :value="site.name" v-model="selected" class="siteItems" type="checkbox" />
-        <label :for="site.name">{{ site.name }}</label>
-      </div>
+      <aeris-tree-checkbox-layout ref="sites" :elements="items" :theme="theme" type="sites" ></aeris-tree-checkbox-layout>
     </aeris-catalog-search-box>
   </div>
 </template>
 
 <script>
 import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box";
+import AerisTreeCheckboxLayout from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-tree-checkbox-layout";
 
 export default {
   name: "aeris-site-search-criteria",
 
-  components: { AerisCatalogSearchBox },
+  components: { AerisCatalogSearchBox, AerisTreeCheckboxLayout },
 
   props: {
     language: {
@@ -51,14 +48,15 @@ export default {
     },
     service: {
       type: String,
-      default: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/sites/?program=GMOS"
+      default: "http://localhost:9080/catalogue/rest/metadatarecette/sites?program=GMOS"
     }
   },
   data() {
     return {
       selected: [],
       selectedAll: null,
-      values: null
+      values: null,
+      items: null
     };
   },
   watch: {
@@ -66,7 +64,7 @@ export default {
       this.$i18n.locale = value;
     },
     selected(value) {
-      this.$store.commit("setSites", value);
+      this.$store.commit("setSelectedCheckBoxCriteria", value);
     },
     selectedAll(value) {
       if (value) {
@@ -76,7 +74,7 @@ export default {
       } else {
         this.selected = [];
       }
-      this.$store.commit("setSites", this.selected);
+      this.$store.commit("setSelectedCheckBoxCriteria", this.selected);
     }
   },
   computed: {
@@ -91,31 +89,34 @@ export default {
 
   methods: {
     sitesReset() {
-      this.$store.commit("resetSites");
-      this.selectedAll = false;
-      this.selected = [];
+      this.$store.commit("resetSelectedCheckBoxCriteria");
+      this.$refs.sites.resetChecked();
     },
-    checkAll() {
-      this.values.forEach((element, index) => {
-        this.selected[index] = element.name;
-      });
-    },
+
     loadSites() {
-      if (this.service) {
-        this.$http
-          .get(this.service, {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json"
-            }
-          })
-          .then(response => {
-            this.values = response.data;
-          })
-          .catch(() => {
-            this.handleError();
-          });
-      }
+      var _this = this;
+      this.axios
+        .get(this.service, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          }
+        })
+        .then(
+          response => {
+            this.items = response.data;
+            this.items = this.items.map(item => {
+              return {
+                checked: false,
+                deployed: false,
+                name: item.name,
+                label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
+                subitems: []
+              };
+            });
+          },
+          response => {}
+        );
     }
   }
 };
