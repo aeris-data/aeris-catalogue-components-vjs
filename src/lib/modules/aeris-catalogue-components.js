@@ -26,7 +26,7 @@ import AerisCatalogMap from "../modules/aeris-catalog-map/components/aeris-catal
 import AerisKeywordSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/components/aeris-keyword-search-criteria";
 import AerisTemporalSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria/components/aeris-temporal-search-criteria";
 import AerisSpatialSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/components/aeris-spatial-search-criteria";
-import AerisSiteSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-site-search-criteria/components/aeris-site-search-criteria.vue";
+import AerisSiteSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-sites-search-criteria/components/aeris-site-search-criteria.vue";
 import AerisTreeCheckboxLayout from "../modules/aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-tree-checkbox-layout.vue";
 
 export {

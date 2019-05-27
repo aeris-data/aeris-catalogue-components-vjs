@@ -9,7 +9,7 @@
       }"
       :theme="theme"
       :language="language"
-      metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/"
+      metadata-service="http://localhost:9080/catalogue/rest/metadatarecette/"
       message="Bienvenue sur le catalogue Aeris"
       criteria-header-icon-color="grey"
       criteria-background-color="#F5F5F5"
@@ -116,6 +116,9 @@ export default {
   computed: {
     getSelectedThesaurusCriteria() {
       return this.$store.getters.getSelectedCriteria;
+    },
+    getSelectedCheckBoxCriteria() {
+      return this.$store.getters.getSelectedCheckBoxCriteria;
     }
   },
 
@@ -133,27 +136,24 @@ export default {
       this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetCoordinate");
       this.$store.commit("resetKeywords");
-      this.$store.commit("resetSites");
     },
 
     catalogueSearchStart() {
-      let sites = this.$store.getters.getSites;
       let keywords = this.$store.getters.getKeywords;
       let temporal = this.$store.getters.getDate;
       let criteria = {
         keywords: keywords,
         searchOperator: "",
         temporal: temporal,
-        userLanguage: this.language,
-        sites: sites
+        userLanguage: this.language
       };
 
       let box = this.$store.getters.getCoordinate;
       if (box.north && box.south && box.east && box.west) {
         criteria = { ...criteria, box };
       }
-
-      criteria = { ...criteria, ...this.getSelectedThesaurusCriteria };
+      console.log("this.getSelectedCheckboxCriteria", this.getSelectedCheckboxCriteria);
+      criteria = { ...criteria, ...this.getSelectedThesaurusCriteria, ...this.getSelectedCheckBoxCriteria };
       this.$refs.aeriscatalog.startSearch(criteria);
     }
   }
