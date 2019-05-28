@@ -37,7 +37,7 @@ import AerisInstrumentSearchCriteriaTest from "./modules/aeris-catalog-criteria/
 import AerisParameterSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-parameter-search-criteria-test";
 import AerisPlatformSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-platform-search-criteria-test";
 import AerisProjectSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-project-search-criteria-test";
-import AerisSiteSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-site-search-criteria-test.vue";
+import AerisSiteSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-sites-search-criteria-test.vue";
 import AerisCatalogDefaultSummaryTest from "./modules/aeris-catalog-summaries/aeris-catalog-default-summary-test";
 import AerisCatalogSummariesTest from "./modules/aeris-catalog-summaries/aeris-catalog-summaries-test";
 import AerisTemporalSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-temporal-search-criteria-test";
@@ -47,6 +47,8 @@ import AerisMetadataPanelTest from "./modules/aeris-metadata-panel/metadata-pane
 import AerisCatalogHelpContent from "./modules/aeris-catalog-help/aeris-catalog-help-content-test";
 import AerisKeywordSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria-test.vue";
 import AerisLevelSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-level-search-criteria-test.vue";
+import AerisTreeCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-tree-checkbox-layout-test.vue";
+
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
 import actris from "./modules/actris.vue";
@@ -60,8 +62,7 @@ import cartStoreModule from "../../src/lib/modules/aeris-catalog-cart/store/aeri
 import catalogSummariesModule from "../../src/lib/modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 import catalogKeywordModule from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/store/aeris-keyword-search-criteria";
 import spatialcriteria from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/store/aeris-spatial-criteria-store";
-import catalogSitesModule from "../../src/lib/modules/aeris-catalog-criteria/aeris-search-criteria/aeris-site-search-criteria/store/aeris-site-search-criteria-store";
-
+import treeCheckboxCriteria from "../../src/lib/modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/treecheckbox-critera-store";
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
@@ -72,7 +73,7 @@ const store = new Vuex.Store({
     cartStoreModule,
     catalogKeywordModule,
     spatialcriteria,
-    catalogSitesModule
+    treeCheckboxCriteria
   }
 });
 
@@ -214,6 +215,10 @@ const router = new VueRouter({
     {
       path: "/level_criteria",
       component: AerisLevelSearchCriteriaTest
+    },
+    {
+      path: "/tree_checkbox_layout",
+      component: AerisTreeCheckboxLayoutTest
     }
   ]
 });

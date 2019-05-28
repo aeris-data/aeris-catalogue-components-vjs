@@ -152,7 +152,6 @@ export default {
 
   computed: {
     getDownloadType() {
-     
       let links = this.metadata ? this.metadata.links : "";
       if (links) {
         let link = links.filter(link => link.type == "OPENSEARCH_LINK");

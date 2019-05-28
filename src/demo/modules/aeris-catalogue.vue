@@ -9,7 +9,7 @@
       }"
       :theme="theme"
       :language="language"
-      metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/"
+      metadata-service="http://localhost:9080/catalogue/rest/metadatarecette/"
       message="Bienvenue sur le catalogue Aeris"
       criteria-header-icon-color="grey"
       criteria-background-color="#F5F5F5"
@@ -56,6 +56,11 @@
           :theme="theme"
           :language="language"
         ></aeris-site-search-criteria>
+        <aeris-level-search-criteria
+        ref="levelSearchCriteria"
+          :theme="theme"
+          :language="language"
+        ></aeris-level-search-criteria>
       </div>
       <div slot="buttons-criteria">
         <aeris-catalogue-reset-text-button
@@ -86,7 +91,8 @@ import {
   AerisKeywordSearchCriteria,
   AerisTemporalSearchCriteria,
   AerisSpatialSearchCriteria,
-  AerisSiteSearchCriteria
+  AerisSiteSearchCriteria,
+  AerisLevelSearchCriteria
 } from "../../../src/lib/modules/aeris-catalogue-components";
 export default {
   name: "aeris-catalogue",
@@ -103,7 +109,8 @@ export default {
     AerisCatalogHelpContent,
     AerisTemporalSearchCriteria,
     AerisSpatialSearchCriteria,
-    AerisSiteSearchCriteria
+    AerisSiteSearchCriteria,
+    AerisLevelSearchCriteria
   },
 
   data() {
@@ -116,6 +123,9 @@ export default {
   computed: {
     getSelectedThesaurusCriteria() {
       return this.$store.getters.getSelectedCriteria;
+    },
+    getSelectedCheckBoxCriteria() {
+      return this.$store.getters.getSelectedCheckBoxCriteria;
     }
   },
 
@@ -130,30 +140,28 @@ export default {
       this.$refs.spatialExtentsSearch.resetCoordinate();
       this.$refs.keywordSearchCriteria.resetEmptyValue();
       this.$refs.siteSearchCriteria.sitesReset();
+      this.$refs.levelSearchCriteria.resetLevels();
       this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetCoordinate");
       this.$store.commit("resetKeywords");
-      this.$store.commit("resetSites");
     },
 
     catalogueSearchStart() {
-      let sites = this.$store.getters.getSites;
       let keywords = this.$store.getters.getKeywords;
       let temporal = this.$store.getters.getDate;
       let criteria = {
         keywords: keywords,
         searchOperator: "",
         temporal: temporal,
-        userLanguage: this.language,
-        sites: sites
+        userLanguage: this.language
       };
 
       let box = this.$store.getters.getCoordinate;
       if (box.north && box.south && box.east && box.west) {
         criteria = { ...criteria, box };
       }
-
-      criteria = { ...criteria, ...this.getSelectedThesaurusCriteria };
+      console.log("this.getSelectedCheckBoxCriteria", this.getSelectedCheckBoxCriteria);
+      criteria = { ...criteria, ...this.getSelectedThesaurusCriteria, ...this.getSelectedCheckBoxCriteria };
       this.$refs.aeriscatalog.startSearch(criteria);
     }
   }
