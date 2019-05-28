@@ -106,6 +106,7 @@ export default {
           element.checked = false;
         });
       });
+      console.log(this.items);
     },
 
     checkFirstLevel(index) {

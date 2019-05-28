@@ -56,6 +56,11 @@
           :theme="theme"
           :language="language"
         ></aeris-site-search-criteria>
+        <aeris-level-search-criteria
+        ref="levelSearchCriteria"
+          :theme="theme"
+          :language="language"
+        ></aeris-level-search-criteria>
       </div>
       <div slot="buttons-criteria">
         <aeris-catalogue-reset-text-button
@@ -86,7 +91,8 @@ import {
   AerisKeywordSearchCriteria,
   AerisTemporalSearchCriteria,
   AerisSpatialSearchCriteria,
-  AerisSiteSearchCriteria
+  AerisSiteSearchCriteria,
+  AerisLevelSearchCriteria
 } from "../../../src/lib/modules/aeris-catalogue-components";
 export default {
   name: "aeris-catalogue",
@@ -103,7 +109,8 @@ export default {
     AerisCatalogHelpContent,
     AerisTemporalSearchCriteria,
     AerisSpatialSearchCriteria,
-    AerisSiteSearchCriteria
+    AerisSiteSearchCriteria,
+    AerisLevelSearchCriteria
   },
 
   data() {
@@ -133,6 +140,7 @@ export default {
       this.$refs.spatialExtentsSearch.resetCoordinate();
       this.$refs.keywordSearchCriteria.resetEmptyValue();
       this.$refs.siteSearchCriteria.sitesReset();
+      this.$refs.levelSearchCriteria.resetLevels();
       this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetCoordinate");
       this.$store.commit("resetKeywords");
@@ -152,7 +160,7 @@ export default {
       if (box.north && box.south && box.east && box.west) {
         criteria = { ...criteria, box };
       }
-      console.log("this.getSelectedCheckboxCriteria", this.getSelectedCheckboxCriteria);
+      console.log("this.getSelectedCheckBoxCriteria", this.getSelectedCheckBoxCriteria);
       criteria = { ...criteria, ...this.getSelectedThesaurusCriteria, ...this.getSelectedCheckBoxCriteria };
       this.$refs.aeriscatalog.startSearch(criteria);
     }

@@ -71,6 +71,7 @@ export default {
         criteria &&
         ((criteria["keywords"] && criteria["keywords"].length > 0) ||
           (criteria["sites"] && criteria["sites"].length > 0) ||
+          (criteria["sublevels"] && criteria["sublevels"].length > 0) ||
           (criteria["instruments"] && criteria["instruments"].length > 0) ||
           (criteria["parameters"] && criteria["parameters"].length > 0) ||
           (criteria["projects"] && criteria["projects"].length > 0) ||
