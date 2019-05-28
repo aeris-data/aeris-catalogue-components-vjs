@@ -94,6 +94,15 @@
       <li>
         <router-link to="/spatial_criteria">/spatial criteria</router-link>
       </li>
+      <li>
+        <router-link to="/site_criteria">/site criteria</router-link>
+      </li>
+      <li>
+        <router-link to="/level_criteria">/level_criteria </router-link>
+        </li>
+      <li>
+        <router-link to="/tree_checkbox_layout">/tree checkbox layout</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>

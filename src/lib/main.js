@@ -20,11 +20,13 @@ import temporalModule from "./modules/aeris-catalog-criteria/aeris-search-criter
 import cartStoreModule from "./modules/aeris-catalog-cart/store/aeris-catalog-cart-store";
 import catalogSummariesModule from "./modules/aeris-catalog-summaries/store/aeris-catalog-summaries-store";
 import catalogKeywordModule from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria/store/aeris-keyword-search-criteria";
+import catalogCheckboxCriteria from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/store/treecheckbox-critera-store";
 import spatialcriteria from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-spatial-search-criteria/store/aeris-spatial-criteria-store";
 
 const store = new Vuex.Store({
   namespaced: true,
   modules: {
+    catalogCheckboxCriteria,
     searchCriteriaModule,
     catalogSummariesModule,
     notificationModule,
