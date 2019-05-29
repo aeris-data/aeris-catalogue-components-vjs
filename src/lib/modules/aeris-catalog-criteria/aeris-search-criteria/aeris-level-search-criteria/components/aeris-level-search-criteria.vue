@@ -113,10 +113,8 @@ export default {
         })
         .then(
           response => {
-            console.log("response 11 : ", response);
             this.items = response.data;
 
-            console.log(this.items);
             this.items = this.items.map(item => {
               return {
                 checked: false,
@@ -132,7 +130,6 @@ export default {
                 })
               };
             });
-            console.log("response 222 : ", this.items);
           },
           response => {}
         );
