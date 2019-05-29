@@ -1,10 +1,10 @@
 <i18n>
 {
 	  "en": {
-		  "UNKNOWN": "Unknown"
+		  "collections": "Collections"
 	  },
 	  "fr": {
-		  "UNKNOWN": "Inconnu"
+		  "collections": "Collections"
 	  }
 }
 </i18n>
@@ -15,7 +15,7 @@
       :title="$t('collections')"
       :deployed="deployed"
       :theme="theme"
-      header-icon-class="fa fas fa-cogs">
+      header-icon-class="fa fas fa-cubes">
      <aeris-tree-checkbox-layout  
       ref="collectionCriteria" 
       type="collections"
