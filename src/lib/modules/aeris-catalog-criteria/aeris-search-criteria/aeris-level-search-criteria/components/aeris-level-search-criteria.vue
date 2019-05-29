@@ -120,6 +120,7 @@ export default {
                 checked: false,
                 deployed: false,
                 name: item.name,
+                storeValue: item.name,
                 label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
                 subitems: item.sublevels.map(subitem => {
                   return {
