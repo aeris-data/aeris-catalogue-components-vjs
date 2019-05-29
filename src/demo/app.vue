@@ -103,6 +103,9 @@
       <li>
         <router-link to="/tree_checkbox_layout">/tree checkbox layout</router-link>
       </li>
+      <li>
+        <router-link to="/collection_criteria"> /collection criteria</router-link>
+      </li>
     </ul>
     <div>
       <router-view class="view"></router-view>

@@ -9,7 +9,7 @@
       }"
       :theme="theme"
       :language="language"
-      metadata-service="http://localhost:9080/catalogue/rest/metadatarecette/"
+      metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/"
       message="Bienvenue sur le catalogue Aeris"
       criteria-header-icon-color="grey"
       criteria-background-color="#F5F5F5"
@@ -18,6 +18,7 @@
       summary-max-length="200"
       cart-token="aeris"
       cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart"
+      
     >
       <div slot="criteria">
         <aeris-keyword-search-criteria
@@ -61,6 +62,12 @@
           :theme="theme"
           :language="language"
         ></aeris-level-search-criteria>
+         <aeris-collection-search-criteria
+        ref="collectionSearchCriteria"
+          :theme="theme"
+          :language="language"
+          program="ACTRIS-FR"
+        ></aeris-collection-search-criteria>
       </div>
       <div slot="buttons-criteria">
         <aeris-catalogue-reset-text-button
@@ -92,7 +99,8 @@ import {
   AerisTemporalSearchCriteria,
   AerisSpatialSearchCriteria,
   AerisSiteSearchCriteria,
-  AerisLevelSearchCriteria
+  AerisLevelSearchCriteria,
+  AerisCollectionSearchCriteria
 } from "../../../src/lib/modules/aeris-catalogue-components";
 export default {
   name: "aeris-catalogue",
@@ -110,7 +118,8 @@ export default {
     AerisTemporalSearchCriteria,
     AerisSpatialSearchCriteria,
     AerisSiteSearchCriteria,
-    AerisLevelSearchCriteria
+    AerisLevelSearchCriteria,
+    AerisCollectionSearchCriteria
   },
 
   data() {
@@ -141,6 +150,7 @@ export default {
       this.$refs.keywordSearchCriteria.resetEmptyValue();
       this.$refs.siteSearchCriteria.sitesReset();
       this.$refs.levelSearchCriteria.resetLevels();
+      this.$refs.collectionSearchCriteria.resetCollection();
       this.$store.commit("clearSelectedCriteria");
       this.$store.commit("resetCoordinate");
       this.$store.commit("resetKeywords");
@@ -160,7 +170,6 @@ export default {
       if (box.north && box.south && box.east && box.west) {
         criteria = { ...criteria, box };
       }
-      console.log("this.getSelectedCheckBoxCriteria", this.getSelectedCheckBoxCriteria);
       criteria = { ...criteria, ...this.getSelectedThesaurusCriteria, ...this.getSelectedCheckBoxCriteria };
       this.$refs.aeriscatalog.startSearch(criteria);
     }
