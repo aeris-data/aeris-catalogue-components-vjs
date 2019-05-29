@@ -1,105 +1,111 @@
 <i18n>
 {
-  "en": {
-    "collections": "Collections",
-    "campaigns": "Campaigns"
-  },
-  "fr": {
-    "collections": "Collections",
-    "campaigns": "Campagnes"
-  }
+	  "en": {
+		  "collections": "Collections"
+	  },
+	  "fr": {
+		  "collections": "Collections"
+	  }
 }
 </i18n>
 
 <template>
-  <div data-aeris-platform-search-criteria>
+  <div data-aeris-collection-search-criteria-content>
     <aeris-catalog-search-box
-      id="box"
-      :title="$t(headertitle)"
-      :header-icon-class="headericonclass"
+      :title="$t('collections')"
       :deployed="deployed"
-    >
-      <aeris-collection-search-criteria-content
-        v-if="headertitle == 'collections'"
-        :exclusion="exclusion"
-        :inclusion="inclusion"
-        :downloadable="downloadable"
-      ></aeris-collection-search-criteria-content>
-      <aeris-campaign-search-criteria-content
-        v-else
-        :exclusion="exclusion"
-        :inclusion="inclusion"
-        :downloadable="downloadable"
-      ></aeris-campaign-search-criteria-content>
+      :theme="theme"
+      header-icon-class="fa fas fa-cubes">
+     <aeris-tree-checkbox-layout  
+      ref="collectionCriteria" 
+      type="collections"
+      :elements="items">
+       </aeris-tree-checkbox-layout>
+
     </aeris-catalog-search-box>
   </div>
 </template>
 
 <script>
+import AerisCatalogSearchBox from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-catalog-search-box";
+import AerisTreeCheckboxLayout from "../../../../aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-tree-checkbox-layout";
+
 export default {
   name: "aeris-collection-search-criteria",
 
+  components: { AerisCatalogSearchBox, AerisTreeCheckboxLayout },
+
   props: {
-    lang: {
+    language: {
       type: String,
       default: "en"
     },
-
-    headertitle: {
+    program: {
       type: String,
-      default: "collections"
+      default: "en"
     },
-
-    downloadable: {
-      type: String,
-      default: ""
-    },
-
-    headericonclass: {
-      type: String,
-      default: "fa fa-cubes"
-    },
-
-    inclusion: {
-      type: String,
-      default: ""
-    },
-
-    exclusion: {
-      type: String,
-      default: ""
-    },
-
     deployed: {
       type: Boolean,
       default: false
+    },
+    theme: {
+      type: Object,
+      default: () => {}
+    },
+
+    service: {
+      type: String,
+      default: "https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/collections/?program=ACTRIS-FR"
     }
   },
-
+  data() {
+    return {
+      items: null
+    };
+  },
   watch: {
-    lang(value) {
+    language(value) {
       this.$i18n.locale = value;
     }
   },
 
-  destroyed: function() {},
-
-  created: function() {
-    this.$i18n.locale = this.lang;
+  created() {
+    this.load();
+    this.$i18n.locale = this.language;
   },
 
-  mounted: function() {},
-
-  computed: {},
-
-  data() {
-    return {};
-  },
-
-  updated: function() {},
-
-  methods: {}
+  methods: {
+    resetCollection() {
+      this.$store.commit("resetSelectedCheckBoxCriteria");
+      this.$refs.collectionCriteria.resetChecked();
+    },
+    load() {
+      var _this = this;
+      this.axios
+        .get(this.service, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          }
+        })
+        .then(
+          response => {
+            let it = response.data;
+            it = it[0].collections;
+            this.items = it.map(item => {
+              return {
+                checked: false,
+                deployed: false,
+                name: item.name,
+                storeValue: { name: item.name, program: this.program },
+                label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
+                subitems: []
+              };
+            });
+          },
+          response => {}
+        );
+    }
+  }
 };
 </script>
-
-<style></style>

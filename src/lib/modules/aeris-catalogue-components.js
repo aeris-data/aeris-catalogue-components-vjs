@@ -29,6 +29,7 @@ import AerisSpatialSearchCriteria from "../modules/aeris-catalog-criteria/aeris-
 import AerisLevelSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-level-search-criteria/components/aeris-level-search-criteria.vue";
 import AerisSiteSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-sites-search-criteria/components/aeris-site-search-criteria.vue";
 import AerisTreeCheckboxLayout from "../modules/aeris-catalog-layouts/aeris-search-criteria-layout/components/aeris-tree-checkbox-layout.vue";
+import AerisCollectionSearchCriteria from "../modules/aeris-catalog-criteria/aeris-search-criteria/aeris-collection-search-criteria/components/aeris-collection-search-criteria.vue"
 
 export {
   AerisThesaurusItemTreeCheckboxLayout,
@@ -61,5 +62,6 @@ export {
   AerisSpatialSearchCriteria,
   AerisSiteSearchCriteria,
   AerisLevelSearchCriteria,
-  AerisTreeCheckboxLayout
+  AerisTreeCheckboxLayout,
+  AerisCollectionSearchCriteria
 };
