@@ -54,10 +54,10 @@ export default {
 
   methods: {
     setFromDate(value) {
-      this.$store.commit("setFromDate", value);
+      this.$store.commit("setFromDate", new Date(value).toISOString());
     },
     setToDate(value) {
-      this.$store.commit("setToDate", value);
+      this.$store.commit("setToDate", new Date(value).toISOString());
     },
     resetDate() {
       this.$store.commit("resetDate");

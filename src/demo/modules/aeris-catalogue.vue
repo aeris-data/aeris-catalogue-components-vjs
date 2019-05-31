@@ -9,7 +9,7 @@
       }"
       :theme="theme"
       :language="language"
-      metadata-service="http://localhost:9080/catalogue/rest/metadatarecette/"
+      metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/"
       message="Bienvenue sur le catalogue Aeris"
       criteria-header-icon-color="grey"
       criteria-background-color="#F5F5F5"
@@ -57,7 +57,7 @@
           :language="language"
         ></aeris-site-search-criteria>
         <aeris-level-search-criteria
-        ref="levelSearchCriteria"
+          ref="levelSearchCriteria"
           :theme="theme"
           :language="language"
         ></aeris-level-search-criteria>
