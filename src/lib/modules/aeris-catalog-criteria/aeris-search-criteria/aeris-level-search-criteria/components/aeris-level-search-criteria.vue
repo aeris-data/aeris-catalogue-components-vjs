@@ -113,15 +113,14 @@ export default {
         })
         .then(
           response => {
-            console.log("response 11 : ", response);
             this.items = response.data;
 
-            console.log(this.items);
             this.items = this.items.map(item => {
               return {
                 checked: false,
                 deployed: false,
                 name: item.name,
+                storeValue: item.name,
                 label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
                 subitems: item.sublevels.map(subitem => {
                   return {
@@ -132,7 +131,6 @@ export default {
                 })
               };
             });
-            console.log("response 222 : ", this.items);
           },
           response => {}
         );

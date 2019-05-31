@@ -48,6 +48,7 @@ import AerisCatalogHelpContent from "./modules/aeris-catalog-help/aeris-catalog-
 import AerisKeywordSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-keyword-search-criteria-test.vue";
 import AerisLevelSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-level-search-criteria-test.vue";
 import AerisTreeCheckboxLayoutTest from "./modules/aeris-catalog-layouts/aeris-search-criteria-layout/aeris-tree-checkbox-layout-test.vue";
+import AerisCollectionsSearchCriteriaTest from "./modules/aeris-catalog-criteria/aeris-search-criteria/aeris-collections-search-criteria-test.vue"
 
 import eurochamp from "./modules/eurochamp.vue";
 import gmos from "./modules/gmos.vue";
@@ -219,6 +220,10 @@ const router = new VueRouter({
     {
       path: "/tree_checkbox_layout",
       component: AerisTreeCheckboxLayoutTest
+    },
+    {
+      path: "/collection_criteria",
+      component: AerisCollectionsSearchCriteriaTest
     }
   ]
 });
