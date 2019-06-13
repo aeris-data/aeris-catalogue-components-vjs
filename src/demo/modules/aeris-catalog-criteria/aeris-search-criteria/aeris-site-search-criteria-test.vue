@@ -1,7 +1,6 @@
 <template>
-<div>
-
-  <aeris-site-search-criteria language="en"></aeris-site-search-criteria>
+  <div>
+    <aeris-site-search-criteria language="en"></aeris-site-search-criteria>
   </div>
 </template>
 
@@ -12,4 +11,3 @@ export default {
   components: { AerisSiteSearchCriteria }
 };
 </script>
-

@@ -97,11 +97,8 @@
       <li>
         <router-link to="/site_criteria">/site criteria</router-link>
       </li>
-      
     </ul>
-    <div>
-      <router-view class="view"></router-view>
-    </div>
+    <router-view class="view"></router-view>
   </div>
 </template>
 

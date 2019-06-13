@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "aeris-commons-components-vjs": "git+https://git@github.com/aeris-data/aeris-commons-components-vjs.git#refactoring",
-    "aeris-metadata-components-vjs": "git+https://git@github.com/aeris-data/aeris-metadata-components-vjs.git#refactoring",
+    "aeris-metadata-components-vjs": "git+https://git@github.com/aeris-data/aeris-metadata-components-vjs.git#landing-page",
     "aeris-mixins": "latest",
     "axios": "^0.18.0",
     "eurochamp-components": "git+https://git@github.com/aeris-data/eurochamp-components.git#1.28.0",

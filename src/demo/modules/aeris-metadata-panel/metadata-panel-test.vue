@@ -23,7 +23,7 @@
           <slot name="buttons-metadata" />
         </aeris-catalogue-metadata-panel>
       </div>
-      <div class="info">
+      <!-- <div class="info">
         <h3>Summary first item (json)</h3>
         <ul v-if="currentSummary">
           <li><span> Template : </span>{{ currentSummary.clientTemplateName }}</li>
@@ -52,7 +52,7 @@
           <li v-if="currentSummary.title != null"><span>Title :</span>{{ currentSummary.title.en }}</li>
           <li><span>Type :</span>{{ currentSummary.type }}</li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -107,28 +107,30 @@ export default {
 
 <style scoped>
 .container {
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
-  margin: 50px;
+  padding: 20px;
+  width: 100vw;
+  height: 100vh;
 }
 
 .nav {
-  display: flex;
-  align-items: start;
+  width: 200px;
+}
+
+.core {
+  flex: 1;
 }
 
 input[type="text"] {
   margin-right: 20px;
 }
 
-.core {
-  display: flex;
-  margin: 0 30px;
-}
 .metadatapanel {
-  width: 1100px;
-  height: 2000px;
+  width: 100%;
+  height: 100vh;
 }
+
 .info {
   width: 300px;
   font-size: 10px;

@@ -23,6 +23,12 @@
 
 <template>
   <div class="data-aeris-catalog-metadata-panel">
+    <aeris-metadata-services
+      :identifier="summary.id"
+      :service="idService"
+      :language="language"
+      @metadata="updateMetadata"
+    ></aeris-metadata-services>
     <header>
       <h2 class="metadata-panel-title">
         <aeris-international-field
@@ -41,9 +47,7 @@
           :key="project.projectName"
           class="cartouche"
         >
-          <a :href="projectLandingPage(project.aerisProjectUuid)" target="_blank">
-            <span> {{ project.projectName }}</span>
-          </a>
+          <a :href="projectLandingPage(project.aerisProjectUuid)" target="_blank">{{ project.projectName }}</a>
         </div>
       </div>
       <aside>
@@ -81,13 +85,13 @@
       </aside>
     </header>
     <main>
-      <aeris-metadata-services
-        :identifier="summary.id"
-        :service="idService"
+      <component
+        v-if="metadataValue"
+        :is="getTemplate"
+        :metadata="metadataValue"
+        :theme="theme"
         :language="language"
-        @metadata="updateMetadata"
-      ></aeris-metadata-services>
-      <component v-if="metadataValue" :is="getTemplate" :metadata="metadataValue" :theme="theme"></component>
+      ></component>
     </main>
   </div>
 </template>
@@ -232,7 +236,7 @@ export default {
       this.template = templateName;
     },
 
-    projectLandingPage: function(projectId) {
+    projectLandingPage(projectId) {
       return "https://www.aeris-data.fr/project/" + projectId;
     }
   }
@@ -241,10 +245,13 @@ export default {
 
 <style scoped>
 .data-aeris-catalog-metadata-panel {
-  --gap: 30px;
+  --gap: 0px;
   --heightHeader: 80px;
   height: 100%;
+  width: 100%;
   background: #ddd;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .data-aeris-catalog-metadata-panel > header {
@@ -252,10 +259,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
-  background: #fafafa;
+  padding: 5px 10px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+  background: #fff;
   color: #333;
+  height: var(--heightHeader, 80px);
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .data-aeris-catalog-metadata-panel > header .data-aeris-metadata-panel-project-list {
@@ -266,12 +277,15 @@ export default {
 .data-aeris-catalog-metadata-panel > header .cartouche {
   display: inline-block;
   margin-bottom: 5px;
-  padding: 4px 5px 3px;
   border-radius: 5px;
   color: red;
 }
 .data-aeris-catalog-metadata-panel > header .cartouche a {
   color: #fafafa;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-size: 0.85rem;
 }
 
 .data-aeris-catalog-metadata-panel > header .cartouche {
@@ -279,7 +293,8 @@ export default {
 }
 
 .data-aeris-catalog-metadata-panel > header h2 {
-  font-weight: 300;
+  font-weight: 400;
+  font-size: 22px;
 }
 
 .data-aeris-catalog-metadata-panel > header aside {
