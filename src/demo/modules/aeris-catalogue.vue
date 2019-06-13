@@ -1,87 +1,85 @@
 <template>
-  <div>
-    <aeris-catalog
-      ref="aeriscatalog"
-      :style="{
-        '--criteriaBackgroundColor': '#F5F5F5',
-        '--criteriaContentPrimaryColor': 'grey',
-        '--criteriaHeaderIconColor': 'grey'
-      }"
-      :theme="theme"
-      :language="language"
-      metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/"
-      message="Bienvenue sur le catalogue Aeris"
-      criteria-header-icon-color="grey"
-      criteria-background-color="#F5F5F5"
-      criteria-content-primary-color="grey"
-      summary-bar-width="400px"
-      summary-max-length="200"
-      cart-token="aeris"
-      cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart"
-    >
-      <div slot="criteria">
-        <aeris-keyword-search-criteria
-          ref="keywordSearchCriteria"
-          :language="language"
-          @startSearch="catalogueSearchStart"
-        ></aeris-keyword-search-criteria>
-        <aeris-temporal-search-criteria ref="temporalSearch" :language="language"></aeris-temporal-search-criteria>
-        <aeris-spatial-search-criteria
-          ref="spatialExtentsSearch"
-          :theme="theme"
-          :language="language"
-        ></aeris-spatial-search-criteria>
-        <aeris-project-search-criteria
-          ref="projectSearchCriteria"
-          :theme="theme"
-          :language="language"
-        ></aeris-project-search-criteria>
-        <aeris-parameter-search-criteria
-          ref="parameterSearchCriteria"
-          :theme="theme"
-          :language="language"
-        ></aeris-parameter-search-criteria>
-        <aeris-platform-search-criteria
-          ref="platformSearchCriteria"
-          :theme="theme"
-          :language="language"
-        ></aeris-platform-search-criteria>
-        <aeris-instrument-search-criteria
-          ref="instrumentSearchCriteria"
-          :theme="theme"
-          :language="language"
-        ></aeris-instrument-search-criteria>
-        <aeris-site-search-criteria
-          ref="siteSearchCriteria"
-          :theme="theme"
-          :language="language"
-        ></aeris-site-search-criteria>
-        <aeris-level-search-criteria
-          ref="levelSearchCriteria"
-          :theme="theme"
-          :language="language"
-        ></aeris-level-search-criteria>
-        <aeris-collection-search-criteria
-          ref="collectionSearchCriteria"
-          :theme="theme"
-          :language="language"
-          program="ACTRIS-FR"
-        ></aeris-collection-search-criteria>
-      </div>
-      <div slot="buttons-criteria">
-        <aeris-catalogue-reset-text-button
-          :theme="theme"
-          :language="language"
-          @catalogueReset="catalogueReset"
-        ></aeris-catalogue-reset-text-button>
-        <aeris-catalogue-search-text-button
-          :theme="theme"
-          :language="language"
-          @catalogueSearchStart="catalogueSearchStart"
-        ></aeris-catalogue-search-text-button>
-      </div>
-    </aeris-catalog>
-  </div>
+  <aeris-catalog
+    ref="aeriscatalog"
+    :style="{
+      '--criteriaBackgroundColor': '#F5F5F5',
+      '--criteriaContentPrimaryColor': 'grey',
+      '--criteriaHeaderIconColor': 'grey'
+    }"
+    :theme="theme"
+    :language="language"
+    metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/"
+    message="Bienvenue sur le catalogue Aeris"
+    criteria-header-icon-color="grey"
+    criteria-background-color="#F5F5F5"
+    criteria-content-primary-color="grey"
+    summary-bar-width="400px"
+    summary-max-length="200"
+    cart-token="aeris"
+    cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart"
+  >
+    <div slot="criteria">
+      <aeris-keyword-search-criteria
+        ref="keywordSearchCriteria"
+        :language="language"
+        @startSearch="catalogueSearchStart"
+      ></aeris-keyword-search-criteria>
+      <aeris-temporal-search-criteria ref="temporalSearch" :language="language"></aeris-temporal-search-criteria>
+      <aeris-spatial-search-criteria
+        ref="spatialExtentsSearch"
+        :theme="theme"
+        :language="language"
+      ></aeris-spatial-search-criteria>
+      <aeris-project-search-criteria
+        ref="projectSearchCriteria"
+        :theme="theme"
+        :language="language"
+      ></aeris-project-search-criteria>
+      <aeris-parameter-search-criteria
+        ref="parameterSearchCriteria"
+        :theme="theme"
+        :language="language"
+      ></aeris-parameter-search-criteria>
+      <aeris-platform-search-criteria
+        ref="platformSearchCriteria"
+        :theme="theme"
+        :language="language"
+      ></aeris-platform-search-criteria>
+      <aeris-instrument-search-criteria
+        ref="instrumentSearchCriteria"
+        :theme="theme"
+        :language="language"
+      ></aeris-instrument-search-criteria>
+      <aeris-site-search-criteria
+        ref="siteSearchCriteria"
+        :theme="theme"
+        :language="language"
+      ></aeris-site-search-criteria>
+      <aeris-level-search-criteria
+        ref="levelSearchCriteria"
+        :theme="theme"
+        :language="language"
+      ></aeris-level-search-criteria>
+      <aeris-collection-search-criteria
+        ref="collectionSearchCriteria"
+        :theme="theme"
+        :language="language"
+        program="ACTRIS-FR"
+      ></aeris-collection-search-criteria>
+    </div>
+    <div slot="buttons-criteria">
+      <aeris-catalogue-reset-text-button
+        :theme="theme"
+        :language="language"
+        @catalogueReset="catalogueReset"
+      ></aeris-catalogue-reset-text-button>
+      <aeris-catalogue-search-text-button
+        :theme="theme"
+        :language="language"
+        @catalogueSearchStart="catalogueSearchStart"
+      ></aeris-catalogue-search-text-button>
+    </div>
+  </aeris-catalog>
 </template>
 
 <script>
@@ -177,6 +175,10 @@ export default {
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 [aeris-ui-icon-button] > * {
   color: grey;
 }

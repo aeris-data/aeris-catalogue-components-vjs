@@ -209,15 +209,15 @@ export default {
 [aeris-catalog] {
   display: grid;
   grid-template-columns: 20% 20% 60%;
-  grid-template-rows: 60px 1fr 1fr;
+  grid-template-rows: 60px 1fr;
   grid-template-areas:
     "criteria cart sheet"
-    "criteria summaries sheet"
     "criteria summaries sheet";
   width: 100%;
   height: 100vh;
   background-color: #eee;
   position: relative;
+  padding-top: 71px;
 }
 
 [aeris-catalog] [data-criteria="container"] {
