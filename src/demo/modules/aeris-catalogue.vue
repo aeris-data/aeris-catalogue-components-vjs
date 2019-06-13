@@ -18,7 +18,6 @@
       summary-max-length="200"
       cart-token="aeris"
       cart-service="https://sedoo.aeris-data.fr/catalogue/rest/shoppingcart"
-      
     >
       <div slot="criteria">
         <aeris-keyword-search-criteria
@@ -62,8 +61,8 @@
           :theme="theme"
           :language="language"
         ></aeris-level-search-criteria>
-         <aeris-collection-search-criteria
-        ref="collectionSearchCriteria"
+        <aeris-collection-search-criteria
+          ref="collectionSearchCriteria"
           :theme="theme"
           :language="language"
           program="ACTRIS-FR"

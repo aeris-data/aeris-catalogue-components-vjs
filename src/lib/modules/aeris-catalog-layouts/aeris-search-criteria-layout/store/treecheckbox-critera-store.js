@@ -4,7 +4,9 @@ export default {
   },
 
   getters: {
-    getSelectedCheckBoxCriteria: state => { return state.checkBoxCriteria }
+    getSelectedCheckBoxCriteria: state => {
+      return state.checkBoxCriteria;
+    }
   },
 
   mutations: {

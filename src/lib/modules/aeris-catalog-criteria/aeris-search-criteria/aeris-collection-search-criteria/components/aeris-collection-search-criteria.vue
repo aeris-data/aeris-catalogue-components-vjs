@@ -15,13 +15,10 @@
       :title="$t('collections')"
       :deployed="deployed"
       :theme="theme"
-      header-icon-class="fa fas fa-cubes">
-     <aeris-tree-checkbox-layout  
-      ref="collectionCriteria" 
-      type="collections"
-      :elements="items">
-       </aeris-tree-checkbox-layout>
-
+      header-icon-class="fa fas fa-cubes"
+    >
+      <aeris-tree-checkbox-layout ref="collectionCriteria" :elements="items" type="collections">
+      </aeris-tree-checkbox-layout>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -80,7 +77,6 @@ export default {
       this.$refs.collectionCriteria.resetChecked();
     },
     load() {
-      var _this = this;
       this.axios
         .get(this.service, {
           headers: {
@@ -88,23 +84,20 @@ export default {
             Accept: "application/json"
           }
         })
-        .then(
-          response => {
-            let it = response.data;
-            it = it[0].collections;
-            this.items = it.map(item => {
-              return {
-                checked: false,
-                deployed: false,
-                name: item.name,
-                storeValue: { name: item.name, program: this.program },
-                label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
-                subitems: []
-              };
-            });
-          },
-          response => {}
-        );
+        .then(response => {
+          let it = response.data;
+          it = it[0].collections;
+          this.items = it.map(item => {
+            return {
+              checked: false,
+              deployed: false,
+              name: item.name,
+              storeValue: { name: item.name, program: this.program },
+              label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
+              subitems: []
+            };
+          });
+        });
     }
   }
 };

@@ -99,7 +99,7 @@
       </li>
       <li>
         <router-link to="/level_criteria">/level_criteria </router-link>
-        </li>
+      </li>
       <li>
         <router-link to="/tree_checkbox_layout">/tree checkbox layout</router-link>
       </li>
