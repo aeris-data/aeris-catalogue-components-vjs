@@ -58,7 +58,7 @@
           :language="language"
         ></aeris-site-search-criteria>
         <aeris-level-search-criteria
-        ref="levelSearchCriteria"
+          ref="levelSearchCriteria"
           :theme="theme"
           :language="language"
         ></aeris-level-search-criteria>
