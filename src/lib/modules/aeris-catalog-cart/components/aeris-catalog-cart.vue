@@ -61,7 +61,11 @@
                   <span :title="item.fileNumber + ' ' + $t('files')" class="file_description">{{
                     item.fileNumber
                   }}</span>
-                  <i :title="item.fileNumber + ' ' + $t('files')" class="fileIcon fa fa-file-o file_description" />
+                  <i
+                    :title="item.fileNumber + ' ' + $t('files')"
+                    class="fileIcon fa fa-file file_description"
+                    style="{color:--primaryColor;}"
+                  />
                   <span class="files-size file_description">({{ computeFileSize(item.fileSize) }})</span>
                 </span>
               </div>
@@ -85,7 +89,7 @@
           </div>
 
           <div v-if="getTotalFiles > 0" class="total-files-size">
-            {{ getTotalFiles }}<i class="fa fa-file-o" /> ({{ getTotalFilesSize }})
+            {{ getTotalFiles }}<i class="fileIcon fa fa-file" /> ({{ getTotalFilesSize }})
           </div>
         </footer>
       </section>
@@ -570,5 +574,9 @@ export default {
 }
 .noItems {
   color: #555;
+}
+
+.fileIcon {
+  color: var(--primaryColor);
 }
 </style>
