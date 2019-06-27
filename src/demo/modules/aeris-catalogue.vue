@@ -159,8 +159,7 @@ export default {
       let criteria = {
         keywords: keywords,
         searchOperator: "",
-        temporal: temporal,
-        userLanguage: this.language
+        temporal: temporal
       };
 
       let box = this.$store.getters.getCoordinate;

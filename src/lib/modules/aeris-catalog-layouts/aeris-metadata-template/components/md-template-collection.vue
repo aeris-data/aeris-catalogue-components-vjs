@@ -22,22 +22,24 @@
       :temporal-extents="metadata.temporalExtents"
       :theme="theme"
     ></aeris-metadata-temporal-extents>
-    <aeris-metadata-single-file-download
-      v-if="getDownloadType"
-      :metadata="metadata"
-      :is-in-cart="isInCart(metadata.identifier)"
-      :theme="theme"
-      @addItemCart="addItemCart"
-    >
-    </aeris-metadata-single-file-download>
     <aeris-metadata-year-select-download
-      v-else-if="getDownloadType.downloadType === 'yearfilter'"
+      v-show="getDownloadType === 'yearfilter'"
       :theme="theme"
+      :language="language"
       :metadata="metadata"
-      :selected-item-cart="selectedItemCart(metadata.identifier)"
+      :years="getYearlyFilters(metadata.identifier)"
       @addItemCart="addItemCart"
       @removeItemCart="removeItemCart"
     ></aeris-metadata-year-select-download>
+    <aeris-metadata-single-file-download
+      v-show="getDownloadType === 'nofilter'"
+      :metadata="metadata"
+      :is-in-cart="isInCart(metadata.identifier)"
+      :theme="theme"
+      :language="language"
+      @addItemCart="addItemCart"
+    >
+    </aeris-metadata-single-file-download>
     <aeris-metadata-information-links
       :language="language"
       :links="metadata.links"
@@ -85,6 +87,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 import {
   AerisMetadataCitations,
   AerisMetadataContacts,
@@ -142,7 +146,9 @@ export default {
     },
     metadata: {
       type: Object,
-      default: () => {}
+      default: () => {
+        return {};
+      }
     },
     theme: {
       type: Object,
@@ -150,42 +156,91 @@ export default {
     }
   },
 
+  data() {
+    return {
+      downloadType: "",
+      years: []
+    };
+  },
+
   computed: {
-    getDownloadType() {
-      let links = this.metadata ? this.metadata.links : "";
-      if (links) {
-        let link = links.filter(link => link.type == "OPENSEARCH_LINK");
-        return link;
-      } else {
-        return "";
-      }
-    },
     isInCart() {
       return idenfitier => {
         return this.getItemIdsInCart.includes(idenfitier);
       };
     },
-    selectedItemCart() {
+    getYearlyFilters() {
       return identifier => {
-        let currentItem;
+        let currentYears = [...this.years];
         this.$store.getters.getCartContent.forEach(itemCart => {
-          if (itemCart.idenfitier === identifier) {
-            currentItem = itemCart;
+          if (itemCart.identifier === identifier) {
+            let yearsInCart = itemCart.items.elements;
+            currentYears.forEach(year => {
+              if (yearsInCart.indexOf(year.year) > -1) {
+                year.selected = true;
+              }
+            });
           }
         });
-        return currentItem;
+        return currentYears;
       };
     },
     getItemIdsInCart() {
       return this.$store.getters.getItemIdsInCart;
+    },
+    getDownloadType() {
+      return this.downloadType;
     }
   },
+
+  watch: {
+    metadata: {
+      handler(newMetadata, oldMetadata) {
+        if (newMetadata !== oldMetadata) {
+          this.getDownloadFilter();
+        }
+      },
+      deep: true
+    }
+  },
+
   methods: {
     addItemCart(metadataDownload) {
       this.$store.dispatch("addCollectionToCart", metadataDownload);
     },
     removeItemCart(metadataDownload) {
       this.$store.commit("removeItemFromCartContent", metadataDownload);
+    },
+    getDownloadFilter() {
+      this.downloadType = "";
+      let links = this.metadata ? this.metadata.links : "";
+      if (links) {
+        let link = links.filter(link => link.type == "OPENSEARCH_LINK");
+        let url = null;
+        if (link !== null && link.length > 0) {
+          url = link[0].url.endsWith("/") ? link[0].url.substring(0, link[0].url.length - 1) : link[0].url;
+          url = url + "/request?collection=" + this.metadata.identifier;
+          this.$http.get(url).then(response => {
+            let entries = response.data.entries;
+            if (entries.length > 0) {
+              this.downloadType = entries[0].type || "nofilter";
+              let years = [];
+              if (entries[0].type === "yearfilter") {
+                for (let i = 0; i < entries.length; i++) {
+                  let date = moment(entries[i].date);
+                  let item = {};
+                  item.year = date.year();
+                  item.selected = false;
+                  item.totalSize = entries[i].totalSize;
+                  item.fileNumber = entries[i].fileNumber;
+                  years.push(item);
+                }
+                this.years = years;
+              }
+            }
+          });
+        }
+      }
     }
   }
 };
