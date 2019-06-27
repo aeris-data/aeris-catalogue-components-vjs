@@ -1,18 +1,20 @@
 <template>
   <article v-if="isVisible" :style="applyTheme" class="aeris-thesaurus-item-checkbox-layout">
     <section>
+      <aside v-if="sublevelLength > 0">
+        <i v-show="getThesaurusItem.deployed" class="far fa-minus-square deployed" @click="toggleLevel()" />
+        <i v-show="!getThesaurusItem.deployed" class="far fa-plus-square deployed" @click="toggleLevel()" />
+        <span class="badge">{{ sublevelLength }}</span>
+      </aside>
+      <label :class="{ checked: getIsChecked }" :for="`${name}${getThesaurusItem.name}${getThesaurusItem.search}`">
+        {{ getThesaurusItem.label }}
+      </label>
       <input
         :id="`${name}${getThesaurusItem.name}${getThesaurusItem.search}`"
         :checked="getIsChecked"
         type="checkbox"
         @click="check()"
       />
-      <label :for="`${name}${getThesaurusItem.name}${getThesaurusItem.search}`">{{ getThesaurusItem.label }}</label>
-      <aside v-if="sublevelLength > 0">
-        <span class="badge">{{ sublevelLength }}</span>
-        <i v-show="getThesaurusItem.deployed" class="far fa-minus-square deployed" @click="toggleLevel()" />
-        <i v-show="!getThesaurusItem.deployed" class="far fa-plus-square deployed" @click="toggleLevel()" />
-      </aside>
     </section>
 
     <article
@@ -140,9 +142,17 @@ export default {
   padding: 4px 0;
 }
 
-.aeris-thesaurus-item-checkbox-layout section:first-child {
-  display: inline-block;
+section {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+section aside {
+  display: flex;
+  align-items: center;
+  width: 52px;
 }
 
 .thesaurusItemChild {
@@ -159,15 +169,16 @@ export default {
   align-items: center;
   border-radius: 8px;
   margin: 0 8px;
-  padding: 2px 6px;
+  padding: 6px;
   font-size: 0.6em;
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.6em;
   background-color: var(--primaryColor);
   color: var(--secondaryColor);
 }
 
 label {
+  flex: 1;
   overflow-wrap: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
@@ -175,9 +186,13 @@ label {
   hyphens: auto;
 }
 
+section:hover > label,
+label.checked {
+  color: var(--primaryColor);
+}
+
 .aeris-thesaurus-item-checkbox-layout aside {
   display: inline-flex;
-  float: right;
 }
 
 label,
