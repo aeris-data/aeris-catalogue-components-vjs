@@ -2,6 +2,33 @@ import axios from "axios";
 import { computeUuid } from "aeris-commons-components-vjs/src/lib/modules/aeris-notification/utils/utils";
 import i18n from "../language/aeris-catalog-summaries-i18n";
 
+function isEmpty(object) {
+  let empty = true;
+  let keys = Object.keys(object);
+  if (keys.length > 0) {
+    keys.forEach(key => {
+      let currentObject = object[key];
+      if (currentObject !== null && currentObject === Object(currentObject)) {
+        if (
+          (Array.isArray(currentObject) && currentObject.length > 0) ||
+          (!Array.isArray(currentObject) && Object.keys(currentObject).length > 0)
+        ) {
+          empty = empty && isEmpty(currentObject);
+        } else {
+          empty = empty && true;
+        }
+      } else if (currentObject) {
+        empty = empty && false;
+      } else {
+        empty = empty && true;
+      }
+    });
+  } else {
+    empty = object !== null || object !== "";
+  }
+  return empty;
+}
+
 export default {
   state: {
     summaries: null,
@@ -66,20 +93,7 @@ export default {
   },
   actions: {
     getSummaries({ commit, dispatch }, data) {
-      let criteria = data.criteria;
-      if (
-        criteria &&
-        ((criteria["keywords"] && criteria["keywords"].length > 0) ||
-          (criteria["sites"] && criteria["sites"].length > 0) ||
-          (criteria["sublevels"] && criteria["sublevels"].length > 0) ||
-          (criteria["collections"] && criteria["collections"].length > 0) ||
-          (criteria["instruments"] && criteria["instruments"].length > 0) ||
-          (criteria["parameters"] && criteria["parameters"].length > 0) ||
-          (criteria["projects"] && criteria["projects"].length > 0) ||
-          (criteria["platforms"] && criteria["platforms"].length > 0) ||
-          criteria["box"] ||
-          criteria["temporal"].from)
-      ) {
+      if (!isEmpty(data.criteria)) {
         let uuid = computeUuid();
         let notification = {
           message: i18n.t("searching"),
@@ -88,7 +102,7 @@ export default {
         };
         dispatch("addNewNotification", notification);
         axios
-          .post(data.url, criteria)
+          .post(data.url, data.criteria)
           .then(response => {
             commit("setSummaries", response.data.results);
             commit("setTotal", response.data.total);

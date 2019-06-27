@@ -1,4 +1,3 @@
-
 <i18n>
 
 {
@@ -39,15 +38,22 @@
 }
 </i18n>
 
-<template  >
+<template>
   <div aeris-levels-search-criteria>
     <aeris-catalog-search-box
       :title="$t('levels')"
       :deployed="deployed"
       :theme="theme"
       header-icon-class="fa fas fa-cogs"
-    > <aeris-tree-checkbox-layout  ref="levelCriteria" type="sublevels" name="levels" name-subitems="sublevels" search-first-level="true" :elements="items"></aeris-tree-checkbox-layout>
-    
+    >
+      <aeris-tree-checkbox-layout
+        ref="levelCriteria"
+        :elements="items"
+        type="sublevels"
+        name="levels"
+        name-subitems="sublevels"
+        search-first-level="true"
+      ></aeris-tree-checkbox-layout>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -94,7 +100,6 @@ export default {
   created() {
     this.load();
     this.$i18n.locale = this.language;
-    console.log("parent = ", this);
   },
 
   methods: {
@@ -103,7 +108,6 @@ export default {
       this.$refs.levelCriteria.resetChecked();
     },
     load() {
-      var _this = this;
       this.axios
         .get(this.service, {
           headers: {
@@ -111,29 +115,26 @@ export default {
             Accept: "application/json"
           }
         })
-        .then(
-          response => {
-            this.items = response.data;
+        .then(response => {
+          this.items = response.data;
 
-            this.items = this.items.map(item => {
-              return {
-                checked: false,
-                deployed: false,
-                name: item.name,
-                storeValue: item.name,
-                label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
-                subitems: item.sublevels.map(subitem => {
-                  return {
-                    checked: false,
-                    name: subitem.name,
-                    label: this.$i18n.te(subitem.name) ? this.$i18n.t(subitem.name) : subitem.name
-                  };
-                })
-              };
-            });
-          },
-          response => {}
-        );
+          this.items = this.items.map(item => {
+            return {
+              checked: false,
+              deployed: false,
+              name: item.name,
+              storeValue: item.name,
+              label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
+              subitems: item.sublevels.map(subitem => {
+                return {
+                  checked: false,
+                  name: subitem.name,
+                  label: this.$i18n.te(subitem.name) ? this.$i18n.t(subitem.name) : subitem.name
+                };
+              })
+            };
+          });
+        });
     }
   }
 };

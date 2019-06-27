@@ -26,7 +26,6 @@
     "aeris-metadata-components-vjs": "git+https://git@github.com/aeris-data/aeris-metadata-components-vjs.git#refactoring",
     "aeris-mixins": "latest",
     "axios": "^0.18.0",
-    "eurochamp-components": "git+https://git@github.com/aeris-data/eurochamp-components.git#1.28.0",
     "lodash": "^4.17.11",
     "marked": "^0.6.0",
     "moment": "^2.24.0",
