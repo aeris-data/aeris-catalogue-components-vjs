@@ -46,16 +46,6 @@ export default {
     }
   },
 
-  watch: {
-    language(value) {
-      this.$i18n.locale = value;
-    }
-  },
-
-  mounted() {
-    this.$i18n.locale = this.language;
-  },
-
   methods: {
     setFromDate(value) {
       this.$store.commit("setFromDate", new Date(value).toISOString());
