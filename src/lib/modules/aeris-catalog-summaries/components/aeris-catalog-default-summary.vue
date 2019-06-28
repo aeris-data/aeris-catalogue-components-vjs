@@ -19,7 +19,7 @@
     data-template="summary"
     @click="displayDetails"
   >
-    <article v-if="downloadable" class="cartButton">
+    <article v-if="filter && filter === 'nofilter'" class="cartButton">
       <i
         v-if="!isInCart"
         key="Add"
@@ -95,10 +95,6 @@ export default {
       return this.summary.projectList ? this.summary.projectList : "";
     },
 
-    downloadable() {
-      return this.summary.downloadable ? this.summary.downloadable : "";
-    },
-
     collectionId() {
       return this.summary.id ? this.summary.id : "";
     },
@@ -107,6 +103,11 @@ export default {
         ? {
             "--primaryColor": this.theme.primaryColor
           }
+        : "";
+    },
+    filter() {
+      return this.summary && this.summary.downloadable && this.summary.downloadable["filter"]
+        ? this.summary.downloadable["filter"]
         : "";
     }
   },

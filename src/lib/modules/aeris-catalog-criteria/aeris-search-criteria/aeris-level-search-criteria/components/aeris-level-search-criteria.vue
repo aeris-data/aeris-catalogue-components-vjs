@@ -100,7 +100,6 @@ export default {
   created() {
     this.load();
     this.$i18n.locale = this.language;
-    console.log("parent = ", this);
   },
 
   methods: {

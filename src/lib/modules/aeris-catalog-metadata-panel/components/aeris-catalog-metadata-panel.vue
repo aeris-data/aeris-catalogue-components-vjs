@@ -87,7 +87,13 @@
         :language="language"
         @metadata="updateMetadata"
       ></aeris-metadata-services>
-      <component v-if="metadataValue" :is="getTemplate" :metadata="metadataValue" :theme="theme"></component>
+      <component
+        v-if="metadataValue"
+        :is="getTemplate"
+        :metadata="metadataValue"
+        :theme="theme"
+        :language="language"
+      ></component>
     </main>
   </div>
 </template>

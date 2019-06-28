@@ -100,13 +100,14 @@ export default {
 
   methods: {
     resetChecked() {
-      this.items.forEach(element => {
-        element.checked = false;
-        element.subitems.forEach(element => {
+      if (this.items) {
+        this.items.forEach(element => {
           element.checked = false;
+          element.subitems.forEach(element => {
+            element.checked = false;
+          });
         });
-      });
-      console.log(this.items);
+      }
     },
 
     checkFirstLevel(index) {
@@ -128,7 +129,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .aeris-tree-checkbox-layout {
   color: grey;
 }

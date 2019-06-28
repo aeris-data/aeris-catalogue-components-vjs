@@ -47,6 +47,11 @@ export default {
       this.$i18n.locale = value;
     }
   },
+
+  mounted() {
+    this.$i18n.locale = this.language;
+  },
+
   methods: {
     resetDate() {
       this.$refs.temporalSearchCriteria.resetDate();

@@ -159,11 +159,13 @@ export default {
   watch: {
     language(value) {
       this.$i18n.locale = value;
+      this.$store.commit("setLanguage", value);
     }
   },
 
   created() {
     this.$i18n.locale = this.language;
+    this.$store.commit("setLanguage", this.language);
   },
 
   methods: {
