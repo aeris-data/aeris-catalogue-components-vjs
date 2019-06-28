@@ -19,7 +19,12 @@
       :theme="theme"
       header-icon-class="fa fas fa-map-marker-alt"
     >
-      <aeris-tree-checkbox-layout ref="sites" :elements="items" :theme="theme" type="sites" ></aeris-tree-checkbox-layout>
+      <aeris-tree-checkbox-layout
+        ref="sites"
+        :elements="items"
+        :theme="theme"
+        type="sites"
+      ></aeris-tree-checkbox-layout>
     </aeris-catalog-search-box>
   </div>
 </template>
@@ -94,7 +99,6 @@ export default {
     },
 
     loadSites() {
-      var _this = this;
       this.axios
         .get(this.service, {
           headers: {
@@ -102,22 +106,19 @@ export default {
             Accept: "application/json"
           }
         })
-        .then(
-          response => {
-            this.items = response.data;
-            this.items = this.items.map(item => {
-              return {
-                checked: false,
-                deployed: false,
-                name: item.name,
-                storeValue: item.name,
-                label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
-                subitems: []
-              };
-            });
-          },
-          response => {}
-        );
+        .then(response => {
+          this.items = response.data;
+          this.items = this.items.map(item => {
+            return {
+              checked: false,
+              deployed: false,
+              name: item.name,
+              storeValue: item.name,
+              label: this.$i18n.te(item.name) ? this.$i18n.t(item.name) : item.name,
+              subitems: []
+            };
+          });
+        });
     }
   }
 };

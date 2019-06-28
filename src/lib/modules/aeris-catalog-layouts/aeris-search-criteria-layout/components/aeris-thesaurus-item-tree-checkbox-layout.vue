@@ -108,6 +108,8 @@ export default {
       this.items = itemsArray.sort(function(a, b) {
         return a.label > b.label ? 1 : a.label < b.label ? -1 : 0;
       });
+
+      this.items = this.items.filter(item => item.search !== "NOT_APPLICABLE.NULL.NULL");
     },
 
     handleError() {

@@ -15,13 +15,13 @@ export default {
 
   watch: {},
 
-  destroyed: function() {},
+  destroyed() {},
 
-  render: function(createElement) {
+  render() {
     return this.$createElement(this.name, { attrs: { deployed: "true", value: this.value } });
   },
 
-  mounted: function() {},
+  mounted() {},
 
   computed: {},
 
@@ -29,7 +29,7 @@ export default {
     return {};
   },
 
-  updated: function() {},
+  updated() {},
 
   methods: {}
 };
