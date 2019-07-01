@@ -170,6 +170,7 @@ export default {
 
   methods: {
     startSearch(criteria) {
+      this.resetSearch();
       this.selectedCriteria = criteria;
       this.getSummaries(this.selectedCriteria);
     },
