@@ -109,7 +109,7 @@ export default {
         return a.label > b.label ? 1 : a.label < b.label ? -1 : 0;
       });
 
-      this.items = this.items.filter(item => item.label !== "Not Applicable");
+      this.items = this.items.filter(item => item.search !== "NOT_APPLICABLE.NULL.NULL");
     },
 
     handleError() {
