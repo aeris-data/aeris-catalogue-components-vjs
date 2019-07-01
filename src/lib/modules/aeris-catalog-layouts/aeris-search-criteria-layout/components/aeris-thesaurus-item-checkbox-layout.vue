@@ -4,11 +4,11 @@
       <aside v-if="sublevelLength > 0">
         <i v-show="getThesaurusItem.deployed" class="far fa-minus-square deployed" @click="toggleLevel()" />
         <i v-show="!getThesaurusItem.deployed" class="far fa-plus-square deployed" @click="toggleLevel()" />
-        <span class="badge">{{ sublevelLength }}</span>
       </aside>
       <label :class="{ checked: getIsChecked }" :for="`${name}${getThesaurusItem.name}${getThesaurusItem.search}`">
         {{ getThesaurusItem.label }}
       </label>
+      <span v-if="sublevelLength > 0" class="badge">{{ sublevelLength }}</span>
       <input
         :id="`${name}${getThesaurusItem.name}${getThesaurusItem.search}`"
         :checked="getIsChecked"
@@ -152,7 +152,7 @@ section {
 section aside {
   display: flex;
   align-items: center;
-  width: 52px;
+  margin-right: 10px;
 }
 
 .thesaurusItemChild {
@@ -168,7 +168,7 @@ section aside {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  margin: 0 8px;
+  margin: 0;
   padding: 6px;
   font-size: 0.6em;
   font-weight: 700;
