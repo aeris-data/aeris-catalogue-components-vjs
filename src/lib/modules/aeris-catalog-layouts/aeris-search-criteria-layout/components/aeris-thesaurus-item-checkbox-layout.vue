@@ -152,6 +152,7 @@ section {
 section aside {
   display: flex;
   align-items: center;
+  margin: auto 0;
   margin-right: 10px;
 }
 
@@ -164,13 +165,14 @@ section aside {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  margin: 0;
+  margin: auto 0;
   padding: 6px;
   font-size: 0.6em;
   font-weight: 700;
   line-height: 0.6em;
   background-color: var(--primaryColor);
   color: var(--secondaryColor);
+  margin-right: 5px;
 }
 
 label {
@@ -199,5 +201,9 @@ aside > i:hover {
 label,
 .far {
   color: grey;
+}
+
+input {
+  margin: auto 0;
 }
 </style>
