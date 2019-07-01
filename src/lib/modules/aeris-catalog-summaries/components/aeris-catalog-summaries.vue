@@ -140,7 +140,6 @@ export default {
 [aeris-catalog-summaries-bar] {
   box-sizing: border-box;
   display: block;
-  height: 100%;
   overflow: auto;
   padding: 0 10px;
 }
