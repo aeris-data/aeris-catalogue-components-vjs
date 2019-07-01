@@ -159,10 +159,6 @@ section aside {
   margin-left: 15px;
 }
 
-.aeris-thesaurus-item-checkbox-layout input {
-  margin-right: 15px;
-}
-
 .aeris-thesaurus-item-checkbox-layout .badge {
   display: flex;
   justify-content: center;

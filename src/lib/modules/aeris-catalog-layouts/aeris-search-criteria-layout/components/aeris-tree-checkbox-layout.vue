@@ -2,35 +2,29 @@
   <div :style="applyTheme" class="aeris-tree-checkbox-layout">
     <div v-for="(item, index) of items" :key="item.name">
       <div class="first-level">
-        <div>
-          <input :id="`${name}${item.name}`" :checked="item.checked" type="checkbox" @change="checkFirstLevel(index)" />
-          <label :for="`${name}${item.name}`">{{ item.label }}</label>
-        </div>
         <aside>
-          <span v-if="item.subitems.length > 0" class="badge">{{ item.subitems.length }}</span>
           <i
             v-if="item.subitems.length > 0"
-            v-show="item.deployed"
-            class="far fa-minus-square deployed"
-            @click="toggle(index)"
-          />
-          <i
-            v-if="item.subitems.length > 0"
-            v-show="!item.deployed"
-            class="far fa-plus-square deployed"
+            :class="{ 'fa-minus-square': item.deployed, 'fa-plus-square': !item.deployed }"
+            class="far deployed"
             @click="toggle(index)"
           />
         </aside>
+        <label :class="{ checked: item.checked }" :for="`${name}${item.name}`">{{ item.label }}</label>
+        <span v-if="item.subitems.length > 0" class="badge">{{ item.subitems.length }}</span>
+        <input :id="`${name}${item.name}`" :checked="item.checked" type="checkbox" @change="checkFirstLevel(index)" />
       </div>
       <div v-if="item.deployed">
         <div v-for="(subitem, indexSubitem) of item.subitems" :key="subitem.name" class="second-level">
+          <label :class="{ checked: subitem.checked }" :for="`${name}${item.name}${subitem.name}`">
+            {{ subitem.label }}
+          </label>
           <input
             :id="`${name}${item.name}${subitem.name}`"
             :checked="subitem.checked"
             type="checkbox"
             @change="checkSecondLevel(index, indexSubitem)"
           />
-          <label :for="`${name}${item.name}${subitem.name}`">{{ subitem.label }}</label>
         </div>
       </div>
     </div>
@@ -134,42 +128,55 @@ export default {
   color: grey;
 }
 
-.first-level {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 0;
-}
-
-.second-level {
-  margin-left: 24px;
-  padding: 5px 0;
-}
-
-input {
-  margin-right: 15px;
-}
-
-.first-level aside {
-  display: flex;
-  align-items: center;
-}
-
 .badge {
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  margin: 0 8px;
-  padding: 2px 6px;
+  margin: 0;
+  padding: 6px;
   font-size: 0.6em;
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.6em;
   background-color: var(--primaryColor);
   color: var(--secondaryColor);
 }
 
 .deployed {
   cursor: pointer;
+}
+
+.first-level,
+.second-level {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.first-level aside {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.second-level {
+  padding: 4px 0;
+  padding-left: 44px;
+}
+
+label {
+  flex: 1;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+.first-level:hover > label,
+.second-level:hover > label,
+label.checked {
+  color: var(--primaryColor);
 }
 </style>

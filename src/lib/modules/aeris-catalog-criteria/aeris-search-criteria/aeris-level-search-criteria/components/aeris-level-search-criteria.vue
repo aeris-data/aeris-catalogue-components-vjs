@@ -49,6 +49,7 @@
       <aeris-tree-checkbox-layout
         ref="levelCriteria"
         :elements="items"
+        :theme="theme"
         type="sublevels"
         name="levels"
         name-subitems="sublevels"
