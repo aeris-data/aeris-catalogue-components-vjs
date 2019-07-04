@@ -5,10 +5,16 @@
       <aeris-catalogue-search-button
         :range="{ min: 0, max: 24 }"
         :theme="theme"
-        language="fr"
+        :language="language"
         @click="getParameter"
         @catalogueSearchStart="getEmitParameter"
       ></aeris-catalogue-search-button>
+      <button v-if="language === 'fr'" @click="switchLanguage">
+        Switch to English
+      </button>
+      <button v-else-if="language === 'en'" @click="switchLanguage">
+        Passer en français
+      </button>
     </div>
 
     <div v-if="currentSummary" class="core">
@@ -16,7 +22,7 @@
         <aeris-catalogue-metadata-panel
           :summary="currentSummary"
           :theme="theme"
-          language="fr"
+          :language="language"
           icon-class="aeris-icon aeris-icon-unknown"
           metadata-service="https://sedoo.aeris-data.fr/catalogue/rest/metadatarecette/id/"
         >
@@ -74,10 +80,14 @@ export default {
       theme: {
         primaryColor: "#0b6bb3",
         secondaryColor: "#f39c12"
-      }
+      },
+      language: "fr"
     };
   },
   methods: {
+    switchLanguage() {
+      this.language = this.language === "fr" ? "en" : "fr";
+    },
     getParameter() {
       this.axios
         .post(`${this.url}?range=${this.range.min}-${this.range.max}`, {
@@ -128,7 +138,7 @@ input[type="text"] {
 
 .metadatapanel {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 
 .info {
