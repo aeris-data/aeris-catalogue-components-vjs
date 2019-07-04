@@ -22,7 +22,7 @@
 </i18n>
 
 <template>
-  <div class="data-aeris-catalog-metadata-panel">
+  <div :style="getCartoucheTheme" class="data-aeris-catalog-metadata-panel">
     <aeris-metadata-services
       :identifier="summary.id"
       :service="idService"
@@ -40,49 +40,17 @@
         ></aeris-international-field>
         <div v-else>{{ $t("addTitle") }}</div>
       </h2>
-      <div class="data-aeris-metadata-panel-project-list">
-        <div
+      <nav class="data-aeris-metadata-panel-project-list">
+        <a
           v-for="project in summary.projectList"
-          :style="getCartoucheTheme"
           :key="project.projectName"
+          :href="projectLandingPage(project.aerisProjectUuid)"
           class="cartouche"
+          target="_blank"
         >
-          <a :href="projectLandingPage(project.aerisProjectUuid)" target="_blank">{{ project.projectName }}</a>
-        </div>
-      </div>
-      <aside>
-        <aeris-ui-icon-button
-          v-if="minimize"
-          :title="$t('maximize')"
-          :theme="theme"
-          icon="fa-expand"
-          type="icon-button"
-          @click="switchmode"
-        ></aeris-ui-icon-button>
-        <aeris-ui-icon-button
-          v-if="maximize"
-          :title="$t('minimize')"
-          :theme="theme"
-          icon="fa-compress"
-          type="icon-button"
-          @click="switchmode"
-        ></aeris-ui-icon-button>
-        <aeris-ui-icon-button
-          :title="$t('close')"
-          :theme="theme"
-          icon="fa-times"
-          type="icon-button"
-          @click="broadcastCloseEvent"
-        ></aeris-ui-icon-button>
-        <aeris-ui-icon-button
-          :title="$t('json')"
-          :theme="theme"
-          icon="fa-code"
-          type="icon-button"
-          @click="showJson"
-        ></aeris-ui-icon-button>
-        <slot />
-      </aside>
+          {{ project.projectName }}
+        </a>
+      </nav>
     </header>
     <main>
       <component
@@ -160,13 +128,7 @@ export default {
       return this.template;
     },
     getCartoucheTheme() {
-      if (this.theme) {
-        return {
-          background: this.theme.primaryColor
-        };
-      } else {
-        return "";
-      }
+      return this.theme ? { "--bg-cartouche": this.theme.primaryColor } : "";
     },
     idService() {
       return this.metadataService;
@@ -269,18 +231,11 @@ export default {
   margin-bottom: 20px;
 }
 
-.data-aeris-catalog-metadata-panel > header .data-aeris-metadata-panel-project-list {
-  display: flex;
-  flex-direction: row;
-}
-
-.data-aeris-catalog-metadata-panel > header .cartouche {
+.data-aeris-metadata-panel-project-list .cartouche {
   display: inline-block;
-  margin-bottom: 5px;
+  margin-left: 5px;
   border-radius: 5px;
-  color: red;
-}
-.data-aeris-catalog-metadata-panel > header .cartouche a {
+  background-color: var(--bg-cartouche, #0b6bb3);
   color: #fafafa;
   text-decoration: none;
   border-radius: 5px;
@@ -288,22 +243,14 @@ export default {
   font-size: 0.85rem;
 }
 
-.data-aeris-catalog-metadata-panel > header .cartouche {
-  margin-left: 5px;
+.data-aeris-metadata-panel-project-list a.cartouche:hover {
+  background: #222;
+  color: #fff;
 }
 
 .data-aeris-catalog-metadata-panel > header h2 {
   font-weight: 400;
   font-size: 22px;
-}
-
-.data-aeris-catalog-metadata-panel > header aside {
-  display: flex;
-  flex-direction: row;
-}
-
-.data-aeris-catalog-metadata-panel > header aside * {
-  margin: 5px;
 }
 
 .data-aeris-catalog-metadata-panel > main {
