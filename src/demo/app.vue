@@ -1,113 +1,119 @@
 <template>
   <div data-app>
-    <ul data-role="menu">
-      <li>
-        <router-link to="/search_box">/search box</router-link>
-      </li>
-      <li>
-        <router-link to="/thesaurus-item-checkbox-layout">/thesaurus-item-checkbox-layout</router-link>
-      </li>
-      <li>
-        <router-link to="/thesaurus-item-tree-checkbox-layout">/thesaurus-item-tree-checkbox-layout</router-link>
-      </li>
-      <li>
-        <router-link to="/instrument-search-criteria">/instrument-search-criteria</router-link>
-      </li>
-      <li>
-        <router-link to="/parameter-search-criteria">/parameter-search-criteria</router-link>
-      </li>
-      <li>
-        <router-link to="/platform-search-criteria">/platform-search-criteria</router-link>
-      </li>
-      <li>
-        <router-link to="/project-search-criteria">/project-search-criteria</router-link>
-      </li>
-      <li>
-        <router-link to="/default-summary">/default-summary</router-link>
-      </li>
-      <li>
-        <router-link to="/summaries">/summaries</router-link>
-      </li>
-      <li>
-        <router-link to="/eurochamp">/eurochamp</router-link>
-      </li>
-      <li>
-        <router-link to="/gmos">/gmos</router-link>
-      </li>
-      <li>
-        <router-link to="/actris">/actris</router-link>
-      </li>
-      <li>
-        <router-link to="/iagos">/iagos</router-link>
-      </li>
-      <li>
-        <router-link to="/aeris">/aeris</router-link>
-      </li>
-      <li>
-        <router-link to="/metadata_panel">/metadata_panel</router-link>
-      </li>
-      <li>
-        <router-link to="/search_text_button">/search text button</router-link>
-      </li>
-      <li>
-        <router-link to="/reset_button">/reset button</router-link>
-      </li>
-      <li>
-        <router-link to="/maximize_button">/Maximize button</router-link>
-      </li>
-      <li>
-        <router-link to="/help_button">/help button</router-link>
-      </li>
-      <li>
-        <router-link to="/draw_map_button">/draw map button</router-link>
-      </li>
-      <li>
-        <router-link to="/international_field">/international field</router-link>
-      </li>
-      <li>
-        <router-link to="/search_button">/search button</router-link>
-      </li>
-      <li>
-        <router-link to="/reset_text_button">/reset text button</router-link>
-      </li>
-      <li>
-        <router-link to="/select_map_button">/select map button</router-link>
-      </li>
-      <li>
-        <router-link to="/help_content">/help content</router-link>
-      </li>
-      <li>
-        <router-link to="/temporal_search_criteria">/temporal search criteria</router-link>
-      </li>
-      <li>
-        <router-link to="/catalog-cart">/catalog cart</router-link>
-      </li>
-      <li>
-        <router-link to="/catalog-cart">/catalog cart</router-link>
-      </li>
-      <li>
-        <router-link to="/catalogue_map">/catalogue map</router-link>
-      </li>
-      <li>
-        <router-link to="/keyword">/keyword</router-link>
-      </li>
-      <li>
-        <router-link to="/spatial_criteria">/spatial criteria</router-link>
-      </li>
-      <li>
-        <router-link to="/site_criteria">/site criteria</router-link>
-      </li>
-    </ul>
-    <router-view class="view"></router-view>
+    <i class="fas fa-wrench" title="Click here to display full page menu" @click="toggleRoutes" />
+    <nav v-if="isVisible" data-role="menu" @click.self="toggleRoutes">
+      <ul>
+        <li v-for="link in links" :key="link" @click="isVisible = false">
+          <router-link :to="link">{{ link }}</router-link>
+        </li>
+      </ul>
+    </nav>
+    <div>
+      <router-view class="view"></router-view>
+    </div>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      isVisible: false,
+      links: [
+        "/actris",
+        "/aeris",
+        "/catalog-cart",
+        "/catalogue_map",
+        "/default-summary",
+        "/draw_map_button",
+        "/eurochamp",
+        "/gmos",
+        "/help_button",
+        "/help_content",
+        "/iagos",
+        "/instrument-search-criteria",
+        "/international_field",
+        "/keyword",
+        "/maximize_button",
+        "/metadata_panel",
+        "/parameter-search-criteria",
+        "/platform-search-criteria",
+        "/project-search-criteria",
+        "/reset_button",
+        "/reset_text_button",
+        "/search_box",
+        "/search_button",
+        "/search_text_button",
+        "/select_map_button",
+        "/site_criteria",
+        "/spatial_criteria",
+        "/summaries",
+        "/temporal_search_criteria",
+        "/thesaurus-item-checkbox-layout",
+        "/thesaurus-item-tree-checkbox-layout"
+      ]
+    };
+  },
+  methods: {
+    toggleRoutes() {
+      this.isVisible = !this.isVisible;
+    }
+  }
+};
+</script>
+
 <style scoped>
+.fas.fa-wrench {
+  width: 60px;
+  height: 60px;
+  font-size: 30px;
+  line-height: 60px;
+  text-align: center;
+  color: #009fde;
+  background: #fff;
+  border: 1px solid #009fde;
+  border-radius: 50%;
+  position: fixed;
+  z-index: 2;
+  bottom: 10px;
+  left: 50%;
+  cursor: pointer;
+}
+nav {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 ul {
-  columns: 6;
-  -webkit-columns: 6;
-  -moz-columns: 6;
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 80%;
+  margin: 0;
+  padding: 20px;
+  columns: 3;
+  -webkit-columns: 3;
+  -moz-columns: 3;
   list-style-type: none;
-  margin-bottom: 50px;
+  border-radius: 3px;
+}
+li {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+li a {
+  text-decoration: none;
+  color: #009fde;
+}
+li a:hover {
+  color: #ade1e6;
 }
 </style>
