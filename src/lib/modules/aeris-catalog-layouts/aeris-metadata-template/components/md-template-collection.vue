@@ -10,7 +10,6 @@
       "information-links": "Information links",
       "information": "Other informations",
       "instruments": "Instruments",
-      "modifications": "Modifications",
       "parameters": "Parameters",
       "platforms": "Platforms",
       "publications": "Publications",
@@ -30,13 +29,12 @@
       "information-links": "Liens d'information",
       "information": "Autres informations",
       "instruments": "Instruments",
-      "modifications": "Modifications",
       "parameters": "Paramètres",
       "platforms": "Plateformes",
       "publications": "Publications",
       "quicklook-gallery": "Galerie",
       "single-file-download": "Téléchargement",
-      "spatial-extents": "Extensions spatiales",
+      "spatial-extents": "Extension spatiale",
       "temporal-extents": "Extensions temporelles",
       "year-select-download": "Téléchargement"
     }
@@ -53,91 +51,88 @@
         <div>
           <aside>
             <!-- links to the components -->
-            <!-- TODO: make it dynamic -->
-            <a v-for="link in dynamicLinks" :href="`#${link}`" :key="link">{{ $t(link) }}</a>
+            <a v-for="link in visibleLinks" :href="`#${link.anchor}`" :key="link.anchor">{{ $t(link.anchor) }}</a>
           </aside>
           <div id="component-list">
             <aeris-metadata-description
               id="description"
+              ref="description"
               :markdown="true"
               :language="language"
-              :show-title="false"
               :theme="theme"
               :resource-abstract="metadata.resourceAbstract"
-              @visibility="renderLinks"
             ></aeris-metadata-description>
             <section>
               <aeris-metadata-spatial-extents
                 id="spatial-extents"
+                ref="spatial-extents"
                 :language="language"
                 :spatial-extents="metadata.spatialExtents"
                 :theme="theme"
-                @visibility="renderLinks"
               ></aeris-metadata-spatial-extents>
               <aeris-metadata-temporal-extents
                 id="temporal-extents"
+                ref="temporal-extents"
                 :language="language"
                 :temporal-extents="metadata.temporalExtents"
                 :theme="theme"
-                @visibility="renderLinks"
               ></aeris-metadata-temporal-extents>
             </section>
             <aeris-metadata-contacts
               id="contacts"
+              ref="contacts"
               :language="language"
               :contacts="metadata.contacts"
               :theme="theme"
-              @visibility="renderLinks"
             ></aeris-metadata-contacts>
-            {{ metadata.links }}
             <aeris-metadata-information-links
               id="information-links"
+              ref="information-links"
               :language="language"
               :links="metadata.links"
               :theme="theme"
-              @visibility="renderLinks"
             ></aeris-metadata-information-links>
             <aeris-metadata-parameters
               id="parameters"
+              ref="parameters"
               :language="language"
               :parameters="metadata.parameters"
               :theme="theme"
-              @visibility="renderLinks"
             ></aeris-metadata-parameters>
             <aeris-metadata-platforms
               id="platforms"
+              ref="platforms"
               :language="language"
               :platforms="metadata.platforms"
               :theme="theme"
-              @visibility="renderLinks"
             ></aeris-metadata-platforms>
             <aeris-metadata-instruments
               id="instruments"
+              ref="instruments"
               :language="language"
               :instrument="metadata.instruments"
               :theme="theme"
-              @visibility="renderLinks"
             ></aeris-metadata-instruments>
             <aeris-metadata-publications
               id="publications"
+              ref="publications"
               :language="language"
               :publications="metadata.publications"
               :theme="theme"
-              @visibility="renderLinks"
             ></aeris-metadata-publications>
             <aeris-metadata-quicklook-gallery
               id="quicklook-gallery"
+              ref="quicklook-gallery"
               :language="language"
               :theme="theme"
               :quicklooks="metadata.quicklooks"
-              @visibility="renderLinks"
             ></aeris-metadata-quicklook-gallery>
             <aeris-metadata-information
               id="information"
+              ref="information"
               :language="language"
               :items="metadata"
               :theme="theme"
-              @visibility="renderLinks"
             ></aeris-metadata-information>
           </div>
         </div>
@@ -278,30 +273,55 @@ export default {
   },
   data() {
     return {
-      links: []
+      allLinks: [
+        { anchor: "description", fr: this.$t("description", "fr"), en: this.$t("description", "en") },
+        { anchor: "spatial-extents", fr: this.$t("spatial-extents", "fr"), en: this.$t("spatial-extents", "en") },
+        { anchor: "temporal-extents", fr: this.$t("temporal-extents", "fr"), en: this.$t("temporal-extents", "en") },
+        { anchor: "contacts", fr: this.$t("contacts", "fr"), en: this.$t("contacts", "en") },
+        { anchor: "information-links", fr: this.$t("information-links", "fr"), en: this.$t("information-links", "en") },
+        { anchor: "parameters", fr: this.$t("parameters", "fr"), en: this.$t("parameters", "en") },
+        { anchor: "platforms", fr: this.$t("platforms", "fr"), en: this.$t("platforms", "en") },
+        { anchor: "instruments", fr: this.$t("instruments", "fr"), en: this.$t("instruments", "en") },
+        { anchor: "publications", fr: this.$t("publications", "fr"), en: this.$t("publications", "en") },
+        { anchor: "quicklook-gallery", fr: this.$t("quicklook-gallery", "fr"), en: this.$t("quicklook-gallery", "en") },
+        { anchor: "information", fr: this.$t("information", "fr"), en: this.$t("information", "en") }
+      ],
+      // trick to use $refs in computed properties
+      isMounted: false
     };
   },
   watch: {
     language(value) {
       this.$i18n.locale = value;
-    },
-    dynamicLinks(value) {
-      this.links = value;
     }
+  },
+  mounted() {
+    this.isMounted = true;
   },
   created() {
     this.$i18n.locale = this.language;
   },
   computed: {
-    dynamicLinks() {
-      return this.sortLinks(this.links);
+    visibleLinks() {
+      if (!this.isMounted) {
+        return;
+      }
+
+      const visibleComponents = [];
+      for (let c in this.$refs) {
+        if (this.$refs[c].isVisible) {
+          visibleComponents.push(c);
+        }
+      }
+
+      return this.allLinks.filter(link => {
+        return visibleComponents.indexOf(link.anchor) >= 0;
+      });
     },
     getDownloadType() {
       let links = this.metadata ? this.metadata.links : "";
-      console.log("link", links);
       if (links) {
         return links.filter(link => {
-          console.log(link.type);
           return link.type == "OPENSEARCH_LINK";
         });
       }
@@ -333,33 +353,6 @@ export default {
     },
     removeItemCart(metadataDownload) {
       this.$store.commit("removeItemFromCartContent", metadataDownload);
-    },
-    renderLinks(component) {
-      let name = component.name.replace("aeris-metadata-", "");
-      if (component.isVisible && this.links.indexOf(name) === -1) {
-        this.links.push(name);
-      } else if (!component.isVisible && this.links.indexOf(name) !== -1) {
-        this.links = this.links.filter(link => link !== name);
-      }
-    },
-    sortLinks(links) {
-      let sortedLinks = [
-        "description",
-        "spatial-extents",
-        "temporal-extents",
-        "contacts",
-        "information-links",
-        "parameters",
-        "platforms",
-        "instruments",
-        "publications",
-        "quicklook-gallery",
-        "information"
-      ];
-      links.sort((a, b) => {
-        return sortedLinks.indexOf(a) - sortedLinks.indexOf(b);
-      });
-      return links;
     }
   }
 };
@@ -368,6 +361,11 @@ export default {
 <style scoped>
 [aeris-metadata-single-file-download] {
   padding: 20px;
+}
+
+* {
+  transition: all 0.4s ease;
+  font-family: Arial, sans-serif;
 }
 
 /*--------------------------------------------------------------
@@ -464,7 +462,6 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
 ------------------------------*/
 
 .tabs article[aeris-metadatasheet-dataset] > div > aside {
-  width: 400px;
   margin-right: 20px;
 }
 
@@ -482,6 +479,7 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
 }
 
 .tabs article[aeris-metadatasheet-dataset] > div > div {
+  flex: 1;
   max-height: 768px;
   overflow: scroll;
 }
@@ -507,6 +505,10 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
 
 .tabs article[aeris-metadatasheet-download] [aeris-metadatasheet-distribution] h3 ~ section {
   margin: 20px;
+}
+
+>>> h3 {
+  border-bottom: 1px solid #ccc;
 }
 
 @media (min-width: 681px) {
