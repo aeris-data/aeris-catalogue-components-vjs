@@ -10,19 +10,16 @@
 	  }
 }
 </i18n>
-<template>
-  <section aeris-international-field>
-    <span v-if="!isDeployed">
-      <span v-if="html" v-html="truncatedText" />
-      <span v-else>{{ truncatedText }}</span>
-    </span>
-    <span v-else>
-      <span v-if="html" v-html="text" />
-      <span v-else>{{ text }}</span>
-    </span>
-    <span v-if="isTruncated && !isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("more") }}]</span>
-    <span v-if="isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("less") }}]</span>
-  </section>
+
+<template class="aeris-international-field">
+  <div>
+    <p v-if="!isDeployed && html" v-html="truncatedText" />
+    <p v-else-if="!isDeployed && !html">{{ truncatedText }}</p>
+    <p v-else-if="isDeployed && html" v-html="text" />
+    <p v-else-if="isDeployed && !html">{{ text }}</p>
+    <a v-if="isTruncated && !isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("more") }}]</a>
+    <a v-if="isDeployed" class="more" @click="isDeployed = !isDeployed">[{{ $t("less") }}]</a>
+  </div>
 </template>
 
 <script>
@@ -70,13 +67,20 @@ export default {
     },
 
     text() {
+      if (!this.html) {
+        if (this.value && this.value[this.language]) {
+          return this.value[this.language];
+        } else if (this.value && this.value["DEFAULT_VALUE_KEY"]) {
+          return this.value["DEFAULT_VALUE_KEY"];
+        }
+      }
       if (this.value && this.value[this.language]) {
         return marked(this.value[this.language]);
       } else if (this.value && this.value["DEFAULT_VALUE_KEY"]) {
         return marked(this.value["DEFAULT_VALUE_KEY"]);
-      } else {
-        return "";
       }
+
+      return "";
     }
   },
 
@@ -101,14 +105,14 @@ export default {
 </script>
 
 <style scoped>
-[aeris-international-field] {
+.aeris-international-field {
   display: block;
   hyphens: auto;
+  word-break: break-all;
   word-wrap: break-word;
-  text-align: justify;
 }
 
-[aeris-international-field] .more {
+.more {
   cursor: pointer;
   font-size: smaller;
   color: #3395b9;

@@ -16,6 +16,7 @@
       @click="isDeployed = !isDeployed"
     ></aeris-international-field>
     <aeris-international-field :value="title" :max-length="200" html="html" language="none"></aeris-international-field>
+    <aeris-international-field :value="title" :max-length="200" language="none"></aeris-international-field>
   </div>
 </template>
 

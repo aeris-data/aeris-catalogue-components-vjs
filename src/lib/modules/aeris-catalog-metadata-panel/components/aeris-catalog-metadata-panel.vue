@@ -35,7 +35,6 @@
           v-if="summary.title"
           :language="language"
           :value="summary.title"
-          :html="true"
           :max-length="100"
         ></aeris-international-field>
         <div v-else>{{ $t("addTitle") }}</div>
@@ -206,18 +205,18 @@ export default {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
 .data-aeris-catalog-metadata-panel {
-  --gap: 0px;
-  --heightHeader: 80px;
+  --heightHeader: 67.5px;
   height: 100%;
   width: 100%;
   background: #ddd;
   padding: 10px;
-  box-sizing: border-box;
 }
 
-.data-aeris-catalog-metadata-panel > header {
-  position: relative;
+header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -225,16 +224,24 @@ export default {
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
   background: #fff;
   color: #333;
-  height: var(--heightHeader, 80px);
-  box-sizing: border-box;
+  height: var(--heightHeader, 67.5px);
   width: 100%;
-  margin-bottom: 20px;
 }
 
-.data-aeris-metadata-panel-project-list .cartouche {
+header h2 {
+  font-weight: 400;
+  font-size: 22px;
+}
+
+.data-aeris-metadata-panel-project-list {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cartouche {
   display: inline-block;
-  margin-left: 5px;
-  border-radius: 5px;
+  margin: 2px;
   background-color: var(--bg-cartouche, #0b6bb3);
   color: #fafafa;
   text-decoration: none;
@@ -243,40 +250,13 @@ export default {
   font-size: 0.85rem;
 }
 
-.data-aeris-metadata-panel-project-list a.cartouche:hover {
+.cartouche:hover {
   background: #222;
   color: #fff;
 }
 
-.data-aeris-catalog-metadata-panel > header h2 {
-  font-weight: 400;
-  font-size: 22px;
-}
-
-.data-aeris-catalog-metadata-panel > main {
+main {
   height: calc(100% - var(--heightHeader));
-  overflow-y: auto;
-}
-
-.data-aeris-catalog-metadata-panel [data-template^="metadata-panel"] {
-  padding: var(--gap) var(--gap) 0 var(--gap);
-}
-
-.data-aeris-catalog-metadata-panel [data-template^="metadata-panel"] [data-template^="metadata-block"] {
-  border-radius: 2px;
-  margin-bottom: var(--gap);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  background: #fafafa;
-}
-
-.data-aeris-catalog-metadata-panel [data-template="metadata-panel"] {
-  column-count: 2;
-  column-gap: var(--gap);
-  column-fill: balance;
-  -moz-column-fill: balance;
-}
-
-.data-aeris-catalog-metadata-panel [data-template="metadata-panel"] [data-template="metadata-block"] {
-  break-inside: avoid;
+  padding: 20px 10px;
 }
 </style>
