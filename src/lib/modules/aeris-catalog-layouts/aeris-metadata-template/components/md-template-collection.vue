@@ -42,7 +42,7 @@
 </i18n>
 
 <template>
-  <nav class="tabs" role="tablist" data-template="metadata-panel">
+  <nav :style="applyTheme" class="tabs" role="tablist" data-template="metadata-panel">
     <div>
       <!-- TAB 1 -->
       <input id="dataset" type="radio" name="tabs" checked />
@@ -345,6 +345,9 @@ export default {
     },
     getItemIdsInCart() {
       return this.$store.getters.getItemIdsInCart;
+    },
+    applyTheme() {
+      return this.theme && this.theme.primaryColor ? { "--primaryColor": this.theme.primaryColor } : "";
     }
   },
   methods: {
@@ -481,7 +484,34 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
 .tabs article[aeris-metadatasheet-dataset] > div > div {
   flex: 1;
   max-height: 768px;
-  overflow: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding-right: 40px;
+}
+
+.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  margin-left: 4px;
+}
+
+.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #333;
+}
+
+.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar-track {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+}
+
+.tabs article[aeris-metadatasheet-dataset] > div > div > * {
+  max-width: 500px;
+  margin: auto;
+  line-height: 1.7;
 }
 
 /*----------------------------
@@ -505,10 +535,6 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
 
 .tabs article[aeris-metadatasheet-download] [aeris-metadatasheet-distribution] h3 ~ section {
   margin: 20px;
-}
-
->>> h3 {
-  border-bottom: 1px solid #ccc;
 }
 
 @media (min-width: 681px) {
