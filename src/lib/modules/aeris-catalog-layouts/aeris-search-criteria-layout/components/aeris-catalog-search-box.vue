@@ -131,6 +131,8 @@ export default {
 .box-title h3 {
   margin: 0;
   color: rgb(11, 107, 179);
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .box-title h3:first-letter {

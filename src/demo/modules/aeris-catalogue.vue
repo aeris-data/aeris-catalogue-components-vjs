@@ -161,17 +161,8 @@ export default {
 </script>
 
 <style>
-[aeris-ui-icon-button] > * {
-  color: grey;
-}
-
 [aeris-catalog] [data-criteria] > * {
   background: #f5f5f5;
-}
-
-[data-aeris-catalog-criteria] h3 {
-  font-size: 1rem;
-  font-weight: 400;
 }
 
 [data-criteria="buttons"] > div {
@@ -180,52 +171,12 @@ export default {
   align-items: center;
   padding: 5px;
 }
+
 [data-criteria="buttons"] > div > button > i {
   color: #fff;
 }
+
 [data-criteria="buttons"] > div > button:nth-child(2) {
   margin-left: 5px;
-}
-
-[data-template="metadata-block"] h5 {
-  font-size: 1rem;
-  font-weight: 400;
-  margin: 0;
-  --primaryColor: rgb(11, 107, 179);
-}
-
-[data-template="metadata-block"] h6 {
-  margin-bottom: 2px;
-  min-width: 30%;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0 0 15px;
-  --primaryColor: rgb(11, 107, 179);
-}
-
-[data-template="metadata-block"] {
-  margin-bottom: 10px !important;
-  break-inside: avoid;
-  border-radius: 2px;
-}
-
-[data-template="metadata-block"] i,
-.data-aeris-metadata-list li h5 {
-  --primary: rgb(11, 107, 179);
-}
-
-[data-template="metadata-block"] article {
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-
-[data-template="metadata-block"] header {
-  padding: unset;
-}
-.data-aeris-catalog-metadata-panel .data-aeris-metadata-panel-project-list div {
-  background: rgb(11, 107, 179) !important;
-}
-.data-aeris-catalog-metadata-panel aside button {
-  background: #e2e2e2 !important;
 }
 </style>
