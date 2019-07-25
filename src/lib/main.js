@@ -4,13 +4,11 @@ import Vuex from "vuex";
 import VueI18n from "vue-i18n";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import VueLayers from "vuelayers";
 
 Vue.use(VueCustomElement);
 Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(VueAxios, axios);
-Vue.use(VueLayers);
 
 import AerisCatalogue from "../demo/modules/aeris-catalogue.vue";
 
