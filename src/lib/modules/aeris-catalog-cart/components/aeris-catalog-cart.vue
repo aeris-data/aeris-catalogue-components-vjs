@@ -47,12 +47,16 @@
         </header>
 
         <ul class="item-list">
-          <section v-for="item in cartContent" id="cartTemplate" :key="item.identifier">
+          <section v-for="item in cartContent" id="cartTemplate" :key="item.metadataUuid">
             <li class="cart-line">
-              <i :title="$t('removeFromDownload')" class="fa fa-times" @click="removeCartItem(item.identifier)" />
+              <i
+                :title="$t('removeFromDownload')"
+                class="fa fa-times"
+                @click="removeCartItem(item.metadataIdentifier)"
+              />
               <div>
                 <aeris-metadata-international-field
-                  :content="item.collectionName"
+                  :content="item.metadataTitle"
                   :language="language"
                   class="cart-collection-name"
                   no-label-float
@@ -219,8 +223,8 @@ export default {
       }
     },
 
-    removeCartItem(identifier) {
-      this.$store.commit("removeItemFromCartContent", { identifier: identifier });
+    removeCartItem(metadataUuid) {
+      this.$store.commit("removeItemFromCartContent", metadataUuid);
     },
 
     removeAll() {
@@ -275,14 +279,34 @@ export default {
     checkout() {
       this.togglePopup();
       const url = this.cartService + "/toscript";
-      this.$http.post(url, this.cartContent).then(
-        response => {
-          this.handleSuccessScript(response);
-        },
-        error => {
-          this.handleErrorScript(error);
-        }
-      );
+      this.$http
+        .post(url, {
+          language: this.language,
+          items: this.cartContent.map(item =>
+            this.type === "GET"
+              ? {
+                  type: item.type,
+                  metadataIdentifier: item.metadataIdentifier,
+                  metadataTitle: item.metadataTitle,
+                  url: item.url
+                }
+              : {
+                  type: item.type,
+                  metadataIdentifier: item.metadataIdentifier,
+                  metadataTitle: item.metadataTitle,
+                  url: item.url,
+                  body: item.body
+                }
+          )
+        })
+        .then(
+          response => {
+            this.handleSuccessScript(response);
+          },
+          error => {
+            this.handleErrorScript(error);
+          }
+        );
     },
 
     downloadFile() {
@@ -295,13 +319,31 @@ export default {
       this.$store.dispatch("addNewNotification", notification);
       const url = this.cartService + "/download";
       this.$http
-        .post(url, this.cartContent, {
-          headers: {
-            "Content-Type": "application/zip",
-            Accept: "application/zip"
+        .post(
+          url,
+          {
+            language: this.language,
+            items: this.cartContent.map(item =>
+              this.type === "GET"
+                ? {
+                    type: item.type,
+                    metadataIdentifier: item.metadataIdentifier,
+                    metadataTitle: item.metadataTitle,
+                    url: item.url
+                  }
+                : {
+                    type: item.type,
+                    metadataIdentifier: item.metadataIdentifier,
+                    metadataTitle: item.metadataTitle,
+                    url: item.url,
+                    body: item.body
+                  }
+            )
           },
-          responseType: "blob"
-        })
+          {
+            responseType: "blob"
+          }
+        )
         .then(response => {
           this.handleSuccessDownload(response, uuid);
         })
