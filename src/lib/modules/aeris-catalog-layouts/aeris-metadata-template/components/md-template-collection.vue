@@ -22,24 +22,27 @@
       :temporal-extents="metadata.temporalExtents"
       :theme="theme"
     ></aeris-metadata-temporal-extents>
-    <aeris-metadata-year-select-download
-      v-show="getDownloadType === 'yearfilter'"
-      :theme="theme"
-      :language="language"
-      :metadata="metadata"
-      :years="getYearlyFilters(metadata.identifier)"
-      @addItemCart="addItemCart"
-      @removeItemCart="removeItemCart"
-    ></aeris-metadata-year-select-download>
     <aeris-metadata-single-file-download
-      v-show="getDownloadType === 'nofilter'"
+      v-if="metadata && downloadType === 'nofilter'"
       :metadata="metadata"
       :is-in-cart="isInCart(metadata.identifier)"
+      :file-number="fileNumber"
+      :total-size="totalSize"
       :theme="theme"
       :language="language"
       @addItemCart="addItemCart"
     >
     </aeris-metadata-single-file-download>
+    <aeris-metadata-year-select-download
+      v-else-if="metadata && downloadType === 'yearfilter'"
+      :theme="theme"
+      :language="language"
+      :metadata="metadata"
+      :is-in-cart="isInCart(metadata.identifier)"
+      :years="years"
+      @addItemCart="addItemCart"
+      @removeItemCart="removeItemCart"
+    ></aeris-metadata-year-select-download>
     <aeris-metadata-information-links
       :language="language"
       :links="metadata.links"
@@ -159,37 +162,21 @@ export default {
   data() {
     return {
       downloadType: "",
-      years: []
+      years: [],
+      files: [],
+      fileNumber: 0,
+      fileSize: 0
     };
   },
 
   computed: {
     isInCart() {
-      return idenfitier => {
-        return this.getItemIdsInCart.includes(idenfitier);
-      };
-    },
-    getYearlyFilters() {
       return identifier => {
-        let currentYears = [...this.years];
-        this.$store.getters.getCartContent.forEach(itemCart => {
-          if (itemCart.identifier === identifier) {
-            let yearsInCart = itemCart.items.elements;
-            currentYears.forEach(year => {
-              if (yearsInCart.indexOf(year.year) > -1) {
-                year.selected = true;
-              }
-            });
-          }
-        });
-        return currentYears;
+        return this.getItemIdsInCart.includes(identifier);
       };
     },
     getItemIdsInCart() {
       return this.$store.getters.getItemIdsInCart;
-    },
-    getDownloadType() {
-      return this.downloadType;
     }
   },
 
@@ -197,48 +184,45 @@ export default {
     metadata: {
       handler(newMetadata, oldMetadata) {
         if (newMetadata !== oldMetadata) {
-          this.getDownloadFilter();
+          this.setDownloadFilter();
         }
       },
       deep: true
     }
   },
 
+  created() {
+    this.setDownloadFilter();
+  },
+
   methods: {
-    addItemCart(metadataDownload) {
-      this.$store.dispatch("addCollectionToCart", metadataDownload);
+    addItemCart(item) {
+      this.$store.dispatch("addCollectionToCart", item);
     },
-    removeItemCart(metadataDownload) {
-      this.$store.commit("removeItemFromCartContent", metadataDownload);
+    removeItemCart(item) {
+      this.$store.commit("removeItemFromCartContent", item);
     },
-    getDownloadFilter() {
-      this.downloadType = "";
-      let links = this.metadata ? this.metadata.links : "";
-      if (links) {
-        let link = links.filter(link => link.type == "OPENSEARCH_LINK");
-        let url = null;
-        if (link !== null && link.length > 0) {
-          url = link[0].url.endsWith("/") ? link[0].url.substring(0, link[0].url.length - 1) : link[0].url;
-          url = url + "/request?collection=" + this.metadata.identifier;
-          this.$http.get(url).then(response => {
-            let entries = response.data.entries;
-            if (entries.length > 0) {
-              this.downloadType = entries[0].type || "nofilter";
-              let years = [];
-              if (entries[0].type === "yearfilter") {
-                for (let i = 0; i < entries.length; i++) {
-                  let date = moment(entries[i].date);
-                  let item = {};
-                  item.year = date.year();
-                  item.selected = false;
-                  item.totalSize = entries[i].totalSize;
-                  item.fileNumber = entries[i].fileNumber;
-                  years.push(item);
+    setDownloadFilter() {
+      if (this.metadata.links && this.metadata.links.length > 0) {
+        const service = this.metadata.links.find(m => m.type === "OPENSEARCH_LINK").url;
+        if (service) {
+          this.axios
+            .get(`${service.replace(/\/$/, "")}/request?collection=${this.metadata.identifier}`)
+            .then(response => {
+              if (response.data.entries.length > 0) {
+                this.downloadType = response.data.entries[0].type || "nofilter";
+                if (this.downloadType === "yearfilter") {
+                  this.years = response.data.entries.map(entry => ({
+                    year: moment(entry.date).year(),
+                    totalSize: entry.totalSize,
+                    fileNumber: entry.fileNumber
+                  }));
+                } else {
+                  this.fileNumber = response.data.entries[0].fileNumber;
+                  this.totalSize = response.data.entries[0].totalSize;
                 }
-                this.years = years;
               }
-            }
-          });
+            });
         }
       }
     }
