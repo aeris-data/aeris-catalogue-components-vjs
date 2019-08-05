@@ -12,6 +12,9 @@ import VueAxios from "vue-axios";
 
 Vue.use(VueAxios, axios);
 
+import Vuetify from "vuetify";
+Vue.use(Vuetify);
+
 import Vuex from "vuex";
 Vue.use(Vuex);
 
