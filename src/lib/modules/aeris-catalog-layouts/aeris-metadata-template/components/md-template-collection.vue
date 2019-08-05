@@ -43,6 +43,15 @@
       @addItemCart="addItemCart"
       @removeItemCart="removeItemCart"
     ></aeris-metadata-year-select-download>
+    <aeris-metadata-year-select-download
+      v-else-if="metadata && downloadType === 'treeviewfilter'"
+      :theme="theme"
+      :language="language"
+      :metadata="metadata"
+      :is-in-cart="isInCart(metadata.identifier)"
+      @addItemCart="addItemCart"
+      @removeItemCart="removeItemCart"
+    ></aeris-metadata-year-select-download>
     <aeris-metadata-information-links
       :language="language"
       :links="metadata.links"
@@ -111,6 +120,7 @@ import {
   AerisMetadataTemporalExtents,
   AerisMetadataSingleFileDownload,
   AerisMetadataYearSelectDownload,
+  AerisMetadataTreeViewDownload,
   AerisMetadataServices
 } from "aeris-metadata-components-vjs";
 
@@ -136,6 +146,7 @@ export default {
     AerisMetadataSpatialExtents,
     AerisMetadataSingleFileDownload,
     AerisMetadataYearSelectDownload,
+    AerisMetadataTreeViewDownload,
     AerisMetadataTemporalExtents,
     AerisMetadataServices,
     AerisNotifier,
@@ -217,6 +228,11 @@ export default {
                     totalSize: entry.totalSize,
                     fileNumber: entry.fileNumber
                   }));
+                } else if (this.downloadType === "treeviewfilter") {
+                  this.files = _.mapDeep(response.data, value => {
+                    value && value.name ? (value.id = value.name) : null;
+                    return value;
+                  });
                 } else {
                   this.fileNumber = response.data.entries[0].fileNumber;
                   this.totalSize = response.data.entries[0].totalSize;
