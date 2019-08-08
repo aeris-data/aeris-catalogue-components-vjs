@@ -108,6 +108,10 @@ export default {
       type: String,
       default: null
     },
+    project: {
+      type: String,
+      default: null
+    },
     cartService: {
       type: String,
       default: null
@@ -183,13 +187,22 @@ export default {
       this.getSummaries(this.selectedCriteria);
     },
     getSummaries(criteria) {
+      let range = this.$store.getters.getRange;
       let url = this.metadataService.endsWith("/")
         ? this.metadataService + "request"
         : this.metadataService + "/request";
-      if (this.program) {
+      let filter = false;
+      if (this.program && this.project) {
+        url = url + "?program=" + this.program + "&project=" + this.project;
+        filter = true;
+      } else if (this.program) {
         url = url + "?program=" + this.program;
+        filter = true;
+      } else if (this.project) {
+        url = url + "?project=" + this.project;
+        filter = true;
       }
-      let range = this.$store.getters.getRange;
+
       if (range) {
         let data = {
           url: this.program ? `${url}&range=${range.min}-${range.max}` : `${url}?range=${range.min}-${range.max}`,
