@@ -5,12 +5,17 @@ import VueI18n from "vue-i18n";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import VueLayers from "vuelayers";
+import VueMeta from "vue-meta";
 
 Vue.use(VueCustomElement);
 Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(VueAxios, axios);
 Vue.use(VueLayers);
+Vue.use(VueMeta, {
+  // optional pluginOptions
+  refreshOnceOnNavigation: true
+});
 
 import AerisCatalogue from "../demo/modules/aeris-catalogue.vue";
 

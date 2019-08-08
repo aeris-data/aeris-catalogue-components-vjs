@@ -262,9 +262,12 @@ export default {
   word-wrap: break-word;
 }
 
-[aeris-spatial-search-criteria-content] .aeris-input-group {
-  border: none;
+.aeris-input-group {
   background-color: rgba(172, 220, 238, 0.3);
+}
+
+.aeris-input-group input {
+  border: none;
 }
 
 [aeris-spatial-search-criteria-content] .leftbutton {
@@ -282,8 +285,8 @@ export default {
   overflow: hidden;
 }
 
-[aeris-spatial-search-criteria-content] input.incorrect-input {
-  border: 2px solid red !important;
+[aeris-spatial-search-criteria-content] .aeris-input-group .incorrect-input {
+  border: 2px solid red;
 }
 
 [aeris-spatial-search-criteria-content] .showMap {
@@ -312,7 +315,6 @@ export default {
   box-sizing: border-box;
   height: 100%;
   padding: 0 5px;
-  border: none;
   outline: none;
 }
 

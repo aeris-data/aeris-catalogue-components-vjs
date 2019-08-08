@@ -17,7 +17,9 @@
       "single-file-download": "Download",
       "spatial-extents": "Spatial extents",
       "temporal-extents": "Temporal extents",
-      "year-select-download": "Download"
+      "year-select-download": "Download",
+      "download": "Download",
+      "dataset": "Dataset"
     },
     "fr": {
       "citations": "Citations",
@@ -36,7 +38,9 @@
       "single-file-download": "Téléchargement",
       "spatial-extents": "Extension spatiale",
       "temporal-extents": "Extensions temporelles",
-      "year-select-download": "Téléchargement"
+      "year-select-download": "Téléchargement",
+      "download": "Téléchargement",
+      "dataset": "Métadonnées"
     }
   }
 </i18n>
@@ -46,14 +50,20 @@
     <div>
       <!-- TAB 1 -->
       <input id="dataset" type="radio" name="tabs" checked />
-      <label id="label-dataset" for="dataset" role="tab" aria-controls="panel-dataset">Dataset</label>
+      <label id="label-dataset" for="dataset" role="tab" aria-controls="panel-dataset">{{ $t("dataset") }}</label>
       <article id="panel-dataset" role="tabpanel" aria-labelledby="label-dataset" aeris-metadatasheet-dataset>
         <div>
           <aside>
-            <!-- links to the components -->
-            <a v-for="link in visibleLinks" :href="`#${link.anchor}`" :key="link.anchor">{{ $t(link.anchor) }}</a>
+            <a
+              v-for="(link, index) in visibleLinks"
+              :class="{ active: active === link.anchor }"
+              :href="`#${link.anchor}`"
+              :key="index"
+              @click="setCurrentAnchor(link)"
+            >{{ $t(link.anchor) }}</a
+            >
           </aside>
-          <div id="component-list">
+          <div id="component-list" ref="component-list">
             <aeris-metadata-description
               id="description"
               ref="description"
@@ -61,23 +71,22 @@
               :language="language"
               :theme="theme"
               :resource-abstract="metadata.resourceAbstract"
+              :show-title="false"
             ></aeris-metadata-description>
-            <section>
-              <aeris-metadata-spatial-extents
-                id="spatial-extents"
-                ref="spatial-extents"
-                :language="language"
-                :spatial-extents="metadata.spatialExtents"
-                :theme="theme"
-              ></aeris-metadata-spatial-extents>
-              <aeris-metadata-temporal-extents
-                id="temporal-extents"
-                ref="temporal-extents"
-                :language="language"
-                :temporal-extents="metadata.temporalExtents"
-                :theme="theme"
-              ></aeris-metadata-temporal-extents>
-            </section>
+            <aeris-metadata-spatial-extents
+              id="spatial-extents"
+              ref="spatial-extents"
+              :language="language"
+              :spatial-extents="metadata.spatialExtents"
+              :theme="theme"
+            ></aeris-metadata-spatial-extents>
+            <aeris-metadata-temporal-extents
+              id="temporal-extents"
+              ref="temporal-extents"
+              :language="language"
+              :temporal-extents="metadata.temporalExtents"
+              :theme="theme"
+            ></aeris-metadata-temporal-extents>
             <aeris-metadata-contacts
               id="contacts"
               ref="contacts"
@@ -141,72 +150,69 @@
     <div>
       <!-- TAB 2 -->
       <input id="download" type="radio" name="tabs" />
-      <label id="label-download" for="download" role="tab" aria-controls="panel-download">Download</label>
+      <label id="label-download" for="download" role="tab" aria-controls="panel-download">{{ $t("download") }}</label>
       <article id="panel-download" role="tabpanel" aria-labelledby="label-download" aeris-metadatasheet-download>
         <div>
-          <section v-if="getDownloadType" aeris-metadatasheet-downloadcomponent>
-            <!-- here download component : h3 p button-->
+          <section class="download">
+            <div v-if="loading" class="loader" />
             <aeris-metadata-single-file-download
-              v-if="getDownloadType.type === 'OPENSEARCH_LINK'"
+              v-if="getDownloadType === 'single'"
               :metadata="metadata"
               :is-in-cart="isInCart(metadata.identifier)"
               :theme="theme"
+              :language="language"
               @addItemCart="addItemCart"
+              @removeItemCart="removeItemCart"
             ></aeris-metadata-single-file-download>
             <aeris-metadata-year-select-download
-              v-else-if="getDownloadType.type === 'yearfilter'"
+              v-if="getDownloadType === 'year'"
               :theme="theme"
+              :language="language"
               :metadata="metadata"
-              :selected-item-cart="selectedItemCart(metadata.identifier)"
+              :years="getYearlyFilters(metadata.identifier)"
               @addItemCart="addItemCart"
               @removeItemCart="removeItemCart"
             ></aeris-metadata-year-select-download>
-          </section>
-          <section aeris-metadatasheet-downloadlink>
-            <!-- here download link : h3 p blockquote -->
             <aeris-metadata-data-links
               :language="language"
               :links="metadata.links"
               :theme="theme"
             ></aeris-metadata-data-links>
           </section>
-        </div>
-        <section aeris-metadatasheet-citation>
-          <!-- here citation component : h3 blockquote -->
           <aeris-metadata-citations
             :language="language"
             :identifiers="metadata.identifiers"
             :theme="theme"
           ></aeris-metadata-citations>
-        </section>
-        <section aeris-metadatasheet-distribution>
-          <h3>Distribution</h3>
-          <section aeris-metadatasheet-distribution-format>
+          <section aeris-metadatasheet-distribution>
+            <h3 v-if="checkFormat">Distribution</h3>
             <!-- here format component : h4 ul -->
             <aeris-metadata-formats
+              ref="formats"
               :language="language"
               :formats="metadata.formats"
               :theme="theme"
             ></aeris-metadata-formats>
-          </section>
-          <section aeris-metadatasheet-distribution-licences>
+            <!-- <section aeris-metadatasheet-distribution-licences ref="licences"> -->
             <!-- here licences component : h4 p -->
-          </section>
-          <section aeris-metadatasheet-distribution-datapolicy>
+            <!-- </section> -->
             <!-- here datapolicy component : h4 p  -->
             <aeris-metadata-datapolicy
+              ref="datapolicy"
               :language="language"
               :distribution-information="metadata.distributionInformation"
               :theme="theme"
             ></aeris-metadata-datapolicy>
           </section>
-        </section>
+        </div>
       </article>
     </div>
   </nav>
 </template>
 
 <script>
+import moment from "moment";
+
 import {
   AerisMetadataCitations,
   AerisMetadataContacts,
@@ -232,6 +238,16 @@ import {
 import { AerisNotifier, AerisTheme, Aerislanguage } from "aeris-commons-components-vjs";
 
 export default {
+  metaInfo() {
+    return {
+      script: [
+        {
+          type: "application/ld+json",
+          json: this.datasetJson
+        }
+      ]
+    };
+  },
   name: "md-template-collection",
   components: {
     AerisMetadataCitations,
@@ -273,6 +289,9 @@ export default {
   },
   data() {
     return {
+      datasetJson: null,
+      downloadType: "",
+      years: [],
       allLinks: [
         { anchor: "description", fr: this.$t("description", "fr"), en: this.$t("description", "en") },
         { anchor: "spatial-extents", fr: this.$t("spatial-extents", "fr"), en: this.$t("spatial-extents", "en") },
@@ -287,21 +306,43 @@ export default {
         { anchor: "information", fr: this.$t("information", "fr"), en: this.$t("information", "en") }
       ],
       // trick to use $refs in computed properties
-      isMounted: false
+      isMounted: false,
+      active: "description",
+      loading: false
     };
   },
   watch: {
     language(value) {
       this.$i18n.locale = value;
+    },
+    metadata: {
+      handler(newMetadata, oldMetadata) {
+        if (newMetadata !== oldMetadata) {
+          this.getDownloadFilter();
+          this.getJson();
+        }
+      },
+      deep: true
     }
   },
   mounted() {
     this.isMounted = true;
+    this.getJson();
   },
   created() {
     this.$i18n.locale = this.language;
+    this.getDownloadFilter();
   },
   computed: {
+    checkFormat() {
+      if (!this.isMounted) {
+        return;
+      }
+
+      if (this.$refs.formats || this.$refs.datapolicy) {
+        return this.$refs.formats.isVisible || this.$refs.datapolicy.isVisible;
+      }
+    },
     visibleLinks() {
       if (!this.isMounted) {
         return;
@@ -319,13 +360,7 @@ export default {
       });
     },
     getDownloadType() {
-      let links = this.metadata ? this.metadata.links : "";
-      if (links) {
-        return links.filter(link => {
-          return link.type == "OPENSEARCH_LINK";
-        });
-      }
-      return "";
+      return this.downloadType;
     },
     isInCart() {
       return idenfitier => {
@@ -343,6 +378,23 @@ export default {
         return currentItem;
       };
     },
+    getYearlyFilters() {
+      return identifier => {
+        let currentYears = [...this.years];
+        this.$store.getters.getCartContent.forEach(itemCart => {
+          if (itemCart.identifier === identifier) {
+            let yearsInCart = itemCart.items.elements;
+            currentYears.forEach(year => {
+              if (yearsInCart.indexOf(year.year) > -1) {
+                year.selected = true;
+              }
+            });
+          }
+        });
+        // this.loading = false;
+        return currentYears;
+      };
+    },
     getItemIdsInCart() {
       return this.$store.getters.getItemIdsInCart;
     },
@@ -351,11 +403,57 @@ export default {
     }
   },
   methods: {
+    getJson() {
+      this.$http
+        .get("https://services.aeris-data.fr/schemaOrg/" + this.metadata.identifier, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => (this.datasetJson = response.data), error => console.log(error));
+    },
     addItemCart(metadataDownload) {
       this.$store.dispatch("addCollectionToCart", metadataDownload);
     },
     removeItemCart(metadataDownload) {
       this.$store.commit("removeItemFromCartContent", metadataDownload);
+    },
+    setCurrentAnchor(link) {
+      this.active = link.anchor;
+    },
+    getDownloadFilter() {
+      this.downloadType = "";
+      let links = this.metadata ? this.metadata.links : "";
+      if (links) {
+        let link = links.filter(link => link.type == "OPENSEARCH_LINK");
+        let url = null;
+        if (link !== null && link.length > 0) {
+          url = link[0].url.endsWith("/") ? link[0].url.substring(0, link[0].url.length - 1) : link[0].url;
+          url = url + "/request?collection=" + this.metadata.identifier;
+          this.loading = true;
+          this.$http.get(url).then(response => {
+            let entries = response.data.entries;
+            if (entries.length > 1) {
+              this.downloadType = "year";
+              let years = [];
+              for (let i = 0; i < entries.length; i++) {
+                let date = moment(entries[i].date);
+                let item = {};
+                item.year = date.year();
+                item.selected = false;
+                item.totalSize = entries[i].totalSize;
+                item.fileNumber = entries[i].fileNumber;
+                years.push(item);
+              }
+              this.years = years;
+              this.loading = false;
+            } else if (entries.length === 1) {
+              this.downloadType = "single";
+              this.loading = false;
+            }
+          });
+        }
+      }
     }
   }
 };
@@ -368,7 +466,8 @@ export default {
 
 * {
   transition: all 0.4s ease;
-  font-family: Arial, sans-serif;
+  font-family: "Open sans", sans-serif;
+  font-weight: 400;
 }
 
 /*--------------------------------------------------------------
@@ -432,6 +531,11 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
   margin-top: 40px;
 }
 
+h3 {
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+}
+
 @media (min-width: 400px) {
   .tabs label {
     display: inline-block;
@@ -454,15 +558,48 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
 /*----------------------------
 # TAB DATASET / DOWNLOAD
 ------------------------------*/
+.tabs article[aeris-metadatasheet-dataset] > div > aside > a:hover,
+.tabs article[aeris-metadatasheet-dataset] > div > aside > a.active {
+  border-left: 2px solid var(--primaryColor, #000);
+  color: var(--primaryColor, #000);
+}
 
-.tabs article[aeris-metadatasheet-dataset] > div,
+.tabs article[aeris-metadatasheet-dataset] > div > div,
 .tabs article[aeris-metadatasheet-download] > div {
-  display: flex;
+  flex: 1;
+  max-height: 768px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar,
+.tabs article[aeris-metadatasheet-download] > div::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  margin-left: 4px;
+}
+
+.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar-thumb,
+.tabs article[aeris-metadatasheet-download] > div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #333;
+}
+
+.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar-track,
+.tabs article[aeris-metadatasheet-download] > div::-webkit-scrollbar-track {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
 }
 
 /*----------------------------
 # TAB DATASET
 ------------------------------*/
+.tabs article[aeris-metadatasheet-dataset] > div {
+  display: flex;
+}
 
 .tabs article[aeris-metadatasheet-dataset] > div > aside {
   margin-right: 20px;
@@ -477,69 +614,46 @@ article[id="panel-dataset"] h3:not(:first-of-type) {
   color: #333;
 }
 
-.tabs article[aeris-metadatasheet-dataset] > div > aside > a:hover {
-  border-left: 2px solid #000;
-}
-
-.tabs article[aeris-metadatasheet-dataset] > div > div {
-  flex: 1;
-  max-height: 768px;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  padding-right: 40px;
-}
-
-.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar {
-  width: 8px;
-  background-color: #f5f5f5;
-  border-radius: 50%;
-  margin-left: 4px;
-}
-
-.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #333;
-}
-
-.tabs article[aeris-metadatasheet-dataset] > div > div::-webkit-scrollbar-track {
-  border-radius: 10px;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #f5f5f5;
-}
-
 .tabs article[aeris-metadatasheet-dataset] > div > div > * {
-  max-width: 500px;
+  max-width: 600px;
   margin: auto;
   line-height: 1.7;
+  padding-top: 0;
 }
 
 /*----------------------------
 # TAB DOWNLOAD
 ------------------------------*/
-
-.tabs article[aeris-metadatasheet-download] > div {
-  flex-flow: row wrap;
-  justify-content: space-between;
+.tabs article[aeris-metadatasheet-download] > div > section {
+  padding: 0 20px;
 }
 
-.tabs article[aeris-metadatasheet-download] > div > section {
-  flex: 1 1 300px;
-  margin-bottom: 20px;
-  padding: 0 20px 20px;
+.tabs article[aeris-metadatasheet-download] > div > section > * {
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .tabs article[aeris-metadatasheet-download] button {
   padding: 15px 20px;
 }
 
-.tabs article[aeris-metadatasheet-download] [aeris-metadatasheet-distribution] h3 ~ section {
-  margin: 20px;
+.loader {
+  border: 6px solid #f5f5f5;
+  border-top: 6px solid var(--primaryColor);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  text-align: center;
+  margin: 20px auto;
 }
 
-@media (min-width: 681px) {
-  .tabs article[aeris-metadatasheet-download] > div > section:first-child {
-    margin-right: 20px;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
