@@ -32,9 +32,6 @@ export default {
   },
 
   methods: {
-    resetEmptyValue() {
-      this.$refs.keywordSearchCriteria.resetEmptyValue();
-    },
     startSearch() {
       this.$emit("startSearch");
     }

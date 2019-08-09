@@ -144,7 +144,6 @@ export default {
       this.$refs.instrumentSearchCriteria.resetSelection();
       this.$refs.temporalSearch.resetDate();
       this.$refs.spatialExtentsSearch.resetCoordinate();
-      this.$refs.keywordSearchCriteria.resetEmptyValue();
       this.$refs.siteSearchCriteria.sitesReset();
       this.$refs.levelSearchCriteria.resetLevels();
       this.$refs.collectionSearchCriteria.resetCollection();

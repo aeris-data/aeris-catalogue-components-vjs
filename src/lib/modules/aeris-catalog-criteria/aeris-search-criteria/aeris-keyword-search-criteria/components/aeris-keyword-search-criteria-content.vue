@@ -13,14 +13,18 @@
 </i18n>
 
 <template>
-  <aeris-ui-input
-    ref="uiInput"
-    :title="$t('titleHelp')"
-    :placeholder="$t('keywords')"
-    icon="fas fa-pencil-alt"
-    name="keywords"
-    @input="inputKeyword"
-  ></aeris-ui-input>
+  <div>
+    <aeris-ui-input
+      ref="uiInput"
+      :title="$t('titleHelp')"
+      :placeholder="$t('keywords')"
+      :value="value"
+      icon="fas fa-pencil-alt"
+      name="keywords"
+      @keyup.enter.native="handleEnter"
+      @input="handleChange"
+    ></aeris-ui-input>
+  </div>
 </template>
 
 <script>
@@ -40,6 +44,9 @@ export default {
   computed: {
     keywords() {
       return this.$store.getters.getKeywords;
+    },
+    value() {
+      return this.$store.getters.getInputValue;
     }
   },
 
@@ -59,16 +66,13 @@ export default {
   },
 
   methods: {
-    keywordsReset() {
-      this.$store.commit("resetKeywords");
+    handleChange(value) {
+      this.$store.commit("setInputValueKeyword", value);
+      this.parseKeyword(value);
     },
 
-    inputKeyword(event) {
-      this.parseKeyword(event);
-    },
-
-    parseKeyword(event) {
-      let value = event.value.trim();
+    parseKeyword(value) {
+      value = value.trim();
       let finalQuery = "";
       let keyword = value.split(" ");
       let andKeyword = [];
@@ -90,19 +94,17 @@ export default {
       });
       finalQuery = finalQuery.split(" ");
       let keywords = finalQuery.filter(Boolean);
+
       this.$store.commit("setKeywords", keywords);
-      if (event.isEnter) {
-        this.$emit("startSearch");
-      }
+    },
+
+    handleEnter() {
+      this.$emit("startSearch");
     },
 
     checkSpecialWord(value) {
       let specialWordRegex = /[a-zA-Z0-9]+([-._;():][a-zA-Z0-9]+)+/;
       return specialWordRegex.test(value);
-    },
-
-    resetEmptyValue() {
-      this.$refs.uiInput.resetValue();
     }
   }
 };

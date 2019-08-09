@@ -22,7 +22,7 @@
     "*.min.js"
   ],
   "dependencies": {
-    "aeris-commons-components-vjs": "git+https://git@github.com/aeris-data/aeris-commons-components-vjs.git#refactoring",
+    "aeris-commons-components-vjs": "git+https://git@github.com/aeris-data/aeris-commons-components-vjs.git#feature/input-change",
     "aeris-metadata-components-vjs": "git+https://git@github.com/aeris-data/aeris-metadata-components-vjs.git#refactoring",
     "aeris-mixins": "latest",
     "axios": "^0.18.0",

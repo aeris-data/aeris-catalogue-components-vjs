@@ -1,9 +1,11 @@
 export default {
   state: {
-    keywords: []
+    keywords: [],
+    inputValue: ""
   },
 
   getters: {
+    getInputValue: state => state.inputValue,
     getKeywords: state => state.keywords
   },
 
@@ -11,8 +13,12 @@ export default {
     setKeywords(state, keywords) {
       state.keywords = keywords;
     },
+    setInputValueKeyword(state, value) {
+      state.inputValue = value;
+    },
     resetKeywords(state) {
       state.keywords = [];
+      state.inputValue = "";
     }
   }
 };
