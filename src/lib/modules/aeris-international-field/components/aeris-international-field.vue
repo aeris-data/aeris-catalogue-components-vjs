@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import marked from "marked";
-
 export default {
   name: "aeris-international-field",
 
@@ -71,9 +69,9 @@ export default {
 
     text() {
       if (this.value && this.value[this.language]) {
-        return marked(this.value[this.language]);
+        return this.value[this.language];
       } else if (this.value && this.value["DEFAULT_VALUE_KEY"]) {
-        return marked(this.value["DEFAULT_VALUE_KEY"]);
+        return this.value["DEFAULT_VALUE_KEY"];
       } else {
         return "";
       }

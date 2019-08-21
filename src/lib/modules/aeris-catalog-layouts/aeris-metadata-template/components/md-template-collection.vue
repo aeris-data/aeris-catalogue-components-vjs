@@ -222,21 +222,19 @@ export default {
           url = url + "/request?collection=" + this.metadata.identifier;
           this.$http.get(url).then(response => {
             let entries = response.data.entries;
-            if (entries.length > 0) {
-              this.downloadType = entries[0].type || "nofilter";
+            this.downloadType = entries.length > 1 ? "yearfilter" : "nofilter";
+            if (this.downloadType === "yearfilter") {
               let years = [];
-              if (entries[0].type === "yearfilter") {
-                for (let i = 0; i < entries.length; i++) {
-                  let date = moment(entries[i].date);
-                  let item = {};
-                  item.year = date.year();
-                  item.selected = false;
-                  item.totalSize = entries[i].totalSize;
-                  item.fileNumber = entries[i].fileNumber;
-                  years.push(item);
-                }
-                this.years = years;
+              for (let i = 0; i < entries.length; i++) {
+                let date = moment(entries[i].date);
+                let item = {};
+                item.year = date.year();
+                item.selected = false;
+                item.totalSize = entries[i].totalSize;
+                item.fileNumber = entries[i].fileNumber;
+                years.push(item);
               }
+              this.years = years;
             }
           });
         }
