@@ -171,7 +171,7 @@ section aside {
   font-weight: 700;
   line-height: 0.6em;
   background-color: var(--primaryColor);
-  color: var(--secondaryColor);
+  color: #fff;
   margin-right: 5px;
 }
 

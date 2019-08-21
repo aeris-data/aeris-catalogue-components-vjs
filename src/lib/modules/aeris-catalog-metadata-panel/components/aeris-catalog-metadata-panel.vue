@@ -50,7 +50,7 @@
         <aeris-ui-icon-button
           v-if="minimize"
           :title="$t('maximize')"
-          :theme="theme"
+          :theme="buttonTheme"
           icon="fa-expand"
           type="icon-button"
           @click="switchmode"
@@ -58,21 +58,21 @@
         <aeris-ui-icon-button
           v-if="maximize"
           :title="$t('minimize')"
-          :theme="theme"
+          :theme="buttonTheme"
           icon="fa-compress"
           type="icon-button"
           @click="switchmode"
         ></aeris-ui-icon-button>
         <aeris-ui-icon-button
           :title="$t('close')"
-          :theme="theme"
+          :theme="buttonTheme"
           icon="fa-times"
           type="icon-button"
           @click="broadcastCloseEvent"
         ></aeris-ui-icon-button>
         <aeris-ui-icon-button
           :title="$t('json')"
-          :theme="theme"
+          :theme="buttonTheme"
           icon="fa-code"
           type="icon-button"
           @click="showJson"
@@ -142,7 +142,10 @@ export default {
     return {
       template: null,
       maximize: false,
-      metadataValue: null
+      metadataValue: null,
+      buttonTheme: {
+        primaryColor: "#e2e2e2"
+      }
     };
   },
   watch: {
@@ -162,13 +165,7 @@ export default {
       return this.template;
     },
     getCartoucheTheme() {
-      if (this.theme) {
-        return {
-          background: this.theme.primaryColor
-        };
-      } else {
-        return "";
-      }
+      return this.theme ? { background: this.theme.primaryColor } : "";
     },
     idService() {
       return this.metadataService;

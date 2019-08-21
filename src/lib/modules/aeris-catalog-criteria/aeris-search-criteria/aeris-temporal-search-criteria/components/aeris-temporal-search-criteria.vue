@@ -15,11 +15,13 @@
       id="box"
       :title="$t('temporal-extents')"
       :deployed="deployed"
+      :theme="theme"
       header-icon-class="fa fa-calendar"
     >
       <aeris-temporal-search-criteria-content
         ref="temporalSearchCriteria"
         :language="language"
+        :theme="theme"
       ></aeris-temporal-search-criteria-content>
     </aeris-catalog-search-box>
   </div>
@@ -39,6 +41,10 @@ export default {
     deployed: {
       type: Boolean,
       default: false
+    },
+    theme: {
+      type: Object,
+      default: () => {}
     }
   },
 

@@ -240,7 +240,6 @@ export default {
 [aeris-catalog] [data-criteria="buttons"] > div {
   display: flex;
   flex-flow: wrap;
-
   align-items: center;
   padding: 5px;
 }

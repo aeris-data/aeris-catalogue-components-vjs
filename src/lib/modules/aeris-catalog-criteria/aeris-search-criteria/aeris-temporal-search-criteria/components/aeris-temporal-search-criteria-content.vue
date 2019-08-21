@@ -2,7 +2,7 @@
   <div aeris-temporal-search-criteria-content>
     <aeris-datepicker
       ref="fromDatePicker"
-      :theme="{ emphasis: '#f39c12' }"
+      :theme="theme"
       :label="{
         key: 'from',
         lang: {
@@ -17,7 +17,7 @@
 
     <aeris-datepicker
       ref="toDatePicker"
-      :theme="{ emphasis: '#f39c12' }"
+      :theme="theme"
       :label="{
         key: 'to',
         lang: {
@@ -43,6 +43,10 @@ export default {
     language: {
       type: String,
       default: "en"
+    },
+    theme: {
+      type: Object,
+      default: () => {}
     }
   },
 

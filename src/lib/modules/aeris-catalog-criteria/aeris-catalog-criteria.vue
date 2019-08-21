@@ -18,11 +18,11 @@ export default {
   height: 100%;
 }
 
-[data-aeris-catalog-criteria] span {
+[data-aeris-catalog-criteria] >>> span {
   font-weight: 300;
 }
 
-[data-aeris-catalog-criteria] h3 {
+[data-aeris-catalog-criteria] >>> h3 {
   font-size: 1rem;
   font-weight: 400;
 }

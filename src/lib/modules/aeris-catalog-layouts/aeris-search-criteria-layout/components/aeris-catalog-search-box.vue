@@ -1,12 +1,12 @@
 <template>
-  <div :class="{ showBody: isDeployed }" class="aeris-catalog-box">
+  <div :style="getTheme" :class="{ showBody: isDeployed }" class="aeris-catalog-box">
     <div class="box">
-      <header v-if="header" :style="getTitleTheme" class="box-heading" @click="isDeployed = !isDeployed">
+      <header v-if="header" class="box-heading" @click="isDeployed = !isDeployed">
         <div class="box-heading-buttons">
           <i :class="openIconClass" class="chevron" />
         </div>
         <div class="box-title">
-          <i v-show="headerIconClass" :class="headerIconClass" :style="getIconTheme" />
+          <i v-show="headerIconClass" :class="headerIconClass" />
           <h3 no-label-float>{{ getTitle }}</h3>
         </div>
       </header>
@@ -68,15 +68,7 @@ export default {
     },
 
     getTheme() {
-      return this.theme ? { color: this.theme.secondaryColor } : "";
-    },
-
-    getTitleTheme() {
-      return this.theme ? { color: this.theme.emphasis } : "";
-    },
-
-    getIconTheme() {
-      return this.theme ? { color: this.theme.iconColor } : "";
+      return this.theme ? { "--secondaryColor": this.theme.secondaryColor } : "";
     }
   }
 };
@@ -130,7 +122,7 @@ export default {
 
 .box-title h3 {
   margin: 0;
-  color: rgb(11, 107, 179);
+  color: var(--secondaryColor);
 }
 
 .box-title h3:first-letter {
